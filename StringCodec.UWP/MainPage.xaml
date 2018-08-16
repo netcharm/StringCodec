@@ -1,0 +1,56 @@
+﻿<Page
+    x:Class="StringCodec.UWP.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:RS4Api="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 6)"
+    mc:Ignorable="d"
+    MinWidth="600"
+    MinHeight="480"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        
+    </Page.Resources>
+
+    <NavigationView Loaded="NavigationView_Loaded" Margin="0,12,0,0" Grid.Row="1" SelectionChanged="NavigationView_SelectionChanged"
+        x:Name="nvMain"
+        IsSettingsVisible="{Binding ElementName=settingsCheck,Path=IsChecked}" IsTabStop="False"
+        RS4Api:NavigationView.PaneTitle="Title"
+        RS4Api:IsBackButtonVisible="Auto"
+        RS4Api:IsBackEnabled="True"
+        Header="String Encoding &amp; Decoding">
+        <NavigationView.AutoSuggestBox>
+            <AutoSuggestBox x:Name="nvAutoSuggestBox" QueryIcon="Find"/>
+        </NavigationView.AutoSuggestBox>
+
+        <NavigationView.MenuItems>
+            <NavigationViewItemHeader x:Uid="nvItemHome" Content="Home"/>
+            <NavigationViewItem x:Uid="nvItemWebContents" Content="WEB Contents" Icon="Globe" Tag="PageWebContents" />
+            <NavigationViewItemSeparator/>
+            <NavigationViewItemHeader x:Uid="nvItemOthers" Content="Others"/>
+            <NavigationViewItem x:Uid="nvItemQRCode" Content="QR Code" Tag="PageQR" >
+                <NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xE2AC;" FontFamily="Segoe MDL2 Assets"/>
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
+            <NavigationViewItem x:Uid="nvItemCharSet" Content="Character Set" Icon="Character" Tag="PageCharacter" />
+        </NavigationView.MenuItems>
+
+        <RS4Api:NavigationView.PaneFooter>
+            <HyperlinkButton x:Name="nvMoreInfoBtn" x:Uid="nvMoreInfo"
+                             Content="More info"
+                             Click="More_Click"
+                             Margin="12,0"/>
+        </RS4Api:NavigationView.PaneFooter>
+
+        <Frame x:Name="contentFrame">
+            <Frame.ContentTransitions>
+                <TransitionCollection>
+                    <NavigationThemeTransition/>
+                </TransitionCollection>
+            </Frame.ContentTransitions>
+        </Frame>
+    </NavigationView>
+</Page>
