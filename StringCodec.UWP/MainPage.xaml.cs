@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -30,12 +32,36 @@ namespace StringCodec.UWP
             this.InitializeComponent();
         }
 
-        private void NavigationView_Loaded(object sender, RoutedEventArgs e)
+        private void NvMain_Loaded(object sender, RoutedEventArgs e)
         {
-            ContentFrame.Navigate(typeof(Pages.TextPage));
+            //
+            // Add GBK/Shift-JiS... to Encoding Supported
+            // 使用CodePagesEncodingProvider去注册扩展编码。
+            //
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            //var enc_list = Encoding.GetEncodings();
+            //foreach (EncodingInfo ei in Encoding.GetEncodings())
+            //{
+            //    Encoding enc = ei.GetEncoding();
+            //}
 
             //draw into the title bar
             CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
+
+            ContentFrame.Navigate(typeof(Pages.TextPage));
+            ContentFrame.Navigated += On_Navigated;
+
+            // add keyboard accelerators for backwards navigation
+            KeyboardAccelerator GoBack = new KeyboardAccelerator();
+            GoBack.Key = VirtualKey.GoBack;
+            GoBack.Invoked += BackInvoked;
+            KeyboardAccelerator AltLeft = new KeyboardAccelerator();
+            AltLeft.Key = VirtualKey.Left;
+            AltLeft.Invoked += BackInvoked;
+            this.KeyboardAccelerators.Add(GoBack);
+            this.KeyboardAccelerators.Add(AltLeft);
+            // ALT routes here
+            AltLeft.Modifiers = VirtualKeyModifiers.Menu;
 
             //remove the solid-colored backgrounds behind the caption controls and system back button
             ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
@@ -51,12 +77,12 @@ namespace StringCodec.UWP
             }
         }
 
-        private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+        private void NvMain_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
 
         }
 
-        private void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+        private void NvMain_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
             //先判断是否选中了setting
             if (args.IsSettingsInvoked)
@@ -86,6 +112,69 @@ namespace StringCodec.UWP
                     default:
                         ContentFrame.Navigate(typeof(Pages.TextPage));
                         break;
+                }
+            }
+        }
+
+        private void NvMain_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
+        {
+            On_BackRequested();
+        }
+
+        private void BackInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+        {
+            On_BackRequested();
+            args.Handled = true;
+        }
+
+        private bool On_BackRequested()
+        {
+            bool navigated = false;
+
+            // don't go back if the nav pane is overlayed
+            if (nvMain.IsPaneOpen && (nvMain.DisplayMode == NavigationViewDisplayMode.Compact || nvMain.DisplayMode == NavigationViewDisplayMode.Minimal))
+            {
+                return false;
+            }
+            else
+            {
+                if (ContentFrame.CanGoBack)
+                {
+                    ContentFrame.GoBack();
+                    navigated = true;
+                }
+            }
+            return navigated;
+        }
+
+        private void On_Navigated(object sender, NavigationEventArgs e)
+        {
+            nvMain.IsBackEnabled = ContentFrame.CanGoBack;
+
+            //if (ContentFrame.SourcePageType == typeof(SettingsPage))
+            //{
+            //    nvMain.SelectedItem = nvMain.SettingsItem as NavigationViewItem;
+            //}
+            //else
+            {
+                Dictionary<Type, string> lookup = new Dictionary<Type, string>()
+                {
+                    {typeof(Pages.TextPage), "PageText"},
+                    {typeof(Pages.QRCodePage), "PageQR"},
+                    {typeof(Pages.ImagePage), "PageImage"},
+                    {typeof(Pages.CharsetPage), "PageCharset"}
+                };
+
+                String stringTag = lookup[ContentFrame.SourcePageType];
+
+                // set the new SelectedItem  
+                foreach (NavigationViewItemBase item in nvMain.MenuItems)
+                {
+                    if (item is NavigationViewItem && item.Tag.Equals(stringTag))
+                    {
+                        item.IsSelected = true;
+                        break;
+                    }
                 }
             }
         }

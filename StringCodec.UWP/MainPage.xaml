@@ -15,9 +15,10 @@
     </Page.Resources>
 
     <NavigationView x:Name="nvMain"
-                    Loaded="NavigationView_Loaded" 
-                    SelectionChanged="NavigationView_SelectionChanged" 
-                    ItemInvoked="NavigationView_ItemInvoked"                                       
+                    Loaded="NvMain_Loaded" 
+                    SelectionChanged="NvMain_SelectionChanged" 
+                    ItemInvoked="NvMain_ItemInvoked"
+                    BackRequested="NvMain_BackRequested"
                     RS4Api:NavigationView.PaneTitle="Title"
                     RS4Api:IsBackButtonVisible="Auto"
                     RS4Api:IsBackEnabled="True" 

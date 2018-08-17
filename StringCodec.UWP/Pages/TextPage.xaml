@@ -11,25 +11,32 @@
    
     <Grid Margin="12, 0, 12, 12">
         <Grid.RowDefinitions>
-            <RowDefinition Height="64" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height=".5*" />
             <RowDefinition Height=".5*" />
         </Grid.RowDefinitions>
 
         <CommandBar Grid.Row="0" >
-            <AppBarButton Grid.Column="0" Icon="Bullets" Label="Codecs" VerticalAlignment="Center">
+            <AppBarButton Grid.Column="0" x:Name="btnOpt" x:Uid="btnOpt" Icon="Bullets" Label="Options" VerticalAlignment="Center">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
-                        <ToggleMenuFlyoutItem x:Name="optURL" Text="URL" Click="Codec_Checked"/>
-                        <ToggleMenuFlyoutItem x:Name="optBase64" Text="BASE64" Click="Codec_Checked"/>
-                        <ToggleMenuFlyoutItem x:Name="optUUE" Text="UUE" Click="Codec_Checked"/>
-                        <ToggleMenuFlyoutItem x:Name="optXXE" Text="XXE" Click="Codec_Checked"/>
-                        <ToggleMenuFlyoutItem x:Name="optQuoted" Text="Quoted" Click="Codec_Checked"/>
-                        <ToggleMenuFlyoutItem x:Name="optRaw" Text="RAW" Click="Codec_Checked"/>
-                        <ToggleMenuFlyoutItem x:Name="optThunder" Text="Thunder" Click="Codec_Checked"/>
+                        <ToggleMenuFlyoutItem x:Name="optURL" x:Uid="optURL" Text="URL" Click="Codec_Checked"/>
+                        <ToggleMenuFlyoutItem x:Name="optBase64" x:Uid="optBase64" Text="BASE64" Click="Codec_Checked"/>
+                        <ToggleMenuFlyoutItem x:Name="optUUE" x:Uid="optUUE" Text="UUE" Click="Codec_Checked"/>
+                        <ToggleMenuFlyoutItem x:Name="optXXE" x:Uid="optXXE" Text="XXE" Click="Codec_Checked"/>
+                        <ToggleMenuFlyoutItem x:Name="optQuoted" x:Uid="optQuoted" Text="Quoted" Click="Codec_Checked"/>
+                        <ToggleMenuFlyoutItem x:Name="optRaw" x:Uid="optRaw" Text="RAW" Click="Codec_Checked"/>
+                        <ToggleMenuFlyoutItem x:Name="optThunder" x:Uid="optThunder" Text="Thunder" Click="Codec_Checked"/>
+                        <ToggleMenuFlyoutItem x:Name="optFlashGet" x:Uid="optFlashGet" Text="FlashGet" Click="Codec_Checked"/>
                         <MenuFlyoutSeparator />
-                        <ToggleMenuFlyoutItem x:Name="optUTF8" Text="UTF-8" Click="Opt_Checked"/>
-                        <ToggleMenuFlyoutItem x:Name="optUnicode" Text="Unicode" Click="Opt_Checked"/>
+                        <ToggleMenuFlyoutItem x:Name="optUTF8" x:Uid="optUTF8" Text="UTF-8" Click="Opt_Checked"/>
+                        <ToggleMenuFlyoutItem x:Name="optGBK" x:Uid="optGBK" Text="GBK" Click="Opt_Checked"/>
+                        <ToggleMenuFlyoutItem x:Name="optBIG5" x:Uid="optBIG5" Text="BIG-5" Click="Opt_Checked"/>
+                        <ToggleMenuFlyoutItem x:Name="optJIS" x:Uid="optJIS" Text="Shift-JIS" Click="Opt_Checked"/>
+                        <ToggleMenuFlyoutItem x:Name="optUnicode" x:Uid="optUnicode" Text="Unicode" Click="Opt_Checked"/>
+                        <ToggleMenuFlyoutItem x:Name="optAscii" x:Uid="optAscii" Text="ASCII" Click="Opt_Checked"/>
+                        <MenuFlyoutSeparator />
+                        <ToggleMenuFlyoutItem x:Name="optLineBreak" x:Uid="optLineBreak" Text="Line Break" Click="Opt_Checked"/>
                     </MenuFlyout>
 
                     <!--<Flyout>
@@ -60,7 +67,7 @@
             <AppBarButton x:Name="btnSave" x:Uid="btnSave" Label="Save" Icon="Save" VerticalAlignment="Center" Click="AppBarButton_Click" />
 
             <CommandBar.SecondaryCommands>
-                
+                <!-- More Button Dropdown menu -->
             </CommandBar.SecondaryCommands>
 
             <CommandBar.Content>
@@ -74,10 +81,20 @@
                 </Grid>
             </CommandBar.Content>
         </CommandBar>
-        
 
-        <TextBox Grid.Row="1" x:Uid="edSrc" Header="Input:" PlaceholderText="Input" AcceptsReturn="True" />
-        <TextBox Grid.Row="2" x:Uid="edDst" Header="Output:" PlaceholderText="Output" IsReadOnly="True"/>
+
+        <TextBox Grid.Row="1" x:Name="edSrc" x:Uid="edSrc" 
+                 Header="Input:" PlaceholderText="Input at here" 
+                 AcceptsReturn="True" CanDrag="True" 
+                 FontFamily="Consolas" FontSize="16" 
+                 ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                 ScrollViewer.HorizontalScrollBarVisibility="Auto"/>
+        <TextBox Grid.Row="2" x:Name="edDst" x:Uid="edDst" 
+                 Header="Output:" PlaceholderText="Here is output" 
+                 AcceptsReturn="True" IsReadOnly="True" 
+                 FontFamily="Consolas" FontSize="16" 
+                 ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                 ScrollViewer.HorizontalScrollBarVisibility="Auto"/>
 
     </Grid>
 </Page>
