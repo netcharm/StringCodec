@@ -1,0 +1,83 @@
+﻿<Page
+    x:Class="StringCodec.UWP.Pages.TextPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:StringCodec.UWP.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Loaded="Page_Loaded">
+
+   
+    <Grid Margin="12, 0, 12, 12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="64" />
+            <RowDefinition Height=".5*" />
+            <RowDefinition Height=".5*" />
+        </Grid.RowDefinitions>
+
+        <CommandBar Grid.Row="0" >
+            <AppBarButton Grid.Column="0" Icon="Bullets" Label="Codecs" VerticalAlignment="Center">
+                <AppBarButton.Flyout>
+                    <MenuFlyout>
+                        <ToggleMenuFlyoutItem x:Name="optURL" Text="URL" Click="Codec_Checked"/>
+                        <ToggleMenuFlyoutItem x:Name="optBase64" Text="BASE64" Click="Codec_Checked"/>
+                        <ToggleMenuFlyoutItem x:Name="optUUE" Text="UUE" Click="Codec_Checked"/>
+                        <ToggleMenuFlyoutItem x:Name="optXXE" Text="XXE" Click="Codec_Checked"/>
+                        <ToggleMenuFlyoutItem x:Name="optQuoted" Text="Quoted" Click="Codec_Checked"/>
+                        <ToggleMenuFlyoutItem x:Name="optRaw" Text="RAW" Click="Codec_Checked"/>
+                        <ToggleMenuFlyoutItem x:Name="optThunder" Text="Thunder" Click="Codec_Checked"/>
+                        <MenuFlyoutSeparator />
+                        <ToggleMenuFlyoutItem x:Name="optUTF8" Text="UTF-8" Click="Opt_Checked"/>
+                        <ToggleMenuFlyoutItem x:Name="optUnicode" Text="Unicode" Click="Opt_Checked"/>
+                    </MenuFlyout>
+
+                    <!--<Flyout>
+                        <StackPanel>
+                            <RadioButton Content="aaaa"/>
+                            <RadioButton Content="aaaa"/>
+                            <RadioButton Content="aaaa"/>
+                            <RadioButton Content="aaaa"/>
+                            <RadioButton Content="aaaa"/>
+                            <RadioButton Content="aaaa"/>
+                            <RadioButton Content="aaaa"/>
+                            <RadioButton Content="aaaa"/>
+                            <RadioButton Content="aaaa"/>
+                            <RadioButton Content="aaaa"/>
+                            <RadioButton Content="aaaa"/>
+                            <RadioButton Content="aaaa"/>
+                        </StackPanel>
+                    </Flyout>-->
+                </AppBarButton.Flyout>
+            </AppBarButton>
+            <AppBarSeparator />
+            <AppBarButton x:Name="btnCopy" x:Uid="btnCopy" Label="Copy" Icon="Copy" VerticalAlignment="Center" Click="AppBarButton_Click"  />
+            <AppBarButton x:Name="btnPaste" x:Uid="btnPaste" Label="Paste" Icon="Paste" VerticalAlignment="Center" Click="AppBarButton_Click" />
+            <AppBarSeparator />
+            <AppBarButton x:Name="btnEncode" x:Uid="btnEncode" Label="Encode" Icon="Mail" VerticalAlignment="Center" Click="AppBarButton_Click"  />
+            <AppBarButton x:Name="btnDecode" x:Uid="btnDecode" Label="Decode" Icon="Read" VerticalAlignment="Center" Click="AppBarButton_Click" />
+            <AppBarSeparator />
+            <AppBarButton x:Name="btnSave" x:Uid="btnSave" Label="Save" Icon="Save" VerticalAlignment="Center" Click="AppBarButton_Click" />
+
+            <CommandBar.SecondaryCommands>
+                
+            </CommandBar.SecondaryCommands>
+
+            <CommandBar.Content>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <ProgressRing Grid.Column="0" x:Name="ring" x:Uid="Ring" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" x:Name="edInfo" x:Uid="edInfo" Text="Now Processing..." Margin="12,14" VerticalAlignment="Center"/>
+                </Grid>
+            </CommandBar.Content>
+        </CommandBar>
+        
+
+        <TextBox Grid.Row="1" x:Uid="edSrc" Header="Input:" PlaceholderText="Input" AcceptsReturn="True" />
+        <TextBox Grid.Row="2" x:Uid="edDst" Header="Output:" PlaceholderText="Output" IsReadOnly="True"/>
+
+    </Grid>
+</Page>

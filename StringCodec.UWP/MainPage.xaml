@@ -14,20 +14,24 @@
         
     </Page.Resources>
 
-    <NavigationView Loaded="NavigationView_Loaded" Margin="0,12,0,0" Grid.Row="1" SelectionChanged="NavigationView_SelectionChanged"
-        x:Name="nvMain"
-        IsSettingsVisible="{Binding ElementName=settingsCheck,Path=IsChecked}" IsTabStop="False"
-        RS4Api:NavigationView.PaneTitle="Title"
-        RS4Api:IsBackButtonVisible="Auto"
-        RS4Api:IsBackEnabled="True"
-        Header="String Encoding &amp; Decoding">
+    <NavigationView x:Name="nvMain"
+                    Loaded="NavigationView_Loaded" 
+                    SelectionChanged="NavigationView_SelectionChanged" 
+                    ItemInvoked="NavigationView_ItemInvoked"                                       
+                    RS4Api:NavigationView.PaneTitle="Title"
+                    RS4Api:IsBackButtonVisible="Auto"
+                    RS4Api:IsBackEnabled="True" 
+                    Margin="0,0,0,0" Grid.Row="1" 
+                    Header="String Encoding &amp; Decoding"
+                    IsSettingsVisible="{Binding ElementName=settingsCheck,Path=IsChecked}"
+                    IsTabStop="False">
         <NavigationView.AutoSuggestBox>
             <AutoSuggestBox x:Name="nvAutoSuggestBox" QueryIcon="Find"/>
         </NavigationView.AutoSuggestBox>
 
         <NavigationView.MenuItems>
             <NavigationViewItemHeader x:Uid="nvItemHome" Content="Home"/>
-            <NavigationViewItem x:Uid="nvItemWebContents" Content="WEB Contents" Icon="Globe" Tag="PageWebContents" />
+            <NavigationViewItem x:Uid="nvItemText" Content="Text" Icon="Globe" Tag="PageText" />
             <NavigationViewItemSeparator/>
             <NavigationViewItemHeader x:Uid="nvItemOthers" Content="Others"/>
             <NavigationViewItem x:Uid="nvItemQRCode" Content="QR Code" Tag="PageQR" >
@@ -35,7 +39,8 @@
                     <FontIcon Glyph="&#xE2AC;" FontFamily="Segoe MDL2 Assets"/>
                 </NavigationViewItem.Icon>
             </NavigationViewItem>
-            <NavigationViewItem x:Uid="nvItemCharSet" Content="Character Set" Icon="Character" Tag="PageCharacter" />
+            <NavigationViewItem x:Uid="nvItemImage" Content="Image" Icon="Pictures" Tag="PageImage" />
+            <NavigationViewItem x:Uid="nvItemCharset" Content="Charset" Icon="Character" Tag="PageCharset" />
         </NavigationView.MenuItems>
 
         <RS4Api:NavigationView.PaneFooter>
@@ -44,8 +49,8 @@
                              Click="More_Click"
                              Margin="12,0"/>
         </RS4Api:NavigationView.PaneFooter>
-
-        <Frame x:Name="contentFrame">
+       
+        <Frame x:Name="ContentFrame">
             <Frame.ContentTransitions>
                 <TransitionCollection>
                     <NavigationThemeTransition/>
