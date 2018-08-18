@@ -20,6 +20,15 @@
         </uap:DefaultTile>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
+      <Extensions>
+        <uap:Extension Category="windows.shareTarget">
+          <uap:ShareTarget Description="String Encode &amp; Decode">
+            <uap:DataFormat>Text</uap:DataFormat>
+            <uap:DataFormat>Bitmap</uap:DataFormat>
+            <uap:DataFormat>WebLink</uap:DataFormat>
+          </uap:ShareTarget>
+        </uap:Extension>
+      </Extensions>
     </Application>
   </Applications>
   <Capabilities>

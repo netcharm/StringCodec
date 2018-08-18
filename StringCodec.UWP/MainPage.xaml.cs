@@ -5,6 +5,8 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using Windows.ApplicationModel.Core;
+using Windows.ApplicationModel.DataTransfer;
+using Windows.ApplicationModel.DataTransfer.ShareTarget;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.System;
@@ -27,6 +29,8 @@ namespace StringCodec.UWP
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private ShareOperation operation;
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -184,5 +188,59 @@ namespace StringCodec.UWP
 
         }
 
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            try
+            {
+                operation = (ShareOperation)e.Parameter;
+                //Get text data 
+                if (operation.Data.Contains(StandardDataFormats.Text))
+                {
+                    string textFromShare = await operation.Data.GetTextAsync();
+                    Pages.TextPage.Text = textFromShare;
+                    ContentFrame.Navigate(typeof(Pages.TextPage));
+
+                    //shareType.Text = "Text";
+                    //shareTitle.Text = operation.Data.Properties.Title;
+                    //tbShareData.Text = textFromShare;
+                }
+                //Get web link 
+                else if (operation.Data.Contains(StandardDataFormats.WebLink))
+                {
+                    Uri uri = await operation.Data.GetWebLinkAsync();
+                    Pages.TextPage.Text = uri.ToString();
+                    ContentFrame.Navigate(typeof(Pages.TextPage));
+
+                    //shareType.Text = "Web Link";
+                    //shareTitle.Text = operation.Data.Properties.Title;
+                    //Run run = new Run { Text = uri.ToString() };
+                    //Hyperlink hyperlink = new Hyperlink()
+                    //{
+                    //    NavigateUri = uri
+                    //};
+                    //hyperlink.Inlines.Add(run);
+                    //tbShareData.Inlines.Add(hyperlink);
+                }
+                //Get image 
+                else if (operation.Data.Contains(StandardDataFormats.Bitmap))
+                {
+                    ContentFrame.Navigate(typeof(Pages.ImagePage));
+
+                    //shareType.Text = "Bitmap";
+                    //shareTitle.Text = operation.Data.Properties.Title;
+                    //imgShareImage.Visibility = Visibility.Visible;
+                    //tbShareData.Visibility = Visibility.Collapsed;
+                    //RandomAccessStreamReference imageStreamRef = await operation.Data.GetBitmapAsync();
+                    //IRandomAccessStreamWithContentType streamWithContentType = await imageStreamRef.OpenReadAsync();
+                    //BitmapImage bitmapImage = new BitmapImage();
+                    //bitmapImage.SetSource(streamWithContentType);
+                    //imgShareImage.Source = bitmapImage;
+                }
+            }
+            catch (Exception ex)
+            {
+                //tbError.Text = ex.Message;
+            }
+        }
     }
 }

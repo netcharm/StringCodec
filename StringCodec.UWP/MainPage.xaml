@@ -33,14 +33,19 @@
         <NavigationView.MenuItems>
             <NavigationViewItemHeader x:Uid="nvItemHome" Content="Home"/>
             <NavigationViewItem x:Uid="nvItemText" Content="Text" Icon="Globe" Tag="PageText" />
-            <NavigationViewItemSeparator/>
-            <NavigationViewItemHeader x:Uid="nvItemOthers" Content="Others"/>
             <NavigationViewItem x:Uid="nvItemQRCode" Content="QR Code" Tag="PageQR" >
                 <NavigationViewItem.Icon>
                     <FontIcon Glyph="&#xE2AC;" FontFamily="Segoe MDL2 Assets"/>
                 </NavigationViewItem.Icon>
             </NavigationViewItem>
             <NavigationViewItem x:Uid="nvItemImage" Content="Image" Icon="Pictures" Tag="PageImage" />
+            <NavigationViewItemSeparator/>
+            <NavigationViewItemHeader x:Uid="nvItemOthers" Content="Others"/>
+            <NavigationViewItem x:Uid="nvItemWifi" Content="WIFI" Tag="PageWifi">
+                <NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xE701;" FontFamily="Segoe MDL2 Assets"/>
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
             <NavigationViewItem x:Uid="nvItemCharset" Content="Charset" Icon="Character" Tag="PageCharset" />
         </NavigationView.MenuItems>
 

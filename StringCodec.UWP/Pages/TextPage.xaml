@@ -20,23 +20,23 @@
             <AppBarButton Grid.Column="0" x:Name="btnOpt" x:Uid="btnOpt" Icon="Bullets" Label="Options" VerticalAlignment="Center">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
-                        <ToggleMenuFlyoutItem x:Name="optURL" x:Uid="optURL" Text="URL" Click="Codec_Checked"/>
-                        <ToggleMenuFlyoutItem x:Name="optBase64" x:Uid="optBase64" Text="BASE64" Click="Codec_Checked"/>
-                        <ToggleMenuFlyoutItem x:Name="optUUE" x:Uid="optUUE" Text="UUE" Click="Codec_Checked"/>
-                        <ToggleMenuFlyoutItem x:Name="optXXE" x:Uid="optXXE" Text="XXE" Click="Codec_Checked"/>
-                        <ToggleMenuFlyoutItem x:Name="optQuoted" x:Uid="optQuoted" Text="Quoted" Click="Codec_Checked"/>
-                        <ToggleMenuFlyoutItem x:Name="optRaw" x:Uid="optRaw" Text="RAW" Click="Codec_Checked"/>
-                        <ToggleMenuFlyoutItem x:Name="optThunder" x:Uid="optThunder" Text="Thunder" Click="Codec_Checked"/>
-                        <ToggleMenuFlyoutItem x:Name="optFlashGet" x:Uid="optFlashGet" Text="FlashGet" Click="Codec_Checked"/>
+                        <ToggleMenuFlyoutItem x:Name="optURL" x:Uid="optURL" Text="URL" Click="Codec_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optBase64" x:Uid="optBase64" Text="BASE64" Click="Codec_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optUUE" x:Uid="optUUE" Text="UUE" Click="Codec_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optXXE" x:Uid="optXXE" Text="XXE" Click="Codec_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optQuoted" x:Uid="optQuoted" Text="Quoted" Click="Codec_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optRaw" x:Uid="optRaw" Text="RAW" Click="Codec_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optThunder" x:Uid="optThunder" Text="Thunder" Click="Codec_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optFlashGet" x:Uid="optFlashGet" Text="FlashGet" Click="Codec_Click"/>
                         <MenuFlyoutSeparator />
-                        <ToggleMenuFlyoutItem x:Name="optUTF8" x:Uid="optUTF8" Text="UTF-8" Click="Opt_Checked"/>
-                        <ToggleMenuFlyoutItem x:Name="optGBK" x:Uid="optGBK" Text="GBK" Click="Opt_Checked"/>
-                        <ToggleMenuFlyoutItem x:Name="optBIG5" x:Uid="optBIG5" Text="BIG-5" Click="Opt_Checked"/>
-                        <ToggleMenuFlyoutItem x:Name="optJIS" x:Uid="optJIS" Text="Shift-JIS" Click="Opt_Checked"/>
-                        <ToggleMenuFlyoutItem x:Name="optUnicode" x:Uid="optUnicode" Text="Unicode" Click="Opt_Checked"/>
-                        <ToggleMenuFlyoutItem x:Name="optAscii" x:Uid="optAscii" Text="ASCII" Click="Opt_Checked"/>
+                        <ToggleMenuFlyoutItem x:Name="optUTF8" x:Uid="optUTF8" Text="UTF-8" Click="Opt_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optGBK" x:Uid="optGBK" Text="GBK" Click="Opt_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optBIG5" x:Uid="optBIG5" Text="BIG-5" Click="Opt_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optJIS" x:Uid="optJIS" Text="Shift-JIS" Click="Opt_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optUnicode" x:Uid="optUnicode" Text="Unicode" Click="Opt_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optAscii" x:Uid="optAscii" Text="ASCII" Click="Opt_Click"/>
                         <MenuFlyoutSeparator />
-                        <ToggleMenuFlyoutItem x:Name="optLineBreak" x:Uid="optLineBreak" Text="Line Break" Click="Opt_Checked"/>
+                        <ToggleMenuFlyoutItem x:Name="optLineBreak" x:Uid="optLineBreak" Text="Line Break" Click="Opt_Click"/>
                     </MenuFlyout>
 
                     <!--<Flyout>
@@ -68,6 +68,11 @@
 
             <CommandBar.SecondaryCommands>
                 <!-- More Button Dropdown menu -->
+                <AppBarButton x:Name="optQRCode" x:Uid="optQRCode" Label="QR Code Input" Click="QRCode_Click">
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xE2AC;" FontFamily="Segoe MDL2 Assets"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
             </CommandBar.SecondaryCommands>
 
             <CommandBar.Content>
@@ -77,7 +82,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <ProgressRing Grid.Column="0" x:Name="ring" x:Uid="Ring" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Column="1" x:Name="edInfo" x:Uid="edInfo" Text="Now Processing..." Margin="12,14" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" x:Name="edInfo" x:Uid="edInfo" Text="" Margin="12,14" VerticalAlignment="Center"/>
                 </Grid>
             </CommandBar.Content>
         </CommandBar>
@@ -88,7 +93,7 @@
                  AcceptsReturn="True" CanDrag="True" 
                  FontFamily="Consolas" FontSize="16" 
                  ScrollViewer.VerticalScrollBarVisibility="Auto" 
-                 ScrollViewer.HorizontalScrollBarVisibility="Auto"/>
+                 ScrollViewer.HorizontalScrollBarVisibility="Auto" TextChanged="edSrc_TextChanged"/>
         <TextBox Grid.Row="2" x:Name="edDst" x:Uid="edDst" 
                  Header="Output:" PlaceholderText="Here is output" 
                  AcceptsReturn="True" IsReadOnly="True" 

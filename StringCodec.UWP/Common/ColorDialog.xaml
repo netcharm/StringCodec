@@ -1,0 +1,32 @@
+﻿<ContentDialog
+    x:Class="StringCodec.UWP.Common.ColorDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:StringCodec.UWP.Common"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    FullSizeDesired="False"
+    Title="Color"
+    PrimaryButtonText="OK"
+    SecondaryButtonText="Cancel"
+    PrimaryButtonClick="ColorDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ColorDialog_SecondaryButtonClick">
+
+    <Grid>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" ZoomMode="Disabled">
+            <ColorPicker x:Name="ColorPicker" x:Uid="ColorPicker"
+                     IsMoreButtonVisible="True"                         
+                     IsColorSpectrumVisible="True"
+                     ColorSpectrumShape="Ring"
+                     ColorSpectrumComponents="HueSaturation"
+                     IsColorPreviewVisible="True"
+                     IsColorSliderVisible="True"
+                     IsColorChannelTextInputVisible="True"
+                     IsAlphaEnabled="True"
+                     IsAlphaSliderVisible="True"
+                     IsAlphaTextInputVisible="True"
+                     IsHexInputVisible="True"/>
+        </ScrollViewer>
+    </Grid>
+</ContentDialog>

@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
+using Windows.Storage.AccessCache;
+using Windows.Storage.Pickers;
+using Windows.Storage.Provider;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -30,13 +34,19 @@ namespace StringCodec.UWP.Pages
         private Encoding CURRENT_ENC = Encoding.UTF8;
         private bool CURRENT_LINEBREAK = false;
 
+        static private string text_src = string.Empty;
+        static public string Text
+        {
+            get { return text_src; }
+            set { text_src = value; }
+        }
+
         private void SetClipboardText(string text)
         {
             DataPackage dataPackage = new DataPackage();
-
+            dataPackage.RequestedOperation = DataPackageOperation.Copy;
             dataPackage.SetText(text);
             Clipboard.SetContent(dataPackage);
-            //dataPackage.RequestedOperation = DataPackageOperation.Copy;
         }
 
         private async Task<string> GetClipboardText(string text)
@@ -49,6 +59,33 @@ namespace StringCodec.UWP.Pages
                 return (content);
             }
             return (text);
+        }
+
+        private async Task<string> ShowSaveDialog(string content)
+        {
+            if (content.Length <= 0) return(string.Empty);
+
+            var now = DateTime.Now;
+            FileSavePicker fp = new FileSavePicker();
+            fp.SuggestedStartLocation = PickerLocationId.Desktop;
+            fp.FileTypeChoices.Add("Text File", new List<string>() { ".txt" });
+            fp.SuggestedFileName = $"{now.ToString("yyyyMMddhhmmss")}.txt";
+            StorageFile TargetFile = await fp.PickSaveFileAsync();
+            if (TargetFile != null)
+            {
+                StorageApplicationPermissions.MostRecentlyUsedList.Add(TargetFile, TargetFile.Name);
+                if (StorageApplicationPermissions.FutureAccessList.Entries.Count >= 1000)
+                    StorageApplicationPermissions.FutureAccessList.Remove(StorageApplicationPermissions.FutureAccessList.Entries.Last().Token);
+                StorageApplicationPermissions.FutureAccessList.Add(TargetFile, TargetFile.Name);
+
+                // 在用户完成更改并调用CompleteUpdatesAsync之前，阻止对文件的更新
+                CachedFileManager.DeferUpdates(TargetFile);
+                await FileIO.WriteTextAsync(TargetFile, content);
+                FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(TargetFile);
+
+                return (TargetFile.Name);
+            }
+            return (string.Empty);
         }
 
         public TextPage()
@@ -75,6 +112,8 @@ namespace StringCodec.UWP.Pages
             optXXE.IsEnabled = false;
             optQuoted.Visibility = Visibility.Collapsed;
             optQuoted.IsEnabled = false;
+
+            if (!string.IsNullOrEmpty(text_src)) edSrc.Text = text_src;
         }
 
         private async void AppBarButton_Click(object sender, RoutedEventArgs e)
@@ -84,9 +123,11 @@ namespace StringCodec.UWP.Pages
             {
                 case "btnEncode":
                     edDst.Text = TextCodecs.Encode(edSrc.Text, CURRENT_CODEC, CURRENT_LINEBREAK);
+                    text_src = edDst.Text;
                     break;
                 case "btnDecode":
                     edDst.Text = TextCodecs.Decode(edSrc.Text, CURRENT_CODEC, CURRENT_ENC);
+                    text_src = edDst.Text;
                     break;
                 case "btnCopy":
                     SetClipboardText(edDst.Text);
@@ -95,13 +136,14 @@ namespace StringCodec.UWP.Pages
                     edSrc.Text = await GetClipboardText(edSrc.Text);
                     break;
                 case "btnSave":
+                    await ShowSaveDialog(edDst.Text);
                     break;
                 default:
                     break;
             }
         }
 
-        private void Codec_Checked(object sender, RoutedEventArgs e)
+        private void Codec_Click(object sender, RoutedEventArgs e)
         {
             ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] { optBase64, optUUE, optXXE, optURL, optThunder, optRaw, optQuoted, optFlashGet };
 
@@ -118,7 +160,7 @@ namespace StringCodec.UWP.Pages
             CURRENT_CODEC = (TextCodecs.CODEC)Enum.Parse(typeof(TextCodecs.CODEC), btn.Name.ToUpper().Substring(3));
         }
 
-        private void Opt_Checked(object sender, RoutedEventArgs e)
+        private void Opt_Click(object sender, RoutedEventArgs e)
         {
             ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] { optUTF8, optUnicode, optGBK, optBIG5, optJIS, optAscii };
 
@@ -154,5 +196,15 @@ namespace StringCodec.UWP.Pages
                 CURRENT_ENC = Encoding.ASCII;
         }
 
+        private void QRCode_Click(object sender, RoutedEventArgs e)
+        {
+            QRCodePage.Text = edSrc.Text;
+            Frame.Navigate(typeof(QRCodePage));
+        }
+
+        private void edSrc_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            text_src = edSrc.Text;
+        }
     }
 }
