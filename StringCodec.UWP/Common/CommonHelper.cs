@@ -21,6 +21,58 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace StringCodec.UWP.Common
 {
+    static public class WriteableImageExtetions
+    {
+        #region WriteableBitmmap Extensions
+        static public WriteableBitmap GetWriteableBitmmap(Image image)
+        {
+            WriteableBitmap result = null;
+
+            if (image.Source == null) return result;
+            else if (image.Source is BitmapImage)
+            {
+                return (result);
+            }
+            else if (image.Source is WriteableBitmap)
+            {
+                return (image.Source as WriteableBitmap);
+            }
+            return (result);
+        }
+
+        static public async Task<StorageFile> StoreTemporaryFile(this WriteableBitmap image, IBuffer pixelBuffer, int width, int height)
+        {
+            var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
+            var now = DateTime.Now;
+            var fn = $"{now.ToString("yyyyMMddhhmmss")}.png";
+            StorageFile tempFile = await ApplicationData.Current.TemporaryFolder.CreateFileAsync(fn, CreationCollisionOption.ReplaceExisting);
+            if (tempFile != null)
+            {
+                CachedFileManager.DeferUpdates(tempFile);
+
+                using (var fileStream = await tempFile.OpenAsync(FileAccessMode.ReadWrite))
+                {
+                    BitmapEncoder encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, fileStream);
+                    Stream pixelStream = image.PixelBuffer.AsStream();
+                    byte[] pixels = new byte[pixelStream.Length];
+                    await pixelStream.ReadAsync(pixels, 0, pixels.Length);
+                    encoder.SetPixelData(
+                        BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore,
+                        (uint)width, (uint)height,
+                        dpi, dpi,
+                        pixelBuffer.ToArray());
+                    await encoder.FlushAsync();
+                }
+
+                var status = await CachedFileManager.CompleteUpdatesAsync(tempFile);
+                //_tempExportFile = tempFile;
+                return (tempFile);
+            }
+            return (null);
+        }
+        #endregion
+    }
+
     class Utils
     {
         #region Share Extentions
@@ -126,6 +178,14 @@ namespace StringCodec.UWP.Common
         #endregion
 
         #region Clipboard Extentions
+        static public void SetClipboard(string text)
+        {
+            DataPackage dataPackage = new DataPackage();
+            dataPackage.RequestedOperation = DataPackageOperation.Copy;
+            dataPackage.SetText(text);
+            Clipboard.SetContent(dataPackage);
+        }
+
         static public void SetClipboard(Image image, int size)
         {
             SetClipboard(image, size, size);
@@ -142,7 +202,7 @@ namespace StringCodec.UWP.Common
             //StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(uri);
             //dp.SetBitmap(RandomAccessStreamReference.CreateFromUri(uri));
 
-            using (var fileStream = new InMemoryRandomAccessStream())
+            try
             {
                 //把控件变成图像
                 RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap();
@@ -159,17 +219,130 @@ namespace StringCodec.UWP.Common
                     r_height = height;
                 }
 
-                var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, fileStream);
-                encoder.SetPixelData(
-                    BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore,
-                    (uint)width, (uint)height,
-                    dpi, dpi,
-                    pixelBuffer.ToArray());
-                await encoder.FlushAsync();
+                #region Create a temporary file for Clipboard Copy
+                StorageFile tempFile = await (image.Source as WriteableBitmap).StoreTemporaryFile(pixelBuffer, r_width, r_height);
 
-                dataPackage.SetBitmap(RandomAccessStreamReference.CreateFromStream(fileStream));
+                ////dataPackage.SetBitmap(RandomAccessStreamReference.CreateFromStream(fileStream));
+                //var now = DateTime.Now;
+                //var fn = $"{now.ToString("yyyyMMddhhmmss")}.png";
+                //StorageFile tempFile = await ApplicationData.Current.TemporaryFolder.CreateFileAsync(fn, CreationCollisionOption.ReplaceExisting);
+                if (tempFile != null)
+                {
+                //    CachedFileManager.DeferUpdates(tempFile);
+
+                //    using (var fileStream = await tempFile.OpenAsync(FileAccessMode.ReadWrite))
+                //    {
+                //        BitmapEncoder encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, fileStream);
+                //        Stream pixelStream = (image.Source as WriteableBitmap).PixelBuffer.AsStream();
+                //        byte[] pixels = new byte[pixelStream.Length];
+                //        await pixelStream.ReadAsync(pixels, 0, pixels.Length);
+                //        encoder.SetPixelData(
+                //            BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore,
+                //            (uint)r_width, (uint)r_height,
+                //            dpi, dpi,
+                //            pixelBuffer.ToArray());
+                //        await encoder.FlushAsync();
+                //    }
+
+                //    var status = await CachedFileManager.CompleteUpdatesAsync(tempFile);
+                //    //_tempExportFile = tempFile;
+                    dataPackage.SetBitmap(RandomAccessStreamReference.CreateFromFile(tempFile));
+                    //await tempFile.DeleteAsync();
+                }
+                #endregion
+
+                #region Create other MIME format to Clipboard Copy
+                //string[] fmts = new string[] { "CF_DIB", "CF_BITMAP", "BITMAP", "DeviceIndependentBitmap", "image/png", "image/bmp", "image/jpg", "image/jpeg" };
+                string[] fmts = new string[] { "image/png", "image/bmp", "image/jpg", "image/jpeg" };
+
+                foreach (var fmt in fmts)
+                {
+                    using (var fileStream = new InMemoryRandomAccessStream())
+                    {
+                        fileStream.Seek(0);
+
+                        var encId = BitmapEncoder.PngEncoderId;
+                        switch (fmt)
+                        {
+                            case "image/png":
+                                encId = BitmapEncoder.PngEncoderId;
+                                break;
+                            case "image/jpg":
+                                encId = BitmapEncoder.JpegEncoderId;
+                                break;
+                            case "image/jpeg":
+                                encId = BitmapEncoder.JpegEncoderId;
+                                break;
+                            case "image/bmp":
+                                encId = BitmapEncoder.BmpEncoderId;
+                                break;
+                            case "Bitmap":
+                                encId = BitmapEncoder.BmpEncoderId;
+                                break;
+                            case "CF_DIB":
+                                encId = BitmapEncoder.BmpEncoderId;
+                                break;
+                            case "CF_BITMAP":
+                                encId = BitmapEncoder.BmpEncoderId;
+                                break;
+                            case "DeviceIndependentBitmap":
+                                encId = BitmapEncoder.BmpEncoderId;
+                                break;
+                            default:
+                                break;
+                        }
+                        var encoder = await BitmapEncoder.CreateAsync(encId, fileStream);
+                        encoder.SetPixelData(
+                            BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore,
+                            (uint)r_width, (uint)r_height,
+                            dpi, dpi,
+                            pixelBuffer.ToArray());
+                        await encoder.FlushAsync();
+
+                        //Stream stream = WindowsRuntimeStreamExtensions.AsStreamForRead(fileStream.GetInputStreamAt(0));
+                        using (Stream stream = WindowsRuntimeStreamExtensions.AsStreamForRead(fileStream.GetInputStreamAt(0)))
+                        {
+                            using (MemoryStream ms = new MemoryStream())
+                            {
+                                await stream.CopyToAsync(ms);
+                                byte[] arr = ms.ToArray();
+                                if (fmt.Equals("CF_DIB", StringComparison.CurrentCultureIgnoreCase))
+                                {
+                                    byte[] dib = arr.Skip(14).ToArray();
+                                    dataPackage.SetData(fmt, dib);
+
+                                    //var buffer = WindowsRuntimeBufferExtensions.AsBuffer(dib, 0, dib.Length);
+                                    //InMemoryRandomAccessStream inStream = new InMemoryRandomAccessStream();
+                                    //DataWriter datawriter = new DataWriter(inStream.GetOutputStreamAt(0));
+                                    //datawriter.WriteBuffer(buffer, 0, buffer.Length);
+                                    //await datawriter.StoreAsync();
+                                    //dataPackage.SetBitmap(RandomAccessStreamReference.CreateFromStream(inStream));
+                                }
+                                else dataPackage.SetData(fmt, arr);
+                            }
+                        }
+                    }
+                }
+                #endregion
+
                 Clipboard.SetContent(dataPackage);
             }
+            catch (Exception ex)
+            {
+                await new MessageDialog(ex.Message, "ERROR").ShowAsync();
+            }
+        }
+
+        static public async Task<string> GetClipboard(string text)
+        {
+            DataPackageView dataPackageView = Clipboard.GetContent();
+            if (dataPackageView.Contains(StandardDataFormats.Text))
+            {
+                string content = await dataPackageView.GetTextAsync();
+                // To output the text from this example, you need a TextBlock control
+                return (content);
+            }
+            return (text);
         }
 
         static public async Task<string> GetClipboard(string text, Image image = null)
@@ -193,7 +366,7 @@ namespace StringCodec.UWP.Common
                     }
                     if (dataPackageView.Contains("image/png"))
                     {
-                        using(var fileStream = new InMemoryRandomAccessStream())
+                        using (var fileStream = new InMemoryRandomAccessStream())
                         {
                             //var data = await dataPackageView.GetDataAsync("DeviceIndependentBitmapV5");
                             var data = await dataPackageView.GetDataAsync("image/png");
@@ -232,27 +405,6 @@ namespace StringCodec.UWP.Common
                 {
                     await new MessageDialog(ex.Message, "ERROR").ShowAsync();
                 }
-            }
-            return (text);
-        }
-
-
-        static public void SetClipboard(string text)
-        {
-            DataPackage dataPackage = new DataPackage();
-            dataPackage.RequestedOperation = DataPackageOperation.Copy;
-            dataPackage.SetText(text);
-            Clipboard.SetContent(dataPackage);
-        }
-
-        static public async Task<string> GetClipboard(string text)
-        {
-            DataPackageView dataPackageView = Clipboard.GetContent();
-            if (dataPackageView.Contains(StandardDataFormats.Text))
-            {
-                string content = await dataPackageView.GetTextAsync();
-                // To output the text from this example, you need a TextBlock control
-                return (content);
             }
             return (text);
         }
@@ -454,22 +606,5 @@ namespace StringCodec.UWP.Common
 
         #endregion
 
-        #region WriteableBitmmap Extensions
-        static public WriteableBitmap GetWriteableBitmmap(Image image)
-        {
-            WriteableBitmap result = null;
-
-            if (image.Source == null) return result;
-            else if(image.Source is BitmapImage)
-            {
-                return (result);
-            }
-            else if (image.Source is WriteableBitmap)
-            {
-                return (image.Source as WriteableBitmap);
-            }
-            return (result);
-        }
-        #endregion
     }
 }

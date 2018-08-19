@@ -112,10 +112,10 @@ namespace StringCodec.UWP.Pages
                     break;
                 case "btnDecode":
                     //imgBase64.Source = await TextCodecs.Decode(edBase64.Text);
-                    var bmp = await TextCodecs.Decode(edBase64.Text);
+                    //var bmp = await TextCodecs.Decode(edBase64.Text);
                     //if (bmp.PixelWidth >= imgBase64.RenderSize.Width || bmp.PixelHeight >= imgBase64.RenderSize.Height) imgBase64.Stretch = Stretch.Uniform;
                     //else imgBase64.Stretch = Stretch.None;
-                    imgBase64.Source = bmp;
+                    imgBase64.Source = await edBase64.Text.Decoder();
                     break;
                 case "btnCopy":
                     Utils.SetClipboard(edBase64.Text);

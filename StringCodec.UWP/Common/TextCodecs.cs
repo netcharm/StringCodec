@@ -229,6 +229,11 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
+        static public string Encoder(this string content, CODEC Codec, bool LineBreak = false)
+        {
+            return (Encode(content, Codec, LineBreak));
+        }
+
         static public async Task<string> Encode(WriteableBitmap image, string format = ".png", bool prefix = true, bool LineBreak = false)
         {
             string result = string.Empty;
@@ -309,6 +314,11 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
+        static public async Task<string> Encoder(this WriteableBitmap image, string format = ".png", bool prefix = true, bool LineBreak = false)
+        {
+            return (await Encode(image, format, prefix, LineBreak));
+        }
+
         static public string Decode(string content, CODEC Codec, Encoding enc)
         {
             string result = string.Empty;
@@ -342,6 +352,11 @@ namespace StringCodec.UWP.Common
                     break;
             }
             return (result);
+        }
+
+        static public string Decoder(this string content, CODEC Codec, Encoding enc)
+        {
+            return (Decode(content, Codec, enc));
         }
 
         static public async Task<WriteableBitmap> Decode(string content)
@@ -380,6 +395,11 @@ namespace StringCodec.UWP.Common
                 await new MessageDialog(ex.Message, "ERROR").ShowAsync();
             }
             return (result);
+        }
+
+        static public async Task<WriteableBitmap> Decoder(this string content)
+        {
+            return (await Decode(content));
         }
     }
 }
