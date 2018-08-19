@@ -32,8 +32,8 @@
             </RelativePanel>
         </Flyout>
     </Page.Resources>
-    
-    <Grid Margin="12, 0, 12, 12">
+
+    <Grid Margin="12, 0, 12, 12" >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -72,8 +72,10 @@
             <AppBarButton x:Name="btnEncode" x:Uid="btnEncode" Label="Encode" Icon="Mail" VerticalAlignment="Center" Click="AppBarButton_Click"  />
             <AppBarButton x:Name="btnDecode" x:Uid="btnDecode" Label="Decode" Icon="Read" VerticalAlignment="Center" Click="AppBarButton_Click" />
             <AppBarSeparator />
+            <AppBarButton x:Name="btnCapture" x:Uid="btnCapture" Label="Capture" Icon="Camera" VerticalAlignment="Center" Click="AppBarButton_Click" />
             <AppBarButton x:Name="btnSave" x:Uid="btnSave" Label="Save" Icon="Save" VerticalAlignment="Center" Click="AppBarButton_Click" />
-
+            <AppBarButton x:Name="btnShare" x:Uid="btnShare" Label="Share" Icon="Share" VerticalAlignment="Center" Click="AppBarButton_Click" />
+            
             <CommandBar.SecondaryCommands>
                 <!-- More Button Dropdown menu -->
                 <AppBarToggleButton x:Name="optSaveSizeWindow" x:Uid="optSaveSizeWindow" Label="Display Size" Click="OptSave_Click">
@@ -94,7 +96,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <ProgressRing Grid.Column="0" x:Name="ring" x:Uid="Ring" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Column="1" x:Name="lblInfo" x:Uid="edInfo" Text="Count(&lt;=984): 0" Margin="12,14" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" x:Name="lblInfo" x:Uid="edInfo" Text="Count[&lt;984]: 0" Margin="12,14" VerticalAlignment="Center"/>
                 </Grid>
             </CommandBar.Content>
         </CommandBar>
@@ -104,9 +106,12 @@
                  AcceptsReturn="True" TextWrapping="Wrap" CanDrag="True" 
                  FontFamily="Consolas" FontSize="16" 
                  ScrollViewer.VerticalScrollBarVisibility="Auto" 
-                 ScrollViewer.HorizontalScrollBarVisibility="Auto" TextChanged="edQR_TextChanged" />
+                 ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                 TextChanged="edQR_TextChanged"
+                 AllowDrop="True" DragOver="OnDragOver" Drop="OnDrop"/>
         <Image Grid.Row="1" Grid.Column="1" x:Name="imgQR" x:Uid="imgQR" Margin="12, 24, 0, 0"
-               Stretch="Uniform"/>
+               Stretch="Uniform"
+               AllowDrop="True" DragOver="OnDragOver" Drop="OnDrop"/>
 
     </Grid>
 

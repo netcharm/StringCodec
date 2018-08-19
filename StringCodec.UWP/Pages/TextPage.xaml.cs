@@ -41,53 +41,6 @@ namespace StringCodec.UWP.Pages
             set { text_src = value; }
         }
 
-        private void SetClipboardText(string text)
-        {
-            DataPackage dataPackage = new DataPackage();
-            dataPackage.RequestedOperation = DataPackageOperation.Copy;
-            dataPackage.SetText(text);
-            Clipboard.SetContent(dataPackage);
-        }
-
-        private async Task<string> GetClipboardText(string text)
-        {
-            DataPackageView dataPackageView = Clipboard.GetContent();
-            if (dataPackageView.Contains(StandardDataFormats.Text))
-            {
-                string content = await dataPackageView.GetTextAsync();
-                // To output the text from this example, you need a TextBlock control
-                return (content);
-            }
-            return (text);
-        }
-
-        private async Task<string> ShowSaveDialog(string content)
-        {
-            if (content.Length <= 0) return(string.Empty);
-
-            var now = DateTime.Now;
-            FileSavePicker fp = new FileSavePicker();
-            fp.SuggestedStartLocation = PickerLocationId.Desktop;
-            fp.FileTypeChoices.Add("Text File", new List<string>() { ".txt" });
-            fp.SuggestedFileName = $"{now.ToString("yyyyMMddhhmmss")}.txt";
-            StorageFile TargetFile = await fp.PickSaveFileAsync();
-            if (TargetFile != null)
-            {
-                StorageApplicationPermissions.MostRecentlyUsedList.Add(TargetFile, TargetFile.Name);
-                if (StorageApplicationPermissions.FutureAccessList.Entries.Count >= 1000)
-                    StorageApplicationPermissions.FutureAccessList.Remove(StorageApplicationPermissions.FutureAccessList.Entries.Last().Token);
-                StorageApplicationPermissions.FutureAccessList.Add(TargetFile, TargetFile.Name);
-
-                // 在用户完成更改并调用CompleteUpdatesAsync之前，阻止对文件的更新
-                CachedFileManager.DeferUpdates(TargetFile);
-                await FileIO.WriteTextAsync(TargetFile, content);
-                FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(TargetFile);
-
-                return (TargetFile.Name);
-            }
-            return (string.Empty);
-        }
-
         public TextPage()
         {
             this.InitializeComponent();
@@ -130,13 +83,13 @@ namespace StringCodec.UWP.Pages
                     text_src = edDst.Text;
                     break;
                 case "btnCopy":
-                    SetClipboardText(edDst.Text);
+                    Common.Utils.SetClipboard(edDst.Text);
                     break;
                 case "btnPaste":
-                    edSrc.Text = await GetClipboardText(edSrc.Text);
+                    edSrc.Text = await Utils.GetClipboard(edSrc.Text);
                     break;
                 case "btnSave":
-                    await ShowSaveDialog(edDst.Text);
+                    await Utils.ShowSaveDialog(edDst.Text);
                     break;
                 default:
                     break;
@@ -198,6 +151,8 @@ namespace StringCodec.UWP.Pages
 
         private void QRCode_Click(object sender, RoutedEventArgs e)
         {
+            if (edSrc.Text.Length <= 0) return;
+
             QRCodePage.Text = edSrc.Text;
             Frame.Navigate(typeof(QRCodePage));
         }
@@ -206,5 +161,39 @@ namespace StringCodec.UWP.Pages
         {
             text_src = edSrc.Text;
         }
+
+        #region Drag/Drop routines
+        private void OnDragOver(object sender, DragEventArgs e)
+        {
+            if (sender == edSrc)
+            {
+                if (e.DataView.Contains(StandardDataFormats.Text) ||
+                    e.DataView.Contains(StandardDataFormats.WebLink) ||
+                    e.DataView.Contains(StandardDataFormats.Html) ||
+                    e.DataView.Contains(StandardDataFormats.Rtf))
+                {
+                    e.AcceptedOperation = DataPackageOperation.Copy;
+                }
+            }
+        }
+
+        private async void OnDrop(object sender, DragEventArgs e)
+        {
+            if (sender == edSrc)
+            {
+                if (e.DataView.Contains(StandardDataFormats.Text) ||
+                    e.DataView.Contains(StandardDataFormats.WebLink) ||
+                    e.DataView.Contains(StandardDataFormats.Html) ||
+                    e.DataView.Contains(StandardDataFormats.Rtf))
+                {
+                    var content = await e.DataView.GetTextAsync();
+                    if (content.Length > 0)
+                    {
+                        edSrc.Text = content;
+                    }
+                }
+            }
+        }
+        #endregion
     }
 }

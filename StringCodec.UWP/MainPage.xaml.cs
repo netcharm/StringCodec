@@ -9,6 +9,7 @@ using Windows.ApplicationModel.DataTransfer;
 using Windows.ApplicationModel.DataTransfer.ShareTarget;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage.Streams;
 using Windows.System;
 using Windows.UI;
 using Windows.UI.ViewManagement;
@@ -18,6 +19,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
@@ -49,11 +51,8 @@ namespace StringCodec.UWP
             //    Encoding enc = ei.GetEncoding();
             //}
 
-            //draw into the title bar
-            CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
-
             ContentFrame.Navigate(typeof(Pages.TextPage));
-            ContentFrame.Navigated += On_Navigated;
+            ContentFrame.Navigated += NvMain_Navigated;
 
             // add keyboard accelerators for backwards navigation
             KeyboardAccelerator GoBack = new KeyboardAccelerator();
@@ -67,10 +66,15 @@ namespace StringCodec.UWP
             // ALT routes here
             AltLeft.Modifiers = VirtualKeyModifiers.Menu;
 
+            #region 将应用扩展到标题栏
+            //draw into the title bar
+            CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
+
             //remove the solid-colored backgrounds behind the caption controls and system back button
             ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
             titleBar.ButtonBackgroundColor = Colors.Transparent;
             titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+            titleBar.ButtonForegroundColor = (Color)Resources["SystemBaseHighColor"];
             if (Application.Current.RequestedTheme == ApplicationTheme.Dark)
             {
                 titleBar.ButtonForegroundColor = Colors.White;
@@ -78,6 +82,70 @@ namespace StringCodec.UWP
             else
             {
                 titleBar.ButtonForegroundColor = Colors.Black;
+            }
+            #endregion
+        }
+
+        private bool On_BackRequested()
+        {
+            bool navigated = false;
+
+            // don't go back if the nav pane is overlayed
+            if (nvMain.IsPaneOpen && (nvMain.DisplayMode == NavigationViewDisplayMode.Compact || nvMain.DisplayMode == NavigationViewDisplayMode.Minimal))
+            {
+                return false;
+            }
+            else
+            {
+                if (ContentFrame.CanGoBack)
+                {
+                    ContentFrame.GoBack();
+                    navigated = true;
+                }
+            }
+            return navigated;
+        }
+
+        private void BackInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+        {
+            On_BackRequested();
+            args.Handled = true;
+        }
+
+        private void NvMain_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
+        {
+            On_BackRequested();
+        }
+
+        private void NvMain_Navigated(object sender, NavigationEventArgs e)
+        {
+            nvMain.IsBackEnabled = ContentFrame.CanGoBack;
+
+            //if (ContentFrame.SourcePageType == typeof(SettingsPage))
+            //{
+            //    nvMain.SelectedItem = nvMain.SettingsItem as NavigationViewItem;
+            //}
+            //else
+            {
+                Dictionary<Type, string> lookup = new Dictionary<Type, string>()
+                {
+                    {typeof(Pages.TextPage), "PageText"},
+                    {typeof(Pages.QRCodePage), "PageQR"},
+                    {typeof(Pages.ImagePage), "PageImage"},
+                    {typeof(Pages.CharsetPage), "PageCharset"}
+                };
+
+                String stringTag = lookup[ContentFrame.SourcePageType];
+
+                // set the new SelectedItem  
+                foreach (NavigationViewItemBase item in nvMain.MenuItems)
+                {
+                    if (item is NavigationViewItem && item.Tag.Equals(stringTag))
+                    {
+                        item.IsSelected = true;
+                        break;
+                    }
+                }
             }
         }
 
@@ -120,66 +188,30 @@ namespace StringCodec.UWP
             }
         }
 
-        private void NvMain_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
+        private void NvMain_Click(object sender, TappedRoutedEventArgs e)
         {
-            On_BackRequested();
-        }
-
-        private void BackInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
-        {
-            On_BackRequested();
-            args.Handled = true;
-        }
-
-        private bool On_BackRequested()
-        {
-            bool navigated = false;
-
-            // don't go back if the nav pane is overlayed
-            if (nvMain.IsPaneOpen && (nvMain.DisplayMode == NavigationViewDisplayMode.Compact || nvMain.DisplayMode == NavigationViewDisplayMode.Minimal))
+            var tag = (string)(sender as NavigationViewItem).Tag;
+            //选中项的内容
+            switch (tag)
             {
-                return false;
-            }
-            else
-            {
-                if (ContentFrame.CanGoBack)
-                {
-                    ContentFrame.GoBack();
-                    navigated = true;
-                }
-            }
-            return navigated;
-        }
-
-        private void On_Navigated(object sender, NavigationEventArgs e)
-        {
-            nvMain.IsBackEnabled = ContentFrame.CanGoBack;
-
-            //if (ContentFrame.SourcePageType == typeof(SettingsPage))
-            //{
-            //    nvMain.SelectedItem = nvMain.SettingsItem as NavigationViewItem;
-            //}
-            //else
-            {
-                Dictionary<Type, string> lookup = new Dictionary<Type, string>()
-                {
-                    {typeof(Pages.TextPage), "PageText"},
-                    {typeof(Pages.QRCodePage), "PageQR"},
-                    {typeof(Pages.ImagePage), "PageImage"},
-                    {typeof(Pages.CharsetPage), "PageCharset"}
-                };
-
-                String stringTag = lookup[ContentFrame.SourcePageType];
-
-                // set the new SelectedItem  
-                foreach (NavigationViewItemBase item in nvMain.MenuItems)
-                {
-                    if (item is NavigationViewItem && item.Tag.Equals(stringTag))
-                    {
-                        item.IsSelected = true;
-                        break;
-                    }
-                }
+                case "PageText":
+                    ContentFrame.Navigate(typeof(Pages.TextPage));
+                    break;
+                case "PageCharset":
+                    ContentFrame.Navigate(typeof(Pages.CharsetPage));
+                    break;
+                case "PageImage":
+                    ContentFrame.Navigate(typeof(Pages.ImagePage));
+                    break;
+                case "PageQR":
+                    ContentFrame.Navigate(typeof(Pages.QRCodePage));
+                    break;
+                case "PageWifi":
+                    //ContentFrame.Navigate(typeof(Pages.WifiPage));
+                    break;
+                default:
+                    ContentFrame.Navigate(typeof(Pages.TextPage));
+                    break;
             }
         }
 
@@ -199,10 +231,6 @@ namespace StringCodec.UWP
                     string textFromShare = await operation.Data.GetTextAsync();
                     Pages.TextPage.Text = textFromShare;
                     ContentFrame.Navigate(typeof(Pages.TextPage));
-
-                    //shareType.Text = "Text";
-                    //shareTitle.Text = operation.Data.Properties.Title;
-                    //tbShareData.Text = textFromShare;
                 }
                 //Get web link 
                 else if (operation.Data.Contains(StandardDataFormats.WebLink))
@@ -210,16 +238,6 @@ namespace StringCodec.UWP
                     Uri uri = await operation.Data.GetWebLinkAsync();
                     Pages.TextPage.Text = uri.ToString();
                     ContentFrame.Navigate(typeof(Pages.TextPage));
-
-                    //shareType.Text = "Web Link";
-                    //shareTitle.Text = operation.Data.Properties.Title;
-                    //Run run = new Run { Text = uri.ToString() };
-                    //Hyperlink hyperlink = new Hyperlink()
-                    //{
-                    //    NavigateUri = uri
-                    //};
-                    //hyperlink.Inlines.Add(run);
-                    //tbShareData.Inlines.Add(hyperlink);
                 }
                 //Get image 
                 else if (operation.Data.Contains(StandardDataFormats.Bitmap))
@@ -230,17 +248,19 @@ namespace StringCodec.UWP
                     //shareTitle.Text = operation.Data.Properties.Title;
                     //imgShareImage.Visibility = Visibility.Visible;
                     //tbShareData.Visibility = Visibility.Collapsed;
-                    //RandomAccessStreamReference imageStreamRef = await operation.Data.GetBitmapAsync();
-                    //IRandomAccessStreamWithContentType streamWithContentType = await imageStreamRef.OpenReadAsync();
-                    //BitmapImage bitmapImage = new BitmapImage();
-                    //bitmapImage.SetSource(streamWithContentType);
-                    //imgShareImage.Source = bitmapImage;
+
+                    RandomAccessStreamReference imageStreamRef = await operation.Data.GetBitmapAsync();
+                    IRandomAccessStreamWithContentType streamWithContentType = await imageStreamRef.OpenReadAsync();
+                    WriteableBitmap bmp = new WriteableBitmap(1, 1);
+                    await bmp.SetSourceAsync(streamWithContentType);
+                    //imgShareImage.Source = bmp;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //tbError.Text = ex.Message;
             }
         }
+
     }
 }

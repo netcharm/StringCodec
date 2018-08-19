@@ -6,9 +6,71 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    Loaded="Page_Loaded"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+    <Grid Margin="12, 0, 12, 12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width=".38*"/>
+            <ColumnDefinition Width=".62*"/>
+        </Grid.ColumnDefinitions>
+
+        <CommandBar Grid.Row="0" Grid.ColumnSpan="2">
+            <AppBarButton Grid.Column="0" x:Name="btnOpt" x:Uid="btnOpt" Icon="Bullets" Label="Options" VerticalAlignment="Center">
+                <AppBarButton.Flyout>
+                    <MenuFlyout>
+                        <ToggleMenuFlyoutItem x:Name="optPrefix" x:Uid="optPrefix" Text="Add Prefix to BASE64" Click="Opt_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optLinbeBreak" x:Uid="optLineBreak" Text="Add LineBreak to BASE64" Click="Opt_Click"/>
+                        <MenuFlyoutSeparator />
+                        <ToggleMenuFlyoutItem x:Name="optFmtPng" x:Uid="optFmtPng" Text="PNG File" Click="OptFmt_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optFmtJpg" x:Uid="optFmtJpg" Text="JPG File" Click="OptFmt_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optFmtBmp" x:Uid="optFmtBmp" Text="BMP File" Click="OptFmt_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optFmtGif" x:Uid="optFmtGif" Text="GIF File" Click="OptFmt_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optFmtTif" x:Uid="optFmtTif" Text="TIF File" Click="OptFmt_Click"/>
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+            <AppBarSeparator />
+            <AppBarButton x:Name="btnCopy" x:Uid="btnCopy" Label="Copy" Icon="Copy" VerticalAlignment="Center" Click="AppBarButton_Click"  />
+            <AppBarButton x:Name="btnPaste" x:Uid="btnPaste" Label="Paste" Icon="Paste" VerticalAlignment="Center" Click="AppBarButton_Click" />
+            <AppBarSeparator />
+            <AppBarButton x:Name="btnEncode" x:Uid="btnEncode" Label="Encode" Icon="Mail" VerticalAlignment="Center" Click="AppBarButton_Click"  />
+            <AppBarButton x:Name="btnDecode" x:Uid="btnDecode" Label="Decode" Icon="Read" VerticalAlignment="Center" Click="AppBarButton_Click" />
+            <AppBarSeparator />
+            <AppBarButton x:Name="btnSave" x:Uid="btnSave" Label="Save" Icon="Save" VerticalAlignment="Center" Click="AppBarButton_Click" />
+            <AppBarButton x:Name="btnShare" x:Uid="btnShare" Label="Share" Icon="Share" VerticalAlignment="Center" Click="AppBarButton_Click" />
+            
+            <CommandBar.SecondaryCommands>
+                <!-- More Button Dropdown menu -->
+            </CommandBar.SecondaryCommands>
+
+            <CommandBar.Content>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <ProgressRing Grid.Column="0" x:Name="ring" x:Uid="Ring" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" x:Name="lblInfo" x:Uid="edInfo" Text="" Margin="12,14" VerticalAlignment="Center"/>
+                </Grid>
+            </CommandBar.Content>
+        </CommandBar>
+
+        <TextBox Grid.Row="1" Grid.Column="0" x:Name="edBase64" x:Uid="edBase64" 
+                 Header="Input:" PlaceholderText="Input text at here" 
+                 AcceptsReturn="True" TextWrapping="Wrap" CanDrag="True" 
+                 FontFamily="Consolas" FontSize="16" 
+                 ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                 ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                 TextChanged="edBase64_TextChanged"
+                 AllowDrop="True" DragOver="OnDragOver" Drop="OnDrop" />
+        <Image Grid.Row="1" Grid.Column="1" x:Name="imgBase64" x:Uid="imgBase64" Margin="12, 24, 0, 0"
+               Stretch="Uniform"
+               AllowDrop="True" DragOver="OnDragOver" Drop="OnDrop" />
 
     </Grid>
 </Page>

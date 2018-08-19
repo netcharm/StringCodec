@@ -37,239 +37,15 @@ namespace StringCodec.UWP.Pages
     public sealed partial class QRCodePage : Page
     {
         private QRCodec.ERRORLEVEL CURRENT_ECL = QRCodec.ERRORLEVEL.L;
-        private Color CURRENT_BGCOLOR = Color.FromArgb(255, 255, 255, 255);
-        private Color CURRENT_FGCOLOR = Color.FromArgb(255, 000, 000, 000);
+        private Color CURRENT_BGCOLOR = Colors.White; //Color.FromArgb(255, 255, 255, 255);
+        private Color CURRENT_FGCOLOR = Colors.Black; //Color.FromArgb(255, 000, 000, 000);
         private int CURRENT_SIZE = 512;
-
+        
         static private string text_src = string.Empty;
         static public string Text
         {
             get { return text_src; }
             set { text_src = value; }
-        }
-
-        private async void SetClipboard(Image image, int size)
-        {
-            if (image.Source == null) return;
-
-            DataPackage dataPackage = new DataPackage();
-            dataPackage.RequestedOperation = DataPackageOperation.Copy;
-
-            //Uri uri = new Uri("ms-appx:///Assets/ms.png");
-            //StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(uri);
-            //dp.SetBitmap(RandomAccessStreamReference.CreateFromUri(uri));
-
-            using (var fileStream = new InMemoryRandomAccessStream())
-            {
-                //把控件变成图像
-                RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap();
-                //传入参数Image控件
-                await renderTargetBitmap.RenderAsync(image, size, size);
-                var pixelBuffer = await renderTargetBitmap.GetPixelsAsync();
-
-                var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
-                var width = renderTargetBitmap.PixelWidth;
-                var height = renderTargetBitmap.PixelHeight;
-                if (size > 0)
-                {
-                    width = size;
-                    height = size;
-                }
-
-                //await fileStream.WriteAsync(pixelBuffer);
-                //fileStream.Seek(0);
-
-                var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, fileStream);
-                encoder.SetPixelData(
-                    BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore,
-                    (uint)width, (uint)height,
-                    dpi, dpi,
-                    pixelBuffer.ToArray());
-                await encoder.FlushAsync();
-
-                dataPackage.SetBitmap(RandomAccessStreamReference.CreateFromStream(fileStream));
-                Clipboard.SetContent(dataPackage);
-            }
-        }
-
-        private async Task<string> GetClipboard(string text, Image image=null)
-        {
-            DataPackageView dataPackageView = Clipboard.GetContent();
-            if (dataPackageView.Contains(StandardDataFormats.Text))
-            {
-                string content = await dataPackageView.GetTextAsync();
-                // To output the text from this example, you need a TextBlock control
-                return (content);
-            }
-            else if (dataPackageView.Contains(StandardDataFormats.Bitmap))
-            {
-                try
-                {
-                    var bmp = await dataPackageView.GetBitmapAsync();
-                    WriteableBitmap bitmap = new WriteableBitmap(1, 1);
-                    await bitmap.SetSourceAsync(await bmp.OpenReadAsync());
-
-                    if (image != null)
-                    {
-                        image.Source = bitmap;
-                        //text = await QRCodec.Decode(bitmap);
-                    }
-                }
-                catch (Exception) { }
-            }
-            return (text);
-        }
-
-        private async Task<Color> ShowColorDialog(Color color)
-        {
-            Color result = color;
-
-            ColorDialog dlgColor = new ColorDialog() { Color=color, Alpha=false };
-            ContentDialogResult ret = await dlgColor.ShowAsync();
-            if (ret == ContentDialogResult.Primary)
-            {
-                result = dlgColor.Color;
-            }
-
-            return (result);
-        }
-
-        private async Task<string> ShowSaveDialog(Image image, int size)
-        {
-            if (image.Source == null) return (string.Empty);
-
-            var now = DateTime.Now;
-            FileSavePicker fp = new FileSavePicker();
-            fp.SuggestedStartLocation = PickerLocationId.Desktop;
-            fp.FileTypeChoices.Add("Image File", new List<string>() { ".png", ".jpg", ".jpeg", ".tif", ".tiff", ".gif", ".bmp" });
-            fp.SuggestedFileName = $"QR_{now.ToString("yyyyMMddhhmmss")}.png";
-            StorageFile TargetFile = await fp.PickSaveFileAsync();
-            if (TargetFile != null)
-            {
-                StorageApplicationPermissions.MostRecentlyUsedList.Add(TargetFile, TargetFile.Name);
-                if (StorageApplicationPermissions.FutureAccessList.Entries.Count >= 1000)
-                    StorageApplicationPermissions.FutureAccessList.Remove(StorageApplicationPermissions.FutureAccessList.Entries.Last().Token);
-                StorageApplicationPermissions.FutureAccessList.Add(TargetFile, TargetFile.Name);
-
-                // 在用户完成更改并调用CompleteUpdatesAsync之前，阻止对文件的更新
-                CachedFileManager.DeferUpdates(TargetFile);
-
-                #region Save Image Control source data
-                //using (var fileStream = await TargetFile.OpenAsync(FileAccessMode.ReadWrite))
-                //{
-                //    var bmp = imgQR.Source as WriteableBitmap;
-                //    var w = bmp.PixelWidth;
-                //    var h = bmp.PixelHeight;
-
-                //    // set the source for WriteableBitmap  
-                //    //await bmp.SetSourceAsync(fileStream);
-
-                //    // Get pixels of the WriteableBitmap object 
-                //    Stream pixelStream = bmp.PixelBuffer.AsStream();
-                //    byte[] pixels = new byte[pixelStream.Length];
-                //    await pixelStream.ReadAsync(pixels, 0, pixels.Length);
-
-                //    var encId = BitmapEncoder.PngEncoderId;
-                //    var fext = Path.GetExtension(TargetFile.Name).ToLower();
-                //    switch (fext)
-                //    {
-                //        case ".bmp":
-                //            encId = BitmapEncoder.BmpEncoderId;
-                //            break;
-                //        case ".gif":
-                //            encId = BitmapEncoder.GifEncoderId;
-                //            break;
-                //        case ".png":
-                //            encId = BitmapEncoder.PngEncoderId;
-                //            break;
-                //        case ".jpg":
-                //            encId = BitmapEncoder.JpegEncoderId;
-                //            break;
-                //        case ".jpeg":
-                //            encId = BitmapEncoder.JpegEncoderId;
-                //            break;
-                //        case ".tif":
-                //            encId = BitmapEncoder.TiffEncoderId;
-                //            break;
-                //        case ".tiff":
-                //            encId = BitmapEncoder.TiffEncoderId;
-                //            break;
-                //        default:
-                //            encId = BitmapEncoder.PngEncoderId;
-                //            break;
-                //    }
-                //    var encoder = await BitmapEncoder.CreateAsync(encId, fileStream);
-                //    // Save the image file with jpg extension 
-                //    encoder.SetPixelData(
-                //        BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore,
-                //        //(uint)bmp.PixelWidth, (uint)bmp.PixelHeight, 
-                //        (uint)size, (uint)size,
-                //        96.0, 96.0, 
-                //        pixels);
-                //    await encoder.FlushAsync();
-                //}
-                //return (TargetFile.Name);
-                #endregion
-
-                #region Save Image Control Screen Display Data
-                //把控件变成图像
-                RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap();
-                //传入参数Image控件
-                await renderTargetBitmap.RenderAsync(image, size, size);
-                var pixelBuffer = await renderTargetBitmap.GetPixelsAsync();
-
-                using (var fileStream = await TargetFile.OpenAsync(FileAccessMode.ReadWrite))
-                {
-                    var width = renderTargetBitmap.PixelWidth;
-                    var height = renderTargetBitmap.PixelHeight;
-                    var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
-                    if (size > 0)
-                    {
-                        width = size;
-                        height = size;
-                    }
-                    var encId = BitmapEncoder.PngEncoderId;
-                    var fext = Path.GetExtension(TargetFile.Name).ToLower();
-                    switch (fext)
-                    {
-                        case ".bmp":
-                            encId = BitmapEncoder.BmpEncoderId;
-                            break;
-                        case ".gif":
-                            encId = BitmapEncoder.GifEncoderId;
-                            break;
-                        case ".png":
-                            encId = BitmapEncoder.PngEncoderId;
-                            break;
-                        case ".jpg":
-                            encId = BitmapEncoder.JpegEncoderId;
-                            break;
-                        case ".jpeg":
-                            encId = BitmapEncoder.JpegEncoderId;
-                            break;
-                        case ".tif":
-                            encId = BitmapEncoder.TiffEncoderId;
-                            break;
-                        case ".tiff":
-                            encId = BitmapEncoder.TiffEncoderId;
-                            break;
-                        default:
-                            encId = BitmapEncoder.PngEncoderId;
-                            break;
-                    }
-                    var encoder = await BitmapEncoder.CreateAsync(encId, fileStream);
-                    encoder.SetPixelData(
-                        BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore,
-                        (uint)width, (uint)height, dpi, dpi,
-                        pixelBuffer.ToArray()
-                    );
-                    //刷新图像
-                    await encoder.FlushAsync();
-                }
-                return (TargetFile.Name);
-                #endregion
-            }
-            return (string.Empty);
         }
 
         public QRCodePage()
@@ -291,8 +67,14 @@ namespace StringCodec.UWP.Pages
             if (!GraphicsCaptureSession.IsSupported())
             {
                 // Hide the capture UI if screen capture is not supported.
-                //btnDecode.Visibility = Visibility.Collapsed;
+                btnCapture.Visibility = Visibility.Collapsed;
             }
+            else btnCapture.Visibility = Visibility.Visible;
+
+            #region Add small image to Image control for dragdrop target
+            var wb = new WriteableBitmap(1, 1);
+            imgQR.Source = wb;
+            #endregion
         }
 
         private async void AppBarButton_Click(object sender, RoutedEventArgs e)
@@ -304,20 +86,24 @@ namespace StringCodec.UWP.Pages
                     imgQR.Source = await QRCodec.Encode(edQR.Text, CURRENT_FGCOLOR, CURRENT_BGCOLOR, CURRENT_ECL);
                     break;
                 case "btnDecode":
-                    //var sc = new ScreenCapture();
-                    //sc.Preview = imgQR;
-                    //await sc.StartCaptureAsync();
                     edQR.Text = await QRCodec.Decode(imgQR.Source as WriteableBitmap);
                     break;
                 case "btnCopy":
-                    SetClipboard(imgQR, CURRENT_SIZE);
+                    Common.Utils.SetClipboard(imgQR, CURRENT_SIZE);
                     break;
                 case "btnPaste":
-                    edQR.Text = await GetClipboard(edQR.Text, imgQR);
-                    //edQR.Text = await QRCodec.Decode(imgQR.Source as WriteableBitmap);
+                    edQR.Text = await Utils.GetClipboard(edQR.Text, imgQR);
+                    break;
+                case "btnCapture":
+                    var sc = new ScreenCapture();
+                    sc.Preview = imgQR;
+                    await sc.StartCaptureAsync();
                     break;
                 case "btnSave":
-                    await ShowSaveDialog(imgQR, CURRENT_SIZE);
+                    await Utils.ShowSaveDialog(imgQR, CURRENT_SIZE, "QR");
+                    break;
+                case "btnShare":
+                    //await Utils.ShowSaveDialog(imgQR, CURRENT_SIZE, "QR");
                     break;
                 default:
                     break;
@@ -329,7 +115,7 @@ namespace StringCodec.UWP.Pages
             ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] { optECL_L, optECL_M, optECL_Q, optECL_H };
 
             var btn = sender as ToggleMenuFlyoutItem;
-            var ECL_NAME = btn.Name.Substring(btn.Name.Length-1);
+            var ECL_NAME = btn.Name.Substring(btn.Name.Length - 1);
 
             foreach (ToggleMenuFlyoutItem opt in opts)
             {
@@ -356,14 +142,14 @@ namespace StringCodec.UWP.Pages
             switch (C_NAME)
             {
                 case "ResetColor":
-                    CURRENT_BGCOLOR = Color.FromArgb(255, 255, 255, 255);
-                    CURRENT_FGCOLOR = Color.FromArgb(255, 000, 000, 000);
+                    CURRENT_BGCOLOR = Colors.White; // Color.FromArgb(255, 255, 255, 255);
+                    CURRENT_FGCOLOR = Colors.Black; // Color.FromArgb(255, 000, 000, 000);
                     break;
                 case "BgColor":
-                    CURRENT_BGCOLOR = await ShowColorDialog(CURRENT_BGCOLOR);
+                    CURRENT_BGCOLOR = await Utils.ShowColorDialog(CURRENT_BGCOLOR);
                     break;
                 case "FgColor":
-                    CURRENT_FGCOLOR = await ShowColorDialog(CURRENT_FGCOLOR);
+                    CURRENT_FGCOLOR = await Utils.ShowColorDialog(CURRENT_FGCOLOR);
                     break;
                 default:
                     break;
@@ -461,5 +247,74 @@ namespace StringCodec.UWP.Pages
                     break;
             }
         }
+
+        #region Drag/Drop routines
+        private void OnDragOver(object sender, DragEventArgs e)
+        {
+            if (sender == imgQR)
+            {
+                if (e.DataView.Contains(StandardDataFormats.WebLink) ||
+                e.DataView.Contains(StandardDataFormats.StorageItems))
+                {
+                    e.AcceptedOperation = DataPackageOperation.Copy;
+                }
+            }
+            else if (sender == edQR)
+            {
+                if (e.DataView.Contains(StandardDataFormats.Text) ||
+                    e.DataView.Contains(StandardDataFormats.WebLink) ||
+                    e.DataView.Contains(StandardDataFormats.Html) ||
+                    e.DataView.Contains(StandardDataFormats.Rtf))
+                {
+                    e.AcceptedOperation = DataPackageOperation.Copy;
+                }
+            }
+        }
+
+        private async void OnDrop(object sender, DragEventArgs e)
+        {
+            if (sender == imgQR)
+            {
+                if (e.DataView.Contains(StandardDataFormats.StorageItems))
+                {
+                    var items = await e.DataView.GetStorageItemsAsync();
+                    if (items.Count > 0)
+                    {
+                        var storageFile = items[0] as StorageFile;
+                        var bitmapImage = new BitmapImage();
+                        bitmapImage.SetSource(await storageFile.OpenAsync(FileAccessMode.Read));
+                        // Set the image on the main page to the dropped image
+                        imgQR.Source = bitmapImage;
+                    }
+                }
+                else if (e.DataView.Contains(StandardDataFormats.WebLink))
+                {
+                    var uri = await e.DataView.GetWebLinkAsync();
+
+                    StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(uri);
+                    //dp.SetBitmap(RandomAccessStreamReference.CreateFromUri(uri));
+
+                    var bitmapImage = new BitmapImage();
+                    await bitmapImage.SetSourceAsync(await file.OpenAsync(FileAccessMode.Read));
+                    // Set the image on the main page to the dropped image
+                    imgQR.Source = bitmapImage;
+                }
+            }
+            else if (sender == edQR)
+            {
+                if (e.DataView.Contains(StandardDataFormats.Text) ||
+                    e.DataView.Contains(StandardDataFormats.WebLink) ||
+                    e.DataView.Contains(StandardDataFormats.Html) ||
+                    e.DataView.Contains(StandardDataFormats.Rtf))
+                {
+                    var content = await e.DataView.GetTextAsync();
+                    if (content.Length > 0)
+                    {
+                        edQR.Text = content;
+                    }
+                }
+            }
+        }
+        #endregion
     }
 }

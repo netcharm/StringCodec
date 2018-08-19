@@ -39,11 +39,9 @@ namespace StringCodec.UWP
         /// <param name="e">有关启动请求和过程的详细信息。</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            Frame rootFrame = Window.Current.Content as Frame;
-
             // 不要在窗口已包含内容时重复应用程序初始化，
             // 只需确保窗口处于活动状态
-            if (rootFrame == null)
+            if (!(Window.Current.Content is Frame rootFrame))
             {
                 // 创建要充当导航上下文的框架，并导航到第一页
                 rootFrame = new Frame();
@@ -99,17 +97,17 @@ namespace StringCodec.UWP
 
         protected override void OnShareTargetActivated(ShareTargetActivatedEventArgs args)
         {
-            Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content, 
             // just ensure that the window is active 
-            if (rootFrame == null)
+            if (!(Window.Current.Content is Frame rootFrame))
             {
                 // Create a Frame to act as the navigation context and navigate to the first page 
-                rootFrame = new Frame();
-
-                // Set the default language 
-                rootFrame.Language = Windows.Globalization.ApplicationLanguages.Languages[0];
+                rootFrame = new Frame
+                {
+                    // Set the default language 
+                    Language = Windows.Globalization.ApplicationLanguages.Languages[0]
+                };
                 rootFrame.NavigationFailed += OnNavigationFailed;
 
                 // Place the frame in the current Window 

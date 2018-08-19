@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Windows.Graphics.Imaging;
+using Windows.Storage.Streams;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace StringCodec.UWP.Common
 {
@@ -223,6 +228,84 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
+        static public async Task<string> Encode(WriteableBitmap image, string format=".png", bool prefix = true, bool LineBreak = false)
+        {
+            string result = string.Empty;
+            try
+            {
+                using (var fileStream = new InMemoryRandomAccessStream())
+                {
+                    // Get pixels of the WriteableBitmap object 
+                    Stream pixelStream = image.PixelBuffer.AsStream();
+                    byte[] pixels = new byte[pixelStream.Length];
+                    await pixelStream.ReadAsync(pixels, 0, pixels.Length);
+
+                    var encId = BitmapEncoder.PngEncoderId;
+                    var fext = format.ToLower();
+                    var mime = "image/png";
+                    switch (fext)
+                    {
+                        case ".bmp":
+                            encId = BitmapEncoder.BmpEncoderId;
+                            mime = "image/bmp";
+                            break;
+                        case ".gif":
+                            encId = BitmapEncoder.GifEncoderId;
+                            mime = "image/gif";
+                            break;
+                        case ".png":
+                            encId = BitmapEncoder.PngEncoderId;
+                            mime = "image/png";
+                            break;
+                        case ".jpg":
+                            encId = BitmapEncoder.JpegEncoderId;
+                            mime = "image/jpeg";
+                            break;
+                        case ".jpeg":
+                            encId = BitmapEncoder.JpegEncoderId;
+                            mime = "image/jpeg";
+                            break;
+                        case ".tif":
+                            encId = BitmapEncoder.TiffEncoderId;
+                            mime = "image/tiff";
+                            break;
+                        case ".tiff":
+                            encId = BitmapEncoder.TiffEncoderId;
+                            mime = "image/tiff";
+                            break;
+                        default:
+                            encId = BitmapEncoder.PngEncoderId;
+                            mime = "image/png";
+                            break;
+                    }
+                    var encoder = await BitmapEncoder.CreateAsync(encId, fileStream);
+                    // Save the image file with jpg extension 
+                    encoder.SetPixelData(
+                        BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore,
+                        //(uint)bmp.PixelWidth, (uint)bmp.PixelHeight, 
+                        (uint)image.PixelWidth, (uint)image.PixelHeight,
+                        96.0, 96.0,
+                        pixels);
+                    await encoder.FlushAsync();
+
+                    #region Convert InMemoryRandomAccessStream/IRandomAccessStream to byte[]/Array
+                    Stream stream = WindowsRuntimeStreamExtensions.AsStreamForRead(fileStream.GetInputStreamAt(0));
+                    MemoryStream ms = new MemoryStream();
+                    await stream.CopyToAsync(ms);
+                    byte[] arr = ms.ToArray();
+                    #endregion
+
+                    var opt = Base64FormattingOptions.None;
+                    if (LineBreak) opt = Base64FormattingOptions.InsertLineBreaks;
+                    result = Convert.ToBase64String(arr, opt);
+                    if (prefix) result = $"data:{mime};base64,{result}";
+                }
+            }
+            catch (Exception) { }
+
+            return (result);
+        }
+
         static public string Decode(string content, CODEC Codec, Encoding enc)
         {
             string result = string.Empty;
@@ -254,6 +337,44 @@ namespace StringCodec.UWP.Common
                     break;
                 default:
                     break;
+            }
+            return (result);
+        }
+
+        static public async Task<WriteableBitmap> Decode(string content)
+        {
+            WriteableBitmap result = null;
+            if (content.Length <= 0) return (result);
+
+            try
+            {
+                string bs = Regex.Replace(content, @"data:image/.*?;base64,", "", RegexOptions.IgnoreCase);
+                byte[] arr = Convert.FromBase64String(bs.Trim());
+                using (MemoryStream ms = new MemoryStream(arr))
+                {
+                    //WriteableBitmap writimage = new WriteableBitmap(1, 1);
+                    //BitmapPixelFormat format = BitmapPixelFormat.Unknown;
+
+                    //writimage = await WriteableBitmapExtensions.FromStream(writimage, stream, format);
+                    //writimage.SetSource(ms);
+
+                    var image = new WriteableBitmap(1, 1);
+                    byte[] buf = ms.ToArray();
+                    using (InMemoryRandomAccessStream fileStream = new InMemoryRandomAccessStream())
+                    {
+                        using (DataWriter writer = new DataWriter(fileStream.GetOutputStreamAt(0)))
+                        {
+                            writer.WriteBytes((byte[])buf);
+                            writer.StoreAsync().GetResults();
+                        }
+                        image.SetSource(fileStream);
+                    }
+                    return image;
+                }
+            }
+            catch (Exception)
+            {
+
             }
             return (result);
         }

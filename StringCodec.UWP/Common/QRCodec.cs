@@ -326,9 +326,11 @@ namespace StringCodec.UWP.Common
         static public async Task<string> Decode(WriteableBitmap image)
         {
             string result = string.Empty;
+            if (image == null) return (result);
+            if (image.PixelWidth < 32 || image.PixelHeight < 32) return (result);
 
             var br = new BarcodeReader();
-            //setDecodeOptions(br);
+            setDecodeOptions(br);
             try
             {
                 //var qrResult = br.Decode(image);
@@ -347,7 +349,7 @@ namespace StringCodec.UWP.Common
                     result = string.Join("\n\r", textList);
                 }
             }
-            catch (Exception ex) { }
+            catch (Exception) { }
 
             return (result);
         }
