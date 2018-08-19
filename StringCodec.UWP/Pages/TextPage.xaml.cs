@@ -91,6 +91,9 @@ namespace StringCodec.UWP.Pages
                 case "btnSave":
                     await Utils.ShowSaveDialog(edDst.Text);
                     break;
+                case "btnShare":
+                    Utils.Share(edDst.Text);
+                    break;
                 default:
                     break;
             }

@@ -19,11 +19,10 @@
                     SelectionChanged="NvMain_SelectionChanged" 
                     ItemInvoked="NvMain_ItemInvoked"
                     BackRequested="NvMain_BackRequested"
-                    RS4Api:NavigationView.PaneTitle="Title"
+                    RS4Api:NavigationView.PaneTitle="String Encoding &amp; Decoding"
                     RS4Api:IsBackButtonVisible="Auto"
                     RS4Api:IsBackEnabled="True" 
                     Margin="0,0,0,0" Grid.Row="1" 
-                    Header="String Encoding &amp; Decoding"
                     IsSettingsVisible="{Binding ElementName=settingsCheck,Path=IsChecked}"
                     IsTabStop="False">
         <NavigationView.AutoSuggestBox>
@@ -31,11 +30,11 @@
         </NavigationView.AutoSuggestBox>
 
         <NavigationView.MenuItems>
-            <NavigationViewItemHeader x:Name="nvItemHome" x:Uid="nvItemHome" Content="Home"/>
+            <NavigationViewItemHeader x:Name="nvItemHome" x:Uid="nvItemHome" Content="Main"/>
             <NavigationViewItem x:Name="nvItemText" x:Uid="nvItemText" Content="Text Encode/Decode" Icon="Character" Tag="PageText" ToolTipService.ToolTip="Text Encode/Decode" Tapped="NvMain_Click"/>
             <NavigationViewItem x:Name="nvItemQRCode" x:Uid="nvItemQRCode" Content="QR Encode/Decode" Tag="PageQR" ToolTipService.ToolTip="Make QR Code or decode content from QR Code image" Tapped="NvMain_Click" >
                 <NavigationViewItem.Icon>
-                    <FontIcon Glyph="&#xE2AC;" FontFamily="Segoe MDL2 Assets"/>
+                    <FontIcon Glyph="&#xF029;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
                 </NavigationViewItem.Icon>
             </NavigationViewItem>
             <NavigationViewItem x:Name="nvItemImage" x:Uid="nvItemImage" Content="Image &lt;=&gt; BASE64" Icon="Pictures" Tag="PageImage" ToolTipService.ToolTip="Convert image to BASE64 string or decode BASE64 string to image" Tapped="NvMain_Click" />
@@ -44,6 +43,11 @@
             <NavigationViewItem x:Name="nvItemWifi" x:Uid="nvItemWifi" Content="WIFI QR Code" Tag="PageWifi" ToolTipService.ToolTip="Make WIFI QR Code" Tapped="NvMain_Click">
                 <NavigationViewItem.Icon>
                     <FontIcon Glyph="&#xE701;" FontFamily="Segoe MDL2 Assets"/>
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
+            <NavigationViewItem x:Name="nvItemBarCode" x:Uid="nvItemBarCode" Content="Barcode" Tag="PageBarCode" ToolTipService.ToolTip="Make/Decode Barcode" Tapped="NvMain_Click">
+                <NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xF02A;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
                 </NavigationViewItem.Icon>
             </NavigationViewItem>
             <NavigationViewItem x:Name="nvItemCharset" x:Uid="nvItemCharset" Content="Folder&amp;File Charset" Tag="PageCharset" ToolTipService.ToolTip="Converting folder/file names with specified character sets" Tapped="NvMain_Click">
@@ -55,11 +59,11 @@
 
         <RS4Api:NavigationView.PaneFooter>
             <StackPanel>
-                <HyperlinkButton x:Name="nvMoreInfo" x:Uid="nvMoreInfo"
+                <!--<HyperlinkButton x:Name="nvMoreInfo" x:Uid="nvMoreInfo"
                              Content="More info"
                              Click="More_Click"
                              Margin="48,24"/>
-                <NavigationViewItemSeparator/>
+                <NavigationViewItemSeparator/>-->
                 <NavigationViewItem x:Name="nvAbout" x:Uid="nvAbout" Icon="Emoji2" Content="More info" Tapped="More_Click" ToolTipService.ToolTip="About Me..." />
                 <NavigationViewItemSeparator/>
             </StackPanel>

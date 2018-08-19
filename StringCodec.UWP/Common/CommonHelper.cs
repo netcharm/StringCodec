@@ -14,13 +14,117 @@ using Windows.Storage.Pickers;
 using Windows.Storage.Provider;
 using Windows.Storage.Streams;
 using Windows.UI;
+using Windows.UI.Popups;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace StringCodec.UWP.Common
 {
     class Utils
     {
+        #region Share Extentions
+        static private DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
+        static private StorageFile _tempExportFile;
+        static private bool SHARE_INITED = false;
+        static private WriteableBitmap SHARED_IMAGE = null;
+        static private string SHARED_TEXT = string.Empty;
+
+        static private async void DataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
+        {
+            try
+            {
+                DataPackage requestData = args.Request.Data;
+                requestData.Properties.Title = "Share To...";
+                requestData.Properties.Description = "Share the QRCode/BASE64 decoded image to other apps.";
+
+                if (!string.IsNullOrEmpty(SHARED_TEXT) && SHARED_IMAGE == null)
+                {
+                    requestData.SetText(SHARED_TEXT);
+                }
+                else if (string.IsNullOrEmpty(SHARED_TEXT) && SHARED_IMAGE != null)
+                {
+                    List<IStorageItem> imageItems = new List<IStorageItem> { _tempExportFile };
+                    requestData.SetStorageItems(imageItems);
+
+                    RandomAccessStreamReference imageStreamRef = RandomAccessStreamReference.CreateFromFile(_tempExportFile);
+                    requestData.Properties.Thumbnail = imageStreamRef;
+                    requestData.SetBitmap(imageStreamRef);
+                }
+            }
+            catch (Exception ex)
+            {
+                await new MessageDialog(ex.Message, "ERROR").ShowAsync();
+            }
+        }
+
+        static public async Task<FileUpdateStatus> Share(WriteableBitmap image)
+        {
+            if (!SHARE_INITED)
+            {
+                dataTransferManager.DataRequested += DataTransferManager_DataRequested;
+                SHARE_INITED = true;
+            }
+
+            //ApplicationData.Current.TemporaryFolder.
+            SHARED_TEXT = string.Empty;
+            SHARED_IMAGE = null;
+            FileUpdateStatus status = FileUpdateStatus.Failed;
+            if (image == null || image.PixelWidth <= 0 || image.PixelHeight <= 0) return (status);
+
+            SHARED_IMAGE = image;
+            #region Save image to a temporary file
+            var now = DateTime.Now;
+            var fn = $"{now.ToString("yyyyMMddhhmmss")}.png";
+            StorageFile tempFile = await ApplicationData.Current.TemporaryFolder.CreateFileAsync(fn, CreationCollisionOption.ReplaceExisting);
+            if (tempFile != null)
+            {
+                CachedFileManager.DeferUpdates(tempFile);
+
+                using (var fileStream = await tempFile.OpenAsync(FileAccessMode.ReadWrite))
+                {
+                    BitmapEncoder encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, fileStream);
+                    Stream pixelStream = image.PixelBuffer.AsStream();
+                    byte[] pixels = new byte[pixelStream.Length];
+                    await pixelStream.ReadAsync(pixels, 0, pixels.Length);
+                    encoder.SetPixelData(BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore,
+                        (uint)image.PixelWidth,
+                        (uint)image.PixelHeight,
+                        96.0,
+                        96.0,
+                        pixels);
+                    await encoder.FlushAsync();
+                }
+
+                status = await CachedFileManager.CompleteUpdatesAsync(tempFile);
+                _tempExportFile = tempFile;
+
+                DataTransferManager.ShowShareUI();
+            }
+            #endregion
+            return status;
+        }
+
+        static public FileUpdateStatus Share(string text)
+        {
+            if (!SHARE_INITED)
+            {
+                dataTransferManager.DataRequested += DataTransferManager_DataRequested;
+                SHARE_INITED = true;
+            }
+
+            SHARED_TEXT = string.Empty;
+            SHARED_IMAGE = null;
+            FileUpdateStatus status = FileUpdateStatus.Failed;
+            if (string.IsNullOrEmpty(text)) return (status);
+
+            SHARED_TEXT = text;
+            DataTransferManager.ShowShareUI();
+            //return status;
+            return status;
+        }
+        #endregion
+
         #region Clipboard Extentions
         static public void SetClipboard(Image image, int size)
         {
@@ -87,11 +191,18 @@ namespace StringCodec.UWP.Common
 
                     if (image != null)
                     {
+                        //if (bitmap.PixelWidth >= image.RenderSize.Width || bitmap.PixelHeight >= image.RenderSize.Height)
+                        //    image.Stretch = Stretch.Uniform;
+                        //else image.Stretch = Stretch.None;
+                        byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmap.PixelBuffer, 0, (int)bitmap.PixelBuffer.Length);
                         image.Source = bitmap;
-                        //text = await QRCodec.Decode(bitmap);
+                        text = await QRCodec.Decode(bitmap);
                     }
                 }
-                catch (Exception) { }
+                catch (Exception ex)
+                {
+                    await new MessageDialog(ex.Message, "ERROR").ShowAsync();
+                }
             }
             return (text);
         }
@@ -133,7 +244,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static public async Task<string> ShowSaveDialog(Image image, string prefix="")
+        static public async Task<string> ShowSaveDialog(Image image, string prefix = "")
         {
             var bmp = image.Source as WriteableBitmap;
             var width = bmp.PixelWidth;
@@ -141,12 +252,12 @@ namespace StringCodec.UWP.Common
             return (await ShowSaveDialog(image, width, height, prefix));
         }
 
-        static public async Task<string> ShowSaveDialog(Image image, int size, string prefix="")
+        static public async Task<string> ShowSaveDialog(Image image, int size, string prefix = "")
         {
             return (await ShowSaveDialog(image, size, size, prefix));
         }
 
-        static public async Task<string> ShowSaveDialog(Image image, int width, int height, string prefix="")
+        static public async Task<string> ShowSaveDialog(Image image, int width, int height, string prefix = "")
         {
             if (image.Source == null) return (string.Empty);
 
@@ -312,6 +423,24 @@ namespace StringCodec.UWP.Common
             return (string.Empty);
         }
 
+        #endregion
+
+        #region WriteableBitmmap Extensions
+        static public WriteableBitmap GetWriteableBitmmap(Image image)
+        {
+            WriteableBitmap result = null;
+
+            if (image.Source == null) return result;
+            else if(image.Source is BitmapImage)
+            {
+                return (result);
+            }
+            else if (image.Source is WriteableBitmap)
+            {
+                return (image.Source as WriteableBitmap);
+            }
+            return (result);
+        }
         #endregion
     }
 }

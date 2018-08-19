@@ -54,7 +54,7 @@
                 <!-- More Button Dropdown menu -->
                 <AppBarButton x:Name="optQRCode" x:Uid="optQRCode" Label="Input to QRCode" Click="QRCode_Click">
                     <AppBarButton.Icon>
-                        <FontIcon Glyph="&#xE2AC;" FontFamily="Segoe MDL2 Assets"/>
+                        <FontIcon Glyph="&#xF029;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
                     </AppBarButton.Icon>
                 </AppBarButton>
             </CommandBar.SecondaryCommands>

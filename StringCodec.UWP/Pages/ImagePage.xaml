@@ -26,11 +26,11 @@
                         <ToggleMenuFlyoutItem x:Name="optPrefix" x:Uid="optPrefix" Text="Add Prefix to BASE64" Click="Opt_Click"/>
                         <ToggleMenuFlyoutItem x:Name="optLinbeBreak" x:Uid="optLineBreak" Text="Add LineBreak to BASE64" Click="Opt_Click"/>
                         <MenuFlyoutSeparator />
-                        <ToggleMenuFlyoutItem x:Name="optFmtPng" x:Uid="optFmtPng" Text="PNG File" Click="OptFmt_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optFmtJpg" x:Uid="optFmtJpg" Text="JPG File" Click="OptFmt_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optFmtBmp" x:Uid="optFmtBmp" Text="BMP File" Click="OptFmt_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optFmtGif" x:Uid="optFmtGif" Text="GIF File" Click="OptFmt_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optFmtTif" x:Uid="optFmtTif" Text="TIF File" Click="OptFmt_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optFmtPng" x:Uid="optFmtPng" Text="PNG Image File" Click="OptFmt_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optFmtJpg" x:Uid="optFmtJpg" Text="JPG Image File" Click="OptFmt_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optFmtBmp" x:Uid="optFmtBmp" Text="BMP Image File" Click="OptFmt_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optFmtGif" x:Uid="optFmtGif" Text="GIF Image File" Click="OptFmt_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optFmtTif" x:Uid="optFmtTif" Text="TIF Image File" Click="OptFmt_Click"/>
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
@@ -38,12 +38,16 @@
             <AppBarButton x:Name="btnCopy" x:Uid="btnCopy" Label="Copy" Icon="Copy" VerticalAlignment="Center" Click="AppBarButton_Click"  />
             <AppBarButton x:Name="btnPaste" x:Uid="btnPaste" Label="Paste" Icon="Paste" VerticalAlignment="Center" Click="AppBarButton_Click" />
             <AppBarSeparator />
-            <AppBarButton x:Name="btnEncode" x:Uid="btnEncode" Label="Encode" Icon="Mail" VerticalAlignment="Center" Click="AppBarButton_Click"  />
-            <AppBarButton x:Name="btnDecode" x:Uid="btnDecode" Label="Decode" Icon="Read" VerticalAlignment="Center" Click="AppBarButton_Click" />
+            <AppBarButton x:Name="btnEncode" x:Uid="btnEncode" Label="Encode" Icon="Shuffle" VerticalAlignment="Center" Click="AppBarButton_Click"  />
+            <AppBarButton x:Name="btnDecode" x:Uid="btnDecode" Label="Decode" VerticalAlignment="Center" Click="AppBarButton_Click">
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xF03E;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
             <AppBarSeparator />
             <AppBarButton x:Name="btnSave" x:Uid="btnSave" Label="Save" Icon="Save" VerticalAlignment="Center" Click="AppBarButton_Click" />
             <AppBarButton x:Name="btnShare" x:Uid="btnShare" Label="Share" Icon="Share" VerticalAlignment="Center" Click="AppBarButton_Click" />
-            
+
             <CommandBar.SecondaryCommands>
                 <!-- More Button Dropdown menu -->
             </CommandBar.SecondaryCommands>
@@ -61,7 +65,7 @@
         </CommandBar>
 
         <TextBox Grid.Row="1" Grid.Column="0" x:Name="edBase64" x:Uid="edBase64" 
-                 Header="Input:" PlaceholderText="Input text at here" 
+                 Header="BASE64:" PlaceholderText="Input text at here" 
                  AcceptsReturn="True" TextWrapping="Wrap" CanDrag="True" 
                  FontFamily="Consolas" FontSize="16" 
                  ScrollViewer.VerticalScrollBarVisibility="Auto" 
@@ -71,6 +75,5 @@
         <Image Grid.Row="1" Grid.Column="1" x:Name="imgBase64" x:Uid="imgBase64" Margin="12, 24, 0, 0"
                Stretch="Uniform"
                AllowDrop="True" DragOver="OnDragOver" Drop="OnDrop" />
-
     </Grid>
 </Page>

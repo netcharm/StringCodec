@@ -50,8 +50,14 @@ namespace StringCodec.UWP.Pages
 
             optFmtPng.IsChecked = true;
 
+            if (!string.IsNullOrEmpty(text_src))
+            {
+                edBase64.Text = text_src;
+            }
+
             #region Add small image to Image control for dragdrop target
             var wb = new WriteableBitmap(1, 1);
+            imgBase64.Stretch = Stretch.Uniform;
             imgBase64.Source = wb;
             #endregion
         }
@@ -105,7 +111,11 @@ namespace StringCodec.UWP.Pages
                     edBase64.Text = await TextCodecs.Encode(imgBase64.Source as WriteableBitmap, CURRENT_FORMAT, CURRENT_PREFIX, CURRENT_LINEBREAK);
                     break;
                 case "btnDecode":
-                    imgBase64.Source = await TextCodecs.Decode(edBase64.Text);
+                    //imgBase64.Source = await TextCodecs.Decode(edBase64.Text);
+                    var bmp = await TextCodecs.Decode(edBase64.Text);
+                    //if (bmp.PixelWidth >= imgBase64.RenderSize.Width || bmp.PixelHeight >= imgBase64.RenderSize.Height) imgBase64.Stretch = Stretch.Uniform;
+                    //else imgBase64.Stretch = Stretch.None;
+                    imgBase64.Source = bmp;
                     break;
                 case "btnCopy":
                     Utils.SetClipboard(edBase64.Text);
@@ -116,6 +126,9 @@ namespace StringCodec.UWP.Pages
                 case "btnSave":
                     await Utils.ShowSaveDialog(imgBase64);
                     break;
+                case "btnShare":
+                    await Utils.Share(imgBase64.Source as WriteableBitmap);
+                    break;
                 default:
                     break;
             }
@@ -123,7 +136,7 @@ namespace StringCodec.UWP.Pages
 
         private void edBase64_TextChanged(object sender, TextChangedEventArgs e)
         {
-
+            text_src = edBase64.Text;
         }
 
         #region Drag/Drop routines
@@ -156,9 +169,13 @@ namespace StringCodec.UWP.Pages
                     if (items.Count > 0)
                     {
                         var storageFile = items[0] as StorageFile;
-                        var bitmapImage = new BitmapImage();
+                        var bitmapImage = new WriteableBitmap(1,1);
                         bitmapImage.SetSource(await storageFile.OpenAsync(FileAccessMode.Read));
                         // Set the image on the main page to the dropped image
+                        //if (bitmapImage.PixelWidth >= imgBase64.RenderSize.Width || bitmapImage.PixelHeight >= imgBase64.RenderSize.Height)
+                        //    imgBase64.Stretch = Stretch.Uniform;
+                        //else imgBase64.Stretch = Stretch.None;
+                        byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
                         imgBase64.Source = bitmapImage;
                     }
                 }
@@ -169,9 +186,13 @@ namespace StringCodec.UWP.Pages
                     StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(uri);
                     //dp.SetBitmap(RandomAccessStreamReference.CreateFromUri(uri));
 
-                    var bitmapImage = new BitmapImage();
+                    var bitmapImage = new WriteableBitmap(1, 1);
                     await bitmapImage.SetSourceAsync(await file.OpenAsync(FileAccessMode.Read));
                     // Set the image on the main page to the dropped image
+                    //if (bitmapImage.PixelWidth >= imgBase64.RenderSize.Width || bitmapImage.PixelHeight >= imgBase64.RenderSize.Height)
+                    //    imgBase64.Stretch = Stretch.Uniform;
+                    //else imgBase64.Stretch = Stretch.None;
+                    byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
                     imgBase64.Source = bitmapImage;
                 }
             }

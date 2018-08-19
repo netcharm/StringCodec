@@ -21,6 +21,7 @@ using Windows.Graphics.DirectX;
 using System.Numerics;
 using Windows.UI.Xaml.Hosting;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Popups;
 
 namespace StringCodec.UWP.Common
 {
@@ -278,7 +279,7 @@ namespace StringCodec.UWP.Common
             //br.Options.PossibleFormats.Add(BarcodeFormat.QR_CODE);
         }
 
-        static public async Task<WriteableBitmap> Encode(string content, Color fgcolor, Color bgcolor, ERRORLEVEL ECL)
+        static public WriteableBitmap Encode(string content, Color fgcolor, Color bgcolor, ERRORLEVEL ECL)
         {
             WriteableBitmap result = null;
 
@@ -340,6 +341,7 @@ namespace StringCodec.UWP.Common
                 //}
                 var qrResults = br.DecodeMultiple(image);
                 var textList = new List<string>();
+                if (qrResults == null) return (result);
                 foreach (var line in qrResults)
                 {
                     textList.Add(line.Text);
@@ -349,8 +351,10 @@ namespace StringCodec.UWP.Common
                     result = string.Join("\n\r", textList);
                 }
             }
-            catch (Exception) { }
-
+            catch (Exception ex)
+            {
+                await new MessageDialog(ex.Message, "ERROR").ShowAsync();
+            }
             return (result);
         }
     }

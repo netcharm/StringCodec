@@ -55,11 +55,19 @@
                         <MenuFlyoutItem x:Name="optFgColor" x:Uid="optFgColor" Text="Foreground Color" 
                                         FlyoutBase.AttachedFlyout="{StaticResource ColorFlyout}"
                                         ContextFlyout="{StaticResource ColorFlyout}"
-                                        Click="OptColor_Click" RightTapped="OptColor_RightTapped"/>
+                                        Click="OptColor_Click" RightTapped="OptColor_RightTapped">
+                            <MenuFlyoutItem.Icon>
+                                <FontIcon Glyph="&#xE2B1;" FontFamily="Segoe MDL2 Assets"/>
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
                         <MenuFlyoutItem x:Name="optBgColor" x:Uid="optBgColor" Text="Background Color" 
                                         FlyoutBase.AttachedFlyout="{StaticResource ColorFlyout}"
                                         ContextFlyout="{StaticResource ColorFlyout}"
-                                        Click="OptColor_Click" RightTapped="OptColor_RightTapped"/>
+                                        Click="OptColor_Click" RightTapped="OptColor_RightTapped">
+                            <MenuFlyoutItem.Icon>
+                                <FontIcon Glyph="&#xE2B1;" FontFamily="Segoe MDL2 Assets"/>
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
                         <MenuFlyoutItem x:Name="optResetColor" x:Uid="optResetColor" Text="Reset Color" 
                                         Click="OptColor_Click"/>
                     </MenuFlyout>
@@ -69,8 +77,12 @@
             <AppBarButton x:Name="btnCopy" x:Uid="btnCopy" Label="Copy" Icon="Copy" VerticalAlignment="Center" Click="AppBarButton_Click"  />
             <AppBarButton x:Name="btnPaste" x:Uid="btnPaste" Label="Paste" Icon="Paste" VerticalAlignment="Center" Click="AppBarButton_Click" />
             <AppBarSeparator />
-            <AppBarButton x:Name="btnEncode" x:Uid="btnEncode" Label="Encode" Icon="Mail" VerticalAlignment="Center" Click="AppBarButton_Click"  />
-            <AppBarButton x:Name="btnDecode" x:Uid="btnDecode" Label="Decode" Icon="Read" VerticalAlignment="Center" Click="AppBarButton_Click" />
+            <AppBarButton x:Name="btnEncode" x:Uid="btnEncode" Label="Encode" VerticalAlignment="Center" Click="AppBarButton_Click">
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xF029;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton x:Name="btnDecode" x:Uid="btnDecode" Label="Decode" Icon="Character" VerticalAlignment="Center" Click="AppBarButton_Click" />
             <AppBarSeparator />
             <AppBarButton x:Name="btnCapture" x:Uid="btnCapture" Label="Capture" Icon="Camera" VerticalAlignment="Center" Click="AppBarButton_Click" />
             <AppBarButton x:Name="btnSave" x:Uid="btnSave" Label="Save" Icon="Save" VerticalAlignment="Center" Click="AppBarButton_Click" />
@@ -96,13 +108,13 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <ProgressRing Grid.Column="0" x:Name="ring" x:Uid="Ring" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Column="1" x:Name="lblInfo" x:Uid="edInfo" Text="Count[&lt;984]: 0" Margin="12,14" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" x:Name="lblInfo" x:Uid="edInfo" Text="Count: 0" Margin="12,14" VerticalAlignment="Center"/>
                 </Grid>
             </CommandBar.Content>
         </CommandBar>
 
         <TextBox Grid.Row="1" Grid.Column="0" x:Name="edQR" x:Uid="edQR" 
-                 Header="Input:" PlaceholderText="Input text at here" 
+                 Header="Text [Max=984]:" PlaceholderText="Input text at here" 
                  AcceptsReturn="True" TextWrapping="Wrap" CanDrag="True" 
                  FontFamily="Consolas" FontSize="16" 
                  ScrollViewer.VerticalScrollBarVisibility="Auto" 

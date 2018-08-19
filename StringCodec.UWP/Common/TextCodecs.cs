@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Graphics.Imaging;
 using Windows.Storage.Streams;
+using Windows.UI.Popups;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace StringCodec.UWP.Common
@@ -228,7 +229,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static public async Task<string> Encode(WriteableBitmap image, string format=".png", bool prefix = true, bool LineBreak = false)
+        static public async Task<string> Encode(WriteableBitmap image, string format = ".png", bool prefix = true, bool LineBreak = false)
         {
             string result = string.Empty;
             try
@@ -301,8 +302,10 @@ namespace StringCodec.UWP.Common
                     if (prefix) result = $"data:{mime};base64,{result}";
                 }
             }
-            catch (Exception) { }
-
+            catch (Exception ex)
+            {
+                await new MessageDialog(ex.Message, "ERROR").ShowAsync();
+            }
             return (result);
         }
 
@@ -372,9 +375,9 @@ namespace StringCodec.UWP.Common
                     return image;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                await new MessageDialog(ex.Message, "ERROR").ShowAsync();
             }
             return (result);
         }

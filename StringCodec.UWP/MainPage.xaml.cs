@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StringCodec.UWP.Common;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,6 +13,7 @@ using Windows.Foundation.Collections;
 using Windows.Storage.Streams;
 using Windows.System;
 using Windows.UI;
+using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -32,6 +34,7 @@ namespace StringCodec.UWP
     public sealed partial class MainPage : Page
     {
         private ShareOperation operation;
+        //private Utils utils = new Utils();
 
         public MainPage()
         {
@@ -50,6 +53,8 @@ namespace StringCodec.UWP
             //{
             //    Encoding enc = ei.GetEncoding();
             //}
+
+            nvMain.Header = nvMain.PaneTitle;
 
             ContentFrame.Navigate(typeof(Pages.TextPage));
             ContentFrame.Navigated += NvMain_Navigated;
@@ -75,6 +80,8 @@ namespace StringCodec.UWP
             titleBar.ButtonBackgroundColor = Colors.Transparent;
             titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
             titleBar.ButtonForegroundColor = (Color)Resources["SystemBaseHighColor"];
+            
+            this.RequestedTheme = ElementTheme.Dark;
             if (Application.Current.RequestedTheme == ApplicationTheme.Dark)
             {
                 titleBar.ButtonForegroundColor = Colors.White;
@@ -84,6 +91,8 @@ namespace StringCodec.UWP
                 titleBar.ButtonForegroundColor = Colors.Black;
             }
             #endregion
+
+            //Utils.ShareInit();
         }
 
         private bool On_BackRequested()
@@ -224,7 +233,8 @@ namespace StringCodec.UWP
         {
             try
             {
-                operation = (ShareOperation)e.Parameter;
+               if (e.Parameter == null || string.IsNullOrEmpty(e.Parameter as string)) return;
+               operation = (ShareOperation)e.Parameter;
                 //Get text data 
                 if (operation.Data.Contains(StandardDataFormats.Text))
                 {
@@ -256,9 +266,9 @@ namespace StringCodec.UWP
                     //imgShareImage.Source = bmp;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //tbError.Text = ex.Message;
+                await new MessageDialog(ex.Message, "ERROR").ShowAsync();
             }
         }
 

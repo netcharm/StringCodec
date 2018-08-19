@@ -18,6 +18,7 @@ using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.UI;
 using Windows.UI.Core;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -40,7 +41,9 @@ namespace StringCodec.UWP.Pages
         private Color CURRENT_BGCOLOR = Colors.White; //Color.FromArgb(255, 255, 255, 255);
         private Color CURRENT_FGCOLOR = Colors.Black; //Color.FromArgb(255, 000, 000, 000);
         private int CURRENT_SIZE = 512;
-        
+
+        private string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif" };
+
         static private string text_src = string.Empty;
         static public string Text
         {
@@ -53,7 +56,7 @@ namespace StringCodec.UWP.Pages
             this.InitializeComponent();
         }
 
-        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             optECL_L.IsChecked = true;
             optSaveSizeM.IsChecked = true;
@@ -61,7 +64,8 @@ namespace StringCodec.UWP.Pages
             if (!string.IsNullOrEmpty(text_src))
             {
                 edQR.Text = text_src;
-                imgQR.Source = await QRCodec.Encode(edQR.Text, CURRENT_FGCOLOR, CURRENT_BGCOLOR, CURRENT_ECL);
+                //imgQR.Stretch = Stretch.Uniform;
+                //imgQR.Source = QRCodec.Encode(edQR.Text, CURRENT_FGCOLOR, CURRENT_BGCOLOR, CURRENT_ECL);
             }
 
             if (!GraphicsCaptureSession.IsSupported())
@@ -73,6 +77,7 @@ namespace StringCodec.UWP.Pages
 
             #region Add small image to Image control for dragdrop target
             var wb = new WriteableBitmap(1, 1);
+            imgQR.Stretch = Stretch.Uniform;
             imgQR.Source = wb;
             #endregion
         }
@@ -83,18 +88,20 @@ namespace StringCodec.UWP.Pages
             switch (btn.Name)
             {
                 case "btnEncode":
-                    imgQR.Source = await QRCodec.Encode(edQR.Text, CURRENT_FGCOLOR, CURRENT_BGCOLOR, CURRENT_ECL);
+                    imgQR.Stretch = Stretch.Uniform;
+                    imgQR.Source = QRCodec.Encode(edQR.Text, CURRENT_FGCOLOR, CURRENT_BGCOLOR, CURRENT_ECL);
                     break;
                 case "btnDecode":
                     edQR.Text = await QRCodec.Decode(imgQR.Source as WriteableBitmap);
                     break;
                 case "btnCopy":
-                    Common.Utils.SetClipboard(imgQR, CURRENT_SIZE);
+                    Utils.SetClipboard(imgQR, CURRENT_SIZE);
                     break;
                 case "btnPaste":
                     edQR.Text = await Utils.GetClipboard(edQR.Text, imgQR);
                     break;
                 case "btnCapture":
+                    imgQR.Stretch = Stretch.Uniform;
                     var sc = new ScreenCapture();
                     sc.Preview = imgQR;
                     await sc.StartCaptureAsync();
@@ -103,7 +110,7 @@ namespace StringCodec.UWP.Pages
                     await Utils.ShowSaveDialog(imgQR, CURRENT_SIZE, "QR");
                     break;
                 case "btnShare":
-                    //await Utils.ShowSaveDialog(imgQR, CURRENT_SIZE, "QR");
+                    await Utils.Share(imgQR.Source as WriteableBitmap);
                     break;
                 default:
                     break;
@@ -131,7 +138,8 @@ namespace StringCodec.UWP.Pages
 
         private void edQR_TextChanged(object sender, TextChangedEventArgs e)
         {
-            lblInfo.Text = $"Count(<=984): {edQR.Text.Length}";
+            lblInfo.Text = $"Count: {edQR.Text.Length}";
+            text_src = edQR.Text;
         }
 
         private async void OptColor_Click(object sender, RoutedEventArgs e)
@@ -249,19 +257,59 @@ namespace StringCodec.UWP.Pages
         }
 
         #region Drag/Drop routines
-        private void OnDragOver(object sender, DragEventArgs e)
+        private async void OnDragOver(object sender, DragEventArgs e)
         {
             if (sender == imgQR)
             {
-                if (e.DataView.Contains(StandardDataFormats.WebLink) ||
-                e.DataView.Contains(StandardDataFormats.StorageItems))
+                try
                 {
-                    e.AcceptedOperation = DataPackageOperation.Copy;
+                    if (e.DataView.Contains(StandardDataFormats.StorageItems))
+                    {
+                        //e.DragUIOverride.IsCaptionVisible = true;
+                        //e.DragUIOverride.IsContentVisible = true;
+                        //e.DragUIOverride.IsGlyphVisible = true;
+                        e.AcceptedOperation = DataPackageOperation.Copy;
+
+                        //var items = await e.DataView.GetStorageItemsAsync();
+                        //var content = (StorageFile)items[0];
+                        //switch (content.ContentType)
+                        //{
+                        //    case "image/png":
+                        //    case "image/jpeg":
+                        //        break;
+                        //}
+                        //if (items.Count > 0)
+                        //{
+                        //    var storageFile = items[0] as StorageFile;
+                        //    if (!image_ext.Contains(storageFile.FileType.ToLower()))
+                        //        e.AcceptedOperation = DataPackageOperation.None;
+                        //}
+                        //e.AcceptedOperation = DataPackageOperation.Copy;
+                    }
+                    else if (e.DataView.Contains(StandardDataFormats.WebLink))
+                    {
+                        e.AcceptedOperation = DataPackageOperation.Copy;
+                    }
+                }
+                catch(Exception ex)
+                {
+                    await new MessageDialog(ex.Message, "ERROR").ShowAsync();
                 }
             }
             else if (sender == edQR)
             {
-                if (e.DataView.Contains(StandardDataFormats.Text) ||
+                if (e.DataView.Contains(StandardDataFormats.StorageItems))
+                {
+                    //var items = await e.DataView.GetStorageItemsAsync();
+                    //if (items.Count > 0)
+                    //{
+                    //    var storageFile = items[0] as StorageFile;
+                    //    if (!storageFile.FileType.ToLower().Equals(".txt")) return;
+                    //    e.AcceptedOperation = DataPackageOperation.Copy;
+                    //}
+                    e.AcceptedOperation = DataPackageOperation.Copy;
+                }
+                else if (e.DataView.Contains(StandardDataFormats.Text) ||
                     e.DataView.Contains(StandardDataFormats.WebLink) ||
                     e.DataView.Contains(StandardDataFormats.Html) ||
                     e.DataView.Contains(StandardDataFormats.Rtf))
@@ -281,9 +329,18 @@ namespace StringCodec.UWP.Pages
                     if (items.Count > 0)
                     {
                         var storageFile = items[0] as StorageFile;
-                        var bitmapImage = new BitmapImage();
-                        bitmapImage.SetSource(await storageFile.OpenAsync(FileAccessMode.Read));
+#if DEBUG
+                        //await new MessageDialog($"{items.Count}, {image_ext.Contains(storageFile.FileType.ToLower())}", "INFO").ShowAsync();
+#endif
+                        if (!image_ext.Contains(storageFile.FileType.ToLower())) return;
+
+                        var bitmapImage = new WriteableBitmap(1, 1);
+                        await bitmapImage.SetSourceAsync(await storageFile.OpenAsync(FileAccessMode.Read));
                         // Set the image on the main page to the dropped image
+                        //if (bitmapImage.PixelWidth >= imgQR.RenderSize.Width || bitmapImage.PixelHeight >= imgQR.RenderSize.Height)
+                        //    imgQR.Stretch = Stretch.Uniform;
+                        //else imgQR.Stretch = Stretch.None;
+                        byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
                         imgQR.Source = bitmapImage;
                     }
                 }
@@ -294,15 +351,30 @@ namespace StringCodec.UWP.Pages
                     StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(uri);
                     //dp.SetBitmap(RandomAccessStreamReference.CreateFromUri(uri));
 
-                    var bitmapImage = new BitmapImage();
+                    var bitmapImage = new WriteableBitmap(1, 1);
                     await bitmapImage.SetSourceAsync(await file.OpenAsync(FileAccessMode.Read));
                     // Set the image on the main page to the dropped image
+                    //if (bitmapImage.PixelWidth >= imgQR.RenderSize.Width || bitmapImage.PixelHeight >= imgQR.RenderSize.Height)
+                    //    imgQR.Stretch = Stretch.Uniform;
+                    //else imgQR.Stretch = Stretch.None;
+                    byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
                     imgQR.Source = bitmapImage;
                 }
             }
             else if (sender == edQR)
             {
-                if (e.DataView.Contains(StandardDataFormats.Text) ||
+                if (e.DataView.Contains(StandardDataFormats.StorageItems))
+                {
+                    var items = await e.DataView.GetStorageItemsAsync();
+                    if (items.Count > 0)
+                    {
+                        var storageFile = items[0] as StorageFile;
+                        if (!storageFile.FileType.ToLower().Equals(".txt")) return;
+
+                        edQR.Text = await FileIO.ReadTextAsync(storageFile);
+                    }
+                }
+                else if (e.DataView.Contains(StandardDataFormats.Text) ||
                     e.DataView.Contains(StandardDataFormats.WebLink) ||
                     e.DataView.Contains(StandardDataFormats.Html) ||
                     e.DataView.Contains(StandardDataFormats.Rtf))
