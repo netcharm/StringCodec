@@ -185,18 +185,47 @@ namespace StringCodec.UWP.Common
             {
                 try
                 {
-                    var bmp = await dataPackageView.GetBitmapAsync();
-                    WriteableBitmap bitmap = new WriteableBitmap(1, 1);
-                    await bitmap.SetSourceAsync(await bmp.OpenReadAsync());
-
-                    if (image != null)
+                    var fmts = dataPackageView.AvailableFormats;
+                    List<string> fl = new List<string>();
+                    foreach (var fmt in fmts)
                     {
-                        //if (bitmap.PixelWidth >= image.RenderSize.Width || bitmap.PixelHeight >= image.RenderSize.Height)
-                        //    image.Stretch = Stretch.Uniform;
-                        //else image.Stretch = Stretch.None;
-                        byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmap.PixelBuffer, 0, (int)bitmap.PixelBuffer.Length);
-                        image.Source = bitmap;
-                        text = await QRCodec.Decode(bitmap);
+                        fl.Add(fmt.ToString());
+                    }
+                    if (dataPackageView.Contains("image/png"))
+                    {
+                        using(var fileStream = new InMemoryRandomAccessStream())
+                        {
+                            //var data = await dataPackageView.GetDataAsync("DeviceIndependentBitmapV5");
+                            var data = await dataPackageView.GetDataAsync("image/png");
+                            var dataObj = data as IRandomAccessStream;
+                            var stream = dataObj.GetInputStreamAt(0);
+                            //IBuffer buff = new Windows.Storage.Streams.Buffer((uint)dataObj.Size);
+                            //await stream.ReadAsync(buff, (uint)dataObj.Size, InputStreamOptions.None);
+
+                            var outputStream = fileStream.GetOutputStreamAt(0);
+                            await RandomAccessStream.CopyAsync(stream, outputStream);
+
+                            WriteableBitmap bitmap = new WriteableBitmap(1, 1);
+                            await bitmap.SetSourceAsync(fileStream);
+                            byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmap.PixelBuffer, 0, (int)bitmap.PixelBuffer.Length);
+                            image.Source = bitmap;
+                        }
+                    }
+                    else
+                    {
+                        var bmp = await dataPackageView.GetBitmapAsync();
+                        WriteableBitmap bitmap = new WriteableBitmap(1, 1);
+                        await bitmap.SetSourceAsync(await bmp.OpenReadAsync());
+
+                        if (image != null)
+                        {
+                            //if (bitmap.PixelWidth >= image.RenderSize.Width || bitmap.PixelHeight >= image.RenderSize.Height)
+                            //    image.Stretch = Stretch.Uniform;
+                            //else image.Stretch = Stretch.None;
+                            byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmap.PixelBuffer, 0, (int)bitmap.PixelBuffer.Length);
+                            image.Source = bitmap;
+                            text = await QRCodec.Decode(bitmap);
+                        }
                     }
                 }
                 catch (Exception ex)
