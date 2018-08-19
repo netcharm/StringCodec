@@ -110,7 +110,7 @@ namespace StringCodec.UWP.Pages
                     await Utils.ShowSaveDialog(imgQR, CURRENT_SIZE, "QR");
                     break;
                 case "btnShare":
-                    await Utils.Share(imgQR.Source as WriteableBitmap);
+                    await Utils.Share(imgQR.Source as WriteableBitmap, "QR");
                     break;
                 default:
                     break;
