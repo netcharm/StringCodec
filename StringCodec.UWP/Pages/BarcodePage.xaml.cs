@@ -50,6 +50,7 @@ namespace StringCodec.UWP.Pages
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            optSaveSizeM.IsChecked = true;
             optBarCodeExpress.IsChecked = true;
             edBarcode.TextWrapping = TextWrapping.Wrap;
 
@@ -80,11 +81,12 @@ namespace StringCodec.UWP.Pages
 
             #region Setup Barconde text
             txtBarcode.FontFamily = new FontFamily("Consolas");
-            txtBarcode.FontSize = 16;
+            txtBarcode.FontSize = 24;
             txtBarcode.FontStretch = Windows.UI.Text.FontStretch.Normal;
             txtBarcode.VerticalAlignment = VerticalAlignment.Bottom;
             txtBarcode.HorizontalAlignment =  HorizontalAlignment.Center;
             txtBarcode.HorizontalTextAlignment = TextAlignment.Center;
+            txtBarcode.Width = imgBarcode.ActualWidth;
             #endregion
         }
 
@@ -180,17 +182,16 @@ namespace StringCodec.UWP.Pages
             {
                 case "btnEncode":
                     imgBarcode.Source = await edBarcode.Text.EncodeBarcode(CURRENT_FORMAT, CURRENT_FGCOLOR, CURRENT_BGCOLOR);
-                    //txtBarcode.Foreground = new SolidColorBrush(CURRENT_FGCOLOR);
-                    txtBarcode.Width = imgBarcode.ActualWidth;
-                    //var offset = (edBarcode.ActualHeight - imgBarcode.ActualHeight) / 2;
-                    //txtBarcode.Margin = new Thickness(0, 0, 0, offset - txtBarcode.FontSize - 8);
                     txtBarcode.Text = edBarcode.Text.BarcodeLabel(CURRENT_FORMAT);
+                    //var wb = await edBarcode.Text.ToBitmap(LabelRoot, "Consolas", 24, CURRENT_FGCOLOR, CURRENT_BGCOLOR);
+                    //var wb = await txtBarcode.ToBitmap();
+                    //await wb.StoreTemporaryFile();
                     break;
                 case "btnDecode":
                     edBarcode.Text = await (imgBarcode.Source as WriteableBitmap).Decode();
                     break;
                 case "btnCopy":
-                    Utils.SetClipboard(imgBarcode, -1);
+                    Utils.SetClipboard(imgBarcode, CURRENT_SIZE);
                     break;
                 case "btnPaste":
                     edBarcode.Text = await Utils.GetClipboard(edBarcode.Text, imgBarcode);

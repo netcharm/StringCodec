@@ -16,6 +16,7 @@ using Windows.Storage.Provider;
 using Windows.Storage.Streams;
 using Windows.UI;
 using Windows.UI.Popups;
+using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -34,6 +35,98 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
+        static async public Task<WriteableBitmap> ToBitmap(this UIElement element)
+        {
+            WriteableBitmap result = null;
+            using (var fileStream = new InMemoryRandomAccessStream())
+            {
+                var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
+
+                RenderTargetBitmap rtb = new RenderTargetBitmap();
+                await rtb.RenderAsync(element);
+                var pixelBuffer = await rtb.GetPixelsAsync();
+                var r_width = rtb.PixelWidth;
+                var r_height = rtb.PixelHeight;
+
+                var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, fileStream);
+                encoder.SetPixelData(
+                    BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,
+                    (uint)r_width, (uint)r_height,
+                    dpi, dpi,
+                    pixelBuffer.ToArray());
+                await encoder.FlushAsync();
+
+                result = new WriteableBitmap(1, 1);
+                await result.SetSourceAsync(fileStream);
+                await fileStream.FlushAsync();
+                byte[] arr = WindowsRuntimeBufferExtensions.ToArray(result.PixelBuffer, 0, (int)result.PixelBuffer.Length);
+            }
+            return (result);
+        }
+
+        static async public Task<WriteableBitmap> ToBitmap(this string text, Grid root, string fontfamily, int fontsize, Color fgcolor, Color bgcolor)
+        {
+            WriteableBitmap result = null;
+
+            int width = 1024;
+            int height = 1024;
+            var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
+
+            var textBlock = new TextBlock()
+            {
+                Text = text,
+                FontWeight = FontWeights.Normal,
+                FontSize = fontsize,
+                Foreground = new SolidColorBrush(fgcolor),
+                TextAlignment = TextAlignment.Left,
+                TextWrapping = TextWrapping.NoWrap,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(8),
+                Width = fontsize * text.Length,
+                Height = fontsize + 32
+            };
+
+            //width = (int)textBlock.ActualWidth;
+            //height = (int)textBlock.ActualHeight;
+
+            var background = new Canvas() { Height = width, Width = height, Background = new SolidColorBrush(bgcolor) };
+
+            root.Children.Add(background);
+            root.Children.Add(textBlock);
+
+            RenderTargetBitmap rtb = new RenderTargetBitmap();
+            //await rtb.RenderAsync(background, width, height);
+            //await rtb.RenderAsync(textBlock, width, height);
+            //await rtb.RenderAsync(root, width, height);
+            await rtb.RenderAsync(background);
+            await rtb.RenderAsync(textBlock);
+            await rtb.RenderAsync(root);
+            // Get the pixels
+            var pixelBuffer = await rtb.GetPixelsAsync();
+            var r_width = rtb.PixelWidth;
+            var r_height = rtb.PixelHeight;
+
+            using (var fileStream = new InMemoryRandomAccessStream())
+            {
+                var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, fileStream);
+                encoder.SetPixelData(
+                    BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,
+                    (uint)r_width, (uint)r_height,
+                    dpi, dpi,
+                    pixelBuffer.ToArray());
+                await encoder.FlushAsync();
+
+                result = new WriteableBitmap(1, 1);
+                await result.SetSourceAsync(fileStream);
+                await fileStream.FlushAsync();
+                byte[] arr = WindowsRuntimeBufferExtensions.ToArray(result.PixelBuffer, 0, (int)result.PixelBuffer.Length);
+            }
+            root.Children.Remove(textBlock);
+            root.Children.Remove(background);
+            return (result);
+        }
+
         static public async void DrawText(this UIElement target, int x, int y, string text, string fontfamily, int fontsize, Color fgcolor, Color bgcolor)
         {
             using (var fileStream = new InMemoryRandomAccessStream())
@@ -48,9 +141,9 @@ namespace StringCodec.UWP.Common
                 var r_width = renderTargetBitmap.PixelWidth;
                 var r_height = renderTargetBitmap.PixelHeight;
 
-                var encoder = await BitmapEncoder.CreateAsync(BitmapDecoder.PngDecoderId, fileStream);
+                var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, fileStream);
                 encoder.SetPixelData(
-                    BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore,
+                    BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,
                     (uint)r_width, (uint)r_height,
                     dpi, dpi,
                     pixelBuffer.ToArray());
@@ -79,9 +172,9 @@ namespace StringCodec.UWP.Common
                 var r_width = renderTargetBitmap.PixelWidth;
                 var r_height = renderTargetBitmap.PixelHeight;
 
-                var encoder = await BitmapEncoder.CreateAsync(BitmapDecoder.PngDecoderId, fileStream);
+                var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, fileStream);
                 encoder.SetPixelData(
-                    BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore,
+                    BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,
                     (uint)r_width, (uint)r_height,
                     dpi, dpi,
                     pixelBuffer.ToArray());
@@ -137,7 +230,7 @@ namespace StringCodec.UWP.Common
                         var encId = BitmapEncoder.PngEncoderId;
                         var encoder = await BitmapEncoder.CreateAsync(encId, fileStream);
                         encoder.SetPixelData(
-                            BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore,
+                            BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,
                             (uint)width, (uint)height, dpi, dpi,
                             pixelBuffer.ToArray()
                         );
@@ -155,6 +248,11 @@ namespace StringCodec.UWP.Common
                 return (image.Source as WriteableBitmap);
             }
             return (result);
+        }
+
+        static public async Task<StorageFile> StoreTemporaryFile(this WriteableBitmap image, string prefix="")
+        {
+            return(await image.StoreTemporaryFile(image.PixelBuffer, image.PixelWidth, image.PixelHeight, prefix));
         }
 
         static public async Task<StorageFile> StoreTemporaryFile(this WriteableBitmap image, IBuffer pixelBuffer, int width, int height, string prefix="")
@@ -175,7 +273,7 @@ namespace StringCodec.UWP.Common
                     byte[] pixels = new byte[pixelStream.Length];
                     await pixelStream.ReadAsync(pixels, 0, pixels.Length);
                     encoder.SetPixelData(
-                        BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore,
+                        BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,
                         (uint)width, (uint)height,
                         dpi, dpi,
                         pixelBuffer.ToArray());
@@ -189,6 +287,11 @@ namespace StringCodec.UWP.Common
             return (null);
         }
 
+        static public async Task<InMemoryRandomAccessStream> StoreMemoryStream(this WriteableBitmap image, string prefix = "")
+        {
+            return (await image.StoreMemoryStream(image.PixelBuffer, image.PixelWidth, image.PixelHeight, prefix));
+        }
+
         static public async Task<InMemoryRandomAccessStream> StoreMemoryStream(this WriteableBitmap image, IBuffer pixelBuffer, int width, int height, string prefix = "")
         {
             InMemoryRandomAccessStream result = new InMemoryRandomAccessStream();
@@ -197,11 +300,9 @@ namespace StringCodec.UWP.Common
             using (var fileStream = new InMemoryRandomAccessStream())
             {
                 fileStream.Seek(0);
-
-                var encId = BitmapEncoder.PngEncoderId;
-                var encoder = await BitmapEncoder.CreateAsync(encId, fileStream);
+                var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, fileStream);
                 encoder.SetPixelData(
-                    BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore,
+                    BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,
                     (uint)width, (uint)height,
                     dpi, dpi,
                     pixelBuffer.ToArray());
@@ -348,21 +449,29 @@ namespace StringCodec.UWP.Common
                 //把控件变成图像
                 RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap();
                 //传入参数Image控件
-                await renderTargetBitmap.RenderAsync(image, width, height);
+                var bw = (image.Source as WriteableBitmap).PixelWidth;
+                var bh = (image.Source as WriteableBitmap).PixelHeight;
+                var factor = (float)bh / (float)bw;
+
+                var r_width = width;
+                var r_height = Convert.ToInt32(height * factor);
+
+                if (r_width < 0 || r_height < 0)
+                {
+                    r_width = bw;
+                    r_height = Convert.ToInt32(bh * factor);
+                }
+
+                await renderTargetBitmap.RenderAsync(image, r_width, r_height);
                 var pixelBuffer = await renderTargetBitmap.GetPixelsAsync();
 
                 var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
-                var r_width = renderTargetBitmap.PixelWidth;
-                var r_height = renderTargetBitmap.PixelHeight;
+                r_width = renderTargetBitmap.PixelWidth;
+                r_height = renderTargetBitmap.PixelHeight;
                 if (width > 0 && height > 0)
                 {
                     r_width = width;
-                    r_height = height;
-                }
-                else if (width < 0 || height < 0)
-                {
-                    r_width = (image.Source as WriteableBitmap).PixelWidth;
-                    r_height = (image.Source as WriteableBitmap).PixelHeight;
+                    r_height = Convert.ToInt32(height * factor);
                 }
 
                 #region Create a temporary file Copy to Clipboard
@@ -427,7 +536,7 @@ namespace StringCodec.UWP.Common
                 //        }
                 //        var encoder = await BitmapEncoder.CreateAsync(encId, fileStream);
                 //        encoder.SetPixelData(
-                //            BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore,
+                //            BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,
                 //            (uint)r_width, (uint)r_height,
                 //            dpi, dpi,
                 //            pixelBuffer.ToArray());
@@ -773,7 +882,7 @@ namespace StringCodec.UWP.Common
                 //    var encoder = await BitmapEncoder.CreateAsync(encId, fileStream);
                 //    // Save the image file with jpg extension 
                 //    encoder.SetPixelData(
-                //        BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore,
+                //        BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,
                 //        //(uint)bmp.PixelWidth, (uint)bmp.PixelHeight, 
                 //        (uint)size, (uint)size,
                 //        96.0, 96.0, 
@@ -831,7 +940,7 @@ namespace StringCodec.UWP.Common
                     }
                     var encoder = await BitmapEncoder.CreateAsync(encId, fileStream);
                     encoder.SetPixelData(
-                        BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore,
+                        BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,
                         (uint)r_width, (uint)r_height, dpi, dpi,
                         pixelBuffer.ToArray()
                     );

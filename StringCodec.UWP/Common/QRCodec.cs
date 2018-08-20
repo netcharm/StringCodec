@@ -153,23 +153,19 @@ namespace StringCodec.UWP.Common
                     maxlen = 13;
                     margin = 16;
                     height = (int)(width * 26.26 / 37.29);
-                    string isbn10 = CalcISBN_10(content.Substring(0, 9));
-                    string isbn13 = CalcISBN_13(content.Substring(0, 12));
-                    if (string.IsNullOrEmpty(isbn10) && string.IsNullOrEmpty(isbn13))
-                        content = "";
-                    else if(!string.IsNullOrEmpty(isbn13))
-                        content = isbn13;
-                    else if(!string.IsNullOrEmpty(isbn10))
-                        content = isbn10;
+                    string isbn13 = content.Length >= 12 ? CalcISBN_13(content.Substring(0, 12)) : string.Empty;
+                    if (string.IsNullOrEmpty(isbn13))
+                        return (null);
+                    content = isbn13;
                     break;
                 case "product":
                     fmt = BarcodeFormat.EAN_13;
                     maxlen = 13;
                     margin = 16;
                     height = (int)(width * 26.26 / 37.29);
-                    string prod13 = CalcISBN_13(content.Substring(0, 12));
+                    string prod13 = content.Length >= 12 ? CalcISBN_13(content.Substring(0, 12)) : string.Empty;
                     if (string.IsNullOrEmpty(prod13))
-                        content = "";
+                        return (null);
                     else
                         content = prod13;
                     break;
@@ -249,7 +245,8 @@ namespace StringCodec.UWP.Common
                 //bw.Options.Height = (int)(bmH * 1.25);
                 result = bw.Write(text);
 
-                //result.DrawText()
+
+                //result.Blit(new Windows.Foundation.Rect(0, 16, result.PixelWidth, result.PixelHeight), )
 
             }
             catch (Exception ex)
@@ -268,7 +265,10 @@ namespace StringCodec.UWP.Common
                     result = content;
                     break;
                 case "isbn":
-                    result = OneDimensionalCodeWriter.CalculateChecksumDigitModulo10(result.Substring(0, 12));
+                    string isbn13 = content.Length >= 12 ? CalcISBN_13(content.Substring(0, 12)) : string.Empty;
+                    if (string.IsNullOrEmpty(isbn13))
+                        return (string.Empty);
+                    result = isbn13; //OneDimensionalCodeWriter.CalculateChecksumDigitModulo10(content);
                     result = result.Insert(7, "   ");
                     result = result.Insert(1, "   ");
                     break;

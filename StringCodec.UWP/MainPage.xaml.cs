@@ -80,7 +80,7 @@ namespace StringCodec.UWP
             titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
             titleBar.ButtonForegroundColor = (Color)Resources["SystemBaseHighColor"];
 
-            //this.RequestedTheme = ElementTheme.Dark;
+            this.RequestedTheme = ElementTheme.Dark;
             if (Application.Current.RequestedTheme == ApplicationTheme.Dark)
             {
                 titleBar.ButtonForegroundColor = Colors.White;
@@ -316,7 +316,12 @@ namespace StringCodec.UWP
 
         private void NvMore_Click(object sender, RoutedEventArgs e)
         {
-
+            if (this.RequestedTheme == ElementTheme.Dark)
+                this.RequestedTheme = ElementTheme.Light;
+            else if (this.RequestedTheme == ElementTheme.Light)
+                this.RequestedTheme = ElementTheme.Dark;
+            else
+                this.RequestedTheme = ElementTheme.Default;
         }
 
     }
