@@ -437,19 +437,114 @@ namespace StringCodec.UWP.Common
                     {
                         fl.Add(fmt.ToString());
                     }
-                    if (dataPackageView.Contains("image/png"))
+                    //
+                    // maybe UWP WriteableBitmap/BitmapImage not support loading CF_DIB/CF_DIBv5 format so...
+                    //
+                    if (dataPackageView.Contains("DeviceIndependentBitmapV5_"))
                     {
                         using (var fileStream = new InMemoryRandomAccessStream())
                         {
-                            //var data = await dataPackageView.GetDataAsync("DeviceIndependentBitmapV5");
+                            var data = await dataPackageView.GetDataAsync("DeviceIndependentBitmapV5");
+                            var dataObj = data as IRandomAccessStream;
+                            var stream = dataObj.GetInputStreamAt(0);
+
+                            Stream dibStream = WindowsRuntimeStreamExtensions.AsStreamForRead(stream);
+                            MemoryStream ms = new MemoryStream();
+                            await dibStream.CopyToAsync(ms);
+                            byte[] dibBytes = ms.ToArray();
+                            await dibStream.FlushAsync();
+
+                            byte[] bb = new byte[] {
+                                0x42, 0x4D,
+                                0x00, 0x00, 0x00, 0x00,
+                                0x00, 0x00,
+                                0x00, 0x00,
+                                0x36, 0x00, 0x00, 0x28
+                            };
+                            var bs = (uint)dibBytes.Length + 14;
+                            var bsb = BitConverter.GetBytes(bs);
+                            bb[2] = bsb[0];
+                            bb[3] = bsb[1];
+                            bb[4] = bsb[2];
+                            bb[5] = bsb[3];
+                            var bh = WindowsRuntimeBufferExtensions.AsBuffer(bb, 0, bb.Length);                           
+                            await fileStream.WriteAsync(bh);
+                            await fileStream.FlushAsync();
+
+                            var bd = WindowsRuntimeBufferExtensions.AsBuffer(dibBytes, 0, dibBytes.Length);
+                            await fileStream.WriteAsync(bd);
+                            await fileStream.FlushAsync();
+
+                            WriteableBitmap bitmap = new WriteableBitmap(1, 1);
+                            await bitmap.SetSourceAsync(fileStream);
+                            byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmap.PixelBuffer, 0, (int)bitmap.PixelBuffer.Length);
+                            image.Source = bitmap;
+                        }
+                    }
+                    else if (dataPackageView.Contains("DeviceIndependentBitmap_"))
+                    {
+                        using (var fileStream = new InMemoryRandomAccessStream())
+                        {
+                            var data = await dataPackageView.GetDataAsync("DeviceIndependentBitmap");
+                            var dataObj = data as IRandomAccessStream;
+                            var stream = dataObj.GetInputStreamAt(0);
+
+                            Stream dibStream = WindowsRuntimeStreamExtensions.AsStreamForRead(stream);
+                            MemoryStream ms = new MemoryStream();
+                            await dibStream.CopyToAsync(ms);
+                            byte[] dibBytes = ms.ToArray();
+                            await dibStream.FlushAsync();
+
+                            // maybe need change byte order?
+                            //for(int i=0; i< dibBytes.Length; i=i+2)
+                            //{
+                            //    var b0 = dibBytes[i];
+                            //    var b1 = dibBytes[i + 1];
+                            //    dibBytes[i] = b1;
+                            //    dibBytes[i + 1] = b0;
+                            //}
+
+                            byte[] bb = new byte[] {
+                                0x42, 0x4D,
+                                0x00, 0x00, 0x00, 0x00,
+                                0x00, 0x00,
+                                0x00, 0x00,
+                                0x36, 0x00, 0x00, 0x28
+                            };
+                            var bs = (uint)dibBytes.Length + 14;
+                            var bsb = BitConverter.GetBytes(bs);
+                            bb[2] = bsb[0];
+                            bb[3] = bsb[1];
+                            bb[4] = bsb[2];
+                            bb[5] = bsb[3];
+                            var bh = WindowsRuntimeBufferExtensions.AsBuffer(bb, 0, bb.Length);
+                            await fileStream.WriteAsync(bh);
+                            await fileStream.FlushAsync();
+
+                            var bd = WindowsRuntimeBufferExtensions.AsBuffer(dibBytes, 0, dibBytes.Length);
+                            await fileStream.WriteAsync(bd);
+                            await fileStream.FlushAsync();
+
+                            //await RandomAccessStream.CopyAsync(stream, fileStream.GetOutputStreamAt(bh.Length));
+                            //await fileStream.FlushAsync();
+                            //fileStream
+
+                            WriteableBitmap bitmap = new WriteableBitmap(1, 1);
+                            await bitmap.SetSourceAsync(fileStream);
+                            byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmap.PixelBuffer, 0, (int)bitmap.PixelBuffer.Length);
+                            image.Source = bitmap;
+                        }
+                    }
+                    else if (dataPackageView.Contains("image/png"))
+                    {
+                        using (var fileStream = new InMemoryRandomAccessStream())
+                        {
                             var data = await dataPackageView.GetDataAsync("image/png");
                             var dataObj = data as IRandomAccessStream;
                             var stream = dataObj.GetInputStreamAt(0);
-                            //IBuffer buff = new Windows.Storage.Streams.Buffer((uint)dataObj.Size);
-                            //await stream.ReadAsync(buff, (uint)dataObj.Size, InputStreamOptions.None);
 
-                            var outputStream = fileStream.GetOutputStreamAt(0);
-                            await RandomAccessStream.CopyAsync(stream, outputStream);
+                            await RandomAccessStream.CopyAsync(stream, fileStream.GetOutputStreamAt(0));
+                            await fileStream.FlushAsync();
 
                             WriteableBitmap bitmap = new WriteableBitmap(1, 1);
                             await bitmap.SetSourceAsync(fileStream);
