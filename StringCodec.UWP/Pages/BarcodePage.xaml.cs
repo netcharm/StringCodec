@@ -4,20 +4,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading.Tasks;
-using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Capture;
-using Windows.Graphics.Display;
-using Windows.Graphics.Imaging;
 using Windows.Storage;
-using Windows.Storage.AccessCache;
-using Windows.Storage.Pickers;
-using Windows.Storage.Streams;
 using Windows.UI;
-using Windows.UI.Core;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -35,12 +27,12 @@ namespace StringCodec.UWP.Pages
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class QRCodePage : Page
+    public sealed partial class BarcodePage : Page
     {
-        private QRCodec.ERRORLEVEL CURRENT_ECL = QRCodec.ERRORLEVEL.L;
         private Color CURRENT_BGCOLOR = Colors.White; //Color.FromArgb(255, 255, 255, 255);
         private Color CURRENT_FGCOLOR = Colors.Black; //Color.FromArgb(255, 000, 000, 000);
         private int CURRENT_SIZE = 512;
+        private string CURRENT_FORMAT = "Express";
 
         private string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif" };
 
@@ -51,55 +43,19 @@ namespace StringCodec.UWP.Pages
             set { text_src = value; }
         }
 
-        public QRCodePage()
+        public BarcodePage()
         {
             this.InitializeComponent();
         }
 
-        private void ConfirmColor_Click(object sender, RoutedEventArgs e)
-        {
-            if ((bool)optBgColor.Tag)
-            {
-                CURRENT_BGCOLOR = myColorPicker.Color;
-                // Close the Flyout.
-                optBgColor.ContextFlyout.Hide();
-                optBgColor.Tag = false;
-            }
-            else if ((bool)optFgColor.Tag)
-            {
-                CURRENT_FGCOLOR = myColorPicker.Color;
-                // Close the Flyout.
-                optFgColor.ContextFlyout.Hide();
-                optFgColor.Tag = false;
-            }
-        }
-
-        private void CancelColor_Click(object sender, RoutedEventArgs e)
-        {
-            if ((bool)optBgColor.Tag)
-            {
-                // Close the Flyout.
-                optBgColor.ContextFlyout.Hide();
-                optBgColor.Tag = false;
-            }
-            else if ((bool)optFgColor.Tag)
-            {
-                // Close the Flyout.
-                optFgColor.ContextFlyout.Hide();
-                optFgColor.Tag = false;
-            }
-        }
-
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            optECL_L.IsChecked = true;
-            optSaveSizeM.IsChecked = true;
+            optBarCodeExpress.IsChecked = true;
+            edBarcode.TextWrapping = TextWrapping.Wrap;
 
             if (!string.IsNullOrEmpty(text_src))
             {
-                edQR.Text = text_src;
-                //imgQR.Stretch = Stretch.Uniform;
-                //imgQR.Source = QRCodec.Encode(edQR.Text, CURRENT_FGCOLOR, CURRENT_BGCOLOR, CURRENT_ECL);
+                edBarcode.Text = text_src;
             }
 
             #region Detecting is ScreenCapture supported?
@@ -118,15 +74,68 @@ namespace StringCodec.UWP.Pages
 
             #region Add small image to Image control for dragdrop target
             var wb = new WriteableBitmap(1, 1);
-            imgQR.Stretch = Stretch.Uniform;
-            imgQR.Source = wb;
+            imgBarcode.Stretch = Stretch.Uniform;
+            imgBarcode.Source = wb;
+            #endregion
+
+            #region Setup Barconde text
+            txtBarcode.FontFamily = new FontFamily("Consolas");
+            txtBarcode.FontSize = 16;
+            txtBarcode.FontStretch = Windows.UI.Text.FontStretch.Normal;
+            txtBarcode.VerticalAlignment = VerticalAlignment.Bottom;
+            txtBarcode.HorizontalAlignment =  HorizontalAlignment.Center;
+            txtBarcode.HorizontalTextAlignment = TextAlignment.Center;
             #endregion
         }
 
-        private void edQR_TextChanged(object sender, TextChangedEventArgs e)
+        private void edBarcode_TextChanged(object sender, TextChangedEventArgs e)
         {
-            lblInfo.Text = $"Count: {edQR.Text.Length}";
-            text_src = edQR.Text;
+            lblInfo.Text = $"Count: {edBarcode.Text.Length}";
+            text_src = edBarcode.Text;
+        }
+
+        private void OptBarCodeFormat_Click(object sender, RoutedEventArgs e)
+        {
+            ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] {
+                optBarCodeExpress, optBarCodeISBN, optBarCodeProduct,
+                optBarCodeLink, optBarCodeTele, optBarCodeMail, optBarCodeSMS,
+                optBarCodeVcard, optBarCodeVcal
+            };
+
+            var btn = sender as ToggleMenuFlyoutItem;
+            var FMT_NAME = btn.Name.Substring(10);
+            CURRENT_FORMAT = FMT_NAME;
+
+            foreach (ToggleMenuFlyoutItem opt in opts)
+            {
+                if (string.Equals(opt.Name, btn.Name, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    opt.IsChecked = true;
+                }
+                else opt.IsChecked = false;
+            }
+        }
+
+        private async void OptColor_Click(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as MenuFlyoutItem;
+            var C_NAME = btn.Name.Substring(3);
+
+            switch (C_NAME)
+            {
+                case "ResetColor":
+                    CURRENT_BGCOLOR = Colors.White; // Color.FromArgb(255, 255, 255, 255);
+                    CURRENT_FGCOLOR = Colors.Black; // Color.FromArgb(255, 000, 000, 000);
+                    break;
+                case "BgColor":
+                    CURRENT_BGCOLOR = await Utils.ShowColorDialog(CURRENT_BGCOLOR);
+                    break;
+                case "FgColor":
+                    CURRENT_FGCOLOR = await Utils.ShowColorDialog(CURRENT_FGCOLOR);
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void OptSave_Click(object sender, RoutedEventArgs e)
@@ -164,98 +173,33 @@ namespace StringCodec.UWP.Pages
             }
         }
 
-        private void OptECL_Click(object sender, RoutedEventArgs e)
-        {
-            ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] { optECL_L, optECL_M, optECL_Q, optECL_H };
-
-            var btn = sender as ToggleMenuFlyoutItem;
-            var ECL_NAME = btn.Name.Substring(btn.Name.Length - 1);
-
-            foreach (ToggleMenuFlyoutItem opt in opts)
-            {
-                if (string.Equals(opt.Name, btn.Name, StringComparison.CurrentCultureIgnoreCase))
-                {
-                    opt.IsChecked = true;
-                }
-                else opt.IsChecked = false;
-            }
-
-            CURRENT_ECL = (QRCodec.ERRORLEVEL)Enum.Parse(typeof(QRCodec.ERRORLEVEL), ECL_NAME);
-        }
-
-        private void OptColor_RightTapped(object sender, RightTappedRoutedEventArgs e)
-        {
-            var btn = sender as MenuFlyoutItem;
-            var C_NAME = btn.Name.Substring(3);
-
-            optFgColor.Tag = false;
-            optBgColor.Tag = false;
-
-            switch (C_NAME)
-            {
-                case "BgColor":
-                    optBgColor.Tag = true;
-                    //FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
-                    break;
-                case "FgColor":
-                    optFgColor.Tag = true;
-                    //FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        private async void OptColor_Click(object sender, RoutedEventArgs e)
-        {
-            var btn = sender as MenuFlyoutItem;
-            var C_NAME = btn.Name.Substring(3);
-
-            switch (C_NAME)
-            {
-                case "ResetColor":
-                    CURRENT_BGCOLOR = Colors.White; // Color.FromArgb(255, 255, 255, 255);
-                    CURRENT_FGCOLOR = Colors.Black; // Color.FromArgb(255, 000, 000, 000);
-                    break;
-                case "BgColor":
-                    CURRENT_BGCOLOR = await Utils.ShowColorDialog(CURRENT_BGCOLOR);
-                    break;
-                case "FgColor":
-                    CURRENT_FGCOLOR = await Utils.ShowColorDialog(CURRENT_FGCOLOR);
-                    break;
-                default:
-                    break;
-            }
-        }
-
         private async void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
             var btn = sender as AppBarButton;
             switch (btn.Name)
             {
                 case "btnEncode":
-                    imgQR.Stretch = Stretch.Uniform;
-                    imgQR.Source = QRCodec.EncodeQR(edQR.Text, CURRENT_FGCOLOR, CURRENT_BGCOLOR, CURRENT_ECL);
+                    imgBarcode.Source = await edBarcode.Text.EncodeBarcode(CURRENT_FORMAT, CURRENT_FGCOLOR, CURRENT_BGCOLOR);
+                    //txtBarcode.Foreground = new SolidColorBrush(CURRENT_FGCOLOR);
+                    txtBarcode.Width = imgBarcode.ActualWidth;
+                    //var offset = (edBarcode.ActualHeight - imgBarcode.ActualHeight) / 2;
+                    //txtBarcode.Margin = new Thickness(0, 0, 0, offset - txtBarcode.FontSize - 8);
+                    txtBarcode.Text = edBarcode.Text.BarcodeLabel(CURRENT_FORMAT);
                     break;
                 case "btnDecode":
-                    edQR.Text = await QRCodec.Decode(imgQR.Source as WriteableBitmap);
+                    edBarcode.Text = await (imgBarcode.Source as WriteableBitmap).Decode();
                     break;
                 case "btnCopy":
-                    Utils.SetClipboard(imgQR, CURRENT_SIZE);
+                    Utils.SetClipboard(imgBarcode, -1);
                     break;
                 case "btnPaste":
-                    edQR.Text = await Utils.GetClipboard(edQR.Text, imgQR);
-                    break;
-                case "btnCapture":
-                    imgQR.Stretch = Stretch.Uniform;
-                    var sc = new ScreenCapture(imgQR);
-                    await sc.StartCaptureAsync();
+                    edBarcode.Text = await Utils.GetClipboard(edBarcode.Text, imgBarcode);
                     break;
                 case "btnSave":
-                    await Utils.ShowSaveDialog(imgQR, CURRENT_SIZE, "QR");
+                    await Utils.ShowSaveDialog(imgBarcode, CURRENT_SIZE, "BarCode");
                     break;
                 case "btnShare":
-                    await Utils.Share(imgQR.Source as WriteableBitmap, "QR");
+                    await Utils.Share(imgBarcode.Source as WriteableBitmap, "BarCode");
                     break;
                 default:
                     break;
@@ -265,54 +209,28 @@ namespace StringCodec.UWP.Pages
         #region Drag/Drop routines
         private async void OnDragOver(object sender, DragEventArgs e)
         {
-            if (sender == imgQR)
+            if (sender == imgBarcode)
             {
                 try
                 {
                     if (e.DataView.Contains(StandardDataFormats.StorageItems))
                     {
-                        //e.DragUIOverride.IsCaptionVisible = true;
-                        //e.DragUIOverride.IsContentVisible = true;
-                        //e.DragUIOverride.IsGlyphVisible = true;
                         e.AcceptedOperation = DataPackageOperation.Copy;
-
-                        //var items = await e.DataView.GetStorageItemsAsync();
-                        //var content = (StorageFile)items[0];
-                        //switch (content.ContentType)
-                        //{
-                        //    case "image/png":
-                        //    case "image/jpeg":
-                        //        break;
-                        //}
-                        //if (items.Count > 0)
-                        //{
-                        //    var storageFile = items[0] as StorageFile;
-                        //    if (!image_ext.Contains(storageFile.FileType.ToLower()))
-                        //        e.AcceptedOperation = DataPackageOperation.None;
-                        //}
-                        //e.AcceptedOperation = DataPackageOperation.Copy;
                     }
                     else if (e.DataView.Contains(StandardDataFormats.WebLink))
                     {
                         e.AcceptedOperation = DataPackageOperation.Copy;
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     await new MessageDialog(ex.Message, "ERROR").ShowAsync();
                 }
             }
-            else if (sender == edQR)
+            else if (sender == edBarcode)
             {
                 if (e.DataView.Contains(StandardDataFormats.StorageItems))
                 {
-                    //var items = await e.DataView.GetStorageItemsAsync();
-                    //if (items.Count > 0)
-                    //{
-                    //    var storageFile = items[0] as StorageFile;
-                    //    if (!storageFile.FileType.ToLower().Equals(".txt")) return;
-                    //    e.AcceptedOperation = DataPackageOperation.Copy;
-                    //}
                     e.AcceptedOperation = DataPackageOperation.Copy;
                 }
                 else if (e.DataView.Contains(StandardDataFormats.Text) ||
@@ -327,7 +245,7 @@ namespace StringCodec.UWP.Pages
 
         private async void OnDrop(object sender, DragEventArgs e)
         {
-            if (sender == imgQR)
+            if (sender == imgBarcode)
             {
                 if (e.DataView.Contains(StandardDataFormats.StorageItems))
                 {
@@ -347,7 +265,7 @@ namespace StringCodec.UWP.Pages
                         //    imgQR.Stretch = Stretch.Uniform;
                         //else imgQR.Stretch = Stretch.None;
                         byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
-                        imgQR.Source = bitmapImage;
+                        imgBarcode.Source = bitmapImage;
                     }
                 }
                 else if (e.DataView.Contains(StandardDataFormats.WebLink))
@@ -364,10 +282,10 @@ namespace StringCodec.UWP.Pages
                     //    imgQR.Stretch = Stretch.Uniform;
                     //else imgQR.Stretch = Stretch.None;
                     byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
-                    imgQR.Source = bitmapImage;
+                    imgBarcode.Source = bitmapImage;
                 }
             }
-            else if (sender == edQR)
+            else if (sender == edBarcode)
             {
                 if (e.DataView.Contains(StandardDataFormats.StorageItems))
                 {
@@ -377,7 +295,7 @@ namespace StringCodec.UWP.Pages
                         var storageFile = items[0] as StorageFile;
                         if (!storageFile.FileType.ToLower().Equals(".txt")) return;
 
-                        edQR.Text = await FileIO.ReadTextAsync(storageFile);
+                        edBarcode.Text = await FileIO.ReadTextAsync(storageFile);
                     }
                 }
                 else if (e.DataView.Contains(StandardDataFormats.Text) ||
@@ -388,11 +306,12 @@ namespace StringCodec.UWP.Pages
                     var content = await e.DataView.GetTextAsync();
                     if (content.Length > 0)
                     {
-                        edQR.Text = content;
+                        edBarcode.Text = content;
                     }
                 }
             }
         }
         #endregion
+
     }
 }

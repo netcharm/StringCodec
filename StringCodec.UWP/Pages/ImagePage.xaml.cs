@@ -31,6 +31,8 @@ namespace StringCodec.UWP.Pages
         private bool CURRENT_LINEBREAK = false;
         private string CURRENT_FORMAT = ".png";
 
+        private string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif" };
+
         static private string text_src = string.Empty;
         static public string Text
         {
@@ -60,6 +62,11 @@ namespace StringCodec.UWP.Pages
             imgBase64.Stretch = Stretch.Uniform;
             imgBase64.Source = wb;
             #endregion
+        }
+
+        private void edBase64_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            text_src = edBase64.Text;
         }
 
         private void OptFmt_Click(object sender, RoutedEventArgs e)
@@ -133,11 +140,6 @@ namespace StringCodec.UWP.Pages
                 default:
                     break;
             }
-        }
-
-        private void edBase64_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            text_src = edBase64.Text;
         }
 
         #region Drag/Drop routines

@@ -41,8 +41,9 @@ namespace StringCodec.UWP
             this.InitializeComponent();
         }
 
-        private void NvMain_Loaded(object sender, RoutedEventArgs e)
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            #region Extented the supported string charsets
             //
             // Add GBK/Shift-JiS... to Encoding Supported
             // 使用CodePagesEncodingProvider去注册扩展编码。
@@ -53,12 +54,9 @@ namespace StringCodec.UWP
             //{
             //    Encoding enc = ei.GetEncoding();
             //}
+            #endregion
 
-            nvMain.Header = nvMain.PaneTitle;
-
-            ContentFrame.Navigate(typeof(Pages.TextPage));
-            ContentFrame.Navigated += NvMain_Navigated;
-
+            #region Add Back Shortcut Key to Alt+Back
             // add keyboard accelerators for backwards navigation
             KeyboardAccelerator GoBack = new KeyboardAccelerator();
             GoBack.Key = VirtualKey.GoBack;
@@ -70,6 +68,7 @@ namespace StringCodec.UWP
             this.KeyboardAccelerators.Add(AltLeft);
             // ALT routes here
             AltLeft.Modifiers = VirtualKeyModifiers.Menu;
+            #endregion
 
             #region 将应用扩展到标题栏
             //draw into the title bar
@@ -80,8 +79,8 @@ namespace StringCodec.UWP
             titleBar.ButtonBackgroundColor = Colors.Transparent;
             titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
             titleBar.ButtonForegroundColor = (Color)Resources["SystemBaseHighColor"];
-            
-            this.RequestedTheme = ElementTheme.Dark;
+
+            //this.RequestedTheme = ElementTheme.Dark;
             if (Application.Current.RequestedTheme == ApplicationTheme.Dark)
             {
                 titleBar.ButtonForegroundColor = Colors.White;
@@ -92,10 +91,11 @@ namespace StringCodec.UWP
             }
             #endregion
 
+
             //Utils.ShareInit();
         }
 
-        private bool On_BackRequested()
+        private bool OnBackRequested()
         {
             bool navigated = false;
 
@@ -117,124 +117,16 @@ namespace StringCodec.UWP
 
         private void BackInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
         {
-            On_BackRequested();
+            OnBackRequested();
             args.Handled = true;
-        }
-
-        private void NvMain_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
-        {
-            On_BackRequested();
-        }
-
-        private void NvMain_Navigated(object sender, NavigationEventArgs e)
-        {
-            nvMain.IsBackEnabled = ContentFrame.CanGoBack;
-
-            //if (ContentFrame.SourcePageType == typeof(SettingsPage))
-            //{
-            //    nvMain.SelectedItem = nvMain.SettingsItem as NavigationViewItem;
-            //}
-            //else
-            {
-                Dictionary<Type, string> lookup = new Dictionary<Type, string>()
-                {
-                    {typeof(Pages.TextPage), "PageText"},
-                    {typeof(Pages.QRCodePage), "PageQR"},
-                    {typeof(Pages.ImagePage), "PageImage"},
-                    {typeof(Pages.CharsetPage), "PageCharset"}
-                };
-
-                String stringTag = lookup[ContentFrame.SourcePageType];
-
-                // set the new SelectedItem  
-                foreach (NavigationViewItemBase item in nvMain.MenuItems)
-                {
-                    if (item is NavigationViewItem && item.Tag.Equals(stringTag))
-                    {
-                        item.IsSelected = true;
-                        break;
-                    }
-                }
-            }
-        }
-
-        private void NvMain_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
-        {
-
-        }
-
-        private void NvMain_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
-        {
-            //先判断是否选中了setting
-            if (args.IsSettingsInvoked)
-            {
-                //ContentFrame.Navigate(typeof(SettingsPage));
-            }
-            else
-            {
-                //选中项的内容
-                switch (args.InvokedItem)
-                {
-                    case "Home":
-                        ContentFrame.Navigate(typeof(Pages.TextPage));
-                        break;
-                    case "Text":
-                        ContentFrame.Navigate(typeof(Pages.TextPage));
-                        break;
-                    case "Charset":
-                        ContentFrame.Navigate(typeof(Pages.CharsetPage));
-                        break;
-                    case "Image":
-                        ContentFrame.Navigate(typeof(Pages.ImagePage));
-                        break;
-                    case "QR Code":
-                        ContentFrame.Navigate(typeof(Pages.QRCodePage));
-                        break;
-                    default:
-                        ContentFrame.Navigate(typeof(Pages.TextPage));
-                        break;
-                }
-            }
-        }
-
-        private void NvMain_Click(object sender, TappedRoutedEventArgs e)
-        {
-            var tag = (string)(sender as NavigationViewItem).Tag;
-            //选中项的内容
-            switch (tag)
-            {
-                case "PageText":
-                    ContentFrame.Navigate(typeof(Pages.TextPage));
-                    break;
-                case "PageCharset":
-                    ContentFrame.Navigate(typeof(Pages.CharsetPage));
-                    break;
-                case "PageImage":
-                    ContentFrame.Navigate(typeof(Pages.ImagePage));
-                    break;
-                case "PageQR":
-                    ContentFrame.Navigate(typeof(Pages.QRCodePage));
-                    break;
-                case "PageWifi":
-                    //ContentFrame.Navigate(typeof(Pages.WifiPage));
-                    break;
-                default:
-                    ContentFrame.Navigate(typeof(Pages.TextPage));
-                    break;
-            }
-        }
-
-        private void More_Click(object sender, RoutedEventArgs e)
-        {
-
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             try
             {
-               if (e.Parameter == null || string.IsNullOrEmpty(e.Parameter as string)) return;
-               operation = (ShareOperation)e.Parameter;
+                if (e.Parameter == null || string.IsNullOrEmpty(e.Parameter as string)) return;
+                operation = (ShareOperation)e.Parameter;
                 //Get text data 
                 if (operation.Data.Contains(StandardDataFormats.Text))
                 {
@@ -270,6 +162,161 @@ namespace StringCodec.UWP
             {
                 await new MessageDialog(ex.Message, "ERROR").ShowAsync();
             }
+        }
+
+        private void NvMain_Loaded(object sender, RoutedEventArgs e)
+        {
+            nvMain.IsBackEnabled = ContentFrame.CanGoBack;
+
+            nvMain.Header = nvMain.PaneTitle;
+
+            ContentFrame.Navigate(typeof(Pages.TextPage));
+            ContentFrame.Navigated += NvMain_Navigated;
+        }
+
+        private void NvMain_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
+        {
+            OnBackRequested();
+        }
+
+        private void NvMain_Navigated(object sender, NavigationEventArgs e)
+        {
+            nvMain.IsBackEnabled = ContentFrame.CanGoBack;
+
+            //if (ContentFrame.SourcePageType == typeof(Pages.SettingsPage))
+            //{
+            //    nvMain.SelectedItem = nvMain.SettingsItem as NavigationViewItem;
+            //}
+            //else
+            //{
+            //    Dictionary<Type, string> lookup = new Dictionary<Type, string>()
+            //    {
+            //        {typeof(Pages.TextPage), "PageText"},
+            //        {typeof(Pages.QRCodePage), "PageQR"},
+            //        {typeof(Pages.ImagePage), "PageImage"},
+            //        {typeof(Pages.CharsetPage), "PageWifi"},
+            //        {typeof(Pages.CharsetPage), "PageBarcodet"},
+            //        {typeof(Pages.CharsetPage), "PageCharset"}
+            //    };
+
+            //    string stringTag = lookup[ContentFrame.SourcePageType];
+
+            //    // set the new SelectedItem  
+            //    foreach (NavigationViewItemBase item in nvMain.MenuItems)
+            //    {
+            //        if (item is NavigationViewItem && item.Tag.Equals(stringTag))
+            //        {
+            //            item.IsSelected = true;
+            //            break;
+            //        }
+            //    }
+            //}
+        }
+
+        private void NvMain_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+        {
+            ////先判断是否选中了setting
+            //if (args.IsSettingsInvoked)
+            //{
+            //    ContentFrame.Navigate(typeof(Pages.SettingsPage));
+            //}
+            //else
+            //{
+            //    //选中项的内容
+            //    switch (args.InvokedItem)
+            //    {
+            //        case "Home":
+            //            ContentFrame.Navigate(typeof(Pages.TextPage));
+            //            break;
+            //        case "Text":
+            //            ContentFrame.Navigate(typeof(Pages.TextPage));
+            //            break;
+            //        case "Charset":
+            //            ContentFrame.Navigate(typeof(Pages.CharsetPage));
+            //            break;
+            //        case "Image":
+            //            ContentFrame.Navigate(typeof(Pages.ImagePage));
+            //            break;
+            //        case "QR Code":
+            //            ContentFrame.Navigate(typeof(Pages.QRCodePage));
+            //            break;
+            //        default:
+            //            ContentFrame.Navigate(typeof(Pages.TextPage));
+            //            break;
+            //    }
+            //}
+        }
+
+        private void NvMain_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+        {
+            //先判断是否选中了setting
+            if (args.IsSettingsSelected)
+            {
+                ContentFrame.Navigate(typeof(Pages.SettingsPage));
+            }
+            else
+            {
+                var item = args.SelectedItem as NavigationViewItem;
+                switch (item.Name)
+                {
+                    case "nvItemText":
+                        ContentFrame.Navigate(typeof(Pages.TextPage));
+                        break;
+                    case "nvItemQRCode":
+                        ContentFrame.Navigate(typeof(Pages.QRCodePage));
+                        break;
+                    case "nvItemImage":
+                        ContentFrame.Navigate(typeof(Pages.ImagePage));
+                        break;
+                    case "nvItemWifi":
+                        ContentFrame.Navigate(typeof(Pages.WifiQRPage));
+                        break;
+                    case "nvItemBarCode":
+                        ContentFrame.Navigate(typeof(Pages.BarcodePage));
+                        break;
+                    case "nvItemCharset":
+                        ContentFrame.Navigate(typeof(Pages.CharsetPage));
+                        break;
+                    default:
+                        ContentFrame.Navigate(typeof(Pages.TextPage));
+                        break;
+                }
+            }
+        }
+
+        private void NvMain_Click(object sender, TappedRoutedEventArgs e)
+        {
+            //var tag = (string)(sender as NavigationViewItem).Tag;
+            ////选中项的内容
+            //switch (tag)
+            //{
+            //    case "PageText":
+            //        ContentFrame.Navigate(typeof(Pages.TextPage));
+            //        break;
+            //    case "PageQR":
+            //        ContentFrame.Navigate(typeof(Pages.QRCodePage));
+            //        break;
+            //    case "PageImage":
+            //        ContentFrame.Navigate(typeof(Pages.ImagePage));
+            //        break;
+            //    case "PageWifi":
+            //        ContentFrame.Navigate(typeof(Pages.WifiQRPage));
+            //        break;
+            //    case "PageBarcode":
+            //        ContentFrame.Navigate(typeof(Pages.BarcodePage));
+            //        break;
+            //    case "PageCharset":
+            //        ContentFrame.Navigate(typeof(Pages.CharsetPage));
+            //        break;
+            //    default:
+            //        ContentFrame.Navigate(typeof(Pages.TextPage));
+            //        break;
+            //}
+        }
+
+        private void NvMore_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
     }

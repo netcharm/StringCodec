@@ -1,0 +1,103 @@
+﻿<Page
+    x:Class="StringCodec.UWP.Pages.BarcodePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:StringCodec.UWP.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Loaded="Page_Loaded"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Margin="12, 0, 12, 12" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width=".38*"/>
+            <ColumnDefinition Width=".62*"/>
+        </Grid.ColumnDefinitions>
+
+        <CommandBar Grid.Row="0" Grid.ColumnSpan="2">
+            <AppBarButton Grid.Column="0" x:Name="btnOpt" x:Uid="btnOpt" Icon="Bullets" Label="Options" VerticalAlignment="Center">
+                <AppBarButton.Flyout>
+                    <MenuFlyout>
+                        <ToggleMenuFlyoutItem x:Name="optBarCodeExpress" x:Uid="optBarCodeExpress" Text="Express No." Click="OptBarCodeFormat_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optBarCodeISBN" x:Uid="optBarCodeISBN" Text="Book ISBN" Click="OptBarCodeFormat_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optBarCodeProduct" x:Uid="optBarCodeProduct" Text="Product" Click="OptBarCodeFormat_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optBarCodeLink" x:Uid="optBarCodeLink" Text="Web Link" Click="OptBarCodeFormat_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optBarCodeTele" x:Uid="optBarCodeTele" Text="Telephone" Click="OptBarCodeFormat_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optBarCodeMail" x:Uid="optBarCodeMail" Text="Mail" Click="OptBarCodeFormat_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optBarCodeSMS" x:Uid="optBarCodeSMS" Text="SMS" Click="OptBarCodeFormat_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optBarCodeVcard" x:Uid="optBarCodeVcard" Text="vCard" Click="OptBarCodeFormat_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optBarCodeVcal" x:Uid="optBarCodeVcal" Text="vCalendar" Click="OptBarCodeFormat_Click"/>
+                        <MenuFlyoutSeparator />
+                        <MenuFlyoutItem x:Name="optFgColor" x:Uid="optFgColor" Text="Foreground Color" Click="OptColor_Click">
+                            <MenuFlyoutItem.Icon>
+                                <FontIcon Glyph="&#xE2B1;" FontFamily="Segoe MDL2 Assets"/>
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                        <MenuFlyoutItem x:Name="optBgColor" x:Uid="optBgColor" Text="Background Color" Click="OptColor_Click">
+                            <MenuFlyoutItem.Icon>
+                                <FontIcon Glyph="&#xE2B1;" FontFamily="Segoe MDL2 Assets"/>
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                        <MenuFlyoutItem x:Name="optResetColor" x:Uid="optResetColor" Text="Reset Color" Click="OptColor_Click"/>
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+            <AppBarSeparator />
+            <AppBarButton x:Name="btnCopy" x:Uid="btnCopy" Label="Copy" Icon="Copy" VerticalAlignment="Center" Click="AppBarButton_Click"  />
+            <AppBarButton x:Name="btnPaste" x:Uid="btnPaste" Label="Paste" Icon="Paste" VerticalAlignment="Center" Click="AppBarButton_Click" />
+            <AppBarSeparator />
+            <AppBarButton x:Name="btnEncode" x:Uid="btnEncode" Label="Encode" VerticalAlignment="Center" Click="AppBarButton_Click">
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xF02A;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton x:Name="btnDecode" x:Uid="btnDecode" Label="Decode" Icon="Character" VerticalAlignment="Center" Click="AppBarButton_Click" />
+            <AppBarSeparator />
+            <AppBarButton x:Name="btnCapture" x:Uid="btnCapture" Label="Capture" Icon="Camera" VerticalAlignment="Center" Click="AppBarButton_Click" />
+            <AppBarButton x:Name="btnSave" x:Uid="btnSave" Label="Save" Icon="Save" VerticalAlignment="Center" Click="AppBarButton_Click" />
+            <AppBarButton x:Name="btnShare" x:Uid="btnShare" Label="Share" Icon="Share" VerticalAlignment="Center" Click="AppBarButton_Click" />
+
+            <CommandBar.SecondaryCommands>
+                <!-- More Button Dropdown menu -->
+                <AppBarToggleButton x:Name="optSaveSizeWindow" x:Uid="optSaveSizeWindow" Label="Display Size" Click="OptSave_Click">
+                    <AppBarToggleButton.Icon>
+                        <FontIcon Glyph="&#xE7F4;" FontFamily="Segoe MDL2 Assets"/>
+                    </AppBarToggleButton.Icon>
+                </AppBarToggleButton>
+                <AppBarToggleButton x:Name="optSaveSizeL" x:Uid="optSaveSizeL" Label="L: 1024x1024" Icon="Trim" Click="OptSave_Click"/>
+                <AppBarToggleButton x:Name="optSaveSizeM" x:Uid="optSaveSizeM" Label="M: 512x512" Icon="Trim" Click="OptSave_Click"/>
+                <AppBarToggleButton x:Name="optSaveSizeN" x:Uid="optSaveSizeN" Label="S: 256x256" Icon="Trim" Click="OptSave_Click"/>
+                <AppBarToggleButton x:Name="optSaveSizeS" x:Uid="optSaveSizeS" Label="S: 128x128" Icon="Trim" Click="OptSave_Click"/>
+            </CommandBar.SecondaryCommands>
+
+            <CommandBar.Content>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <!--<ProgressRing Grid.Column="0" x:Name="ring" x:Uid="Ring" VerticalAlignment="Center"/>-->
+                    <TextBlock Grid.Column="1" x:Name="lblInfo" x:Uid="edInfo" Text="Count: 0" Margin="12,14" VerticalAlignment="Center"/>
+                </Grid>
+            </CommandBar.Content>
+        </CommandBar>
+
+        <TextBox Grid.Row="1" Grid.Column="0" x:Name="edBarcode" x:Uid="edBarcode" 
+                 Header="Text:" PlaceholderText="Input text at here" 
+                 AcceptsReturn="True" TextWrapping="Wrap" CanDrag="True" 
+                 FontFamily="Consolas" FontSize="16" 
+                 ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                 ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                 TextChanged="edBarcode_TextChanged"
+                 AllowDrop="True" DragOver="OnDragOver" Drop="OnDrop"/>
+        <Image Grid.Row="1" Grid.Column="1" x:Name="imgBarcode" x:Uid="imgBarcode" Margin="12, 24, 0, 0"
+               Stretch="Uniform"
+               AllowDrop="True" DragOver="OnDragOver" Drop="OnDrop"/>
+        <TextBlock Grid.Row="1" Grid.Column="1" x:Name="txtBarcode" x:Uid="txtBarcode" Margin="0,472,0,0" Text="0123456789" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="357"/>
+    </Grid>
+</Page>

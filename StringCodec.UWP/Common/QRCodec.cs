@@ -1,222 +1,24 @@
-﻿using System;
+﻿using Microsoft.Graphics.Canvas;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
-using Windows.Foundation;
+using Windows.Graphics.Display;
+using Windows.Graphics.Imaging;
+using Windows.Storage.Streams;
+using Windows.UI;
+using Windows.UI.Popups;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using ZXing;
-using ZXing.Rendering;
-using ZXing.QrCode.Internal;
 using ZXing.Common;
-using Windows.UI;
-using Windows.Graphics.Capture;
-using Microsoft.Graphics.Canvas;
-using Windows.UI.Composition;
-using Windows.Graphics;
-using Microsoft.Graphics.Canvas.UI.Composition;
-using Windows.UI.Xaml;
-using Windows.Graphics.DirectX;
-using System.Numerics;
-using Windows.UI.Xaml.Hosting;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Popups;
+using ZXing.OneD;
+using ZXing.QrCode.Internal;
+using ZXing.Rendering;
 
 namespace StringCodec.UWP.Common
 {
-    public class ScreenCapture
-    {
-        // Capture API objects.
-        private SizeInt32 _lastSize;
-        private GraphicsCaptureItem _item;
-        private Direct3D11CaptureFramePool _framePool;
-        private GraphicsCaptureSession _session;
-
-        // Non-API related members.
-        private CanvasDevice _canvasDevice;
-        private CompositionGraphicsDevice _compositionGraphicsDevice;
-        private Compositor _compositor;
-        private CompositionDrawingSurface _surface;
-
-        public Image Preview
-        {
-            set
-            {
-                Setup(value);
-            }
-        }
-
-        private void Setup(Image image)
-        {
-            _canvasDevice = new CanvasDevice();
-            _compositionGraphicsDevice = CanvasComposition.CreateCompositionGraphicsDevice(Window.Current.Compositor, _canvasDevice);
-            _compositor = Window.Current.Compositor;
-
-            _surface = _compositionGraphicsDevice.CreateDrawingSurface(
-                new Size(400, 400),
-                DirectXPixelFormat.B8G8R8A8UIntNormalized,
-                DirectXAlphaMode.Premultiplied);    // This is the only value that currently works with the composition APIs.
-
-            var visual = _compositor.CreateSpriteVisual();
-            visual.RelativeSizeAdjustment = Vector2.One;
-            var brush = _compositor.CreateSurfaceBrush(_surface);
-            brush.HorizontalAlignmentRatio = 0.5f;
-            brush.VerticalAlignmentRatio = 0.5f;
-            brush.Stretch = CompositionStretch.Uniform;
-            visual.Brush = brush;
-            ElementCompositionPreview.SetElementChildVisual(image, visual);
-        }
-
-        public async Task StartCaptureAsync()
-        {
-            // The GraphicsCapturePicker follows the same pattern the 
-            // file pickers do. 
-            var picker = new GraphicsCapturePicker();
-            GraphicsCaptureItem item = await picker.PickSingleItemAsync();
-
-            // The item may be null if the user dismissed the 
-            // control without making a selection or hit Cancel. 
-            if (item != null)
-            {
-                StartCaptureInternal(item);
-            }
-        }
-
-
-        private void StartCaptureInternal(GraphicsCaptureItem item)
-        {
-            // Stop the previous capture if we had one.
-            StopCapture();
-
-            _item = item;
-            _lastSize = _item.Size;
-
-            _framePool = Direct3D11CaptureFramePool.Create(
-               _canvasDevice, // D3D device 
-               DirectXPixelFormat.B8G8R8A8UIntNormalized, // Pixel format 
-               2, // Number of frames 
-               _item.Size); // Size of the buffers 
-
-            _framePool.FrameArrived += (s, a) =>
-            {
-                // The FrameArrived event is raised for every frame on the thread
-                // that created the Direct3D11CaptureFramePool. This means we 
-                // don't have to do a null-check here, as we know we're the only 
-                // one dequeueing frames in our application.  
-
-                // NOTE: Disposing the frame retires it and returns  
-                // the buffer to the pool.
-
-                using (var frame = _framePool.TryGetNextFrame())
-                {
-                    ProcessFrame(frame);
-                }
-            };
-
-            _item.Closed += (s, a) =>
-            {
-                StopCapture();
-            };
-
-            _session = _framePool.CreateCaptureSession(_item);
-            _session.StartCapture();
-        }
-
-        public void StopCapture()
-        {
-            _session?.Dispose();
-            _framePool?.Dispose();
-            _item = null;
-            _session = null;
-            _framePool = null;
-        }
-
-        private void ProcessFrame(Direct3D11CaptureFrame frame)
-        {
-            // Resize and device-lost leverage the same function on the
-            // Direct3D11CaptureFramePool. Refactoring it this way avoids 
-            // throwing in the catch block below (device creation could always 
-            // fail) along with ensuring that resize completes successfully and 
-            // isn’t vulnerable to device-lost.   
-            bool needsReset = false;
-            bool recreateDevice = false;
-
-            if ((frame.ContentSize.Width != _lastSize.Width) ||
-                (frame.ContentSize.Height != _lastSize.Height))
-            {
-                needsReset = true;
-                _lastSize = frame.ContentSize;
-            }
-
-            try
-            {
-                // Take the D3D11 surface and draw it into a  
-                // Composition surface.
-
-                // Convert our D3D11 surface into a Win2D object.
-                var canvasBitmap = CanvasBitmap.CreateFromDirect3D11Surface(
-                    _canvasDevice,
-                    frame.Surface);
-
-                // Helper that handles the drawing for us.
-                FillSurfaceWithBitmap(canvasBitmap);
-            }
-
-            // This is the device-lost convention for Win2D.
-            catch (Exception e) when (_canvasDevice.IsDeviceLost(e.HResult))
-            {
-                // We lost our graphics device. Recreate it and reset 
-                // our Direct3D11CaptureFramePool.  
-                needsReset = true;
-                recreateDevice = true;
-            }
-
-            if (needsReset)
-            {
-                ResetFramePool(frame.ContentSize, recreateDevice);
-            }
-        }
-
-        private void FillSurfaceWithBitmap(CanvasBitmap canvasBitmap)
-        {
-            CanvasComposition.Resize(_surface, canvasBitmap.Size);
-
-            using (var session = CanvasComposition.CreateDrawingSession(_surface))
-            {
-                session.Clear(Colors.Transparent);
-                session.DrawImage(canvasBitmap);
-            }
-        }
-
-        private void ResetFramePool(SizeInt32 size, bool recreateDevice)
-        {
-            do
-            {
-                try
-                {
-                    if (recreateDevice)
-                    {
-                        _canvasDevice = new CanvasDevice();
-                    }
-
-                    _framePool.Recreate(
-                        _canvasDevice,
-                        DirectXPixelFormat.B8G8R8A8UIntNormalized,
-                        2,
-                        size);
-                }
-                // This is the device-lost convention for Win2D.
-                catch (Exception e) when (_canvasDevice.IsDeviceLost(e.HResult))
-                {
-                    _canvasDevice = null;
-                    recreateDevice = true;
-                }
-            } while (_canvasDevice == null);
-        }
-
-    }
-
     static public class QRCodec
     {
         public enum ERRORLEVEL { L, M, Q, H };
@@ -257,7 +59,57 @@ namespace StringCodec.UWP.Common
         //        }
         #endregion
 
-        static private void setDecodeOptions(BarcodeReader br)
+        #region Calc ISBN checksum
+        static private string CalcISBN_10(string text)
+        {
+            text = text.Replace("-", "").Replace(" ", "");
+
+            long value = 0;
+            if (!long.TryParse(text, out value)) return (string.Empty);
+            if (text.Length != 9 && text.Length != 10)
+            {
+                if (text.Length == 12 || text.Length == 13)
+                {
+                    text = text.Substring(3, 9);
+                }
+                else
+                    return (string.Empty);
+            }
+
+            int[] w = { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
+            var cd = 0;
+            for (int i = 0; i < 9; i++)
+            {
+                cd += (int)Char.GetNumericValue(text[i]) * w[i];
+            }
+            var N = cd % 11;
+            if (N == 10)
+                cd = 'X';
+            else
+                cd = (N == 11) ? 0 : N;
+            return text.Substring(0, 9) + cd.ToString();
+        }
+
+        static private string CalcISBN_13(string text)
+        {
+            text = text.Replace("-", "").Replace(" ", "");
+
+            long value = 0;
+            if (!long.TryParse(text, out value)) return (string.Empty);
+            if (text.Length != 12 && text.Length != 13) return (string.Empty);
+
+            int[] w = { 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3 };
+            var cd = 0;
+            for (int i = 0; i < 12; i++)
+            {
+                cd += (int)Char.GetNumericValue(text[i]) * w[i];
+            }
+            cd = (cd % 10 == 0) ? 0 : 10 - (cd % 10);
+            return text.Substring(0, 12) + cd.ToString();
+        }
+        #endregion
+
+        static private void SetDecodeOptions(BarcodeReader br)
         {
             br.AutoRotate = true;
             br.TryInverted = true;
@@ -279,10 +131,160 @@ namespace StringCodec.UWP.Common
             //br.Options.PossibleFormats.Add(BarcodeFormat.QR_CODE);
         }
 
-        static public WriteableBitmap Encode(string content, Color fgcolor, Color bgcolor, ERRORLEVEL ECL)
+        static async public Task<WriteableBitmap> EncodeBarcode(this string content, string format, Color fgcolor, Color bgcolor)
         {
             WriteableBitmap result = null;
+            if (content.Length <= 0) return (result);
 
+            int maxlen = 0;
+            int width = 1024;
+            int height = 512;
+            int margin = 7;
+            var fmt = BarcodeFormat.CODE_39;
+            switch (format.ToLower())
+            {
+                case "express":
+                    fmt = BarcodeFormat.CODE_128;
+                    maxlen = 48;
+                    height = 300;
+                    break;
+                case "isbn":
+                    fmt = BarcodeFormat.EAN_13;
+                    maxlen = 13;
+                    margin = 16;
+                    height = (int)(width * 26.26 / 37.29);
+                    string isbn10 = CalcISBN_10(content.Substring(0, 9));
+                    string isbn13 = CalcISBN_13(content.Substring(0, 12));
+                    if (string.IsNullOrEmpty(isbn10) && string.IsNullOrEmpty(isbn13))
+                        content = "";
+                    else if(!string.IsNullOrEmpty(isbn13))
+                        content = isbn13;
+                    else if(!string.IsNullOrEmpty(isbn10))
+                        content = isbn10;
+                    break;
+                case "product":
+                    fmt = BarcodeFormat.EAN_13;
+                    maxlen = 13;
+                    margin = 16;
+                    height = (int)(width * 26.26 / 37.29);
+                    string prod13 = CalcISBN_13(content.Substring(0, 12));
+                    if (string.IsNullOrEmpty(prod13))
+                        content = "";
+                    else
+                        content = prod13;
+                    break;
+                case "link":
+                    fmt = BarcodeFormat.QR_CODE;
+                    maxlen = 984;
+                    if (!content.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase) ||
+                       !content.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        content = "http://" + content;
+                    }
+                    break;
+                case "tele":
+                    fmt = BarcodeFormat.QR_CODE;
+                    maxlen = 984;
+                    if (!content.StartsWith("tel:", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        content = "TEL:" + content;
+                    }
+                    break;
+                case "mail":
+                    fmt = BarcodeFormat.QR_CODE;
+                    maxlen = 984;
+                    if (!content.StartsWith("mailto:", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        var mail = "abc@abc.com";
+                        var subject = "main to ...";
+                        content = $"MAILTO:{mail}?SUBJECT={subject}&BODY={content}";
+                    }
+                    break;
+                case "sms":
+                    fmt = BarcodeFormat.QR_CODE;
+                    maxlen = 984;
+                    if (!content.StartsWith("smsto:", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        var phone = "1234567890";
+                        content = $"SMSTO:{phone}:{content}";
+                    }
+                    break;
+                case "vcard":
+                    fmt = BarcodeFormat.QR_CODE;
+                    maxlen = 984;
+                    break;
+                case "vcal":
+                    fmt = BarcodeFormat.QR_CODE;
+                    maxlen = 984;
+                    break;
+                default:
+                    fmt = BarcodeFormat.CODE_128;
+                    maxlen = 48;
+                    break;
+            }
+
+            if (fmt == BarcodeFormat.QR_CODE) return (EncodeQR(content, fgcolor, bgcolor, ERRORLEVEL.L));
+
+            var text = content.Length > maxlen ? content.Substring(0, maxlen) : content;
+
+            try
+            {
+                var bw = new BarcodeWriter();
+                bw.Options.Width = width;
+                bw.Options.Height = height;
+                bw.Options.PureBarcode = false;
+                bw.Options.GS1Format = true;
+                bw.Options.Hints.Add(EncodeHintType.MARGIN, margin);
+                bw.Options.Hints.Add(EncodeHintType.DISABLE_ECI, true);
+                bw.Options.Hints.Add(EncodeHintType.CHARACTER_SET, "UTF-8");
+
+                bw.Format = fmt;
+                bw.Renderer = new WriteableBitmapRenderer() { Foreground = fgcolor, Background = bgcolor };
+
+                BitMatrix bm = bw.Encode(text);
+                int[] rectangle = bm.getEnclosingRectangle();
+                var bmW = rectangle[2];
+                var bmH = rectangle[3];
+                bw.Options.Width = (int)(bmW * 1.25);
+                //bw.Options.Height = (int)(bmH * 1.25);
+                result = bw.Write(text);
+
+                //result.DrawText()
+
+            }
+            catch (Exception ex)
+            {
+                await new MessageDialog(ex.Message, "ERROR").ShowAsync();
+            }
+            return (result);
+        }
+
+        static public string BarcodeLabel(this string content, string format)
+        {
+            string result = content;
+            switch (format.ToLower())
+            {
+                case "express":
+                    result = content;
+                    break;
+                case "isbn":
+                    result = OneDimensionalCodeWriter.CalculateChecksumDigitModulo10(result.Substring(0, 12));
+                    result = result.Insert(7, "   ");
+                    result = result.Insert(1, "   ");
+                    break;
+                case "product":
+                    result = content;
+                    break;
+                default:
+                    result = string.Empty;
+                    break;
+            }
+            return (result);
+        }
+
+        static public WriteableBitmap EncodeQR(this string content, Color fgcolor, Color bgcolor, ERRORLEVEL ECL)
+        {
+            WriteableBitmap result = null;
             if (content.Length <= 0) return(result);
 
             ErrorCorrectionLevel ecl = ErrorCorrectionLevel.L;
@@ -324,14 +326,14 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static public async Task<string> Decode(WriteableBitmap image)
+        static public async Task<string> Decode(this WriteableBitmap image)
         {
             string result = string.Empty;
             if (image == null) return (result);
             if (image.PixelWidth < 32 || image.PixelHeight < 32) return (result);
 
             var br = new BarcodeReader();
-            setDecodeOptions(br);
+            SetDecodeOptions(br);
             try
             {
                 //var qrResult = br.Decode(image);
@@ -339,6 +341,7 @@ namespace StringCodec.UWP.Common
                 //{
                 //    result = qrResult.Text;
                 //}
+                //var qrResults = br.DecodeMultiple(image);
                 var qrResults = br.DecodeMultiple(image);
                 var textList = new List<string>();
                 if (qrResults == null) return (result);

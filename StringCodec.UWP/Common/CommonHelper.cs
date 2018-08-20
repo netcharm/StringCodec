@@ -6,6 +6,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.Foundation;
 using Windows.Graphics.Display;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
@@ -15,6 +16,7 @@ using Windows.Storage.Provider;
 using Windows.Storage.Streams;
 using Windows.UI;
 using Windows.UI.Popups;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
@@ -24,6 +26,76 @@ namespace StringCodec.UWP.Common
     static public class WriteableImageExtetions
     {
         #region WriteableBitmmap Extensions
+        static public byte[] ToBytes(this WriteableBitmap image)
+        {
+            if (image == null) return (null);
+
+            byte[] result = image.PixelBuffer.ToArray();
+            return (result);
+        }
+
+        static public async void DrawText(this UIElement target, int x, int y, string text, string fontfamily, int fontsize, Color fgcolor, Color bgcolor)
+        {
+            using (var fileStream = new InMemoryRandomAccessStream())
+            {
+                var textblock = new TextBlock { Text = text, FontSize = 10, Foreground = new SolidColorBrush(fgcolor) };
+                //textblock.Paren
+                //result.Render(txt1, new RotateTransform { Angle = 0, CenterX = width / 2, CenterY = height - 14 });                    
+                RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap();
+                await renderTargetBitmap.RenderAsync(target);
+                var pixelBuffer = await renderTargetBitmap.GetPixelsAsync();
+                var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
+                var r_width = renderTargetBitmap.PixelWidth;
+                var r_height = renderTargetBitmap.PixelHeight;
+
+                var encoder = await BitmapEncoder.CreateAsync(BitmapDecoder.PngDecoderId, fileStream);
+                encoder.SetPixelData(
+                    BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore,
+                    (uint)r_width, (uint)r_height,
+                    dpi, dpi,
+                    pixelBuffer.ToArray());
+                await encoder.FlushAsync();
+                WriteableBitmap bitmap = new WriteableBitmap(1, 1);
+                await bitmap.SetSourceAsync(fileStream);
+                await fileStream.FlushAsync();
+                byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmap.PixelBuffer, 0, (int)bitmap.PixelBuffer.Length);
+                x = (int)target.RenderSize.Width / 2;
+                y = (int)target.RenderSize.Height - 14;
+                //target.BlitRender(bitmap, false, 1, new RotateTransform { Angle = 0, CenterX = x, CenterY = y });
+            }
+        }
+
+        static public async void DrawText(this WriteableBitmap image, UIElement target, int x, int y, string text, string fontfamily, int fontsize, Color fgcolor, Color bgcolor)
+        {
+            using (var fileStream = new InMemoryRandomAccessStream())
+            {
+                var textblock = new TextBlock { Text = text, FontSize = 10, Foreground = new SolidColorBrush(fgcolor) };
+                //textblock.Paren
+                //result.Render(txt1, new RotateTransform { Angle = 0, CenterX = width / 2, CenterY = height - 14 });                    
+                RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap();
+                await renderTargetBitmap.RenderAsync(textblock);
+                var pixelBuffer = await renderTargetBitmap.GetPixelsAsync();
+                var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
+                var r_width = renderTargetBitmap.PixelWidth;
+                var r_height = renderTargetBitmap.PixelHeight;
+
+                var encoder = await BitmapEncoder.CreateAsync(BitmapDecoder.PngDecoderId, fileStream);
+                encoder.SetPixelData(
+                    BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore,
+                    (uint)r_width, (uint)r_height,
+                    dpi, dpi,
+                    pixelBuffer.ToArray());
+                await encoder.FlushAsync();
+                WriteableBitmap bitmap = new WriteableBitmap(1, 1);
+                await bitmap.SetSourceAsync(fileStream);
+                await fileStream.FlushAsync();
+                byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmap.PixelBuffer, 0, (int)bitmap.PixelBuffer.Length);
+                x = image.PixelWidth / 2;
+                y = image.PixelHeight - 14;
+                image.BlitRender(bitmap, false, 1, new RotateTransform { Angle = 0, CenterX = x, CenterY = y });
+            }
+        }
+
         static async public Task<WriteableBitmap> GetWriteableBitmmap(this BitmapImage bitmap)
         {
             Image image = new Image();
@@ -170,6 +242,7 @@ namespace StringCodec.UWP.Common
                 }
                 else if (string.IsNullOrEmpty(SHARED_TEXT) && SHARED_IMAGE != null)
                 {
+
                     #region Save image to a temporary file for Share
                     List<IStorageItem> imageItems = new List<IStorageItem> { _tempExportFile };
                     requestData.SetStorageItems(imageItems);
@@ -184,7 +257,6 @@ namespace StringCodec.UWP.Common
                     //requestData.Properties.Thumbnail = imageStreamRef;
                     //requestData.SetBitmap(imageStreamRef);
                     #endregion
-
                 }
             }
             catch (Exception ex)
@@ -771,7 +843,6 @@ namespace StringCodec.UWP.Common
             }
             return (string.Empty);
         }
-
         #endregion
 
     }

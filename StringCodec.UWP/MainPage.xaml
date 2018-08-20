@@ -8,7 +8,7 @@
     mc:Ignorable="d"
     MinWidth="600"
     MinHeight="480"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Loaded="Page_Loaded">
 
     <Page.Resources>
         
@@ -30,7 +30,8 @@
         </NavigationView.AutoSuggestBox>
 
         <NavigationView.MenuItems>
-            <NavigationViewItemHeader x:Name="nvItemHome" x:Uid="nvItemHome" Content="Main"/>
+            <NavigationViewItemSeparator/>
+            <!--<NavigationViewItemHeader x:Name="nvItemHome" x:Uid="nvItemHome" Content="Main"/>-->
             <NavigationViewItem x:Name="nvItemText" x:Uid="nvItemText" Content="Text Encode/Decode" Icon="Character" Tag="PageText" ToolTipService.ToolTip="Text Encode/Decode" Tapped="NvMain_Click"/>
             <NavigationViewItem x:Name="nvItemQRCode" x:Uid="nvItemQRCode" Content="QR Encode/Decode" Tag="PageQR" ToolTipService.ToolTip="Make QR Code or decode content from QR Code image" Tapped="NvMain_Click" >
                 <NavigationViewItem.Icon>
@@ -39,7 +40,7 @@
             </NavigationViewItem>
             <NavigationViewItem x:Name="nvItemImage" x:Uid="nvItemImage" Content="Image &lt;=&gt; BASE64" Icon="Pictures" Tag="PageImage" ToolTipService.ToolTip="Convert image to BASE64 string or decode BASE64 string to image" Tapped="NvMain_Click" />
             <NavigationViewItemSeparator/>
-            <NavigationViewItemHeader x:Name="nvItemOthers" x:Uid="nvItemOthers" Content="Others"/>
+            <!--<NavigationViewItemHeader x:Name="nvItemOthers" x:Uid="nvItemOthers" Content="Others"/>-->
             <NavigationViewItem x:Name="nvItemWifi" x:Uid="nvItemWifi" Content="WIFI QR Code" Tag="PageWifi" ToolTipService.ToolTip="Make WIFI QR Code" Tapped="NvMain_Click">
                 <NavigationViewItem.Icon>
                     <FontIcon Glyph="&#xE701;" FontFamily="Segoe MDL2 Assets"/>
@@ -64,7 +65,7 @@
                              Click="More_Click"
                              Margin="48,24"/>
                 <NavigationViewItemSeparator/>-->
-                <NavigationViewItem x:Name="nvAbout" x:Uid="nvAbout" Icon="Emoji2" Content="More info" Tapped="More_Click" ToolTipService.ToolTip="About Me..." />
+                <NavigationViewItem x:Name="nvAbout" x:Uid="nvAbout" Icon="Emoji2" Content="More info" Tapped="NvMore_Click" ToolTipService.ToolTip="About Me..." />
                 <NavigationViewItemSeparator/>
             </StackPanel>
         </RS4Api:NavigationView.PaneFooter>
