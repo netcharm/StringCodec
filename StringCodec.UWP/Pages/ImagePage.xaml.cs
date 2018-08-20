@@ -118,7 +118,8 @@ namespace StringCodec.UWP.Pages
                     imgBase64.Source = await edBase64.Text.Decoder();
                     break;
                 case "btnCopy":
-                    Utils.SetClipboard(edBase64.Text);
+                    //Utils.SetClipboard(edBase64.Text);
+                    Utils.SetClipboard(imgBase64, -1);
                     break;
                 case "btnPaste":
                     edBase64.Text = await Utils.GetClipboard(edBase64.Text, imgBase64);

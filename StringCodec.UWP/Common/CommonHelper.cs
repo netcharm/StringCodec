@@ -24,14 +24,59 @@ namespace StringCodec.UWP.Common
     static public class WriteableImageExtetions
     {
         #region WriteableBitmmap Extensions
-        static public WriteableBitmap GetWriteableBitmmap(Image image)
+        static async public Task<WriteableBitmap> GetWriteableBitmmap(this BitmapImage bitmap)
+        {
+            Image image = new Image();
+            image.Source = bitmap;
+            return (await image.GetWriteableBitmmap());
+        }
+
+        static async public Task<WriteableBitmap> GetWriteableBitmmap(this Image image)
         {
             WriteableBitmap result = null;
 
             if (image.Source == null) return result;
             else if (image.Source is BitmapImage)
             {
-                return (result);
+                var bitmap = image.Source as BitmapImage;
+                var width = bitmap.PixelWidth;
+                var height = bitmap.PixelHeight;
+                var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
+
+                if (bitmap.UriSource != null)
+                {
+                    result = new WriteableBitmap(width, height);
+                    var imgRef = RandomAccessStreamReference.CreateFromUri(bitmap.UriSource);
+                    var ms = await imgRef.OpenReadAsync();
+                    await ms.FlushAsync();
+                    await result.SetSourceAsync(ms.AsStream().AsRandomAccessStream());
+                    return (result);
+                }
+                else
+                {
+                    //把控件变成图像
+                    RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap();
+                    //传入参数Image控件
+                    await renderTargetBitmap.RenderAsync(image, width, height);
+                    var pixelBuffer = await renderTargetBitmap.GetPixelsAsync();
+
+                    using (var fileStream = new InMemoryRandomAccessStream())
+                    {
+                        var encId = BitmapEncoder.PngEncoderId;
+                        var encoder = await BitmapEncoder.CreateAsync(encId, fileStream);
+                        encoder.SetPixelData(
+                            BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore,
+                            (uint)width, (uint)height, dpi, dpi,
+                            pixelBuffer.ToArray()
+                        );
+                        //刷新图像
+                        await encoder.FlushAsync();
+
+                        result = new WriteableBitmap(width, height);
+                        await result.SetSourceAsync(fileStream);
+                    }
+                    return (result);
+                }
             }
             else if (image.Source is WriteableBitmap)
             {
@@ -71,6 +116,33 @@ namespace StringCodec.UWP.Common
             }
             return (null);
         }
+
+        static public async Task<InMemoryRandomAccessStream> StoreMemoryStream(this WriteableBitmap image, IBuffer pixelBuffer, int width, int height, string prefix = "")
+        {
+            InMemoryRandomAccessStream result = new InMemoryRandomAccessStream();
+
+            var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
+            using (var fileStream = new InMemoryRandomAccessStream())
+            {
+                fileStream.Seek(0);
+
+                var encId = BitmapEncoder.PngEncoderId;
+                var encoder = await BitmapEncoder.CreateAsync(encId, fileStream);
+                encoder.SetPixelData(
+                    BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore,
+                    (uint)width, (uint)height,
+                    dpi, dpi,
+                    pixelBuffer.ToArray());
+                await encoder.FlushAsync();
+
+                //Stream stream = WindowsRuntimeStreamExtensions.AsStreamForRead(fileStream.GetInputStreamAt(0));
+                var ms = WindowsRuntimeStreamExtensions.AsStreamForRead(fileStream.GetInputStreamAt(0));
+                await RandomAccessStream.CopyAsync(ms.AsInputStream(), result);
+                await result.FlushAsync();
+                result.Seek(0);
+            }
+            return (result);
+        }
         #endregion
     }
 
@@ -79,6 +151,7 @@ namespace StringCodec.UWP.Common
         #region Share Extentions
         static private DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
         static private StorageFile _tempExportFile;
+        //static private InMemoryRandomAccessStream _tempExportStream;
         static private bool SHARE_INITED = false;
         static private WriteableBitmap SHARED_IMAGE = null;
         static private string SHARED_TEXT = string.Empty;
@@ -97,12 +170,21 @@ namespace StringCodec.UWP.Common
                 }
                 else if (string.IsNullOrEmpty(SHARED_TEXT) && SHARED_IMAGE != null)
                 {
+                    #region Save image to a temporary file for Share
                     List<IStorageItem> imageItems = new List<IStorageItem> { _tempExportFile };
                     requestData.SetStorageItems(imageItems);
 
                     RandomAccessStreamReference imageStreamRef = RandomAccessStreamReference.CreateFromFile(_tempExportFile);
                     requestData.Properties.Thumbnail = imageStreamRef;
                     requestData.SetBitmap(imageStreamRef);
+                    #endregion
+
+                    #region Create in memory image data for Share
+                    //RandomAccessStreamReference imageStreamRef = RandomAccessStreamReference.CreateFromStream(_tempExportStream);
+                    //requestData.Properties.Thumbnail = imageStreamRef;
+                    //requestData.SetBitmap(imageStreamRef);
+                    #endregion
+
                 }
             }
             catch (Exception ex)
@@ -126,38 +208,25 @@ namespace StringCodec.UWP.Common
             if (image == null || image.PixelWidth <= 0 || image.PixelHeight <= 0) return (status);
 
             SHARED_IMAGE = image;
-            #region Save image to a temporary file
+            #region Save image to a temporary file for Share
             StorageFile tempFile = await image.StoreTemporaryFile(image.PixelBuffer, image.PixelWidth, image.PixelHeight, prefix);
-
-            //var now = DateTime.Now;
-            //if (!string.IsNullOrEmpty(prefix)) prefix = $"{prefix}_";
-            //var fn = $"{prefix}{now.ToString("yyyyMMddhhmmss")}.png";
-            //StorageFile tempFile = await ApplicationData.Current.TemporaryFolder.CreateFileAsync(fn, CreationCollisionOption.ReplaceExisting);
             if (tempFile != null)
             {
-                //CachedFileManager.DeferUpdates(tempFile);
-
-                //using (var fileStream = await tempFile.OpenAsync(FileAccessMode.ReadWrite))
-                //{
-                //    BitmapEncoder encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, fileStream);
-                //    Stream pixelStream = image.PixelBuffer.AsStream();
-                //    byte[] pixels = new byte[pixelStream.Length];
-                //    await pixelStream.ReadAsync(pixels, 0, pixels.Length);
-                //    encoder.SetPixelData(BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore,
-                //        (uint)image.PixelWidth,
-                //        (uint)image.PixelHeight,
-                //        96.0,
-                //        96.0,
-                //        pixels);
-                //    await encoder.FlushAsync();
-                //}
-
-                //status = await CachedFileManager.CompleteUpdatesAsync(tempFile);
                 _tempExportFile = tempFile;
-
                 DataTransferManager.ShowShareUI();
             }
             #endregion
+
+            #region Create in memory image data for Share
+            //var cistream = await image.StoreMemoryStream(image.PixelBuffer, image.PixelWidth, image.PixelHeight);
+            //if (cistream != null || cistream.Size > 0)
+            //{
+            //    if (cistream.Position > 0) cistream.Seek(0);
+            //    _tempExportStream = cistream;
+            //    DataTransferManager.ShowShareUI();
+            //}
+            #endregion
+
             return status;
         }
 
@@ -202,10 +271,6 @@ namespace StringCodec.UWP.Common
             DataPackage dataPackage = new DataPackage();
             dataPackage.RequestedOperation = DataPackageOperation.Copy;
 
-            //Uri uri = new Uri("ms-appx:///Assets/ms.png");
-            //StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(uri);
-            //dp.SetBitmap(RandomAccessStreamReference.CreateFromUri(uri));
-
             try
             {
                 //把控件变成图像
@@ -222,19 +287,34 @@ namespace StringCodec.UWP.Common
                     r_width = width;
                     r_height = height;
                 }
-
-                #region Create a temporary file for Clipboard Copy
-                StorageFile tempFile = await (image.Source as WriteableBitmap).StoreTemporaryFile(pixelBuffer, r_width, r_height);
-
-                if (tempFile != null)
+                else if (width < 0 || height < 0)
                 {
-                    dataPackage.SetBitmap(RandomAccessStreamReference.CreateFromFile(tempFile));
-                    //await tempFile.DeleteAsync();
+                    r_width = (image.Source as WriteableBitmap).PixelWidth;
+                    r_height = (image.Source as WriteableBitmap).PixelHeight;
+                }
+
+                #region Create a temporary file Copy to Clipboard
+                //StorageFile tempFile = await (image.Source as WriteableBitmap).StoreTemporaryFile(pixelBuffer, r_width, r_height);
+
+                //if (tempFile != null)
+                //{
+                //    dataPackage.SetBitmap(RandomAccessStreamReference.CreateFromFile(tempFile));
+                //    //await tempFile.DeleteAsync();
+                //}
+                #endregion
+
+                #region Create in memory image data Copy to Clipboard
+                var cistream = await (image.Source as WriteableBitmap).StoreMemoryStream(pixelBuffer, r_width, r_height);
+                if(cistream != null || cistream.Size>0 )
+                {
+                    if (cistream.Position > 0) cistream.Seek(0); 
+                    dataPackage.SetBitmap(RandomAccessStreamReference.CreateFromStream(cistream));
+                    cistream.CloneStream();
                 }
                 #endregion
 
-                #region Create other MIME format to Clipboard Copy
-                //string[] fmts = new string[] { "CF_DIB", "CF_BITMAP", "BITMAP", "DeviceIndependentBitmap", "image/png", "image/bmp", "image/jpg", "image/jpeg" };
+                #region Create other MIME format data Copy to Clipboard
+                ////string[] fmts = new string[] { "CF_DIB", "CF_BITMAP", "BITMAP", "DeviceIndependentBitmap", "image/png", "image/bmp", "image/jpg", "image/jpeg" };
                 //string[] fmts = new string[] { "image/png", "image/bmp", "image/jpg", "image/jpeg" };
 
                 //foreach (var fmt in fmts)
@@ -297,6 +377,12 @@ namespace StringCodec.UWP.Common
                 //                    byte[] dib = arr.Skip(14).ToArray();
                 //                    dataPackage.SetData(fmt, dib);
 
+                //                    //using (var mrs = new InMemoryRandomAccessStream())
+                //                    //{
+                //                    //    await RandomAccessStream.CopyAsync(dib.AsBuffer().AsStream().AsInputStream(), mrs.AsStream().AsOutputStream());
+                //                    //    dataPackage.SetData(fmt, RandomAccessStreamReference.CreateFromStream(mrs));
+                //                    //}
+
                 //                    //var buffer = WindowsRuntimeBufferExtensions.AsBuffer(dib, 0, dib.Length);
                 //                    //InMemoryRandomAccessStream inStream = new InMemoryRandomAccessStream();
                 //                    //DataWriter datawriter = new DataWriter(inStream.GetOutputStreamAt(0));
@@ -310,6 +396,7 @@ namespace StringCodec.UWP.Common
                 //    }
                 //}
                 #endregion
+
 
                 Clipboard.SetContent(dataPackage);
             }
@@ -409,6 +496,33 @@ namespace StringCodec.UWP.Common
             }
 
             return (result);
+        }
+
+        static public async Task<string> ShowSaveDialog(string content)
+        {
+            if (content.Length <= 0) return (string.Empty);
+
+            var now = DateTime.Now;
+            FileSavePicker fp = new FileSavePicker();
+            fp.SuggestedStartLocation = PickerLocationId.Desktop;
+            fp.FileTypeChoices.Add("Text File", new List<string>() { ".txt" });
+            fp.SuggestedFileName = $"{now.ToString("yyyyMMddhhmmss")}.txt";
+            StorageFile TargetFile = await fp.PickSaveFileAsync();
+            if (TargetFile != null)
+            {
+                StorageApplicationPermissions.MostRecentlyUsedList.Add(TargetFile, TargetFile.Name);
+                if (StorageApplicationPermissions.FutureAccessList.Entries.Count >= 1000)
+                    StorageApplicationPermissions.FutureAccessList.Remove(StorageApplicationPermissions.FutureAccessList.Entries.Last().Token);
+                StorageApplicationPermissions.FutureAccessList.Add(TargetFile, TargetFile.Name);
+
+                // 在用户完成更改并调用CompleteUpdatesAsync之前，阻止对文件的更新
+                CachedFileManager.DeferUpdates(TargetFile);
+                await FileIO.WriteTextAsync(TargetFile, content);
+                FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(TargetFile);
+
+                return (TargetFile.Name);
+            }
+            return (string.Empty);
         }
 
         static public async Task<string> ShowSaveDialog(Image image, string prefix = "")
@@ -559,33 +673,6 @@ namespace StringCodec.UWP.Common
                 }
                 return (TargetFile.Name);
                 #endregion
-            }
-            return (string.Empty);
-        }
-
-        static public async Task<string> ShowSaveDialog(string content)
-        {
-            if (content.Length <= 0) return (string.Empty);
-
-            var now = DateTime.Now;
-            FileSavePicker fp = new FileSavePicker();
-            fp.SuggestedStartLocation = PickerLocationId.Desktop;
-            fp.FileTypeChoices.Add("Text File", new List<string>() { ".txt" });
-            fp.SuggestedFileName = $"{now.ToString("yyyyMMddhhmmss")}.txt";
-            StorageFile TargetFile = await fp.PickSaveFileAsync();
-            if (TargetFile != null)
-            {
-                StorageApplicationPermissions.MostRecentlyUsedList.Add(TargetFile, TargetFile.Name);
-                if (StorageApplicationPermissions.FutureAccessList.Entries.Count >= 1000)
-                    StorageApplicationPermissions.FutureAccessList.Remove(StorageApplicationPermissions.FutureAccessList.Entries.Last().Token);
-                StorageApplicationPermissions.FutureAccessList.Add(TargetFile, TargetFile.Name);
-
-                // 在用户完成更改并调用CompleteUpdatesAsync之前，阻止对文件的更新
-                CachedFileManager.DeferUpdates(TargetFile);
-                await FileIO.WriteTextAsync(TargetFile, content);
-                FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(TargetFile);
-
-                return (TargetFile.Name);
             }
             return (string.Empty);
         }
