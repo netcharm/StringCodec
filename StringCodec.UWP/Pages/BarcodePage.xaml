@@ -73,6 +73,18 @@
                 <AppBarToggleButton x:Name="optSaveSizeM" x:Uid="optSaveSizeM" Label="M: 512x512" Icon="Trim" Click="OptSave_Click"/>
                 <AppBarToggleButton x:Name="optSaveSizeN" x:Uid="optSaveSizeN" Label="S: 256x256" Icon="Trim" Click="OptSave_Click"/>
                 <AppBarToggleButton x:Name="optSaveSizeS" x:Uid="optSaveSizeS" Label="S: 128x128" Icon="Trim" Click="OptSave_Click"/>
+                <AppBarSeparator />
+                <AppBarButton x:Name="optBarcodeTextSize" x:Uid="optBarcodeTextSize" Label="Barcode Text Size"  Content="Barcode Text Size" Icon="FontSize">
+                    <AppBarButton.Flyout>
+                        <MenuFlyout Placement="Left">
+                            <ToggleMenuFlyoutItem x:Name="optBarcodeTextSizeXL" x:Uid="optBarcodeTextSizeXL" Text="XL: Extra Large" Click="OptBarCodeTextSize_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optBarcodeTextSizeL" x:Uid="optBarcodeTextSizeL" Text="L: Large" Click="OptBarCodeTextSize_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optBarcodeTextSizeM" x:Uid="optBarcodeTextSizeM" Text="M: Middle" Click="OptBarCodeTextSize_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optBarcodeTextSizeS" x:Uid="optBarcodeTextSizeS" Text="S: Small" Click="OptBarCodeTextSize_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optBarcodeTextSizeXS" x:Uid="optBarcodeTextSizeXS" Text="XS: Extra Small" Click="OptBarCodeTextSize_Click"/>
+                        </MenuFlyout>
+                    </AppBarButton.Flyout>
+                </AppBarButton>
             </CommandBar.SecondaryCommands>
 
             <CommandBar.Content>
@@ -98,7 +110,7 @@
         <Image Grid.Row="1" Grid.Column="1" x:Name="imgBarcode" x:Uid="imgBarcode" Margin="12, 24, 0, 0"
                Stretch="Uniform"
                AllowDrop="True" DragOver="OnDragOver" Drop="OnDrop"/>
-        <Border Grid.Row="1" Grid.Column="1" x:Name="txtBarcodeBG" x:Uid="txtBarcodeBG" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="12,0,0,0">
+        <Border Grid.Row="1" Grid.Column="1" x:Name="txtBarcodeBG" x:Uid="txtBarcodeBG" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="12,0,0,0" Visibility="Collapsed">
             <TextBlock Grid.Row="1" Grid.Column="1" x:Name="txtBarcode" x:Uid="txtBarcode" Text="0123456789" HorizontalTextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
         </Border>
         <!--<Grid Grid.Row="1" Grid.Column="1" x:Name="LabelRoot"/>-->

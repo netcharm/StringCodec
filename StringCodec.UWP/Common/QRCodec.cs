@@ -1,19 +1,13 @@
-﻿using Microsoft.Graphics.Canvas;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
-using Windows.Graphics.Display;
-using Windows.Graphics.Imaging;
-using Windows.Storage.Streams;
+using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Popups;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
+using Windows.UI.Text;
 using Windows.UI.Xaml.Media.Imaging;
 using ZXing;
 using ZXing.Common;
-using ZXing.OneD;
 using ZXing.QrCode.Internal;
 using ZXing.Rendering;
 
@@ -24,39 +18,6 @@ namespace StringCodec.UWP.Common
         public enum ERRORLEVEL { L, M, Q, H };
 
         #region Older codes
-        //        static private float calcBorderWidth(ImageSource QRImage, Point mark, Size size)
-        //        {
-        //            if (mark.X <= 0 || mark.Y <= 0) return 0;
-
-        //            float pixelWidth = 1.0f;
-
-        //            int X = (int)Math.Max(0, mark.X - 100);
-        //            int Y = (int)Math.Max(0, mark.Y - 100);
-        //            int W = (int)Math.Min(QRImage.Width - X, size.Width + 200);
-        //            int H = (int)Math.Min(QRImage.Height - Y, size.Height + 200);
-        //            ImageSource bwQR = QRImage.Clone(new Rectangle(X, Y, W, H), PixelFormat.Format1bppIndexed);
-        //#if DEBUG
-        //            bwQR.Save("test-bw.png");
-        //#endif
-
-        //            int origX = 100;
-        //            int origY = 100;
-        //            if (mark.X < 100) origX = mark.X;
-        //            if (mark.Y < 100) origY = mark.Y;
-
-        //            Color colorMark = bwQR.GetPixel(origX, origY);
-        //            for (var i = 2; i < 100; i++)
-        //            {
-        //                Color color = bwQR.GetPixel(origX - i, origY);
-        //                //if(color.ToArgb() == Color.White.ToArgb())
-        //                if (color.ToArgb() != colorMark.ToArgb())
-        //                {
-        //                    pixelWidth = i;
-        //                    break;
-        //                }
-        //            }
-        //            return (pixelWidth);
-        //        }
         #endregion
 
         #region Calc ISBN checksum
@@ -131,7 +92,7 @@ namespace StringCodec.UWP.Common
             //br.Options.PossibleFormats.Add(BarcodeFormat.QR_CODE);
         }
 
-        static async public Task<WriteableBitmap> EncodeBarcode(this string content, string format, Color fgcolor, Color bgcolor)
+        static async public Task<WriteableBitmap> EncodeBarcode(this string content, string format, Color fgcolor, Color bgcolor, int textsize)
         {
             WriteableBitmap result = null;
             if (content.Length <= 0) return (result);
@@ -245,9 +206,17 @@ namespace StringCodec.UWP.Common
                 //bw.Options.Height = (int)(bmH * 1.25);
                 result = bw.Write(text);
 
+                int l = (int)Math.Ceiling(result.PixelWidth * 0.05);
+                int t = (int)Math.Ceiling(result.PixelHeight * 0.05);
+                int r = (int)Math.Ceiling(result.PixelWidth * 0.05);
+                int b = (int)Math.Ceiling(result.PixelHeight * 0.05);
 
-                //result.Blit(new Windows.Foundation.Rect(0, 16, result.PixelWidth, result.PixelHeight), )
-
+                var label = content.BarcodeLabel(format);
+                var labelimage = await label.ToBitmap("Consolas", FontStyle.Normal, textsize, fgcolor, bgcolor);
+                result = result.Extend(l, t, r, b + labelimage.PixelHeight, bgcolor);
+                var dstRect = new Rect((result.PixelWidth - labelimage.PixelWidth) / 2, result.PixelHeight - labelimage.PixelHeight - b, labelimage.PixelWidth, labelimage.PixelHeight);
+                var srcRect = new Rect(0, 0, labelimage.PixelWidth, labelimage.PixelHeight);
+                result.Blit(dstRect, labelimage, srcRect, WriteableBitmapExtensions.BlendMode.None);
             }
             catch (Exception ex)
             {

@@ -33,6 +33,7 @@ namespace StringCodec.UWP.Pages
         private Color CURRENT_BGCOLOR = Colors.White; //Color.FromArgb(255, 255, 255, 255);
         private Color CURRENT_FGCOLOR = Colors.Black; //Color.FromArgb(255, 000, 000, 000);
         private int CURRENT_SIZE = 512;
+        private int CURRENT_TEXT_FONTSIZE = 48;
         private string CURRENT_FORMAT = "Express";
 
         private string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif" };
@@ -53,6 +54,8 @@ namespace StringCodec.UWP.Pages
         {
             optSaveSizeM.IsChecked = true;
             optBarCodeExpress.IsChecked = true;
+            optBarcodeTextSizeM.IsChecked = true;
+
             edBarcode.TextWrapping = TextWrapping.Wrap;
 
             if (!string.IsNullOrEmpty(text_src))
@@ -81,12 +84,12 @@ namespace StringCodec.UWP.Pages
             #endregion
 
             #region Setup Barconde text
-            txtBarcode.FontFamily = new FontFamily("Consolas");
-            txtBarcode.FontSize = 20;
-            txtBarcode.FontStretch = Windows.UI.Text.FontStretch.Normal;
-            txtBarcode.Foreground = new SolidColorBrush(CURRENT_FGCOLOR);
-            txtBarcodeBG.Background = new SolidColorBrush(CURRENT_BGCOLOR);
-            txtBarcodeBG.Height = txtBarcode.Height;
+            //txtBarcode.FontFamily = new FontFamily("Consolas");
+            //txtBarcode.FontSize = 20;
+            //txtBarcode.FontStretch = Windows.UI.Text.FontStretch.Normal;
+            //txtBarcode.Foreground = new SolidColorBrush(CURRENT_FGCOLOR);
+            //txtBarcodeBG.Background = new SolidColorBrush(CURRENT_BGCOLOR);
+            //txtBarcodeBG.Height = txtBarcode.Height;
             #endregion
         }
 
@@ -177,19 +180,59 @@ namespace StringCodec.UWP.Pages
             }
         }
 
+        private void OptBarCodeTextSize_Click(object sender, RoutedEventArgs e)
+        {
+            ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] {
+                optBarcodeTextSizeXL, optBarcodeTextSizeL, optBarcodeTextSizeM, optBarcodeTextSizeS, optBarcodeTextSizeXS
+            };
+
+            var btn = sender as ToggleMenuFlyoutItem;
+            var SIZE_NAME = btn.Name.Substring(18);
+
+            foreach (ToggleMenuFlyoutItem opt in opts)
+            {
+                if (string.Equals(opt.Name, btn.Name, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    opt.IsChecked = true;
+                }
+                else opt.IsChecked = false;
+            }
+            switch (SIZE_NAME)
+            {
+                case "XL":
+                    CURRENT_TEXT_FONTSIZE = 96;
+                    break;
+                case "L":
+                    CURRENT_TEXT_FONTSIZE = 72;
+                    break;
+                case "M":
+                    CURRENT_TEXT_FONTSIZE = 48;
+                    break;
+                case "S":
+                    CURRENT_TEXT_FONTSIZE = 36;
+                    break;
+                case "XS":
+                    CURRENT_TEXT_FONTSIZE = 24;
+                    break;
+                default:
+                    CURRENT_TEXT_FONTSIZE = 48;
+                    break;
+            }
+        }
+
         private async void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
             var btn = sender as AppBarButton;
             switch (btn.Name)
             {
                 case "btnEncode":
-                    imgBarcode.Source = await edBarcode.Text.EncodeBarcode(CURRENT_FORMAT, CURRENT_FGCOLOR, CURRENT_BGCOLOR);
-                    txtBarcode.Text = edBarcode.Text.BarcodeLabel(CURRENT_FORMAT);
+                    imgBarcode.Source = await edBarcode.Text.EncodeBarcode(CURRENT_FORMAT, CURRENT_FGCOLOR, CURRENT_BGCOLOR, CURRENT_TEXT_FONTSIZE);
+                    //txtBarcode.Text = edBarcode.Text.BarcodeLabel(CURRENT_FORMAT);
                     //var wb = await edBarcode.Text.ToBitmap(LabelRoot, "Consolas", 24, CURRENT_FGCOLOR, CURRENT_BGCOLOR);
                     //var wb = await txtBarcodeBG.ToBitmap();
-                    var wb = await edBarcode.Text.ToBitmap("Consolas", FontStyle.Normal, 24, CURRENT_FGCOLOR, CURRENT_BGCOLOR);
+                    //var wb = await edBarcode.Text.ToBitmap("Consolas", FontStyle.Normal, 24, CURRENT_FGCOLOR, CURRENT_BGCOLOR);
                     //wb.DrawText(0, 0, txtBarcode.Text, "Consolas", 24, CURRENT_FGCOLOR, CURRENT_BGCOLOR);
-                    await wb.StoreTemporaryFile();
+                    //await wb.StoreTemporaryFile();
                     break;
                 case "btnDecode":
                     edBarcode.Text = await (imgBarcode.Source as WriteableBitmap).Decode();
@@ -317,6 +360,5 @@ namespace StringCodec.UWP.Pages
             }
         }
         #endregion
-
     }
 }
