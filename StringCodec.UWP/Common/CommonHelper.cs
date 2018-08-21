@@ -25,7 +25,7 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace StringCodec.UWP.Common
 {
-    static public class WriteableImageExtetions
+    static public class WriteableBitmapExtetions
     {
         #region FrameworkElement UIElement to WriteableBitmap
         static public async Task<WriteableBitmap> ToBitmap(this FrameworkElement element)
@@ -314,11 +314,18 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static public async Task<WriteableBitmap> ToWriteableBitmmap(this BitmapImage bitmap)
+        static public async Task<WriteableBitmap> ToWriteableBitmmap(this BitmapImage image)
         {
-            Image image = new Image();
-            image.Source = bitmap;
-            return (await image.ToWriteableBitmmap());
+            WriteableBitmap result = null;
+            if (image.UriSource != null)
+            {
+                result = new WriteableBitmap(1, 1);
+                var imgRef = RandomAccessStreamReference.CreateFromUri(image.UriSource);
+                var ms = await imgRef.OpenReadAsync();
+                await ms.FlushAsync();
+                await result.SetSourceAsync(ms.AsStream().AsRandomAccessStream());
+            }
+            return (result);
         }
 
         static public async Task<WriteableBitmap> ToWriteableBitmmap(this Image image)
@@ -401,12 +408,17 @@ namespace StringCodec.UWP.Common
             return(await image.StoreTemporaryFile(image.PixelBuffer, image.PixelWidth, image.PixelHeight, prefix));
         }
 
+        static public async Task<StorageFile> StoreTemporaryFile(this WriteableBitmap image, int width, int height, string prefix = "")
+        {
+            return (await image.StoreTemporaryFile(image.PixelBuffer, width, height, prefix));
+        }
+
         static public async Task<StorageFile> StoreTemporaryFile(this WriteableBitmap image, IBuffer pixelBuffer, int width, int height, string prefix="")
         {
             var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
             var now = DateTime.Now;
             if (!string.IsNullOrEmpty(prefix)) prefix = $"{prefix}_";
-            var fn = $"{prefix}{now.ToString("yyyyMMddhhmmss")}.png";
+            var fn = $"{prefix}{now.ToString("yyyyMMddHHmmssff")}.png";
             StorageFile tempFile = await ApplicationData.Current.TemporaryFolder.CreateFileAsync(fn, CreationCollisionOption.ReplaceExisting);
             if (tempFile != null)
             {
@@ -433,9 +445,81 @@ namespace StringCodec.UWP.Common
             return (null);
         }
 
+        static public async void SaveAsync(this WriteableBitmap image, StorageFile storageitem)
+        {
+            if (storageitem != null)
+            {
+                StorageApplicationPermissions.MostRecentlyUsedList.Add(storageitem, storageitem.Name);
+                if (StorageApplicationPermissions.FutureAccessList.Entries.Count >= 1000)
+                    StorageApplicationPermissions.FutureAccessList.Remove(StorageApplicationPermissions.FutureAccessList.Entries.Last().Token);
+                StorageApplicationPermissions.FutureAccessList.Add(storageitem, storageitem.Name);
+
+                // 在用户完成更改并调用CompleteUpdatesAsync之前，阻止对文件的更新
+                CachedFileManager.DeferUpdates(storageitem);
+
+                #region Save Image Control source data
+                using (var fileStream = await storageitem.OpenAsync(FileAccessMode.ReadWrite))
+                {
+                    var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
+                    var w = image.PixelWidth;
+                    var h = image.PixelHeight;
+
+                    // Get pixels of the WriteableBitmap object 
+                    Stream pixelStream = image.PixelBuffer.AsStream();
+                    byte[] pixels = new byte[pixelStream.Length];
+                    await pixelStream.ReadAsync(pixels, 0, pixels.Length);
+
+                    var encId = BitmapEncoder.PngEncoderId;
+                    var fext = Path.GetExtension(storageitem.Name).ToLower();
+                    switch (fext)
+                    {
+                        case ".bmp":
+                            encId = BitmapEncoder.BmpEncoderId;
+                            break;
+                        case ".gif":
+                            encId = BitmapEncoder.GifEncoderId;
+                            break;
+                        case ".png":
+                            encId = BitmapEncoder.PngEncoderId;
+                            break;
+                        case ".jpg":
+                            encId = BitmapEncoder.JpegEncoderId;
+                            break;
+                        case ".jpeg":
+                            encId = BitmapEncoder.JpegEncoderId;
+                            break;
+                        case ".tif":
+                            encId = BitmapEncoder.TiffEncoderId;
+                            break;
+                        case ".tiff":
+                            encId = BitmapEncoder.TiffEncoderId;
+                            break;
+                        default:
+                            encId = BitmapEncoder.PngEncoderId;
+                            break;
+                    }
+                    var encoder = await BitmapEncoder.CreateAsync(encId, fileStream);
+                    // Save the image file with jpg extension 
+                    encoder.SetPixelData(
+                        BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,
+                        (uint)w, (uint)h,
+                        dpi, dpi,
+                        pixels);
+                    await encoder.FlushAsync();
+                }
+                #endregion
+                FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(storageitem);
+            }
+        }
+
         static public async Task<InMemoryRandomAccessStream> StoreMemoryStream(this WriteableBitmap image, string prefix = "")
         {
             return (await image.StoreMemoryStream(image.PixelBuffer, image.PixelWidth, image.PixelHeight, prefix));
+        }
+
+        static public async Task<InMemoryRandomAccessStream> StoreMemoryStream(this WriteableBitmap image, int width, int height, string prefix = "")
+        {
+            return (await image.StoreMemoryStream(image.PixelBuffer, width, height, prefix));
         }
 
         static public async Task<InMemoryRandomAccessStream> StoreMemoryStream(this WriteableBitmap image, IBuffer pixelBuffer, int width, int height, string prefix = "")
@@ -564,6 +648,7 @@ namespace StringCodec.UWP.Common
 
             SHARED_TEXT = text;
             DataTransferManager.ShowShareUI();
+            status = FileUpdateStatus.Complete;
             //return status;
             return status;
         }
@@ -906,6 +991,11 @@ namespace StringCodec.UWP.Common
         #endregion
 
         #region ContentDialog Extentions
+        static public async Task<Color> ShowColorDialog()
+        {
+            return (await ShowColorDialog(Colors.White));
+        }
+
         static public async Task<Color> ShowColorDialog(Color color)
         {
             Color result = color;
@@ -922,13 +1012,15 @@ namespace StringCodec.UWP.Common
 
         static public async Task<string> ShowSaveDialog(string content)
         {
-            if (content.Length <= 0) return (string.Empty);
+            string result = string.Empty;
+
+            if (content.Length <= 0) return (result);
 
             var now = DateTime.Now;
             FileSavePicker fp = new FileSavePicker();
             fp.SuggestedStartLocation = PickerLocationId.Desktop;
             fp.FileTypeChoices.Add("Text File", new List<string>() { ".txt" });
-            fp.SuggestedFileName = $"{now.ToString("yyyyMMddhhmmss")}.txt";
+            fp.SuggestedFileName = $"{now.ToString("yyyyMMddHHmmssff")}.txt";
             StorageFile TargetFile = await fp.PickSaveFileAsync();
             if (TargetFile != null)
             {
@@ -942,14 +1034,14 @@ namespace StringCodec.UWP.Common
                 await FileIO.WriteTextAsync(TargetFile, content);
                 FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(TargetFile);
 
-                return (TargetFile.Name);
+                result = TargetFile.Name;
             }
-            return (string.Empty);
+            return (result);
         }
 
         static public async Task<string> ShowSaveDialog(Image image, string prefix = "")
         {
-            var bmp = image.Source as WriteableBitmap;
+            var bmp = await image.ToWriteableBitmmap();
             var width = bmp.PixelWidth;
             var height = bmp.PixelHeight;
             return (await ShowSaveDialog(image, width, height, prefix));
@@ -963,13 +1055,14 @@ namespace StringCodec.UWP.Common
         static public async Task<string> ShowSaveDialog(Image image, int width, int height, string prefix = "")
         {
             if (image.Source == null) return (string.Empty);
+            string result = string.Empty;
 
             var now = DateTime.Now;
             FileSavePicker fp = new FileSavePicker();
             fp.SuggestedStartLocation = PickerLocationId.Desktop;
             fp.FileTypeChoices.Add("Image File", new List<string>() { ".png", ".jpg", ".jpeg", ".tif", ".tiff", ".gif", ".bmp" });
             if (!string.IsNullOrEmpty(prefix)) prefix = $"{prefix}_";
-            fp.SuggestedFileName = $"{prefix}{now.ToString("yyyyMMddhhmmss")}.png";
+            fp.SuggestedFileName = $"{prefix}{now.ToString("yyyyMMddHHmmssff")}.png";
             StorageFile TargetFile = await fp.PickSaveFileAsync();
             if (TargetFile != null)
             {
@@ -1035,10 +1128,10 @@ namespace StringCodec.UWP.Common
                 //        pixels);
                 //    await encoder.FlushAsync();
                 //}
-                //return (TargetFile.Name);
+                //result = TargetFile.Name;
                 #endregion
 
-                #region Save Image Control Screen Display Data
+                #region Save Image control display with specified size
                 //把控件变成图像
                 RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap();
                 //传入参数Image控件
@@ -1093,10 +1186,12 @@ namespace StringCodec.UWP.Common
                     //刷新图像
                     await encoder.FlushAsync();
                 }
-                return (TargetFile.Name);
+                result = TargetFile.Name;
                 #endregion
+
+                FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(TargetFile);
             }
-            return (string.Empty);
+            return (result);
         }
         #endregion
 

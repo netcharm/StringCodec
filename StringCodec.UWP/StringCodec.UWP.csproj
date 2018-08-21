@@ -105,8 +105,8 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\BarcodePage.xaml.cs">
-      <DependentUpon>BarcodePage.xaml</DependentUpon>
+    <Compile Include="Pages\CommonOneDPage.xaml.cs">
+      <DependentUpon>CommonOneDPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\CharsetPage.xaml.cs">
       <DependentUpon>CharsetPage.xaml</DependentUpon>
@@ -123,8 +123,8 @@
     <Compile Include="Pages\TextPage.xaml.cs">
       <DependentUpon>TextPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\WifiQRPage.xaml.cs">
-      <DependentUpon>WifiQRPage.xaml</DependentUpon>
+    <Compile Include="Pages\CommonQRPage.xaml.cs">
+      <DependentUpon>CommonQRPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -216,7 +216,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\BarcodePage.xaml">
+    <Page Include="Pages\CommonOneDPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -240,7 +240,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\WifiQRPage.xaml">
+    <Page Include="Pages\CommonQRPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -25,6 +25,7 @@ namespace StringCodec.UWP.Pages
         public CharsetPage()
         {
             this.InitializeComponent();
+            NavigationCacheMode = NavigationCacheMode.Enabled;
         }
     }
 }

@@ -25,6 +25,7 @@ namespace StringCodec.UWP.Pages
         public SettingsPage()
         {
             this.InitializeComponent();
+            NavigationCacheMode = NavigationCacheMode.Enabled;
         }
     }
 }

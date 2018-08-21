@@ -28,7 +28,7 @@ namespace StringCodec.UWP.Pages
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class BarcodePage : Page
+    public sealed partial class CommonOneDPage : Page
     {
         private Color CURRENT_BGCOLOR = Colors.White; //Color.FromArgb(255, 255, 255, 255);
         private Color CURRENT_FGCOLOR = Colors.Black; //Color.FromArgb(255, 000, 000, 000);
@@ -45,23 +45,19 @@ namespace StringCodec.UWP.Pages
             set { text_src = value; }
         }
 
-        public BarcodePage()
+        public CommonOneDPage()
         {
             this.InitializeComponent();
-        }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
+            NavigationCacheMode = NavigationCacheMode.Enabled;
+
             optSaveSizeM.IsChecked = true;
             optBarCodeExpress.IsChecked = true;
             optBarcodeTextSizeM.IsChecked = true;
 
             edBarcode.TextWrapping = TextWrapping.Wrap;
 
-            if (!string.IsNullOrEmpty(text_src))
-            {
-                edBarcode.Text = text_src;
-            }
+            //if (!string.IsNullOrEmpty(text_src)) edBarcode.Text = text_src;
 
             #region Detecting is ScreenCapture supported?
             if (!GraphicsCaptureSession.IsSupported())
@@ -78,19 +74,18 @@ namespace StringCodec.UWP.Pages
             #endregion
 
             #region Add small image to Image control for dragdrop target
-            var wb = new WriteableBitmap(1, 1);
-            imgBarcode.Stretch = Stretch.Uniform;
-            imgBarcode.Source = wb;
+            if (imgBarcode.Source == null)
+            {
+                var wb = new WriteableBitmap(1, 1);
+                imgBarcode.Stretch = Stretch.Uniform;
+                imgBarcode.Source = wb;
+            }
             #endregion
 
-            #region Setup Barconde text
-            //txtBarcode.FontFamily = new FontFamily("Consolas");
-            //txtBarcode.FontSize = 20;
-            //txtBarcode.FontStretch = Windows.UI.Text.FontStretch.Normal;
-            //txtBarcode.Foreground = new SolidColorBrush(CURRENT_FGCOLOR);
-            //txtBarcodeBG.Background = new SolidColorBrush(CURRENT_BGCOLOR);
-            //txtBarcodeBG.Height = txtBarcode.Height;
-            #endregion
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
         }
 
         private void edBarcode_TextChanged(object sender, TextChangedEventArgs e)
@@ -134,11 +129,9 @@ namespace StringCodec.UWP.Pages
                     break;
                 case "BgColor":
                     CURRENT_BGCOLOR = await Utils.ShowColorDialog(CURRENT_BGCOLOR);
-                    txtBarcodeBG.Background = new SolidColorBrush(CURRENT_BGCOLOR);
                     break;
                 case "FgColor":
                     CURRENT_FGCOLOR = await Utils.ShowColorDialog(CURRENT_FGCOLOR);
-                    txtBarcode.Foreground = new SolidColorBrush(CURRENT_FGCOLOR);
                     break;
                 default:
                     break;
@@ -227,12 +220,6 @@ namespace StringCodec.UWP.Pages
             {
                 case "btnEncode":
                     imgBarcode.Source = await edBarcode.Text.EncodeBarcode(CURRENT_FORMAT, CURRENT_FGCOLOR, CURRENT_BGCOLOR, CURRENT_TEXT_FONTSIZE);
-                    //txtBarcode.Text = edBarcode.Text.BarcodeLabel(CURRENT_FORMAT);
-                    //var wb = await edBarcode.Text.ToBitmap(LabelRoot, "Consolas", 24, CURRENT_FGCOLOR, CURRENT_BGCOLOR);
-                    //var wb = await txtBarcodeBG.ToBitmap();
-                    //var wb = await edBarcode.Text.ToBitmap("Consolas", FontStyle.Normal, 24, CURRENT_FGCOLOR, CURRENT_BGCOLOR);
-                    //wb.DrawText(0, 0, txtBarcode.Text, "Consolas", 24, CURRENT_FGCOLOR, CURRENT_BGCOLOR);
-                    //await wb.StoreTemporaryFile();
                     break;
                 case "btnDecode":
                     edBarcode.Text = await (imgBarcode.Source as WriteableBitmap).Decode();

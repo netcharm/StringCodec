@@ -54,6 +54,36 @@ namespace StringCodec.UWP.Pages
         public QRCodePage()
         {
             this.InitializeComponent();
+
+            NavigationCacheMode = NavigationCacheMode.Enabled;
+
+            optECL_L.IsChecked = true;
+            optSaveSizeM.IsChecked = true;
+
+            //if (!string.IsNullOrEmpty(text_src)) edQR.Text = text_src;
+
+            #region Detecting is ScreenCapture supported?
+            if (!GraphicsCaptureSession.IsSupported())
+            {
+                // Hide the capture UI if screen capture is not supported.
+                btnCapture.Visibility = Visibility.Collapsed;
+                btnCapture.IsEnabled = false;
+            }
+            else
+            {
+                btnCapture.Visibility = Visibility.Visible;
+                btnCapture.IsEnabled = true;
+            }
+            #endregion
+
+            #region Add small image to Image control for dragdrop target
+            if (imgQR.Source == null)
+            {
+                var wb = new WriteableBitmap(1, 1);
+                imgQR.Stretch = Stretch.Uniform;
+                imgQR.Source = wb;
+            }
+            #endregion
         }
 
         private void ConfirmColor_Click(object sender, RoutedEventArgs e)
@@ -92,35 +122,7 @@ namespace StringCodec.UWP.Pages
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            optECL_L.IsChecked = true;
-            optSaveSizeM.IsChecked = true;
 
-            if (!string.IsNullOrEmpty(text_src))
-            {
-                edQR.Text = text_src;
-                //imgQR.Stretch = Stretch.Uniform;
-                //imgQR.Source = QRCodec.Encode(edQR.Text, CURRENT_FGCOLOR, CURRENT_BGCOLOR, CURRENT_ECL);
-            }
-
-            #region Detecting is ScreenCapture supported?
-            if (!GraphicsCaptureSession.IsSupported())
-            {
-                // Hide the capture UI if screen capture is not supported.
-                btnCapture.Visibility = Visibility.Collapsed;
-                btnCapture.IsEnabled = false;
-            }
-            else
-            {
-                btnCapture.Visibility = Visibility.Visible;
-                btnCapture.IsEnabled = true;
-            }
-            #endregion
-
-            #region Add small image to Image control for dragdrop target
-            var wb = new WriteableBitmap(1, 1);
-            imgQR.Stretch = Stretch.Uniform;
-            imgQR.Source = wb;
-            #endregion
         }
 
         private void edQR_TextChanged(object sender, TextChangedEventArgs e)

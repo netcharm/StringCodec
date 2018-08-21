@@ -43,25 +43,29 @@ namespace StringCodec.UWP.Pages
         public ImagePage()
         {
             this.InitializeComponent();
-        }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
+            NavigationCacheMode = NavigationCacheMode.Enabled;
+
             optPrefix.IsChecked = CURRENT_PREFIX;
             optLinbeBreak.IsChecked = CURRENT_LINEBREAK;
 
             optFmtPng.IsChecked = true;
 
-            if (!string.IsNullOrEmpty(text_src))
-            {
-                edBase64.Text = text_src;
-            }
+            //if (!string.IsNullOrEmpty(text_src)) edBase64.Text = text_src;
 
             #region Add small image to Image control for dragdrop target
-            var wb = new WriteableBitmap(1, 1);
-            imgBase64.Stretch = Stretch.Uniform;
-            imgBase64.Source = wb;
+            if (imgBase64.Source == null)
+            {
+                var wb = new WriteableBitmap(1, 1);
+                imgBase64.Stretch = Stretch.Uniform;
+                imgBase64.Source = wb;
+            }
             #endregion
+
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
         }
 
         private void edBase64_TextChanged(object sender, TextChangedEventArgs e)

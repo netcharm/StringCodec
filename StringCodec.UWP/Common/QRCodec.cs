@@ -94,7 +94,7 @@ namespace StringCodec.UWP.Common
 
         static async public Task<WriteableBitmap> EncodeBarcode(this string content, string format, Color fgcolor, Color bgcolor, int textsize)
         {
-            WriteableBitmap result = null;
+            WriteableBitmap result = new WriteableBitmap(1,1);
             if (content.Length <= 0) return (result);
 
             int maxlen = 0;
@@ -116,7 +116,7 @@ namespace StringCodec.UWP.Common
                     height = (int)(width * 26.26 / 37.29);
                     string isbn13 = content.Length >= 12 ? CalcISBN_13(content.Substring(0, 12)) : string.Empty;
                     if (string.IsNullOrEmpty(isbn13))
-                        return (null);
+                        return (result);
                     content = isbn13;
                     break;
                 case "product":
@@ -126,7 +126,7 @@ namespace StringCodec.UWP.Common
                     height = (int)(width * 26.26 / 37.29);
                     string prod13 = content.Length >= 12 ? CalcISBN_13(content.Substring(0, 12)) : string.Empty;
                     if (string.IsNullOrEmpty(prod13))
-                        return (null);
+                        return (result);
                     else
                         content = prod13;
                     break;
@@ -253,7 +253,7 @@ namespace StringCodec.UWP.Common
 
         static public WriteableBitmap EncodeQR(this string content, Color fgcolor, Color bgcolor, ERRORLEVEL ECL)
         {
-            WriteableBitmap result = null;
+            WriteableBitmap result = new WriteableBitmap(1, 1);
             if (content.Length <= 0) return(result);
 
             ErrorCorrectionLevel ecl = ErrorCorrectionLevel.L;

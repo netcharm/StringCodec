@@ -44,17 +44,8 @@ namespace StringCodec.UWP.Pages
         public TextPage()
         {
             this.InitializeComponent();
-        }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            //Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-
-            //var enc_list = Encoding.GetEncodings();
-            //foreach (EncodingInfo ei in Encoding.GetEncodings())
-            //{
-            //    Encoding enc = ei.GetEncoding();
-            //}
+            NavigationCacheMode = NavigationCacheMode.Enabled;
 
             optURL.IsChecked = true;
             optUTF8.IsChecked = true;
@@ -66,7 +57,11 @@ namespace StringCodec.UWP.Pages
             optQuoted.Visibility = Visibility.Collapsed;
             optQuoted.IsEnabled = false;
 
-            if (!string.IsNullOrEmpty(text_src)) edSrc.Text = text_src;
+            //if (!string.IsNullOrEmpty(text_src)) edSrc.Text = text_src;
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
         }
 
         private async void AppBarButton_Click(object sender, RoutedEventArgs e)

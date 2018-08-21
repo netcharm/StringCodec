@@ -13,6 +13,7 @@ using Windows.Foundation.Collections;
 using Windows.Storage.Streams;
 using Windows.System;
 using Windows.UI;
+using Windows.UI.Core;
 using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -36,9 +37,40 @@ namespace StringCodec.UWP
         private ShareOperation operation;
         //private Utils utils = new Utils();
 
+        private void SetTitleBarTheme(ElementTheme theme)
+        {
+            //remove the solid-colored backgrounds behind the caption controls and system back button
+            ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            titleBar.ButtonBackgroundColor = Colors.Transparent;
+            titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+            titleBar.ButtonForegroundColor = (Color)Resources["SystemBaseHighColor"];
+            //titleBar.ForegroundColor = (Color)Resources["SystemBaseHighColor"];
+            //titleBar.ForegroundColor = Colors.Transparent;
+
+            //if (Application.Current.RequestedTheme == ApplicationTheme.Dark)
+            //{
+            //    titleBar.ButtonForegroundColor = Colors.White;
+            //}
+            //else
+            //{
+            //    titleBar.ButtonForegroundColor = Colors.Black;
+            //}
+
+            this.RequestedTheme = theme;
+            if (this.RequestedTheme == ElementTheme.Dark)
+            {
+                titleBar.ButtonForegroundColor = Colors.White;
+            }
+            else
+            {
+                titleBar.ButtonForegroundColor = Colors.Black;
+            }
+        }
+
         public MainPage()
         {
             this.InitializeComponent();
+            NavigationCacheMode = NavigationCacheMode.Enabled;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -73,24 +105,12 @@ namespace StringCodec.UWP
             #region 将应用扩展到标题栏
             //draw into the title bar
             CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
+            //SystemNavigationManager SysNavManager = SystemNavigationManager.GetForCurrentView();
+            //SysNavManager.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
 
-            //remove the solid-colored backgrounds behind the caption controls and system back button
-            ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
-            titleBar.ButtonBackgroundColor = Colors.Transparent;
-            titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-            titleBar.ButtonForegroundColor = (Color)Resources["SystemBaseHighColor"];
-
-            this.RequestedTheme = ElementTheme.Dark;
-            if (Application.Current.RequestedTheme == ApplicationTheme.Dark)
-            {
-                titleBar.ButtonForegroundColor = Colors.White;
-            }
-            else
-            {
-                titleBar.ButtonForegroundColor = Colors.Black;
-            }
+            SetTitleBarTheme(ElementTheme.Dark);
             #endregion
-
 
             //Utils.ShareInit();
         }
@@ -222,28 +242,6 @@ namespace StringCodec.UWP
             //}
             //else
             //{
-            //    //选中项的内容
-            //    switch (args.InvokedItem)
-            //    {
-            //        case "Home":
-            //            ContentFrame.Navigate(typeof(Pages.TextPage));
-            //            break;
-            //        case "Text":
-            //            ContentFrame.Navigate(typeof(Pages.TextPage));
-            //            break;
-            //        case "Charset":
-            //            ContentFrame.Navigate(typeof(Pages.CharsetPage));
-            //            break;
-            //        case "Image":
-            //            ContentFrame.Navigate(typeof(Pages.ImagePage));
-            //            break;
-            //        case "QR Code":
-            //            ContentFrame.Navigate(typeof(Pages.QRCodePage));
-            //            break;
-            //        default:
-            //            ContentFrame.Navigate(typeof(Pages.TextPage));
-            //            break;
-            //    }
             //}
         }
 
@@ -268,11 +266,11 @@ namespace StringCodec.UWP
                     case "nvItemImage":
                         ContentFrame.Navigate(typeof(Pages.ImagePage));
                         break;
-                    case "nvItemWifi":
-                        ContentFrame.Navigate(typeof(Pages.WifiQRPage));
+                    case "nvItemCommonQR":
+                        ContentFrame.Navigate(typeof(Pages.CommonQRPage));
                         break;
-                    case "nvItemBarCode":
-                        ContentFrame.Navigate(typeof(Pages.BarcodePage));
+                    case "nvItemCommonOneD":
+                        ContentFrame.Navigate(typeof(Pages.CommonOneDPage));
                         break;
                     case "nvItemCharset":
                         ContentFrame.Navigate(typeof(Pages.CharsetPage));
@@ -299,10 +297,10 @@ namespace StringCodec.UWP
             //    case "PageImage":
             //        ContentFrame.Navigate(typeof(Pages.ImagePage));
             //        break;
-            //    case "PageWifi":
+            //    case "PageCommonQR":
             //        ContentFrame.Navigate(typeof(Pages.WifiQRPage));
             //        break;
-            //    case "PageBarcode":
+            //    case "PageCommonOneD":
             //        ContentFrame.Navigate(typeof(Pages.BarcodePage));
             //        break;
             //    case "PageCharset":
@@ -317,11 +315,12 @@ namespace StringCodec.UWP
         private void NvMore_Click(object sender, RoutedEventArgs e)
         {
             if (this.RequestedTheme == ElementTheme.Dark)
-                this.RequestedTheme = ElementTheme.Light;
+                SetTitleBarTheme(ElementTheme.Light);
             else if (this.RequestedTheme == ElementTheme.Light)
-                this.RequestedTheme = ElementTheme.Dark;
+                SetTitleBarTheme(ElementTheme.Dark);
             else
-                this.RequestedTheme = ElementTheme.Default;
+                SetTitleBarTheme(ElementTheme.Default);
+
         }
 
     }

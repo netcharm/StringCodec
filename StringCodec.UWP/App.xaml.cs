@@ -7,6 +7,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -47,7 +48,7 @@ namespace StringCodec.UWP
                 rootFrame = new Frame();
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
-
+                rootFrame.Navigated += OnNavigated;
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
                     //TODO: 从之前挂起的应用程序加载状态
@@ -55,6 +56,13 @@ namespace StringCodec.UWP
 
                 // 将框架放在当前窗口中
                 Window.Current.Content = rootFrame;
+                // Register a handler for BackRequested events and set the
+                // visibility of the Back button
+                SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
+                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility =
+                    rootFrame.CanGoBack ?
+                    AppViewBackButtonVisibility.Visible :
+                    AppViewBackButtonVisibility.Collapsed;
             }
 
             if (e.PrelaunchActivated == false)
@@ -82,6 +90,20 @@ namespace StringCodec.UWP
         }
 
         /// <summary>
+        /// 导航处理事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnNavigated(object sender, NavigationEventArgs e)
+        {
+            // Each time a navigation event occurs, update the Back button's visibility
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility =
+                ((Frame)sender).CanGoBack ?
+                AppViewBackButtonVisibility.Visible :
+                AppViewBackButtonVisibility.Collapsed;
+        }
+
+        /// <summary>
         /// 在将要挂起应用程序执行时调用。  在不知道应用程序
         /// 无需知道应用程序会被终止还是会恢复，
         /// 并让内存内容保持不变。
@@ -95,6 +117,24 @@ namespace StringCodec.UWP
             deferral.Complete();
         }
 
+        /// <summary>
+        /// 导航回退前一页事件处理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnBackRequested(object sender, BackRequestedEventArgs e)
+        {
+            Frame rootFrame = Window.Current.Content as Frame;
+            if (rootFrame.CanGoBack)
+            {
+                e.Handled = true;
+                rootFrame.GoBack();
+            }
+        }
+        /// <summary>
+        /// 接受Windows10 共享卡片共享事件处理
+        /// </summary>
+        /// <param name="args"></param>
         protected override void OnShareTargetActivated(ShareTargetActivatedEventArgs args)
         {
 

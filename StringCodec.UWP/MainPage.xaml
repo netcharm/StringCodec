@@ -8,7 +8,8 @@
     mc:Ignorable="d"
     MinWidth="600"
     MinHeight="480"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Loaded="Page_Loaded">
+    Loaded="Page_Loaded"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
         
@@ -18,11 +19,12 @@
                     Loaded="NvMain_Loaded" 
                     SelectionChanged="NvMain_SelectionChanged" 
                     ItemInvoked="NvMain_ItemInvoked"
-                    BackRequested="NvMain_BackRequested"
+                    BackRequested="NvMain_BackRequested"                    
                     RS4Api:NavigationView.PaneTitle="String Encoding &amp; Decoding"
                     RS4Api:IsBackButtonVisible="Auto"
-                    RS4Api:IsBackEnabled="True" 
-                    Margin="0,0,0,0" Grid.Row="1" 
+                    RS4Api:IsBackEnabled="True"
+                    Canvas.ZIndex="100"
+                    Margin="0,0,0,0"
                     IsSettingsVisible="{Binding ElementName=settingsCheck,Path=IsChecked}"
                     IsTabStop="False">
         <NavigationView.AutoSuggestBox>
@@ -41,16 +43,17 @@
             <NavigationViewItem x:Name="nvItemImage" x:Uid="nvItemImage" Content="Image &lt;=&gt; BASE64" Icon="Pictures" Tag="PageImage" ToolTipService.ToolTip="Convert image to BASE64 string or decode BASE64 string to image" Tapped="NvMain_Click" />
             <NavigationViewItemSeparator/>
             <!--<NavigationViewItemHeader x:Name="nvItemOthers" x:Uid="nvItemOthers" Content="Others"/>-->
-            <NavigationViewItem x:Name="nvItemWifi" x:Uid="nvItemWifi" Content="WIFI QR Code" Tag="PageWifi" ToolTipService.ToolTip="Make WIFI QR Code" Tapped="NvMain_Click">
+            <NavigationViewItem x:Name="nvItemCommonQR" x:Uid="nvItemCommonQR" Content="Common QR Code" Tag="PageCommonQR" ToolTipService.ToolTip="Make Common QR Code" Tapped="NvMain_Click">
                 <NavigationViewItem.Icon>
                     <FontIcon Glyph="&#xE701;" FontFamily="Segoe MDL2 Assets"/>
                 </NavigationViewItem.Icon>
             </NavigationViewItem>
-            <NavigationViewItem x:Name="nvItemBarCode" x:Uid="nvItemBarCode" Content="Barcode" Tag="PageBarCode" ToolTipService.ToolTip="Make/Decode Barcode" Tapped="NvMain_Click">
+            <NavigationViewItem x:Name="nvItemCommonOneD" x:Uid="nvItemCommonOneD" Content="Common 1D Barcode" Tag="PageCommonOneD" ToolTipService.ToolTip="Make/Decode Common 1D Barcode" Tapped="NvMain_Click">
                 <NavigationViewItem.Icon>
                     <FontIcon Glyph="&#xF02A;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
                 </NavigationViewItem.Icon>
             </NavigationViewItem>
+            <NavigationViewItemSeparator/>
             <NavigationViewItem x:Name="nvItemCharset" x:Uid="nvItemCharset" Content="Folder&amp;File Charset" Tag="PageCharset" ToolTipService.ToolTip="Converting folder/file names with specified character sets" Tapped="NvMain_Click">
                 <NavigationViewItem.Icon>
                     <FontIcon Glyph="&#xEC50;" FontFamily="Segoe MDL2 Assets"/>

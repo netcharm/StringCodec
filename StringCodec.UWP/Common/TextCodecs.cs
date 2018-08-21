@@ -361,7 +361,7 @@ namespace StringCodec.UWP.Common
 
         static public async Task<WriteableBitmap> Decode(string content)
         {
-            WriteableBitmap result = null;
+            WriteableBitmap result = new WriteableBitmap(1, 1);
             if (content.Length <= 0) return (result);
 
             try
@@ -370,13 +370,6 @@ namespace StringCodec.UWP.Common
                 byte[] arr = Convert.FromBase64String(bs.Trim());
                 using (MemoryStream ms = new MemoryStream(arr))
                 {
-                    //WriteableBitmap writimage = new WriteableBitmap(1, 1);
-                    //BitmapPixelFormat format = BitmapPixelFormat.Unknown;
-
-                    //writimage = await WriteableBitmapExtensions.FromStream(writimage, stream, format);
-                    //writimage.SetSource(ms);
-
-                    var image = new WriteableBitmap(1, 1);
                     byte[] buf = ms.ToArray();
                     using (InMemoryRandomAccessStream fileStream = new InMemoryRandomAccessStream())
                     {
@@ -384,10 +377,10 @@ namespace StringCodec.UWP.Common
                         {
                             writer.WriteBytes((byte[])buf);
                             writer.StoreAsync().GetResults();
+                            await fileStream.FlushAsync();
                         }
-                        image.SetSource(fileStream);
+                        result.SetSource(fileStream);
                     }
-                    return image;
                 }
             }
             catch (Exception ex)

@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="StringCodec.UWP.Pages.BarcodePage"
+    x:Class="StringCodec.UWP.Pages.CommonOneDPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:StringCodec.UWP.Pages"
@@ -110,9 +110,5 @@
         <Image Grid.Row="1" Grid.Column="1" x:Name="imgBarcode" x:Uid="imgBarcode" Margin="12, 24, 0, 0"
                Stretch="Uniform"
                AllowDrop="True" DragOver="OnDragOver" Drop="OnDrop"/>
-        <Border Grid.Row="1" Grid.Column="1" x:Name="txtBarcodeBG" x:Uid="txtBarcodeBG" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="12,0,0,0" Visibility="Collapsed">
-            <TextBlock Grid.Row="1" Grid.Column="1" x:Name="txtBarcode" x:Uid="txtBarcode" Text="0123456789" HorizontalTextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
-        </Border>
-        <!--<Grid Grid.Row="1" Grid.Column="1" x:Name="LabelRoot"/>-->
     </Grid>
 </Page>

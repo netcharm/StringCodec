@@ -57,6 +57,7 @@
                         <FontIcon Glyph="&#xF029;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
                     </AppBarButton.Icon>
                 </AppBarButton>
+                <!--<AppBarButton Label="About"/>-->
             </CommandBar.SecondaryCommands>
 
             <CommandBar.Content>
