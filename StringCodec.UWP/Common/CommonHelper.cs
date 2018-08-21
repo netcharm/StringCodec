@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.Text;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -35,7 +37,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static async public Task<WriteableBitmap> ToBitmap(this UIElement element)
+        static public async Task<WriteableBitmap> ToBitmap(this FrameworkElement element)
         {
             WriteableBitmap result = null;
             using (var fileStream = new InMemoryRandomAccessStream())
@@ -56,7 +58,7 @@ namespace StringCodec.UWP.Common
                     pixelBuffer.ToArray());
                 await encoder.FlushAsync();
 
-                result = new WriteableBitmap(1, 1);
+                result = new WriteableBitmap(r_width, r_height);
                 await result.SetSourceAsync(fileStream);
                 await fileStream.FlushAsync();
                 byte[] arr = WindowsRuntimeBufferExtensions.ToArray(result.PixelBuffer, 0, (int)result.PixelBuffer.Length);
@@ -64,7 +66,42 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static async public Task<WriteableBitmap> ToBitmap(this string text, Grid root, string fontfamily, int fontsize, Color fgcolor, Color bgcolor)
+        static public async Task<WriteableBitmap> ToBitmap(this FrameworkElement element, Color bgcolor)
+        {
+            WriteableBitmap result = null;
+            using (var fileStream = new InMemoryRandomAccessStream())
+            {
+                var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
+
+                RenderTargetBitmap rtb = new RenderTargetBitmap();
+                await rtb.RenderAsync(element);
+                var pixelBuffer = await rtb.GetPixelsAsync();
+                var r_width = rtb.PixelWidth;
+                var r_height = rtb.PixelHeight;
+
+                var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, fileStream);
+                encoder.SetPixelData(
+                    BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore,
+                    (uint)r_width, (uint)r_height,
+                    dpi, dpi,
+                    pixelBuffer.ToArray());
+                await encoder.FlushAsync();
+
+                result = new WriteableBitmap(r_width, r_height);
+                result.FillRectangle(0, 0, r_width, r_height, bgcolor);
+
+                var wb = new WriteableBitmap(1, 1);
+                await wb.SetSourceAsync(fileStream);
+                await fileStream.FlushAsync();
+                byte[] arr = WindowsRuntimeBufferExtensions.ToArray(wb.PixelBuffer, 0, (int)wb.PixelBuffer.Length);
+
+                result.BlitRender(wb, false);
+
+            }
+            return (result);
+        }
+
+        static public async Task<WriteableBitmap> ToBitmap(this string text, Grid root, string fontfamily, int fontsize, Color fgcolor, Color bgcolor)
         {
             WriteableBitmap result = null;
 
@@ -125,6 +162,107 @@ namespace StringCodec.UWP.Common
             root.Children.Remove(textBlock);
             root.Children.Remove(background);
             return (result);
+        }
+
+        static private Rect CalcRect(this string text, string fontfamily, FontStyle fontstyle, int fontsize)
+        {
+            Rect result = Rect.Empty;
+            using (var fileStream = new InMemoryRandomAccessStream())
+            {
+                var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
+
+                CanvasDevice device = CanvasDevice.GetSharedDevice();
+                CanvasRenderTarget offscreen = new CanvasRenderTarget(device, 1024, 1024, 96);
+                using (CanvasDrawingSession ds = offscreen.CreateDrawingSession())
+                {
+                    CanvasTextFormat fmt = new CanvasTextFormat()
+                    {
+                        FontFamily = fontfamily,
+                        FontSize = fontsize,
+                        FontStyle = fontstyle,
+                        WordWrapping = CanvasWordWrapping.NoWrap,
+                        HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                        VerticalAlignment = CanvasVerticalAlignment.Top
+                    };
+                    CanvasTextLayout layout = new CanvasTextLayout(ds, text, fmt, 0.0f, 0.0f);
+                    result = new Rect(layout.DrawBounds.X, layout.DrawBounds.Y, layout.DrawBounds.Width, layout.DrawBounds.Height);
+                }
+            }
+            return (result);
+        }
+
+        static public async Task<WriteableBitmap> ToBitmap(this string text, string fontfamily, FontStyle fontstyle, int fontsize, Color fgcolor, Color bgcolor)
+        {
+            WriteableBitmap result = null;
+            using (var fileStream = new InMemoryRandomAccessStream())
+            {
+                var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
+                Rect rect = CalcRect(text, fontfamily, fontstyle, fontsize);
+
+                CanvasDevice device = CanvasDevice.GetSharedDevice();
+                CanvasRenderTarget offscreen = new CanvasRenderTarget(device, (int)rect.Width+2, (int)rect.Height+2, 96);
+                using (CanvasDrawingSession ds = offscreen.CreateDrawingSession())
+                {
+                    CanvasTextFormat fmt = new CanvasTextFormat()
+                    {
+                        FontFamily = fontfamily,
+                        FontSize = fontsize,
+                        FontStyle = fontstyle,
+                        WordWrapping = CanvasWordWrapping.NoWrap,
+                        HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                        VerticalAlignment = CanvasVerticalAlignment.Top
+                    };
+                    ds.Clear(bgcolor);
+                    //ds.DrawRectangle(100, 200, 5, 6, Colors.Red);
+                    ds.DrawText(text, (int)(1 - rect.X), (int)(1 - rect.Y), fgcolor, fmt);
+                }
+                await offscreen.SaveAsync(fileStream, CanvasBitmapFileFormat.Png);
+                await fileStream.FlushAsync();
+
+                //var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, fileStream);
+                //encoder.SetPixelData(
+                //    BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,
+                //    (uint)offscreen.Size.Width, (uint)offscreen.Size.Height,
+                //    dpi, dpi,
+                //    offscreen.GetPixelBytes());
+                //await encoder.FlushAsync();
+
+                result = new WriteableBitmap(1, 1);
+                await result.SetSourceAsync(fileStream);
+                await fileStream.FlushAsync();
+                byte[] arr = WindowsRuntimeBufferExtensions.ToArray(result.PixelBuffer, 0, (int)result.PixelBuffer.Length);
+            }
+            return (result);
+        }
+
+        static public async void DrawText(this WriteableBitmap image, int x, int y, string text, string fontfamily, FontStyle fontstyle, int fontsize, Color fgcolor, Color bgcolor)
+        {
+            //TextBlock textBlock = new TextBlock() {
+            //    VerticalAlignment = VerticalAlignment.Center,
+            //    HorizontalAlignment = HorizontalAlignment.Stretch,
+            //    HorizontalTextAlignment = TextAlignment.Center,
+            //    Foreground = new SolidColorBrush(fgcolor),
+            //    FontFamily = new FontFamily(fontfamily),
+            //    FontSize = fontsize,
+            //    Text = text
+            //};
+            //Border border = new Border()
+            //{
+            //    Child = textBlock,
+            //    VerticalAlignment = VerticalAlignment.Center,
+            //    HorizontalAlignment = HorizontalAlignment.Stretch,
+            //    Background = new SolidColorBrush(bgcolor)
+            //};
+            //var wb = border.ToBitmap();
+            //image.BlitRender(textBlock, null);
+            //image.Invalidate();
+
+            var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
+
+            var twb = await text.ToBitmap(fontfamily, fontstyle, fontsize, fgcolor, bgcolor);
+            image.Blit(new Rect(x, y, twb.PixelWidth, twb.PixelHeight), twb, new Rect(0, 0, twb.PixelWidth, twb.PixelHeight));
+            //image.BlitRender(twb, false);
+            return;
         }
 
         static public async void DrawText(this UIElement target, int x, int y, string text, string fontfamily, int fontsize, Color fgcolor, Color bgcolor)
@@ -189,14 +327,14 @@ namespace StringCodec.UWP.Common
             }
         }
 
-        static async public Task<WriteableBitmap> GetWriteableBitmmap(this BitmapImage bitmap)
+        static public async Task<WriteableBitmap> GetWriteableBitmmap(this BitmapImage bitmap)
         {
             Image image = new Image();
             image.Source = bitmap;
             return (await image.GetWriteableBitmmap());
         }
 
-        static async public Task<WriteableBitmap> GetWriteableBitmmap(this Image image)
+        static public async Task<WriteableBitmap> GetWriteableBitmmap(this Image image)
         {
             WriteableBitmap result = null;
 
@@ -764,7 +902,7 @@ namespace StringCodec.UWP.Common
         {
             Color result = color;
 
-            ColorDialog dlgColor = new ColorDialog() { Color = color, Alpha = false };
+            ColorDialog dlgColor = new ColorDialog() { Color = color, Alpha = true };
             ContentDialogResult ret = await dlgColor.ShowAsync();
             if (ret == ContentDialogResult.Primary)
             {

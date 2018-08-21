@@ -98,7 +98,9 @@
         <Image Grid.Row="1" Grid.Column="1" x:Name="imgBarcode" x:Uid="imgBarcode" Margin="12, 24, 0, 0"
                Stretch="Uniform"
                AllowDrop="True" DragOver="OnDragOver" Drop="OnDrop"/>
-        <Grid Grid.Row="1" Grid.Column="1" x:Name="LabelRoot"/>
-        <TextBlock Grid.Row="1" Grid.Column="1" x:Name="txtBarcode" x:Uid="txtBarcode" Margin="0,472,0,0" Text="0123456789" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="357"/>
+        <Border Grid.Row="1" Grid.Column="1" x:Name="txtBarcodeBG" x:Uid="txtBarcodeBG" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="12,0,0,0">
+            <TextBlock Grid.Row="1" Grid.Column="1" x:Name="txtBarcode" x:Uid="txtBarcode" Text="0123456789" HorizontalTextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
+        </Border>
+        <!--<Grid Grid.Row="1" Grid.Column="1" x:Name="LabelRoot"/>-->
     </Grid>
 </Page>

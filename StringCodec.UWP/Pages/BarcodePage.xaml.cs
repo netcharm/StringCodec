@@ -11,6 +11,7 @@ using Windows.Graphics.Capture;
 using Windows.Storage;
 using Windows.UI;
 using Windows.UI.Popups;
+using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -81,12 +82,11 @@ namespace StringCodec.UWP.Pages
 
             #region Setup Barconde text
             txtBarcode.FontFamily = new FontFamily("Consolas");
-            txtBarcode.FontSize = 24;
+            txtBarcode.FontSize = 20;
             txtBarcode.FontStretch = Windows.UI.Text.FontStretch.Normal;
-            txtBarcode.VerticalAlignment = VerticalAlignment.Bottom;
-            txtBarcode.HorizontalAlignment =  HorizontalAlignment.Center;
-            txtBarcode.HorizontalTextAlignment = TextAlignment.Center;
-            txtBarcode.Width = imgBarcode.ActualWidth;
+            txtBarcode.Foreground = new SolidColorBrush(CURRENT_FGCOLOR);
+            txtBarcodeBG.Background = new SolidColorBrush(CURRENT_BGCOLOR);
+            txtBarcodeBG.Height = txtBarcode.Height;
             #endregion
         }
 
@@ -131,9 +131,11 @@ namespace StringCodec.UWP.Pages
                     break;
                 case "BgColor":
                     CURRENT_BGCOLOR = await Utils.ShowColorDialog(CURRENT_BGCOLOR);
+                    txtBarcodeBG.Background = new SolidColorBrush(CURRENT_BGCOLOR);
                     break;
                 case "FgColor":
                     CURRENT_FGCOLOR = await Utils.ShowColorDialog(CURRENT_FGCOLOR);
+                    txtBarcode.Foreground = new SolidColorBrush(CURRENT_FGCOLOR);
                     break;
                 default:
                     break;
@@ -184,8 +186,10 @@ namespace StringCodec.UWP.Pages
                     imgBarcode.Source = await edBarcode.Text.EncodeBarcode(CURRENT_FORMAT, CURRENT_FGCOLOR, CURRENT_BGCOLOR);
                     txtBarcode.Text = edBarcode.Text.BarcodeLabel(CURRENT_FORMAT);
                     //var wb = await edBarcode.Text.ToBitmap(LabelRoot, "Consolas", 24, CURRENT_FGCOLOR, CURRENT_BGCOLOR);
-                    //var wb = await txtBarcode.ToBitmap();
-                    //await wb.StoreTemporaryFile();
+                    //var wb = await txtBarcodeBG.ToBitmap();
+                    var wb = await edBarcode.Text.ToBitmap("Consolas", FontStyle.Normal, 24, CURRENT_FGCOLOR, CURRENT_BGCOLOR);
+                    //wb.DrawText(0, 0, txtBarcode.Text, "Consolas", 24, CURRENT_FGCOLOR, CURRENT_BGCOLOR);
+                    await wb.StoreTemporaryFile();
                     break;
                 case "btnDecode":
                     edBarcode.Text = await (imgBarcode.Source as WriteableBitmap).Decode();

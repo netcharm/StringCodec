@@ -14,7 +14,7 @@
     SecondaryButtonClick="ColorDialog_SecondaryButtonClick">
 
     <Grid>
-        <ScrollViewer HorizontalScrollBarVisibility="Auto" ZoomMode="Disabled">
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" ZoomMode="Disabled" Padding="24,24,24,24">
             <ColorPicker x:Name="ColorPicker" x:Uid="ColorPicker"
                      IsMoreButtonVisible="True"                         
                      IsColorSpectrumVisible="True"
