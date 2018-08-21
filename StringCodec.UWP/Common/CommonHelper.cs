@@ -164,7 +164,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static private Rect CalcRect(this string text, string fontfamily, FontStyle fontstyle, int fontsize)
+        static private Rect CalcRect(this string text, string fontfamily, FontStyle fontstyle, int fontsize, bool compact)
         {
             Rect result = Rect.Empty;
             using (var fileStream = new InMemoryRandomAccessStream())
@@ -185,7 +185,10 @@ namespace StringCodec.UWP.Common
                         VerticalAlignment = CanvasVerticalAlignment.Top
                     };
                     CanvasTextLayout layout = new CanvasTextLayout(ds, text, fmt, 0.0f, 0.0f);
-                    result = new Rect(layout.DrawBounds.X, layout.DrawBounds.Y, layout.DrawBounds.Width, layout.DrawBounds.Height);
+                    if(compact)
+                        result = new Rect(layout.DrawBounds.X, layout.DrawBounds.Y, layout.DrawBounds.Width, layout.DrawBounds.Height);
+                    else
+                        result = layout.LayoutBounds;
                 }
             }
             return (result);
@@ -196,11 +199,12 @@ namespace StringCodec.UWP.Common
             WriteableBitmap result = null;
             using (var fileStream = new InMemoryRandomAccessStream())
             {
+                bool compact = false;
                 var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
-                Rect rect = CalcRect(text, fontfamily, fontstyle, fontsize);
+                Rect rect = CalcRect(text, fontfamily, fontstyle, fontsize, compact);
 
                 CanvasDevice device = CanvasDevice.GetSharedDevice();
-                CanvasRenderTarget offscreen = new CanvasRenderTarget(device, (int)rect.Width+2, (int)rect.Height+2, 96);
+                CanvasRenderTarget offscreen = new CanvasRenderTarget(device, (int)Math.Ceiling(rect.Width), (int)Math.Ceiling(rect.Height), 96);
                 using (CanvasDrawingSession ds = offscreen.CreateDrawingSession())
                 {
                     CanvasTextFormat fmt = new CanvasTextFormat()
@@ -214,7 +218,10 @@ namespace StringCodec.UWP.Common
                     };
                     ds.Clear(bgcolor);
                     //ds.DrawRectangle(100, 200, 5, 6, Colors.Red);
-                    ds.DrawText(text, (int)(1 - rect.X), (int)(1 - rect.Y), fgcolor, fmt);
+                    //if(compact)
+                    //    ds.DrawText(text, (int)(- rect.X), (int)(- rect.Y), fgcolor, fmt);
+                    //else
+                        ds.DrawText(text, (int)(-rect.X), (int)(-rect.Y), fgcolor, fmt);
                 }
                 await offscreen.SaveAsync(fileStream, CanvasBitmapFileFormat.Png);
                 await fileStream.FlushAsync();
