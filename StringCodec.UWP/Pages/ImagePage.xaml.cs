@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.Storage.Streams;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -64,6 +66,28 @@ namespace StringCodec.UWP.Pages
 
         }
 
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e.Parameter != null)
+            {
+                var data = e.Parameter;
+                if (data is string)
+                {
+                    imgBase64.Stretch = Stretch.Uniform;
+                    edBase64.Text = data.ToString();
+                    imgBase64.Source = await edBase64.Text.Decoder();
+                }
+                else if (data is WriteableBitmap)
+                {
+                    imgBase64.Source = data as WriteableBitmap;
+                    if (CURRENT_LINEBREAK) edBase64.TextWrapping = TextWrapping.NoWrap;
+                    else edBase64.TextWrapping = TextWrapping.Wrap;
+                    var wb = await imgBase64.ToWriteableBitmmap();
+                    edBase64.Text = await wb.ToBase64(CURRENT_FORMAT, CURRENT_PREFIX, CURRENT_LINEBREAK);
+                }
+            }
+        }
+
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
         }
@@ -111,6 +135,20 @@ namespace StringCodec.UWP.Pages
             }
         }
 
+        private void QRCode_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender == btnImageQRCode)
+            {
+                if (imgBase64.Source == null) return;
+                Frame.Navigate(typeof(QRCodePage), imgBase64.Source as WriteableBitmap);
+            }
+            else if (sender == btnImageOneD)
+            {
+                if (imgBase64.Source == null) return;
+                Frame.Navigate(typeof(CommonOneDPage), imgBase64.Source as WriteableBitmap);
+            }
+        }
+
         private async void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
             var btn = sender as AppBarButton;
@@ -119,7 +157,12 @@ namespace StringCodec.UWP.Pages
                 case "btnEncode":
                     if (CURRENT_LINEBREAK) edBase64.TextWrapping = TextWrapping.NoWrap;
                     else edBase64.TextWrapping = TextWrapping.Wrap;
-                    edBase64.Text = await TextCodecs.Encode(imgBase64.Source as WriteableBitmap, CURRENT_FORMAT, CURRENT_PREFIX, CURRENT_LINEBREAK);
+                    var wb = await imgBase64.ToWriteableBitmmap();
+                    edBase64.Text = await wb.ToBase64(CURRENT_FORMAT, CURRENT_PREFIX, CURRENT_LINEBREAK);
+                    //
+                    // Maybe TextBox bug: If lines > 12035, the text is displayed as white but infact
+                    // the content is right, you can select & copy. it's ok, but only display white
+                    // 
                     break;
                 case "btnDecode":
                     //imgBase64.Source = await TextCodecs.Decode(edBase64.Text);
@@ -216,5 +259,6 @@ namespace StringCodec.UWP.Pages
             }
             #endregion
         }
+
     }
 }

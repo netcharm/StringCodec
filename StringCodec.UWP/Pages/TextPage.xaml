@@ -52,7 +52,12 @@
 
             <CommandBar.SecondaryCommands>
                 <!-- More Button Dropdown menu -->
-                <AppBarButton x:Name="optQRCode" x:Uid="optQRCode" Label="Input to QRCode" Click="QRCode_Click">
+                <AppBarButton x:Name="btnSrcQRCode" x:Uid="btnSrcQRCode" Label="Input to QRCode" Click="QRCode_Click">
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xF029;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton x:Name="btnDstQRCode" x:Uid="btnDstQRCode" Label="Output to QRCode" Click="QRCode_Click">
                     <AppBarButton.Icon>
                         <FontIcon Glyph="&#xF029;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
                     </AppBarButton.Icon>

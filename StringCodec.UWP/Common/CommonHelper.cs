@@ -1010,6 +1010,14 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
+        static public async Task<int> ShowProgressDialog(IProgress<int> progress)
+        {
+            var dlgProgress = new ProgressDialog();
+            await dlgProgress.ShowAsync();
+
+            return 0;
+        }
+
         static public async Task<string> ShowSaveDialog(string content)
         {
             string result = string.Empty;
@@ -1135,7 +1143,11 @@ namespace StringCodec.UWP.Common
                 //把控件变成图像
                 RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap();
                 //传入参数Image控件
-                await renderTargetBitmap.RenderAsync(image, width, height);
+                var wb = await image.ToWriteableBitmmap();
+                var bw = wb.PixelWidth;
+                var bh = wb.PixelHeight;
+                double factor = (double)bh / (double)bw;
+                await renderTargetBitmap.RenderAsync(image, width, (int)(width * factor));
                 var pixelBuffer = await renderTargetBitmap.GetPixelsAsync();
 
                 using (var fileStream = await TargetFile.OpenAsync(FileAccessMode.ReadWrite))
@@ -1146,7 +1158,7 @@ namespace StringCodec.UWP.Common
                     if (width > 0 && height > 0)
                     {
                         r_width = width;
-                        r_height = height;
+                        r_height = (int)(width * factor);
                     }
                     var encId = BitmapEncoder.PngEncoderId;
                     var fext = Path.GetExtension(TargetFile.Name).ToLower();

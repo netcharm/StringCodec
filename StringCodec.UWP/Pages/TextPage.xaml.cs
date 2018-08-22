@@ -62,35 +62,16 @@ namespace StringCodec.UWP.Pages
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            //if (!string.IsNullOrEmpty(text_src)) edSrc.Text = text_src;
         }
 
-        private async void AppBarButton_Click(object sender, RoutedEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var btn = sender as AppBarButton;
-            switch (btn.Name)
+            if (e.Parameter != null)
             {
-                case "btnEncode":
-                    edDst.Text = TextCodecs.Encode(edSrc.Text, CURRENT_CODEC, CURRENT_LINEBREAK);
-                    text_src = edDst.Text;
-                    break;
-                case "btnDecode":
-                    edDst.Text = TextCodecs.Decode(edSrc.Text, CURRENT_CODEC, CURRENT_ENC);
-                    text_src = edDst.Text;
-                    break;
-                case "btnCopy":
-                    Common.Utils.SetClipboard(edDst.Text);
-                    break;
-                case "btnPaste":
-                    edSrc.Text = await Utils.GetClipboard(edSrc.Text);
-                    break;
-                case "btnSave":
-                    await Utils.ShowSaveDialog(edDst.Text);
-                    break;
-                case "btnShare":
-                    Utils.Share(edDst.Text);
-                    break;
-                default:
-                    break;
+                var data = e.Parameter;
+                edSrc.Text = data.ToString();
+                edDst.Text = TextCodecs.Encode(edSrc.Text, CURRENT_CODEC, CURRENT_LINEBREAK);
             }
         }
 
@@ -149,15 +130,51 @@ namespace StringCodec.UWP.Pages
 
         private void QRCode_Click(object sender, RoutedEventArgs e)
         {
-            if (edSrc.Text.Length <= 0) return;
-
-            QRCodePage.Text = edSrc.Text;
-            Frame.Navigate(typeof(QRCodePage));
+            if(sender == btnSrcQRCode)
+            {
+                if (edSrc.Text.Length <= 0) return;
+                Frame.Navigate(typeof(QRCodePage), edSrc.Text);
+            }
+            else if(sender == btnDstQRCode)
+            {
+                if (edDst.Text.Length <= 0) return;
+                Frame.Navigate(typeof(QRCodePage), edDst.Text);
+            }            
         }
 
         private void edSrc_TextChanged(object sender, TextChangedEventArgs e)
         {
             text_src = edSrc.Text;
+        }
+
+        private async void AppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as AppBarButton;
+            switch (btn.Name)
+            {
+                case "btnEncode":
+                    edDst.Text = TextCodecs.Encode(edSrc.Text, CURRENT_CODEC, CURRENT_LINEBREAK);
+                    text_src = edDst.Text;
+                    break;
+                case "btnDecode":
+                    edDst.Text = TextCodecs.Decode(edSrc.Text, CURRENT_CODEC, CURRENT_ENC);
+                    text_src = edDst.Text;
+                    break;
+                case "btnCopy":
+                    Common.Utils.SetClipboard(edDst.Text);
+                    break;
+                case "btnPaste":
+                    edSrc.Text = await Utils.GetClipboard(edSrc.Text);
+                    break;
+                case "btnSave":
+                    await Utils.ShowSaveDialog(edDst.Text);
+                    break;
+                case "btnShare":
+                    Utils.Share(edDst.Text);
+                    break;
+                default:
+                    break;
+            }
         }
 
         #region Drag/Drop routines

@@ -84,6 +84,25 @@ namespace StringCodec.UWP.Pages
 
         }
 
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e.Parameter != null)
+            {
+                var data = e.Parameter;
+                if (data is string)
+                {
+                    imgBarcode.Stretch = Stretch.Uniform;
+                    edBarcode.Text = data.ToString();
+                    imgBarcode.Source = await edBarcode.Text.EncodeBarcode(CURRENT_FORMAT, CURRENT_FGCOLOR, CURRENT_BGCOLOR, CURRENT_TEXT_FONTSIZE);
+                }
+                else if (data is WriteableBitmap)
+                {
+                    imgBarcode.Source = data as WriteableBitmap;
+                    edBarcode.Text = await QRCodec.Decode(imgBarcode.Source as WriteableBitmap);
+                }
+            }
+        }
+
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
         }
@@ -210,6 +229,20 @@ namespace StringCodec.UWP.Pages
                 default:
                     CURRENT_TEXT_FONTSIZE = 48;
                     break;
+            }
+        }
+
+        private void Base64_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender == btnImageToBase64)
+            {
+                if (imgBarcode.Source == null) return;
+                Frame.Navigate(typeof(ImagePage), imgBarcode.Source as WriteableBitmap);
+            }
+            else if (sender == btnTextToDecode)
+            {
+                if (string.IsNullOrEmpty(edBarcode.Text)) return;
+                Frame.Navigate(typeof(TextPage), edBarcode.Text);
             }
         }
 
@@ -347,5 +380,6 @@ namespace StringCodec.UWP.Pages
             }
         }
         #endregion
+
     }
 }

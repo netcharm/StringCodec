@@ -48,7 +48,8 @@ namespace StringCodec.UWP
                 rootFrame = new Frame();
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
-                rootFrame.Navigated += OnNavigated;
+                //rootFrame.Navigated += OnNavigated;
+
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
                     //TODO: 从之前挂起的应用程序加载状态
@@ -56,13 +57,15 @@ namespace StringCodec.UWP
 
                 // 将框架放在当前窗口中
                 Window.Current.Content = rootFrame;
+                
                 // Register a handler for BackRequested events and set the
                 // visibility of the Back button
-                SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
-                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility =
-                    rootFrame.CanGoBack ?
-                    AppViewBackButtonVisibility.Visible :
-                    AppViewBackButtonVisibility.Collapsed;
+                //SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
+                //SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility =
+                //    rootFrame.CanGoBack ?
+                //    AppViewBackButtonVisibility.Visible :
+                //    AppViewBackButtonVisibility.Collapsed;
+
             }
 
             if (e.PrelaunchActivated == false)
@@ -130,14 +133,14 @@ namespace StringCodec.UWP
                 e.Handled = true;
                 rootFrame.GoBack();
             }
-        }
+        }
+
         /// <summary>
         /// 接受Windows10 共享卡片共享事件处理
         /// </summary>
         /// <param name="args"></param>
         protected override void OnShareTargetActivated(ShareTargetActivatedEventArgs args)
         {
-
             // Do not repeat app initialization when the Window already has content, 
             // just ensure that the window is active 
             if (!(Window.Current.Content is Frame rootFrame))

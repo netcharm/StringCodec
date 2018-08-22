@@ -50,6 +50,16 @@
 
             <CommandBar.SecondaryCommands>
                 <!-- More Button Dropdown menu -->
+                <AppBarButton x:Name="btnImageQRCode" x:Uid="btnImageQRCode" Label="Image to QRCode" Click="QRCode_Click">
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xF029;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton x:Name="btnImageOneD" x:Uid="btnImageOneD" Label="Image to 1D Barcode" Click="QRCode_Click">
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xF02A;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
             </CommandBar.SecondaryCommands>
 
             <CommandBar.Content>
@@ -58,7 +68,7 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <!--<ProgressRing Grid.Column="0" x:Name="ring" x:Uid="Ring" VerticalAlignment="Center"/>-->
+                    <!--<ProgressRing Grid.Column="0" x:Name="ring" x:Uid="Ring" VerticalAlignment="Center" Visibility="Collapsed"/>-->
                     <TextBlock Grid.Column="1" x:Name="lblInfo" x:Uid="edInfo" Text="" Margin="12,14" VerticalAlignment="Center"/>
                 </Grid>
             </CommandBar.Content>

@@ -86,6 +86,26 @@ namespace StringCodec.UWP.Pages
             #endregion
         }
 
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e.Parameter != null)
+            {
+                var data = e.Parameter;
+                if(data is string)
+                {
+                    imgQR.Stretch = Stretch.Uniform;
+                    //imgQR.Source = QRCodec.EncodeQR(edQR.Text, CURRENT_FGCOLOR, CURRENT_BGCOLOR, CURRENT_ECL);
+                    edQR.Text = data.ToString();
+                    imgQR.Source = edQR.Text.EncodeQR(CURRENT_FGCOLOR, CURRENT_BGCOLOR, CURRENT_ECL);
+                }
+                else if(data is WriteableBitmap)
+                {
+                    imgQR.Source = data as WriteableBitmap;
+                    edQR.Text = await QRCodec.Decode(imgQR.Source as WriteableBitmap);
+                }
+            }
+        }
+
         private void ConfirmColor_Click(object sender, RoutedEventArgs e)
         {
             if ((bool)optBgColor.Tag)
@@ -227,6 +247,20 @@ namespace StringCodec.UWP.Pages
                     break;
                 default:
                     break;
+            }
+        }
+
+        private void Base64_Click(object sender, RoutedEventArgs e)
+        {
+            if(sender == btnImageToBase64)
+            {
+                if (imgQR.Source == null) return;
+                Frame.Navigate(typeof(ImagePage), imgQR.Source as WriteableBitmap);
+            }
+            else if(sender == btnTextToDecode)
+            {
+                if (string.IsNullOrEmpty(edQR.Text)) return;
+                Frame.Navigate(typeof(TextPage), edQR.Text);
             }
         }
 
@@ -396,5 +430,6 @@ namespace StringCodec.UWP.Pages
             }
         }
         #endregion
+
     }
 }

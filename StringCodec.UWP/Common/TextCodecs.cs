@@ -303,8 +303,20 @@ namespace StringCodec.UWP.Common
 
                     var opt = Base64FormattingOptions.None;
                     if (LineBreak) opt = Base64FormattingOptions.InsertLineBreaks;
-                    result = Convert.ToBase64String(arr, opt);
-                    if (prefix) result = $"data:{mime};base64,{result}";
+
+                    string base64 = string.Empty;
+
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < arr.Length; i += 57)
+                    {
+                        byte[] segment = arr.Skip(i).Take(57).ToArray();
+                        sb.AppendLine(Convert.ToBase64String(segment, opt));
+                    }
+                    if (LineBreak) base64 = string.Join("\n", sb);
+                    else base64 = string.Join("", sb);
+                    //base64 = Convert.ToBase64String(arr, opt);
+
+                    if (prefix) result = $"data:{mime};base64,{base64}";
                 }
             }
             catch (Exception ex)
@@ -312,6 +324,119 @@ namespace StringCodec.UWP.Common
                 await new MessageDialog(ex.Message, "ERROR").ShowAsync();
             }
             return (result);
+        }
+
+        static public async Task<string> ProgressEncode(WriteableBitmap image, string format = ".png", bool prefix = true, bool LineBreak = false)
+        {
+            string result = string.Empty;
+            int processCount = 0;
+            try
+            {
+                using (var fileStream = new InMemoryRandomAccessStream())
+                {
+                    #region Encode Image to format
+                    // Get pixels of the WriteableBitmap object 
+                    Stream pixelStream = image.PixelBuffer.AsStream();
+                    byte[] pixels = new byte[pixelStream.Length];
+                    await pixelStream.ReadAsync(pixels, 0, pixels.Length);
+
+                    var encId = BitmapEncoder.PngEncoderId;
+                    var fext = format.ToLower();
+                    var mime = "image/png";
+                    switch (fext)
+                    {
+                        case ".bmp":
+                            encId = BitmapEncoder.BmpEncoderId;
+                            mime = "image/bmp";
+                            break;
+                        case ".gif":
+                            encId = BitmapEncoder.GifEncoderId;
+                            mime = "image/gif";
+                            break;
+                        case ".png":
+                            encId = BitmapEncoder.PngEncoderId;
+                            mime = "image/png";
+                            break;
+                        case ".jpg":
+                            encId = BitmapEncoder.JpegEncoderId;
+                            mime = "image/jpeg";
+                            break;
+                        case ".jpeg":
+                            encId = BitmapEncoder.JpegEncoderId;
+                            mime = "image/jpeg";
+                            break;
+                        case ".tif":
+                            encId = BitmapEncoder.TiffEncoderId;
+                            mime = "image/tiff";
+                            break;
+                        case ".tiff":
+                            encId = BitmapEncoder.TiffEncoderId;
+                            mime = "image/tiff";
+                            break;
+                        default:
+                            encId = BitmapEncoder.PngEncoderId;
+                            mime = "image/png";
+                            break;
+                    }
+                    var encoder = await BitmapEncoder.CreateAsync(encId, fileStream);
+                    // Save the image file with jpg extension 
+                    encoder.SetPixelData(
+                        BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore,
+                        //(uint)bmp.PixelWidth, (uint)bmp.PixelHeight, 
+                        (uint)image.PixelWidth, (uint)image.PixelHeight,
+                        96.0, 96.0,
+                        pixels);
+                    await encoder.FlushAsync();
+                    #endregion
+
+                    #region Convert InMemoryRandomAccessStream/IRandomAccessStream to byte[]/Array
+                    Stream stream = WindowsRuntimeStreamExtensions.AsStreamForRead(fileStream.GetInputStreamAt(0));
+                    MemoryStream ms = new MemoryStream();
+                    await stream.CopyToAsync(ms);
+                    byte[] arr = ms.ToArray();
+                    #endregion
+
+                    var opt = Base64FormattingOptions.None;
+                    if (LineBreak) opt = Base64FormattingOptions.InsertLineBreaks;
+
+                    var dlgProgress = new ProgressDialog();
+                    IProgress<int> progress = new Progress<int>(percent => dlgProgress.Value = percent);
+
+                    var dlgResult = dlgProgress.ShowAsync();
+
+                    string base64 = string.Empty;
+                    int totalCount = arr.Count();
+                    processCount = await Task.Run<int>(() =>
+                    {
+                        StringBuilder sb = new StringBuilder();
+
+                        int tempCount = 0;
+                        for (int i = 0; i < totalCount; i += 57)
+                        {
+                            byte[] segment = arr.Skip(i).Take(57).ToArray();
+                            sb.AppendLine(Convert.ToBase64String(segment, opt));
+                            tempCount += segment.Length;
+
+                            if (dlgProgress != null)
+                                dlgProgress.Report(tempCount * 100 / totalCount);
+                        }
+                        if (LineBreak) base64 = string.Join("\n", sb);
+                        else           base64 = string.Join("", sb);
+                        if (dlgProgress != null)
+                            dlgProgress.Report(100);
+
+                        return tempCount;
+                    });
+                    if (prefix) result = $"data:{mime};base64,{base64}";
+                    dlgResult.Cancel();
+                    dlgProgress.Hide();
+                }
+            }
+            catch (Exception ex)
+            {
+                await new MessageDialog(ex.Message, "ERROR").ShowAsync();
+            }
+            return(result);
         }
 
         static public async Task<string> Encoder(this WriteableBitmap image, string format = ".png", bool prefix = true, bool LineBreak = false)
@@ -394,5 +519,31 @@ namespace StringCodec.UWP.Common
         {
             return (await Decode(content));
         }
+
+        static public async Task<string> ToBase64(this WriteableBitmap wb, string format, bool prefix, bool linebreak)
+        {
+            string result = string.Empty;
+            if (wb.PixelWidth > 512 && wb.PixelHeight > 512)
+            {
+                var dlgMessage = new MessageDialog("Image size > 256x256, continued?", "Comfirm") { Options = MessageDialogOptions.AcceptUserInputAfterDelay };
+                dlgMessage.Commands.Add(new UICommand("OK") { Id = 0 });
+                dlgMessage.Commands.Add(new UICommand("Cancel") { Id = 1 });
+                // Set the command that will be invoked by default
+                dlgMessage.DefaultCommandIndex = 0;
+                // Set the command to be invoked when escape is pressed
+                dlgMessage.CancelCommandIndex = 1;
+                // Show the message dialog
+                var dlgResult = await dlgMessage.ShowAsync();
+                if ((int)dlgResult.Id == 0)
+                {
+                    result = await ProgressEncode(wb, format, prefix, linebreak);
+                }
+            }
+            else
+                result = await TextCodecs.Encode(wb, format, prefix, linebreak);
+
+            return (result);
+        }
+
     }
 }
