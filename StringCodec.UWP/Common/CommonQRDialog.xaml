@@ -1,0 +1,112 @@
+﻿<ContentDialog
+    x:Class="StringCodec.UWP.Common.CommonQRDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:StringCodec.UWP.Common"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    x:Name="CommonQrInputDialog"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    MinWidth="320"
+    MinHeight="240"
+    Loaded="Dialog_Loaded"
+    PrimaryButtonText="OK"
+    SecondaryButtonText="Cancel"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
+
+    <Grid>
+        <Pivot Title="Common QR Input Dialog">
+            <PivotItem x:Name="piLink" x:Uid="piLink" Header="Link">
+                <Grid Padding="8, 8, 8, 8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="96" />
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="64"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <ComboBox Grid.Row="0" Grid.Column="0" x:Name="cbLinkProtocol" x:Uid="cbProtocol" Header="Protocol:" VerticalAlignment="Bottom" SelectedIndex="1">
+                        <x:String>http://</x:String>
+                        <x:String>https://</x:String>
+                        <x:String>ftp://</x:String>
+                        <x:String>ftps://</x:String>
+                        <x:String>MAILTO://</x:String>
+                        <x:String>TEL:</x:String>
+                        <x:String>skype:</x:String>
+                    </ComboBox>
+                    <ComboBox Grid.Row="0" Grid.Column="1" x:Name="edLinkUrl" x:Uid="edLinkUrl" Header="Url:" PlaceholderText="Url address" VerticalAlignment="Bottom">
+                        <x:String>https://twitter.com/</x:String>
+                        <x:String>https://</x:String>
+                        <x:String>ftp://</x:String>
+                        <x:String>ftps://</x:String>
+                    </ComboBox>
+                    <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="edLinkContent" x:Uid="edLinkContent" Header="Centent:" PlaceholderText="Url Parameters" VerticalAlignment="Center" MinHeight="120"/>
+                </Grid>
+            </PivotItem>
+            <PivotItem x:Name="piWifi" x:Uid="piWifi" Header="WIFI">
+                <Grid>
+                    <!--<Grid.ColumnDefinitions>
+                        <ColumnDefinition Width=".5*" />
+                    </Grid.ColumnDefinitions>-->
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="64"/>
+                        <RowDefinition Height="64"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBox Grid.Row="0" Grid.Column="0" x:Name="edWifiSSID" x:Uid="edWifiSSID" Header="SSID:" PlaceholderText="SSID/Network Name"/>
+                    <TextBox Grid.Row="1" Grid.Column="0" x:Name="edWifiPass" x:Uid="edWifiPass" Header="Password:" PlaceholderText=" WIFI Password" />
+                    <ComboBox Grid.Row="2" Grid.Column="0" x:Name="edWifiEncypto" x:Uid="edWifiEncypto" Header="Encrypt Type:" PlaceholderText="Password Encrypt Type" SelectedIndex="2">
+                        <x:String>WEP</x:String>
+                        <x:String>WPA</x:String>
+                        <x:String>WPA2</x:String>
+                        <x:String>nopass</x:String>
+                    </ComboBox>
+                </Grid>
+            </PivotItem>
+            <PivotItem x:Name="piMail" x:Uid="piMail" Header="Mail">
+                <Grid>
+                    <!--<Grid.ColumnDefinitions>
+                        <ColumnDefinition Width=".5*" />
+                        <ColumnDefinition Width=".5*"/>
+                    </Grid.ColumnDefinitions>-->
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="64"/>
+                        <RowDefinition Height="64"/>
+                        <RowDefinition Height="*" MinHeight="120"/>
+                    </Grid.RowDefinitions>
+                    <TextBox Grid.Row="0" Grid.Column="0" x:Name="edMailTo" x:Uid="edMailTo" Header="SentTo:" PlaceholderText="Mail Address"/>
+                    <TextBox Grid.Row="1" Grid.Column="0" x:Name="edMailSubject" x:Uid="edMailSubject" Header="Subjetc:" PlaceholderText="Mail Subject"/>
+                    <TextBox Grid.Row="2" Grid.Column="0" x:Name="edMailContent" x:Uid="edMailContent" Header="Content:" PlaceholderText="Mail Content"/>
+                </Grid>
+            </PivotItem>
+            <PivotItem Header="Geo">
+                <Grid Padding="8, 8, 8, 8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width=".5*" />
+                        <ColumnDefinition Width=".5*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="64"/>
+                        <RowDefinition Height="96"/>
+                        <RowDefinition Height="*" MinHeight="120"/>
+                    </Grid.RowDefinitions>
+                    <TextBox Grid.Row="0" Grid.Column="0" x:Name="edGeoLat" x:Uid="edGeoLat" Header="Latitude:" PlaceholderText="Latitude" Margin="0, 0, 8, 0" VerticalAlignment="Bottom"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" x:Name="edGeoLon" x:Uid="edGeoLon" Header="Longitude:" PlaceholderText="Longitude" Margin="8, 0, 0, 0" VerticalAlignment="Bottom"/>
+                    <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="edGeoQuery" x:Uid="edGeoQuery" Header="Query Content:" PlaceholderText="Url Parameters"/>
+                    <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" >
+                        
+                    </Grid>
+                </Grid>
+            </PivotItem>
+            <PivotItem Header="vCard">
+                <TextBlock Text="urgent emails go here." />
+            </PivotItem>
+            <PivotItem Header="vCalendar">
+                <TextBlock Text="urgent emails go here." />
+            </PivotItem>
+        </Pivot>
+    </Grid>
+</ContentDialog>

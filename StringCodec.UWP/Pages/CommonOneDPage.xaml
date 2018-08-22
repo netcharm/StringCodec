@@ -26,6 +26,7 @@
                         <ToggleMenuFlyoutItem x:Name="optBarCodeExpress" x:Uid="optBarCodeExpress" Text="Express No." Click="OptBarCodeFormat_Click"/>
                         <ToggleMenuFlyoutItem x:Name="optBarCodeISBN" x:Uid="optBarCodeISBN" Text="Book ISBN" Click="OptBarCodeFormat_Click"/>
                         <ToggleMenuFlyoutItem x:Name="optBarCodeProduct" x:Uid="optBarCodeProduct" Text="Product" Click="OptBarCodeFormat_Click"/>
+                        <MenuFlyoutSeparator />
                         <ToggleMenuFlyoutItem x:Name="optBarCodeLink" x:Uid="optBarCodeLink" Text="Web Link" Click="OptBarCodeFormat_Click"/>
                         <ToggleMenuFlyoutItem x:Name="optBarCodeTele" x:Uid="optBarCodeTele" Text="Telephone" Click="OptBarCodeFormat_Click"/>
                         <ToggleMenuFlyoutItem x:Name="optBarCodeMail" x:Uid="optBarCodeMail" Text="Mail" Click="OptBarCodeFormat_Click"/>

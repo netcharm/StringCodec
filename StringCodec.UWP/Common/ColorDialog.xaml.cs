@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -45,6 +46,8 @@ namespace StringCodec.UWP.Common
         public ColorDialog()
         {
             this.InitializeComponent();
+            if (ApplicationData.Current.LocalSettings.Values.ContainsKey("AppTheme"))
+                this.RequestedTheme = (ElementTheme)ApplicationData.Current.LocalSettings.Values["AppTheme"];
         }
 
         private void ColorDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)

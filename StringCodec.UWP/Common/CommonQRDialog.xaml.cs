@@ -6,6 +6,8 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
+using Windows.UI;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -18,41 +20,21 @@ using Windows.UI.Xaml.Navigation;
 
 namespace StringCodec.UWP.Common
 {
-    public sealed partial class ProgressDialog : ContentDialog
+    public sealed partial class CommonQRDialog : ContentDialog
     {
-
-        public double Value
-        {
-            get { return Bar.Value; }
-            set
-            {
-                Bar.Value = value;
-                Percent.Text = $"{value}%";
-            }
-        }
-
-        private IProgress<int> progress;
-
-        public ProgressDialog()
+        public CommonQRDialog()
         {
             this.InitializeComponent();
             if (ApplicationData.Current.LocalSettings.Values.ContainsKey("AppTheme"))
                 this.RequestedTheme = (ElementTheme)ApplicationData.Current.LocalSettings.Values["AppTheme"];
-
-            progress = new Progress<int>(percent => {
-                Bar.Value = percent;
-                Percent.Text = $"{percent}%";
-            });
         }
 
-        public void Report(int value)
+        private void Dialog_Loaded(object sender, RoutedEventArgs e)
         {
-            progress.Report(value);
-        }
+            //ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
+          
+            //this.RequestedTheme = ElementTheme.Default;
 
-        public void Report(double value)
-        {
-            progress.Report(Convert.ToInt32(value));
         }
 
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
@@ -62,5 +44,6 @@ namespace StringCodec.UWP.Common
         private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
         }
+
     }
 }

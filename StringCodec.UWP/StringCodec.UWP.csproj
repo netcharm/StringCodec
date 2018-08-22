@@ -99,6 +99,9 @@
     <Compile Include="Common\ColorDialog.xaml.cs">
       <DependentUpon>ColorDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\CommonQRDialog.xaml.cs">
+      <DependentUpon>CommonQRDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Common\ProgressDialog.xaml.cs">
       <DependentUpon>ProgressDialog.xaml</DependentUpon>
     </Compile>
@@ -212,6 +215,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="Common\ColorDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Common\CommonQRDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

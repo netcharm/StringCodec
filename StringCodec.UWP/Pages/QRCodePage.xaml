@@ -44,7 +44,7 @@
         </Grid.ColumnDefinitions>
 
         <CommandBar Grid.Row="0" Grid.ColumnSpan="2">
-            <AppBarButton Grid.Column="0" x:Name="btnOpt" x:Uid="btnOpt" Icon="Bullets" Label="Options" VerticalAlignment="Center">
+            <AppBarButton x:Name="btnOpt" x:Uid="btnOpt" Icon="Bullets" Label="Options" VerticalAlignment="Center">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
                         <ToggleMenuFlyoutItem x:Name="optECL_L" x:Uid="optECL_L" Text="ECC Level : L" Click="OptECL_Click"/>

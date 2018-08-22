@@ -202,7 +202,8 @@ namespace StringCodec.UWP.Pages
             }
             else if (sender == edBase64)
             {
-                if (e.DataView.Contains(StandardDataFormats.Text))
+                if (e.DataView.Contains(StandardDataFormats.Text) || 
+                    e.DataView.Contains(StandardDataFormats.StorageItems))
                 {
                     e.AcceptedOperation = DataPackageOperation.Copy;
                 }
@@ -218,15 +219,18 @@ namespace StringCodec.UWP.Pages
                     var items = await e.DataView.GetStorageItemsAsync();
                     if (items.Count > 0)
                     {
-                        var storageFile = items[0] as StorageFile;
-                        var bitmapImage = new WriteableBitmap(1,1);
-                        bitmapImage.SetSource(await storageFile.OpenAsync(FileAccessMode.Read));
-                        // Set the image on the main page to the dropped image
-                        //if (bitmapImage.PixelWidth >= imgBase64.RenderSize.Width || bitmapImage.PixelHeight >= imgBase64.RenderSize.Height)
-                        //    imgBase64.Stretch = Stretch.Uniform;
-                        //else imgBase64.Stretch = Stretch.None;
-                        byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
-                        imgBase64.Source = bitmapImage;
+                        var file = items[0] as StorageFile;
+                        if (image_ext.Contains(file.FileType.ToLower()))
+                        {
+                            var bitmapImage = new WriteableBitmap(1, 1);
+                            bitmapImage.SetSource(await file.OpenAsync(FileAccessMode.Read));
+                            // Set the image on the main page to the dropped image
+                            //if (bitmapImage.PixelWidth >= imgBase64.RenderSize.Width || bitmapImage.PixelHeight >= imgBase64.RenderSize.Height)
+                            //    imgBase64.Stretch = Stretch.Uniform;
+                            //else imgBase64.Stretch = Stretch.None;
+                            byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
+                            imgBase64.Source = bitmapImage;
+                        }
                     }
                 }
                 else if (e.DataView.Contains(StandardDataFormats.WebLink))
@@ -248,7 +252,27 @@ namespace StringCodec.UWP.Pages
             }
             else if (sender == edBase64)
             {
-                if (e.DataView.Contains(StandardDataFormats.Text))
+                if (e.DataView.Contains(StandardDataFormats.StorageItems))
+                {
+                    var items = await e.DataView.GetStorageItemsAsync();
+                    if (items.Count > 0)
+                    {
+                        var storageFile = items[0] as StorageFile;
+                        if (!storageFile.FileType.ToLower().Equals(".txt"))
+                            edBase64.Text = await e.DataView.GetTextAsync();
+                        else
+                            edBase64.Text = await FileIO.ReadTextAsync(storageFile);
+                    }
+                }
+                else if (e.DataView.Contains(StandardDataFormats.WebLink))
+                {
+                    var uri = await e.DataView.GetWebLinkAsync();
+
+                    StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(uri);
+                    if (!file.FileType.ToLower().Equals(".txt")) return;
+                    edBase64.Text = await FileIO.ReadTextAsync(file);
+                }
+                else if (e.DataView.Contains(StandardDataFormats.Text))
                 {
                     var content = await e.DataView.GetTextAsync();
                     if (content.Length > 0)

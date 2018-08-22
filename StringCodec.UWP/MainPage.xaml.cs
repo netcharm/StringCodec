@@ -58,15 +58,18 @@ namespace StringCodec.UWP
             //    titleBar.ButtonForegroundColor = Colors.Black;
             //}
 
+            #region Set Theme & TitleBar button color
             this.RequestedTheme = theme;
             if (this.RequestedTheme == ElementTheme.Dark)
             {
                 titleBar.ButtonForegroundColor = Colors.White;
             }
-            else
+            else if(this.RequestedTheme == ElementTheme.Light)
             {
                 titleBar.ButtonForegroundColor = Colors.Black;
             }
+            ApplicationData.Current.LocalSettings.Values["AppTheme"] = (int)RequestedTheme;
+            #endregion
         }
 
         public MainPage()
@@ -108,7 +111,10 @@ namespace StringCodec.UWP
             CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
 
-            SetTitleBarTheme(ElementTheme.Dark);
+            var theme = ElementTheme.Dark;
+            if (ApplicationData.Current.LocalSettings.Values.ContainsKey("AppTheme"))
+                theme = (ElementTheme)ApplicationData.Current.LocalSettings.Values["AppTheme"];
+            SetTitleBarTheme(theme);
             #endregion
 
             ContentFrame.Navigated += NvMain_Navigated;
