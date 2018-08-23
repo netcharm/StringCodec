@@ -9,6 +9,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Capture;
 using Windows.Storage;
+using Windows.Storage.Streams;
 using Windows.UI;
 using Windows.UI.Popups;
 using Windows.UI.Text;
@@ -373,11 +374,27 @@ namespace StringCodec.UWP.Pages
                         if (!Utils.image_ext.Contains(storageFile.FileType.ToLower())) return;
 
                         var bitmapImage = new WriteableBitmap(1, 1);
-                        await bitmapImage.SetSourceAsync(await storageFile.OpenAsync(FileAccessMode.Read));
-                        // Set the image on the main page to the dropped image
-                        //if (bitmapImage.PixelWidth >= imgQR.RenderSize.Width || bitmapImage.PixelHeight >= imgQR.RenderSize.Height)
-                        //    imgQR.Stretch = Stretch.Uniform;
-                        //else imgQR.Stretch = Stretch.None;
+
+                        if (e.DataView.Contains(StandardDataFormats.WebLink))
+                        {
+                            var url = await e.DataView.GetWebLinkAsync();
+                            var src = await RandomAccessStreamReference.CreateFromUri(url).OpenReadAsync();
+                            await bitmapImage.SetSourceAsync(src);
+                        }
+                        else if (e.DataView.Contains(StandardDataFormats.Text))
+                        {
+                            //var content = await e.DataView.GetHtmlFormatAsync();
+                            var content = await e.DataView.GetTextAsync();
+                            if (content.Length > 0)
+                            {
+                                await bitmapImage.SetSourceAsync(await RandomAccessStreamReference.CreateFromUri(new Uri(content)).OpenReadAsync());
+                            }
+                        }
+                        else
+                        {
+                            await bitmapImage.SetSourceAsync(await storageFile.OpenReadAsync());
+                        }
+
                         byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
                         imgBarcode.Source = bitmapImage;
                     }
@@ -407,7 +424,30 @@ namespace StringCodec.UWP.Pages
                     if (items.Count > 0)
                     {
                         var storageFile = items[0] as StorageFile;
-                        if (Utils.text_ext.Contains(storageFile.FileType.ToLower())) 
+                        if (Utils.url_ext.Contains(storageFile.FileType.ToLower()))
+                        {
+                            if (e.DataView.Contains(StandardDataFormats.WebLink))
+                            {
+                                var url = await e.DataView.GetWebLinkAsync();
+                                if (url.IsUnc)
+                                {
+                                    edBarcode.Text = url.ToString();
+                                }
+                                else if (url.IsFile)
+                                {
+                                    edBarcode.Text = await FileIO.ReadTextAsync(storageFile);
+                                }
+                            }
+                            else if (e.DataView.Contains(StandardDataFormats.Text))
+                            {
+                                var content = await e.DataView.GetTextAsync();
+                                if (content.Length > 0)
+                                {
+                                    edBarcode.Text = content;
+                                }
+                            }
+                        }
+                        else if (Utils.text_ext.Contains(storageFile.FileType.ToLower())) 
                             edBarcode.Text = await FileIO.ReadTextAsync(storageFile);
                     }
                 }

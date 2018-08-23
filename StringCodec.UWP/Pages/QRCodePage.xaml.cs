@@ -5,6 +5,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Graphics.Capture;
 using Windows.Storage;
+using Windows.Storage.Streams;
 using Windows.UI;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
@@ -400,10 +401,31 @@ namespace StringCodec.UWP.Pages
                 {
                     var uri = await e.DataView.GetWebLinkAsync();
 
-                    StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(uri);
-                    if (Utils.image_ext.Contains(file.FileType.ToLower())){
+                    StorageFile storageFile = await StorageFile.GetFileFromApplicationUriAsync(uri);
+                    if (Utils.image_ext.Contains(storageFile.FileType.ToLower()))
+                    {
                         var bitmapImage = new WriteableBitmap(1, 1);
-                        await bitmapImage.SetSourceAsync(await file.OpenAsync(FileAccessMode.Read));
+
+                        if (e.DataView.Contains(StandardDataFormats.WebLink))
+                        {
+                            var url = await e.DataView.GetWebLinkAsync();
+                            var src = await RandomAccessStreamReference.CreateFromUri(url).OpenReadAsync();
+                            await bitmapImage.SetSourceAsync(src);
+                        }
+                        else if (e.DataView.Contains(StandardDataFormats.Text))
+                        {
+                            //var content = await e.DataView.GetHtmlFormatAsync();
+                            var content = await e.DataView.GetTextAsync();
+                            if (content.Length > 0)
+                            {
+                                await bitmapImage.SetSourceAsync(await RandomAccessStreamReference.CreateFromUri(new Uri(content)).OpenReadAsync());
+                            }
+                        }
+                        else
+                        {
+                            await bitmapImage.SetSourceAsync(await storageFile.OpenReadAsync());
+                        }
+
                         byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
                         imgQR.Source = bitmapImage;
                     }
@@ -417,9 +439,31 @@ namespace StringCodec.UWP.Pages
                     if (items.Count > 0)
                     {
                         var storageFile = items[0] as StorageFile;
-                        if (!storageFile.FileType.ToLower().Equals(".txt"))
-                            edQR.Text = await e.DataView.GetTextAsync();
-                        else
+                        if (Utils.url_ext.Contains(storageFile.FileType.ToLower()))
+                        {
+                            if (e.DataView.Contains(StandardDataFormats.WebLink))
+                            {
+                                var url = await e.DataView.GetWebLinkAsync();
+                                if (url.IsUnc)
+                                {
+                                    edQR.Text = url.ToString();
+                                }
+                                else if (url.IsFile)
+                                {
+                                    edQR.Text = await FileIO.ReadTextAsync(storageFile);
+                                }
+                            }
+                            else if (e.DataView.Contains(StandardDataFormats.Text))
+                            {
+                                //var content = await e.DataView.GetHtmlFormatAsync();
+                                var content = await e.DataView.GetTextAsync();
+                                if (content.Length > 0)
+                                {
+                                    edQR.Text = content;
+                                }
+                            }
+                        }
+                        else if (Utils.text_ext.Contains(storageFile.FileType.ToLower()))
                             edQR.Text = await FileIO.ReadTextAsync(storageFile);
                     }
                 }

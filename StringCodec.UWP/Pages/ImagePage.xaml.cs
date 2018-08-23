@@ -156,7 +156,24 @@ namespace StringCodec.UWP.Pages
                     if (CURRENT_LINEBREAK) edBase64.TextWrapping = TextWrapping.NoWrap;
                     else edBase64.TextWrapping = TextWrapping.Wrap;
                     var wb = await imgBase64.ToWriteableBitmmap();
-                    edBase64.Text = await wb.ToBase64(CURRENT_FORMAT, CURRENT_PREFIX, CURRENT_LINEBREAK);
+                    //edBase64.Text = await wb.ToBase64(CURRENT_FORMAT, CURRENT_PREFIX, CURRENT_LINEBREAK);
+                    string b64 = await wb.ToBase64(CURRENT_FORMAT, CURRENT_PREFIX, CURRENT_LINEBREAK);
+                    if (b64.Length > 16384)
+                    {
+                        var wrap = edBase64.TextWrapping;
+                        edBase64.TextWrapping = TextWrapping.NoWrap;
+                        edBase64.Text = b64;
+                        edBase64.TextWrapping = wrap;
+                    }
+                    //Task.Run(() =>
+                    //{
+                    //    for (int i = 0; i < b64.Length; i+=1024)
+                    //    {
+                    //        edBase64.Dispatcher.Invoke(() => {
+                    //            edBase64.Text.AppendText(b64.Skip(i).Take(1034));
+                    //        }, DispatcherPriority.Background);
+                    //    }
+                    //});
                     //
                     // Maybe TextBox bug: If lines > 3500, the text maybe displayed as white but infact
                     // the content is right, you can select & copy. it's ok, but only display white
@@ -204,6 +221,9 @@ namespace StringCodec.UWP.Pages
                         var item = items[0] as StorageFile;
                         string filename = item.Name;
                         string extension = item.FileType.ToLower();
+#if DEBUG
+                        System.Diagnostics.Debug.WriteLine($"Drag count:{items.Count}, {filename}");
+#endif
                         if (sender == imgBase64)
                         {
                             if (Utils.image_ext.Contains(extension))
@@ -278,15 +298,33 @@ namespace StringCodec.UWP.Pages
                     var items = await e.DataView.GetStorageItemsAsync();
                     if (items.Count > 0)
                     {
-                        var file = items[0] as StorageFile;
-                        if (Utils.image_ext.Contains(file.FileType.ToLower()))
+                        var storageFile = items[0] as StorageFile;
+                        if (Utils.image_ext.Contains(storageFile.FileType.ToLower()))
                         {
                             var bitmapImage = new WriteableBitmap(1, 1);
-                            bitmapImage.SetSource(await file.OpenAsync(FileAccessMode.Read));
-                            // Set the image on the main page to the dropped image
-                            //if (bitmapImage.PixelWidth >= imgBase64.RenderSize.Width || bitmapImage.PixelHeight >= imgBase64.RenderSize.Height)
-                            //    imgBase64.Stretch = Stretch.Uniform;
-                            //else imgBase64.Stretch = Stretch.None;
+
+                            if (e.DataView.Contains(StandardDataFormats.WebLink))
+                            {
+                                var url = await e.DataView.GetWebLinkAsync();
+                                var src = await RandomAccessStreamReference.CreateFromUri(url).OpenReadAsync();
+                                await bitmapImage.SetSourceAsync(src);
+                                edBase64.Text = url.ToString();
+                            }
+                            else if (e.DataView.Contains(StandardDataFormats.Text))
+                            {
+                                //var content = await e.DataView.GetHtmlFormatAsync();
+                                var content = await e.DataView.GetTextAsync();
+                                if (content.Length > 0)
+                                {
+                                    await bitmapImage.SetSourceAsync(await RandomAccessStreamReference.CreateFromUri(new Uri(content)).OpenReadAsync());
+                                    edBase64.Text = content;
+                                }
+                            }
+                            else
+                            {
+                                await bitmapImage.SetSourceAsync(await storageFile.OpenReadAsync());
+                            }
+
                             byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
                             imgBase64.Source = bitmapImage;
                         }
@@ -317,7 +355,31 @@ namespace StringCodec.UWP.Pages
                     if (items.Count > 0)
                     {
                         var storageFile = items[0] as StorageFile;
-                        if (Utils.text_ext.Contains(storageFile.FileType.ToLower()))
+                        if (Utils.url_ext.Contains(storageFile.FileType.ToLower()))
+                        {
+                            if (e.DataView.Contains(StandardDataFormats.WebLink))
+                            {
+                                var url = await e.DataView.GetWebLinkAsync();
+                                if (url.IsUnc)
+                                {
+                                    edBase64.Text = url.ToString();
+                                }
+                                else if (url.IsFile)
+                                {
+                                    edBase64.Text = await FileIO.ReadTextAsync(storageFile);
+                                }
+                            }
+                            else if (e.DataView.Contains(StandardDataFormats.Text))
+                            {
+                                //var content = await e.DataView.GetHtmlFormatAsync();
+                                var content = await e.DataView.GetTextAsync();
+                                if (content.Length > 0)
+                                {
+                                    edBase64.Text = content;
+                                }
+                            }
+                        }
+                        else if (Utils.text_ext.Contains(storageFile.FileType.ToLower()))
                             edBase64.Text = await FileIO.ReadTextAsync(storageFile);
                     }
                 }

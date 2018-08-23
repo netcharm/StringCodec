@@ -194,6 +194,9 @@ namespace StringCodec.UWP.Pages
                         var item = items[0] as StorageFile;
                         string filename = item.Name;
                         string extension = item.FileType.ToLower();
+#if DEBUG
+                        System.Diagnostics.Debug.WriteLine(filename);
+#endif
                         if (sender == edSrc)
                         {
                             if (Utils.text_ext.Contains(extension))
@@ -243,7 +246,31 @@ namespace StringCodec.UWP.Pages
                     if (items.Count > 0)
                     {
                         var storageFile = items[0] as StorageFile;
-                        if (Utils.text_ext.Contains(storageFile.FileType.ToLower()))
+                        if (Utils.url_ext.Contains(storageFile.FileType.ToLower()))
+                        {
+                            if (e.DataView.Contains(StandardDataFormats.WebLink))
+                            {
+                                var url = await e.DataView.GetWebLinkAsync();
+                                if (url.IsUnc)
+                                {
+                                    edSrc.Text = url.ToString();
+                                }
+                                else if (url.IsFile)
+                                {
+                                    edSrc.Text = await FileIO.ReadTextAsync(storageFile);
+                                }
+                            }
+                            else if (e.DataView.Contains(StandardDataFormats.Text))
+                            {
+                                //var content = await e.DataView.GetHtmlFormatAsync();
+                                var content = await e.DataView.GetTextAsync();
+                                if (content.Length > 0)
+                                {
+                                    edSrc.Text = content;
+                                }
+                            }
+                        }
+                        else if (Utils.text_ext.Contains(storageFile.FileType.ToLower()))
                             edSrc.Text = await FileIO.ReadTextAsync(storageFile);
                     }
                 }

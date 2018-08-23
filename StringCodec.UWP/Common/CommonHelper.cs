@@ -576,7 +576,8 @@ namespace StringCodec.UWP.Common
     class Utils
     {
         static public string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif" };
-        static public string[] text_ext = new string[] { ".txt", ".text", ".base64" };
+        static public string[] text_ext = new string[] { ".txt", ".text", ".base64", ".url" };
+        static public string[] url_ext = new string[] { ".url" };
 
         #region Share Extentions
         static private DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
