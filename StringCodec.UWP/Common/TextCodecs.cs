@@ -523,9 +523,10 @@ namespace StringCodec.UWP.Common
         static public async Task<string> ToBase64(this WriteableBitmap wb, string format, bool prefix, bool linebreak)
         {
             string result = string.Empty;
-            if (wb.PixelWidth > 512 && wb.PixelHeight > 512)
+            var size = wb.PixelWidth * wb.PixelHeight;
+            if (size > 196608)
             {
-                var dlgMessage = new MessageDialog("Image size > 256x256, continued?", "Comfirm") { Options = MessageDialogOptions.AcceptUserInputAfterDelay };
+                var dlgMessage = new MessageDialog("Image is big, it's maybe too slower to encoding & filling textbox. \n Continued?", "Comfirm") { Options = MessageDialogOptions.AcceptUserInputAfterDelay };
                 dlgMessage.Commands.Add(new UICommand("OK") { Id = 0 });
                 dlgMessage.Commands.Add(new UICommand("Cancel") { Id = 1 });
                 // Set the command that will be invoked by default

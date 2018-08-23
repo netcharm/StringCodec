@@ -158,7 +158,7 @@ namespace StringCodec.UWP.Pages
                     var wb = await imgBase64.ToWriteableBitmmap();
                     edBase64.Text = await wb.ToBase64(CURRENT_FORMAT, CURRENT_PREFIX, CURRENT_LINEBREAK);
                     //
-                    // Maybe TextBox bug: If lines > 12035, the text is displayed as white but infact
+                    // Maybe TextBox bug: If lines > 3500, the text maybe displayed as white but infact
                     // the content is right, you can select & copy. it's ok, but only display white
                     // 
                     break;
@@ -337,10 +337,10 @@ namespace StringCodec.UWP.Pages
                         edBase64.Text = content;
                     }
                 }
-                //def.Complete();
             }
-            #endregion
+            //def.Complete();
         }
+        #endregion
 
     }
 }
