@@ -153,27 +153,14 @@ namespace StringCodec.UWP.Pages
             switch (btn.Name)
             {
                 case "btnEncode":
-                    if (CURRENT_LINEBREAK) edBase64.TextWrapping = TextWrapping.NoWrap;
-                    else edBase64.TextWrapping = TextWrapping.Wrap;
+                    edBase64.TextWrapping = TextWrapping.NoWrap;
                     var wb = await imgBase64.ToWriteableBitmmap();
                     //edBase64.Text = await wb.ToBase64(CURRENT_FORMAT, CURRENT_PREFIX, CURRENT_LINEBREAK);
                     string b64 = await wb.ToBase64(CURRENT_FORMAT, CURRENT_PREFIX, CURRENT_LINEBREAK);
-                    if (b64.Length > 16384)
-                    {
-                        var wrap = edBase64.TextWrapping;
-                        edBase64.TextWrapping = TextWrapping.NoWrap;
-                        edBase64.Text = b64;
-                        edBase64.TextWrapping = wrap;
-                    }
-                    //Task.Run(() =>
-                    //{
-                    //    for (int i = 0; i < b64.Length; i+=1024)
-                    //    {
-                    //        edBase64.Dispatcher.Invoke(() => {
-                    //            edBase64.Text.AppendText(b64.Skip(i).Take(1034));
-                    //        }, DispatcherPriority.Background);
-                    //    }
-                    //});
+                    edBase64.Text = b64;
+                    if (CURRENT_LINEBREAK) edBase64.TextWrapping = TextWrapping.NoWrap;
+                    else edBase64.TextWrapping = TextWrapping.Wrap;
+
                     //
                     // Maybe TextBox bug: If lines > 3500, the text maybe displayed as white but infact
                     // the content is right, you can select & copy. it's ok, but only display white
