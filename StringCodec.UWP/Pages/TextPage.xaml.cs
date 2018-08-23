@@ -178,11 +178,50 @@ namespace StringCodec.UWP.Pages
         }
 
         #region Drag/Drop routines
+        private bool canDrop = true;
+        private async void OnDragEnter(object sender, DragEventArgs e)
+        {
+            //System.Diagnostics.Debug.WriteLine("drag enter.." + DateTime.Now);
+            if (e.DataView.Contains(StandardDataFormats.StorageItems))
+            {
+                var deferral = e.GetDeferral(); // since the next line has 'await' we need to defer event processing while we wait
+                try
+                {
+                    var items = await e.DataView.GetStorageItemsAsync();
+                    if (items.Count > 0)
+                    {
+                        canDrop = false;
+                        var item = items[0] as StorageFile;
+                        string filename = item.Name;
+                        string extension = item.FileType.ToLower();
+                        if (sender == edSrc)
+                        {
+                            if (Utils.text_ext.Contains(extension))
+                            {
+                                canDrop = true;
+#if DEBUG
+                                System.Diagnostics.Debug.WriteLine("Drag text to TextBox Control");
+#endif
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex.Message);
+                }
+                deferral.Complete();
+            }
+        }
+
         private void OnDragOver(object sender, DragEventArgs e)
         {
             if (sender == edSrc)
             {
-                if (e.DataView.Contains(StandardDataFormats.Text) ||
+                if (e.DataView.Contains(StandardDataFormats.StorageItems)){
+                    if (canDrop) e.AcceptedOperation = DataPackageOperation.Copy;
+                }
+                else if (e.DataView.Contains(StandardDataFormats.Text) ||
                     e.DataView.Contains(StandardDataFormats.WebLink) ||
                     e.DataView.Contains(StandardDataFormats.Html) ||
                     e.DataView.Contains(StandardDataFormats.Rtf))
@@ -194,9 +233,21 @@ namespace StringCodec.UWP.Pages
 
         private async void OnDrop(object sender, DragEventArgs e)
         {
+            // 记得获取Deferral对象
+            //var def = e.GetDeferral();
             if (sender == edSrc)
             {
-                if (e.DataView.Contains(StandardDataFormats.Text) ||
+                if (e.DataView.Contains(StandardDataFormats.StorageItems))
+                {
+                    var items = await e.DataView.GetStorageItemsAsync();
+                    if (items.Count > 0)
+                    {
+                        var storageFile = items[0] as StorageFile;
+                        if (Utils.text_ext.Contains(storageFile.FileType.ToLower()))
+                            edSrc.Text = await FileIO.ReadTextAsync(storageFile);
+                    }
+                }
+                else if (e.DataView.Contains(StandardDataFormats.Text) ||
                     e.DataView.Contains(StandardDataFormats.WebLink) ||
                     e.DataView.Contains(StandardDataFormats.Html) ||
                     e.DataView.Contains(StandardDataFormats.Rtf))
@@ -208,6 +259,7 @@ namespace StringCodec.UWP.Pages
                     }
                 }
             }
+            //def.Complete();
         }
         #endregion
     }

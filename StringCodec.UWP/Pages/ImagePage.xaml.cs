@@ -33,8 +33,6 @@ namespace StringCodec.UWP.Pages
         private bool CURRENT_LINEBREAK = false;
         private string CURRENT_FORMAT = ".png";
 
-        private string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif" };
-
         static private string text_src = string.Empty;
         static public string Text
         {
@@ -94,7 +92,7 @@ namespace StringCodec.UWP.Pages
 
         private void edBase64_TextChanged(object sender, TextChangedEventArgs e)
         {
-            text_src = edBase64.Text;
+            //text_src = edBase64.Text;
         }
 
         private void OptFmt_Click(object sender, RoutedEventArgs e)
@@ -190,28 +188,89 @@ namespace StringCodec.UWP.Pages
         }
 
         #region Drag/Drop routines
+        private bool canDrop = true;
+        private async void OnDragEnter(object sender, DragEventArgs e)
+        {
+            //System.Diagnostics.Debug.WriteLine("drag enter.." + DateTime.Now);
+            if (e.DataView.Contains(StandardDataFormats.StorageItems))
+            {
+                var deferral = e.GetDeferral(); // since the next line has 'await' we need to defer event processing while we wait
+                try
+                {
+                    var items = await e.DataView.GetStorageItemsAsync();
+                    if (items.Count > 0)
+                    {
+                        canDrop = false;
+                        var item = items[0] as StorageFile;
+                        string filename = item.Name;
+                        string extension = item.FileType.ToLower();
+                        if (sender == imgBase64)
+                        {
+                            if (Utils.image_ext.Contains(extension))
+                            {
+                                canDrop = true;
+#if DEBUG
+                                System.Diagnostics.Debug.WriteLine("Drag image to Image Control");
+#endif
+                            }
+                        }
+                        else if(sender == edBase64)
+                        {
+                            if (Utils.text_ext.Contains(extension))
+                            {
+                                canDrop = true;
+#if DEBUG
+                                System.Diagnostics.Debug.WriteLine("Drag text to TextBox Control");
+#endif
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex.Message);
+                }
+                deferral.Complete();
+            }
+        }
+
         private void OnDragOver(object sender, DragEventArgs e)
         {
+            //if (canDrop && !e.Handled)
+            //{
+            //    { e.AcceptedOperation = DataPackageOperation.Copy; }
+            //    System.Diagnostics.Debug.WriteLine("drag ok");
+            //}
+            //return;
+
             if (sender == imgBase64)
             {
-                if (e.DataView.Contains(StandardDataFormats.WebLink) ||
-                e.DataView.Contains(StandardDataFormats.StorageItems))
+                if (e.DataView.Contains(StandardDataFormats.WebLink))
                 {
                     e.AcceptedOperation = DataPackageOperation.Copy;
+                }
+                else if (e.DataView.Contains(StandardDataFormats.StorageItems))
+                {
+                    if (canDrop) e.AcceptedOperation = DataPackageOperation.Copy;
                 }
             }
             else if (sender == edBase64)
             {
-                if (e.DataView.Contains(StandardDataFormats.Text) || 
-                    e.DataView.Contains(StandardDataFormats.StorageItems))
+                if (e.DataView.Contains(StandardDataFormats.Text))
                 {
                     e.AcceptedOperation = DataPackageOperation.Copy;
+                }
+                else if (e.DataView.Contains(StandardDataFormats.StorageItems))
+                {
+                    if (canDrop) e.AcceptedOperation = DataPackageOperation.Copy;
                 }
             }
         }
 
         private async void OnDrop(object sender, DragEventArgs e)
         {
+            // 需要异步拖放时记得获取Deferral对象
+            //var def = e.GetDeferral();
             if (sender == imgBase64)
             {
                 if (e.DataView.Contains(StandardDataFormats.StorageItems))
@@ -220,7 +279,7 @@ namespace StringCodec.UWP.Pages
                     if (items.Count > 0)
                     {
                         var file = items[0] as StorageFile;
-                        if (image_ext.Contains(file.FileType.ToLower()))
+                        if (Utils.image_ext.Contains(file.FileType.ToLower()))
                         {
                             var bitmapImage = new WriteableBitmap(1, 1);
                             bitmapImage.SetSource(await file.OpenAsync(FileAccessMode.Read));
@@ -258,9 +317,7 @@ namespace StringCodec.UWP.Pages
                     if (items.Count > 0)
                     {
                         var storageFile = items[0] as StorageFile;
-                        if (!storageFile.FileType.ToLower().Equals(".txt"))
-                            edBase64.Text = await e.DataView.GetTextAsync();
-                        else
+                        if (Utils.text_ext.Contains(storageFile.FileType.ToLower()))
                             edBase64.Text = await FileIO.ReadTextAsync(storageFile);
                     }
                 }
@@ -280,6 +337,7 @@ namespace StringCodec.UWP.Pages
                         edBase64.Text = content;
                     }
                 }
+                //def.Complete();
             }
             #endregion
         }

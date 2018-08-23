@@ -68,7 +68,8 @@ namespace StringCodec.UWP
             {
                 titleBar.ButtonForegroundColor = Colors.Black;
             }
-            ApplicationData.Current.LocalSettings.Values["AppTheme"] = (int)RequestedTheme;
+            Settings.Set("AppTheme", (int)RequestedTheme);
+            //ApplicationData.Current.LocalSettings.Values["AppTheme"] = (int)RequestedTheme;
             #endregion
         }
 
@@ -111,9 +112,10 @@ namespace StringCodec.UWP
             CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
 
-            var theme = ElementTheme.Dark;
-            if (ApplicationData.Current.LocalSettings.Values.ContainsKey("AppTheme"))
-                theme = (ElementTheme)ApplicationData.Current.LocalSettings.Values["AppTheme"];
+            //var theme = ElementTheme.Default;
+            var theme = (ElementTheme)Settings.Get("AppTheme", ElementTheme.Default);
+            //if (ApplicationData.Current.LocalSettings.Values.ContainsKey("AppTheme"))
+            //    theme = (ElementTheme)ApplicationData.Current.LocalSettings.Values["AppTheme"];
             SetTitleBarTheme(theme);
             #endregion
 

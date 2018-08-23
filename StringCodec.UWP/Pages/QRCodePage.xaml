@@ -123,10 +123,10 @@
                  ScrollViewer.VerticalScrollBarVisibility="Auto" 
                  ScrollViewer.HorizontalScrollBarVisibility="Auto" 
                  TextChanged="edQR_TextChanged"
-                 AllowDrop="True" DragOver="OnDragOver" Drop="OnDrop"/>
+                 AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" />
         <Image Grid.Row="1" Grid.Column="1" x:Name="imgQR" x:Uid="imgQR" Margin="12, 24, 0, 0"
                Stretch="Uniform"
-               AllowDrop="True" DragOver="OnDragOver" Drop="OnDrop"/>
+               AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" />
 
     </Grid>
 

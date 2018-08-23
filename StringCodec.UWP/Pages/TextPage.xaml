@@ -85,7 +85,7 @@
                  ScrollViewer.VerticalScrollBarVisibility="Auto" 
                  ScrollViewer.HorizontalScrollBarVisibility="Auto" 
                  TextChanged="edSrc_TextChanged"
-                 AllowDrop="True" DragOver="OnDragOver" Drop="OnDrop"/>
+                 AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" />
         <TextBox Grid.Row="2" x:Name="edDst" x:Uid="edDst" 
                  Header="Output:" PlaceholderText="Here is output" 
                  AcceptsReturn="True" IsReadOnly="True" 

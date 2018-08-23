@@ -25,8 +25,7 @@ namespace StringCodec.UWP.Common
         public CommonQRDialog()
         {
             this.InitializeComponent();
-            if (ApplicationData.Current.LocalSettings.Values.ContainsKey("AppTheme"))
-                this.RequestedTheme = (ElementTheme)ApplicationData.Current.LocalSettings.Values["AppTheme"];
+            this.RequestedTheme = (ElementTheme)Settings.Get("AppTheme", ElementTheme.Default);
         }
 
         private void Dialog_Loaded(object sender, RoutedEventArgs e)

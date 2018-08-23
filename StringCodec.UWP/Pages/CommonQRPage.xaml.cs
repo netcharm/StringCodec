@@ -10,6 +10,7 @@ using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.UI;
 using Windows.UI.Popups;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -167,15 +168,15 @@ namespace StringCodec.UWP.Pages
             }
         }
 
-        private async void OptCommon_Click(object sender, RoutedEventArgs e)
-        {
-            var dlgCommon = new CommonQRDialog();
-            var dlgResult = await dlgCommon.ShowAsync();
-            if(dlgResult == ContentDialogResult.Primary)
+            private async void OptCommon_Click(object sender, RoutedEventArgs e)
             {
+                var dlgCommon = new CommonQRDialog();
+                var dlgResult = await dlgCommon.ShowAsync();
+                if(dlgResult == ContentDialogResult.Primary)
+                {
 
+                }
             }
-        }
 
         private async void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
@@ -212,58 +213,49 @@ namespace StringCodec.UWP.Pages
         }
 
         #region Drag/Drop routines
-        private async void OnDragOver(object sender, DragEventArgs e)
+        private bool canDrop = true;
+        private async void OnDragEnter(object sender, DragEventArgs e)
         {
-            if (sender == imgQR)
+            //System.Diagnostics.Debug.WriteLine("drag enter.." + DateTime.Now);
+            if (e.DataView.Contains(StandardDataFormats.StorageItems))
             {
+                var deferral = e.GetDeferral(); // since the next line has 'await' we need to defer event processing while we wait
                 try
                 {
-                    if (e.DataView.Contains(StandardDataFormats.StorageItems) ||
-                        e.DataView.Contains(StandardDataFormats.Bitmap))
+                    var items = await e.DataView.GetStorageItemsAsync();
+                    if (items.Count > 0)
                     {
-                        //e.DragUIOverride.IsCaptionVisible = true;
-                        //e.DragUIOverride.IsContentVisible = true;
-                        //e.DragUIOverride.IsGlyphVisible = true;
-                        e.AcceptedOperation = DataPackageOperation.Copy;
-
-                        //var items = await e.DataView.GetStorageItemsAsync();
-                        //var content = (StorageFile)items[0];
-                        //switch (content.ContentType)
-                        //{
-                        //    case "image/png":
-                        //    case "image/jpeg":
-                        //        break;
-                        //}
-                        //if (items.Count > 0)
-                        //{
-                        //    var storageFile = items[0] as StorageFile;
-                        //    if (!image_ext.Contains(storageFile.FileType.ToLower()))
-                        //        e.AcceptedOperation = DataPackageOperation.None;
-                        //}
-                        //e.AcceptedOperation = DataPackageOperation.Copy;
-                    }
-                    else if (e.DataView.Contains(StandardDataFormats.WebLink))
-                    {
-                        e.AcceptedOperation = DataPackageOperation.Copy;
+                        canDrop = false;
+                        var item = items[0] as StorageFile;
+                        string filename = item.Name;
+                        string extension = item.FileType.ToLower();
+                        if (sender == edQR)
+                        {
+                            if (Utils.text_ext.Contains(extension))
+                            {
+                                canDrop = true;
+#if DEBUG
+                                System.Diagnostics.Debug.WriteLine("Drag text to TextBox Control");
+#endif
+                            }
+                        }
                     }
                 }
                 catch (Exception ex)
                 {
-                    await new MessageDialog(ex.Message, "ERROR").ShowAsync();
+                    System.Diagnostics.Debug.WriteLine(ex.Message);
                 }
+                deferral.Complete();
             }
-            else if (sender == edQR)
+        }
+
+        private void OnDragOver(object sender, DragEventArgs e)
+        {
+            if (sender == edQR)
             {
                 if (e.DataView.Contains(StandardDataFormats.StorageItems))
                 {
-                    //var items = await e.DataView.GetStorageItemsAsync();
-                    //if (items.Count > 0)
-                    //{
-                    //    var storageFile = items[0] as StorageFile;
-                    //    if (!storageFile.FileType.ToLower().Equals(".txt")) return;
-                    //    e.AcceptedOperation = DataPackageOperation.Copy;
-                    //}
-                    e.AcceptedOperation = DataPackageOperation.Copy;
+                    if (canDrop) e.AcceptedOperation = DataPackageOperation.Copy;
                 }
                 else if (e.DataView.Contains(StandardDataFormats.Text) ||
                     e.DataView.Contains(StandardDataFormats.WebLink) ||
@@ -277,7 +269,9 @@ namespace StringCodec.UWP.Pages
 
         private async void OnDrop(object sender, DragEventArgs e)
         {
-            if (sender == imgQR)
+            // 记得获取Deferral对象
+            //var def = e.GetDeferral();
+            if (sender == edQR)
             {
                 if (e.DataView.Contains(StandardDataFormats.StorageItems))
                 {
@@ -285,46 +279,7 @@ namespace StringCodec.UWP.Pages
                     if (items.Count > 0)
                     {
                         var storageFile = items[0] as StorageFile;
-#if DEBUG
-                        //await new MessageDialog($"{items.Count}, {image_ext.Contains(storageFile.FileType.ToLower())}", "INFO").ShowAsync();
-#endif
-                        if (!image_ext.Contains(storageFile.FileType.ToLower())) return;
-
-                        var bitmapImage = new WriteableBitmap(1, 1);
-                        await bitmapImage.SetSourceAsync(await storageFile.OpenAsync(FileAccessMode.Read));
-                        // Set the image on the main page to the dropped image
-                        //if (bitmapImage.PixelWidth >= imgQR.RenderSize.Width || bitmapImage.PixelHeight >= imgQR.RenderSize.Height)
-                        //    imgQR.Stretch = Stretch.Uniform;
-                        //else imgQR.Stretch = Stretch.None;
-                        byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
-                        imgQR.Source = bitmapImage;
-                    }
-                }
-                else if (e.DataView.Contains(StandardDataFormats.WebLink))
-                {
-                    var uri = await e.DataView.GetWebLinkAsync();
-
-                    StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(uri);
-                    if (image_ext.Contains(file.FileType.ToLower()))
-                    {
-                        var bitmapImage = new WriteableBitmap(1, 1);
-                        await bitmapImage.SetSourceAsync(await file.OpenAsync(FileAccessMode.Read));
-                        byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
-                        imgQR.Source = bitmapImage;
-                    }
-                }
-            }
-            else if (sender == edQR)
-            {
-                if (e.DataView.Contains(StandardDataFormats.StorageItems))
-                {
-                    var items = await e.DataView.GetStorageItemsAsync();
-                    if (items.Count > 0)
-                    {
-                        var storageFile = items[0] as StorageFile;
-                        if (!storageFile.FileType.ToLower().Equals(".txt"))
-                            edQR.Text = await e.DataView.GetTextAsync();
-                        else
+                        if (Utils.text_ext.Contains(storageFile.FileType.ToLower()))
                             edQR.Text = await FileIO.ReadTextAsync(storageFile);
                     }
                 }
@@ -340,8 +295,8 @@ namespace StringCodec.UWP.Pages
                     }
                 }
             }
+            //def.Complete();
         }
         #endregion
-
-   }
+    }
 }

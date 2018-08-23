@@ -75,15 +75,15 @@
         </CommandBar>
 
         <TextBox Grid.Row="1" Grid.Column="0" x:Name="edBase64" x:Uid="edBase64" 
-                 Header="BASE64:" PlaceholderText="Input text at here" 
+                 Header="BASE64:" PlaceholderText="Input text at here"
                  AcceptsReturn="True" TextWrapping="Wrap" CanDrag="True" 
                  FontFamily="Consolas" FontSize="16" 
                  ScrollViewer.VerticalScrollBarVisibility="Auto" 
                  ScrollViewer.HorizontalScrollBarVisibility="Auto" 
                  TextChanged="edBase64_TextChanged"
-                 AllowDrop="True" DragOver="OnDragOver" Drop="OnDrop" />
+                 AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" />
         <Image Grid.Row="1" Grid.Column="1" x:Name="imgBase64" x:Uid="imgBase64" Margin="12, 24, 0, 0"
                Stretch="Uniform"
-               AllowDrop="True" DragOver="OnDragOver" Drop="OnDrop" />
+               AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" />
     </Grid>
 </Page>

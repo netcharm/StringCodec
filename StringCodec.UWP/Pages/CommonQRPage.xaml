@@ -116,7 +116,8 @@
                  FontFamily="Consolas" FontSize="16" 
                  ScrollViewer.VerticalScrollBarVisibility="Auto" 
                  ScrollViewer.HorizontalScrollBarVisibility="Auto" 
-                 TextChanged="edQR_TextChanged"/>
+                 TextChanged="edQR_TextChanged"
+                 AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" />
         <Image Grid.Row="1" Grid.Column="1" x:Name="imgQR" x:Uid="imgQR" Margin="12, 24, 0, 0"
                Stretch="Uniform"/>
     </Grid>

@@ -36,8 +36,6 @@ namespace StringCodec.UWP.Pages
         private int CURRENT_TEXT_FONTSIZE = 48;
         private string CURRENT_FORMAT = "Express";
 
-        private string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif" };
-
         static private string text_src = string.Empty;
         static public string Text
         {
@@ -275,6 +273,52 @@ namespace StringCodec.UWP.Pages
         }
 
         #region Drag/Drop routines
+        private bool canDrop = true;
+        private async void OnDragEnter(object sender, DragEventArgs e)
+        {
+            //System.Diagnostics.Debug.WriteLine("drag enter.." + DateTime.Now);
+            if (e.DataView.Contains(StandardDataFormats.StorageItems))
+            {
+                var deferral = e.GetDeferral(); // since the next line has 'await' we need to defer event processing while we wait
+                try
+                {
+                    var items = await e.DataView.GetStorageItemsAsync();
+                    if (items.Count > 0)
+                    {
+                        canDrop = false;
+                        var item = items[0] as StorageFile;
+                        string filename = item.Name;
+                        string extension = item.FileType.ToLower();
+                        if (sender == imgBarcode)
+                        {
+                            if (Utils.image_ext.Contains(extension))
+                            {
+                                canDrop = true;
+#if DEBUG
+                                System.Diagnostics.Debug.WriteLine("Drag image to Image Control");
+#endif
+                            }
+                        }
+                        else if (sender == edBarcode)
+                        {
+                            if (Utils.text_ext.Contains(extension))
+                            {
+                                canDrop = true;
+#if DEBUG
+                                System.Diagnostics.Debug.WriteLine("Drag text to TextBox Control");
+#endif
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex.Message);
+                }
+                deferral.Complete();
+            }
+        }
+
         private async void OnDragOver(object sender, DragEventArgs e)
         {
             if (sender == imgBarcode)
@@ -283,7 +327,7 @@ namespace StringCodec.UWP.Pages
                 {
                     if (e.DataView.Contains(StandardDataFormats.StorageItems))
                     {
-                        e.AcceptedOperation = DataPackageOperation.Copy;
+                        if(canDrop) e.AcceptedOperation = DataPackageOperation.Copy;
                     }
                     else if (e.DataView.Contains(StandardDataFormats.WebLink))
                     {
@@ -299,7 +343,7 @@ namespace StringCodec.UWP.Pages
             {
                 if (e.DataView.Contains(StandardDataFormats.StorageItems))
                 {
-                    e.AcceptedOperation = DataPackageOperation.Copy;
+                    if (canDrop) e.AcceptedOperation = DataPackageOperation.Copy;
                 }
                 else if (e.DataView.Contains(StandardDataFormats.Text) ||
                     e.DataView.Contains(StandardDataFormats.WebLink) ||
@@ -313,6 +357,8 @@ namespace StringCodec.UWP.Pages
 
         private async void OnDrop(object sender, DragEventArgs e)
         {
+            // 需要异步拖放时记得获取Deferral对象
+            //var def = e.GetDeferral();
             if (sender == imgBarcode)
             {
                 if (e.DataView.Contains(StandardDataFormats.StorageItems))
@@ -324,7 +370,7 @@ namespace StringCodec.UWP.Pages
 #if DEBUG
                         //await new MessageDialog($"{items.Count}, {image_ext.Contains(storageFile.FileType.ToLower())}", "INFO").ShowAsync();
 #endif
-                        if (!image_ext.Contains(storageFile.FileType.ToLower())) return;
+                        if (!Utils.image_ext.Contains(storageFile.FileType.ToLower())) return;
 
                         var bitmapImage = new WriteableBitmap(1, 1);
                         await bitmapImage.SetSourceAsync(await storageFile.OpenAsync(FileAccessMode.Read));
@@ -361,9 +407,8 @@ namespace StringCodec.UWP.Pages
                     if (items.Count > 0)
                     {
                         var storageFile = items[0] as StorageFile;
-                        if (!storageFile.FileType.ToLower().Equals(".txt")) return;
-
-                        edBarcode.Text = await FileIO.ReadTextAsync(storageFile);
+                        if (Utils.text_ext.Contains(storageFile.FileType.ToLower())) 
+                            edBarcode.Text = await FileIO.ReadTextAsync(storageFile);
                     }
                 }
                 else if (e.DataView.Contains(StandardDataFormats.Text) ||
@@ -378,6 +423,7 @@ namespace StringCodec.UWP.Pages
                     }
                 }
             }
+            //def.Complete();
         }
         #endregion
 

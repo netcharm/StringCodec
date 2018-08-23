@@ -549,8 +549,35 @@ namespace StringCodec.UWP.Common
         #endregion
     }
 
+    class Settings
+    {
+        #region Local Setting Helper
+        static public object Get(string key, object value=null)
+        {
+            if (!ApplicationData.Current.LocalSettings.Values.ContainsKey(key))
+            {
+                if (value != null) ApplicationData.Current.LocalSettings.Values[key] = value;
+                return (value);
+            }
+            else return ApplicationData.Current.LocalSettings.Values[key];
+        }
+
+        static public bool Set(string key, object value)
+        {
+            ApplicationData.Current.LocalSettings.Values[key] = value;
+            if (ApplicationData.Current.LocalSettings.Values.ContainsKey(key))
+                return (true);
+            else
+                return (false);
+        }
+        #endregion
+    }
+
     class Utils
     {
+        static public string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif" };
+        static public string[] text_ext = new string[] { ".txt", ".text", ".base64" };
+
         #region Share Extentions
         static private DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
         static private StorageFile _tempExportFile;
