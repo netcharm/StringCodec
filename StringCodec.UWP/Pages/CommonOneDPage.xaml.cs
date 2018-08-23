@@ -368,35 +368,32 @@ namespace StringCodec.UWP.Pages
                     if (items.Count > 0)
                     {
                         var storageFile = items[0] as StorageFile;
-#if DEBUG
-                        //await new MessageDialog($"{items.Count}, {image_ext.Contains(storageFile.FileType.ToLower())}", "INFO").ShowAsync();
-#endif
-                        if (!Utils.image_ext.Contains(storageFile.FileType.ToLower())) return;
-
-                        var bitmapImage = new WriteableBitmap(1, 1);
-
-                        if (e.DataView.Contains(StandardDataFormats.WebLink))
+                        if (Utils.image_ext.Contains(storageFile.FileType.ToLower()))
                         {
-                            var url = await e.DataView.GetWebLinkAsync();
-                            var src = await RandomAccessStreamReference.CreateFromUri(url).OpenReadAsync();
-                            await bitmapImage.SetSourceAsync(src);
-                        }
-                        else if (e.DataView.Contains(StandardDataFormats.Text))
-                        {
-                            //var content = await e.DataView.GetHtmlFormatAsync();
-                            var content = await e.DataView.GetTextAsync();
-                            if (content.Length > 0)
+                            var bitmapImage = new WriteableBitmap(1, 1);
+
+                            if (e.DataView.Contains(StandardDataFormats.WebLink))
                             {
-                                await bitmapImage.SetSourceAsync(await RandomAccessStreamReference.CreateFromUri(new Uri(content)).OpenReadAsync());
+                                var url = await e.DataView.GetWebLinkAsync();
+                                await bitmapImage.SetSourceAsync(await RandomAccessStreamReference.CreateFromUri(url).OpenReadAsync());
                             }
-                        }
-                        else
-                        {
-                            await bitmapImage.SetSourceAsync(await storageFile.OpenReadAsync());
-                        }
+                            else if (e.DataView.Contains(StandardDataFormats.Text))
+                            {
+                                //var content = await e.DataView.GetHtmlFormatAsync();
+                                var content = await e.DataView.GetTextAsync();
+                                if (content.Length > 0)
+                                {
+                                    await bitmapImage.SetSourceAsync(await RandomAccessStreamReference.CreateFromUri(new Uri(content)).OpenReadAsync());
+                                }
+                            }
+                            else
+                            {
+                                await bitmapImage.SetSourceAsync(await storageFile.OpenReadAsync());
+                            }
 
-                        byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
-                        imgBarcode.Source = bitmapImage;
+                            byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
+                            imgBarcode.Source = bitmapImage;
+                        }
                     }
                 }
                 else if (e.DataView.Contains(StandardDataFormats.WebLink))

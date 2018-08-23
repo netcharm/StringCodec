@@ -306,9 +306,7 @@ namespace StringCodec.UWP.Pages
                             if (e.DataView.Contains(StandardDataFormats.WebLink))
                             {
                                 var url = await e.DataView.GetWebLinkAsync();
-                                var src = await RandomAccessStreamReference.CreateFromUri(url).OpenReadAsync();
-                                await bitmapImage.SetSourceAsync(src);
-                                edBase64.Text = url.ToString();
+                                await bitmapImage.SetSourceAsync(await RandomAccessStreamReference.CreateFromUri(url).OpenReadAsync());
                             }
                             else if (e.DataView.Contains(StandardDataFormats.Text))
                             {
@@ -317,7 +315,6 @@ namespace StringCodec.UWP.Pages
                                 if (content.Length > 0)
                                 {
                                     await bitmapImage.SetSourceAsync(await RandomAccessStreamReference.CreateFromUri(new Uri(content)).OpenReadAsync());
-                                    edBase64.Text = content;
                                 }
                             }
                             else
@@ -360,11 +357,11 @@ namespace StringCodec.UWP.Pages
                             if (e.DataView.Contains(StandardDataFormats.WebLink))
                             {
                                 var url = await e.DataView.GetWebLinkAsync();
-                                if (url.IsUnc)
+                                if (url.IsAbsoluteUri)
                                 {
                                     edBase64.Text = url.ToString();
                                 }
-                                else if (url.IsFile)
+                                else if (url.IsFile || url.IsUnc)
                                 {
                                     edBase64.Text = await FileIO.ReadTextAsync(storageFile);
                                 }
