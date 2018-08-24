@@ -49,6 +49,7 @@ namespace StringCodec.UWP.Pages
 
             optURL.IsChecked = true;
             optUTF8.IsChecked = true;
+            optWrapText.IsChecked = false;
 
             optUUE.Visibility = Visibility.Collapsed;
             optUUE.IsEnabled = false;
@@ -94,16 +95,30 @@ namespace StringCodec.UWP.Pages
 
         private void Opt_Click(object sender, RoutedEventArgs e)
         {
+            if (sender == optLineBreak)
+            {
+                CURRENT_LINEBREAK = (sender as ToggleMenuFlyoutItem).IsChecked;
+                return;
+            }
+            else if (sender == optWrapText)
+            {
+                if (optWrapText.IsChecked == true)
+                {
+                    edSrc.TextWrapping = TextWrapping.Wrap;
+                    edDst.TextWrapping = TextWrapping.Wrap;
+                }
+                else
+                {
+                    edSrc.TextWrapping = TextWrapping.NoWrap;
+                    edDst.TextWrapping = TextWrapping.NoWrap;
+                }
+                return;
+            }
+
             ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] { optUTF8, optUnicode, optGBK, optBIG5, optJIS, optAscii };
 
             var btn = sender as ToggleMenuFlyoutItem;
             var ENC_NAME = btn.Name.Substring(3);
-
-            if (string.Equals(ENC_NAME, "LineBreak", StringComparison.CurrentCultureIgnoreCase))
-            {
-                CURRENT_LINEBREAK = btn.IsChecked;
-                return;
-            }
 
             foreach (ToggleMenuFlyoutItem opt in opts)
             {

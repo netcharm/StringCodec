@@ -98,10 +98,27 @@
                         <FontIcon Glyph="&#xE7F4;" FontFamily="Segoe MDL2 Assets"/>
                     </AppBarToggleButton.Icon>
                 </AppBarToggleButton>
-                <AppBarToggleButton x:Name="optSaveSizeL" x:Uid="optSaveSizeL" Label="L: 1024x1024" Icon="Trim" Click="OptSave_Click"/>
-                <AppBarToggleButton x:Name="optSaveSizeM" x:Uid="optSaveSizeM" Label="M: 512x512" Icon="Trim" Click="OptSave_Click"/>
-                <AppBarToggleButton x:Name="optSaveSizeN" x:Uid="optSaveSizeN" Label="S: 256x256" Icon="Trim" Click="OptSave_Click"/>
-                <AppBarToggleButton x:Name="optSaveSizeS" x:Uid="optSaveSizeS" Label="S: 128x128" Icon="Trim" Click="OptSave_Click"/>
+                <AppBarToggleButton x:Name="optSaveSizeL" x:Uid="optSaveSizeL" Label="L: 1024x1024" Click="OptSave_Click">
+                    <AppBarToggleButton.Icon>
+                        <FontIcon Glyph="&#xE747;" FontFamily="Segoe MDL2 Assets"/>
+                    </AppBarToggleButton.Icon>
+                </AppBarToggleButton>
+                <AppBarToggleButton x:Name="optSaveSizeM" x:Uid="optSaveSizeM" Label="M: 512x512" Click="OptSave_Click">
+                    <AppBarToggleButton.Icon>
+                        <FontIcon Glyph="&#xE744;" FontFamily="Segoe MDL2 Assets"/>
+                    </AppBarToggleButton.Icon>
+                </AppBarToggleButton>
+                <AppBarToggleButton x:Name="optSaveSizeN" x:Uid="optSaveSizeN" Label="S: 256x256" Click="OptSave_Click">
+                    <AppBarToggleButton.Icon>
+                        <FontIcon Glyph="&#xE743;" FontFamily="Segoe MDL2 Assets"/>
+                    </AppBarToggleButton.Icon>
+                </AppBarToggleButton>
+                <AppBarToggleButton x:Name="optSaveSizeS" x:Uid="optSaveSizeS" Label="S: 128x128" Click="OptSave_Click">
+                    <AppBarToggleButton.Icon>
+                        <FontIcon Glyph="&#xE2B2;" FontFamily="Segoe MDL2 Assets"/>
+                    </AppBarToggleButton.Icon>
+                </AppBarToggleButton>
+
             </CommandBar.SecondaryCommands>
 
             <CommandBar.Content>

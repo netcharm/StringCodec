@@ -62,6 +62,12 @@
                         <FontIcon Glyph="&#xF029;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
                     </AppBarButton.Icon>
                 </AppBarButton>
+                <AppBarSeparator />
+                <AppBarToggleButton x:Name="optWrapText" x:Uid="optWrapText" Label="Wrap Text" Click="Opt_Click">
+                    <AppBarToggleButton.Icon>
+                        <FontIcon Glyph="&#xE751;" FontFamily="Segoe MDL2 Assets"/>
+                    </AppBarToggleButton.Icon>
+                </AppBarToggleButton>
                 <!--<AppBarButton Label="About"/>-->
             </CommandBar.SecondaryCommands>
 
