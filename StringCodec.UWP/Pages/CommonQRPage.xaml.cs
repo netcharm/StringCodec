@@ -168,15 +168,41 @@ namespace StringCodec.UWP.Pages
             }
         }
 
-            private async void OptCommon_Click(object sender, RoutedEventArgs e)
-            {
-                var dlgCommon = new CommonQRDialog();
-                var dlgResult = await dlgCommon.ShowAsync();
-                if(dlgResult == ContentDialogResult.Primary)
-                {
+        private async void OptCommon_Click(object sender, RoutedEventArgs e)
+        {
+            var dlgCommon = new CommonQRDialog();
 
-                }
+            if (sender == optCommonLink)
+            {
+                dlgCommon.SelectedIndex = 0;
             }
+            else if (sender == optCommonWifi)
+            {
+                dlgCommon.SelectedIndex = 1;
+            }
+            else if (sender == optCommonMail)
+            {
+                dlgCommon.SelectedIndex = 2;
+            }
+            else if (sender == optCommonGeo)
+            {
+                dlgCommon.SelectedIndex = 3;
+            }
+            else if (sender == optCommonContact)
+            {
+                dlgCommon.SelectedIndex = 4;
+            }
+            else if (sender == optCommonEvent)
+            {
+                dlgCommon.SelectedIndex = 5;
+            }
+
+            var dlgResult = await dlgCommon.ShowAsync();
+            if (dlgResult == ContentDialogResult.Primary)
+            {
+
+            }
+        }
 
         private async void AppBarButton_Click(object sender, RoutedEventArgs e)
         {

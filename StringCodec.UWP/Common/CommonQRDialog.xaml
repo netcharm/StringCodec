@@ -17,36 +17,21 @@
     SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
 
     <Grid>
-        <Pivot Title="Common QR Input Dialog">
-            <PivotItem x:Name="piLink" x:Uid="piLink" Header="Link">
+        <Pivot x:Name="pivot">
+            <PivotItem x:Name="piLink" x:Uid="piLink" Header="Web Link">
                 <Grid Padding="8, 8, 8, 8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="96" />
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="64"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <ComboBox Grid.Row="0" Grid.Column="0" x:Name="cbLinkProtocol" x:Uid="cbProtocol" Header="Protocol:" VerticalAlignment="Bottom" SelectedIndex="1">
-                        <x:String>http://</x:String>
-                        <x:String>https://</x:String>
-                        <x:String>ftp://</x:String>
-                        <x:String>ftps://</x:String>
-                        <x:String>MAILTO://</x:String>
-                        <x:String>TEL:</x:String>
-                        <x:String>skype:</x:String>
-                    </ComboBox>
-                    <ComboBox Grid.Row="0" Grid.Column="1" x:Name="edLinkUrl" x:Uid="edLinkUrl" Header="Url:" PlaceholderText="Url address" VerticalAlignment="Bottom">
-                        <x:String>https://twitter.com/</x:String>
-                        <x:String>https://</x:String>
-                        <x:String>ftp://</x:String>
-                        <x:String>ftps://</x:String>
-                    </ComboBox>
-                    <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="edLinkContent" x:Uid="edLinkContent" Header="Centent:" PlaceholderText="Url Parameters" VerticalAlignment="Center" MinHeight="120"/>
+                    <AutoSuggestBox Grid.Row="0" x:Name="edLinkUrl" x:Uid="edLinkUrl" Header="Url:" PlaceholderText="Url address" VerticalAlignment="Bottom"
+                                    TextChanged="edLinkUrl_TextChanged"
+                                    QuerySubmitted="edLinkUrl_QuerySubmitted"
+                                    SuggestionChosen="edLinkUrl_SuggestionChosen" />
+                    <TextBox Grid.Row="1" Grid.ColumnSpan="2" x:Name="edLinkContent" x:Uid="edLinkContent" Header="Centent:" PlaceholderText="Url Parameters" VerticalAlignment="Center" MinHeight="120"/>
                 </Grid>
             </PivotItem>
-            <PivotItem x:Name="piWifi" x:Uid="piWifi" Header="WIFI">
+            <PivotItem x:Name="piWifi" x:Uid="piWifi" Header="WIFI Infomation">
                 <Grid>
                     <!--<Grid.ColumnDefinitions>
                         <ColumnDefinition Width=".5*" />
@@ -66,7 +51,7 @@
                     </ComboBox>
                 </Grid>
             </PivotItem>
-            <PivotItem x:Name="piMail" x:Uid="piMail" Header="Mail">
+            <PivotItem x:Name="piMail" x:Uid="piMail" Header="Send Mail">
                 <Grid>
                     <!--<Grid.ColumnDefinitions>
                         <ColumnDefinition Width=".5*" />
@@ -77,12 +62,12 @@
                         <RowDefinition Height="64"/>
                         <RowDefinition Height="*" MinHeight="120"/>
                     </Grid.RowDefinitions>
-                    <TextBox Grid.Row="0" Grid.Column="0" x:Name="edMailTo" x:Uid="edMailTo" Header="SentTo:" PlaceholderText="Mail Address"/>
+                    <TextBox Grid.Row="0" Grid.Column="0" x:Name="edMailTo" x:Uid="edMailTo" Header="Sent To:" PlaceholderText="Mail Address"/>
                     <TextBox Grid.Row="1" Grid.Column="0" x:Name="edMailSubject" x:Uid="edMailSubject" Header="Subjetc:" PlaceholderText="Mail Subject"/>
                     <TextBox Grid.Row="2" Grid.Column="0" x:Name="edMailContent" x:Uid="edMailContent" Header="Content:" PlaceholderText="Mail Content"/>
                 </Grid>
             </PivotItem>
-            <PivotItem Header="Geo">
+            <PivotItem x:Name="piGeo" x:Uid="piGeo" Header="Geo Query">
                 <Grid Padding="8, 8, 8, 8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width=".5*" />
@@ -101,10 +86,10 @@
                     </Grid>
                 </Grid>
             </PivotItem>
-            <PivotItem Header="vCard">
+            <PivotItem x:Name="piContact" x:Uid="piContact" Header="Contact Info">
                 <TextBlock Text="urgent emails go here." />
             </PivotItem>
-            <PivotItem Header="vCalendar">
+            <PivotItem x:Name="piEvent" x:Uid="piEvent" Header="Time Event">
                 <TextBlock Text="urgent emails go here." />
             </PivotItem>
         </Pivot>

@@ -2,9 +2,11 @@
 using Microsoft.Graphics.Canvas.Text;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
@@ -1233,6 +1235,65 @@ namespace StringCodec.UWP.Common
             }
             return (result);
         }
+        #endregion
+
+        #region Misc
+        static private ObservableCollection<String> suggestions = new ObservableCollection<string>();
+        static public ObservableCollection<String> GetSuggestion(string content)
+        {
+            ///
+            /// Regex patterns
+            ///
+            //var tel = @"\+(9[976]\d|8[987530]\d|6[987]\d|5[90]\d|42\d|3[875]\d|2[98654321]\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|4[987654310]|3[9643210]|2[70]|7|1)\d{1,14}$";
+            var tel_us = @"^(\+{0,1}1){0,1} {0,1}(\(){0,1}(\d{3})(-| |\)){0,1}(\d{3})(-| ){0,1}(\d{4})$";
+            var tel_cn_fix = @"^((0(((\d{2}-\d{8})|(\d{3}-\d{7,8}))|((\d{2}\ \d{8})|(\d{3}\ \d{7,8}))))|((\(0\d{2}\)\d{8})|(\(0\d{3}\)\d{7,8}))|(0(([12]\d\d{8})|([3-9]\d{2}\d{8})|([3-9]\d{2}\d{7}))))|((\+{0,1}86)(((\(\d{2}\)\d{8})|(\(\d{3}\)\d{7,8}))|(-((\d{2}-\d{8})|(\d{3}-\d{7,8})))|(\ ((\d{2}\ \d{8})|(\d{3}\ \d{7,8})))))$";
+            var tel_cn_400 = @"^([91]\d{4}$)|([468]00[678109]\d{6})|([468]00[678109]-\d{3}-\d{3})|([468]00-[678109]\d{2}-\d{4})|([468]00-[678109]\d{3}-\d{3})$";
+            var mobile_cn = @"^((\+{0,1}86)(\ ){0,1}){0,1}(((13[0-9])|(15[0-3, 5-9])|(18[0,2,3,5-9])|(17[0-8])|(147))\d{8})$";
+            //var mobile_cn = @"(\+{0.1}86){0,1}( ){0,1}(\d{11})";
+            var skype = @"^\d{6,15}$";
+            //var protocol = @"^((http)|(ftp)|(git))s{0,1}://";
+            var url = @"(((www)|(cn))\.){0,1}(.*?)(\.((com)|(net)|(org)|(tv)|(cn)|(jp)|(me))+)";
+            var mailto = @"^[A-Za-z0-9!#$%&'+/=?^_`{|}~-]+(.[A-Za-z0-9!#$%&'+/=?^_`{|}~-]+)*@([A-Za-z0-9]+(?:-[A-Za-z0-9]+)?.)+[A-Za-z0-9]+(-[A-Za-z0-9]+)?$";
+
+            //var rr = new Regex(tel_cn_fix, RegexOptions.IgnoreCase | RegexOptions.Singleline|RegexOptions.Compiled);
+
+            //Set the ItemsSource to be your filtered dataset
+            //sender.ItemsSource = dataset;
+            suggestions.Clear();
+            if (content.StartsWith("http", StringComparison.CurrentCultureIgnoreCase))
+            {
+                suggestions.Add("https://twitter.com");
+                suggestions.Add("https://facebook.com");
+            }
+            if (Regex.IsMatch(content, mailto, RegexOptions.IgnoreCase | RegexOptions.Singleline))
+            {
+                suggestions.Add($"mailto:{content}");
+            }
+            if (Regex.IsMatch(content, skype, RegexOptions.IgnoreCase | RegexOptions.Singleline))
+            {
+                suggestions.Add($"skype:{content}?call");
+            }
+            if (Regex.IsMatch(content, tel_cn_fix, RegexOptions.IgnoreCase | RegexOptions.Singleline) ||
+                Regex.IsMatch(content, tel_cn_400, RegexOptions.IgnoreCase | RegexOptions.Singleline) ||
+                Regex.IsMatch(content, mobile_cn, RegexOptions.IgnoreCase | RegexOptions.Singleline) ||
+                Regex.IsMatch(content, tel_us, RegexOptions.IgnoreCase | RegexOptions.Singleline))
+            {
+                // International Telephone
+                suggestions.Add($"tel:{Regex.Replace(content, @"[ |\(|\)|-]", "", RegexOptions.IgnoreCase|RegexOptions.Singleline)}");
+
+            }
+            if (Regex.IsMatch(content, url, RegexOptions.IgnoreCase | RegexOptions.Singleline))
+            {
+                suggestions.Add($"https://{content}");
+                suggestions.Add($"http://{content}");
+                suggestions.Add($"ftps://{content}");
+                suggestions.Add($"ftp://{content}");
+                suggestions.Add($"git://{content}");
+            }
+            if (suggestions.Count <= 0) suggestions.Add("No Suggestions!");
+            return (suggestions);
+        }
+
         #endregion
 
     }

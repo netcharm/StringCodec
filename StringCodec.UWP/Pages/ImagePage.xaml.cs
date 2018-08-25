@@ -52,16 +52,6 @@ namespace StringCodec.UWP.Pages
             optFmtPng.IsChecked = true;
 
             //if (!string.IsNullOrEmpty(text_src)) edBase64.Text = text_src;
-
-            #region Add small image to Image control for dragdrop target
-            if (imgBase64.Source == null)
-            {
-                var wb = new WriteableBitmap(1, 1);
-                imgBase64.Stretch = Stretch.Uniform;
-                imgBase64.Source = wb;
-            }
-            #endregion
-
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -71,7 +61,7 @@ namespace StringCodec.UWP.Pages
                 var data = e.Parameter;
                 if (data is string)
                 {
-                    imgBase64.Stretch = Stretch.Uniform;
+                    //imgBase64.Stretch = Stretch.Uniform;
                     edBase64.Text = data.ToString();
                     imgBase64.Source = await edBase64.Text.Decoder();
                 }
@@ -168,9 +158,6 @@ namespace StringCodec.UWP.Pages
                     break;
                 case "btnDecode":
                     //imgBase64.Source = await TextCodecs.Decode(edBase64.Text);
-                    //var bmp = await TextCodecs.Decode(edBase64.Text);
-                    //if (bmp.PixelWidth >= imgBase64.RenderSize.Width || bmp.PixelHeight >= imgBase64.RenderSize.Height) imgBase64.Stretch = Stretch.Uniform;
-                    //else imgBase64.Stretch = Stretch.None;
                     imgBase64.Source = await edBase64.Text.Decoder();
                     break;
                 case "btnCopy":
@@ -195,6 +182,9 @@ namespace StringCodec.UWP.Pages
         private bool canDrop = true;
         private async void OnDragEnter(object sender, DragEventArgs e)
         {
+#if DEBUG
+            System.Diagnostics.Debug.WriteLine($"Drag Enter Sender:{sender}");
+#endif
             //System.Diagnostics.Debug.WriteLine("drag enter.." + DateTime.Now);
             if (e.DataView.Contains(StandardDataFormats.StorageItems))
             {
@@ -211,7 +201,7 @@ namespace StringCodec.UWP.Pages
 #if DEBUG
                         System.Diagnostics.Debug.WriteLine($"Drag count:{items.Count}, {filename}");
 #endif
-                        if (sender == imgBase64)
+                        if (sender == imgBase64 || sender == rectDrop)
                         {
                             if (Utils.image_ext.Contains(extension))
                             {
@@ -249,8 +239,11 @@ namespace StringCodec.UWP.Pages
             //    System.Diagnostics.Debug.WriteLine("drag ok");
             //}
             //return;
+#if DEBUG
+            System.Diagnostics.Debug.WriteLine($"Drag Over Sender:{sender}");
+#endif
 
-            if (sender == imgBase64)
+            if (sender == imgBase64 || sender == rectDrop)
             {
                 if (e.DataView.Contains(StandardDataFormats.WebLink))
                 {
@@ -278,7 +271,7 @@ namespace StringCodec.UWP.Pages
         {
             // 需要异步拖放时记得获取Deferral对象
             //var def = e.GetDeferral();
-            if (sender == imgBase64)
+            if (sender == imgBase64 || sender == rectDrop)
             {
                 if (e.DataView.Contains(StandardDataFormats.StorageItems))
                 {
@@ -323,10 +316,6 @@ namespace StringCodec.UWP.Pages
 
                     var bitmapImage = new WriteableBitmap(1, 1);
                     await bitmapImage.SetSourceAsync(await file.OpenAsync(FileAccessMode.Read));
-                    // Set the image on the main page to the dropped image
-                    //if (bitmapImage.PixelWidth >= imgBase64.RenderSize.Width || bitmapImage.PixelHeight >= imgBase64.RenderSize.Height)
-                    //    imgBase64.Stretch = Stretch.Uniform;
-                    //else imgBase64.Stretch = Stretch.None;
                     byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
                     imgBase64.Source = bitmapImage;
                 }

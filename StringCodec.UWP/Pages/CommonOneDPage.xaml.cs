@@ -71,16 +71,6 @@ namespace StringCodec.UWP.Pages
                 btnCapture.IsEnabled = true;
             }
             #endregion
-
-            #region Add small image to Image control for dragdrop target
-            if (imgBarcode.Source == null)
-            {
-                var wb = new WriteableBitmap(1, 1);
-                imgBarcode.Stretch = Stretch.Uniform;
-                imgBarcode.Source = wb;
-            }
-            #endregion
-
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -290,7 +280,7 @@ namespace StringCodec.UWP.Pages
                         var item = items[0] as StorageFile;
                         string filename = item.Name;
                         string extension = item.FileType.ToLower();
-                        if (sender == imgBarcode)
+                        if (sender == imgBarcode || sender == rectDrop)
                         {
                             if (Utils.image_ext.Contains(extension))
                             {
@@ -322,7 +312,7 @@ namespace StringCodec.UWP.Pages
 
         private async void OnDragOver(object sender, DragEventArgs e)
         {
-            if (sender == imgBarcode)
+            if (sender == imgBarcode || sender == rectDrop)
             {
                 try
                 {
@@ -360,7 +350,7 @@ namespace StringCodec.UWP.Pages
         {
             // 需要异步拖放时记得获取Deferral对象
             //var def = e.GetDeferral();
-            if (sender == imgBarcode)
+            if (sender == imgBarcode || sender == rectDrop)
             {
                 if (e.DataView.Contains(StandardDataFormats.StorageItems))
                 {

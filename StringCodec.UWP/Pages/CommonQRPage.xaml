@@ -19,7 +19,7 @@
         </Grid.ColumnDefinitions>
 
         <CommandBar Grid.Row="0" Grid.ColumnSpan="2">
-            <AppBarButton x:Name="btnCommonType" x:Uid="btnCommonType" Icon="ShowResults" Label="Options" VerticalAlignment="Center">
+            <AppBarButton x:Name="btnCommonType" x:Uid="btnCommonType" Label="Options" Icon="ShowResults" VerticalAlignment="Center">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
                         <MenuFlyoutItem x:Name="optCommonLink" x:Uid="optCommonLink" Text="Web Link" Click="OptCommon_Click">
@@ -27,24 +27,19 @@
                                 <FontIcon Glyph="&#xE167;" FontFamily="Segoe UI Symbol"/>
                             </MenuFlyoutItem.Icon>
                         </MenuFlyoutItem>
-                        <MenuFlyoutItem x:Name="optCommonWifi" x:Uid="optCommonWifi" Text="E-Mail Send" Click="OptCommon_Click">
+                        <MenuFlyoutItem x:Name="optCommonWifi" x:Uid="optCommonWifi" Text="WIFI Infomation" Click="OptCommon_Click">
                             <MenuFlyoutItem.Icon>
                                 <FontIcon Glyph="&#xE701;" FontFamily="Segoe MDL2 Assets"/>
                             </MenuFlyoutItem.Icon>
                         </MenuFlyoutItem>
-                        <MenuFlyoutItem x:Name="optCommonMail" x:Uid="optCommonMail" Icon="Account" Text="E-Mail Send" Click="OptCommon_Click"/>
-                        <MenuFlyoutItem x:Name="optCommonTele" x:Uid="optCommonTele" Text="Telephont/Mobile" Click="OptCommon_Click">
-                            <MenuFlyoutItem.Icon>
-                                <FontIcon Glyph="&#x1F57E;" FontFamily="Segoe UI Emoji"/>
-                            </MenuFlyoutItem.Icon>
-                        </MenuFlyoutItem>
-                        <MenuFlyoutItem x:Name="optCommonGeo" x:Uid="optCommonGeo" Text="E-Mail Send" Click="OptCommon_Click">
+                        <MenuFlyoutItem x:Name="optCommonMail" x:Uid="optCommonMail" Text="E-Mail Send" Icon="Account" Click="OptCommon_Click"/>
+                        <MenuFlyoutItem x:Name="optCommonGeo" x:Uid="optCommonGeo" Text="GEO Query" Click="OptCommon_Click">
                             <MenuFlyoutItem.Icon>
                                 <FontIcon Glyph="&#xE129;" FontFamily="Segoe UI Symbol"/>
                             </MenuFlyoutItem.Icon>
                         </MenuFlyoutItem>
-                        <MenuFlyoutItem x:Name="optCommonVCard" x:Uid="optCommonVCard" Icon="ContactInfo" Text="vCard Contact" Click="OptCommon_Click"/>
-                        <MenuFlyoutItem x:Name="optCommonVCal" x:Uid="optCommonVCal" Icon="Calendar" Text="vCalendar" Click="OptCommon_Click"/>
+                        <MenuFlyoutItem x:Name="optCommonContact" x:Uid="optCommonContact" Text="Contact Into" Icon="ContactInfo" Click="OptCommon_Click"/>
+                        <MenuFlyoutItem x:Name="optCommonEvent" x:Uid="optCommonEvent" Text="Time Event" Icon="Calendar" Click="OptCommon_Click"/>
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
@@ -94,22 +89,22 @@
                 </AppBarToggleButton>
                 <AppBarToggleButton x:Name="optSaveSizeL" x:Uid="optSaveSizeL" Label="L: 1024x1024" Click="OptSave_Click">
                     <AppBarToggleButton.Icon>
-                        <FontIcon Glyph="&#xE747;" FontFamily="Segoe MDL2 Assets"/>
+                        <FontIcon Glyph="&#xE003;" FontFamily="Segoe MDL2 Assets"/>
                     </AppBarToggleButton.Icon>
                 </AppBarToggleButton>
                 <AppBarToggleButton x:Name="optSaveSizeM" x:Uid="optSaveSizeM" Label="M: 512x512" Click="OptSave_Click">
                     <AppBarToggleButton.Icon>
-                        <FontIcon Glyph="&#xE744;" FontFamily="Segoe MDL2 Assets"/>
+                        <FontIcon Glyph="&#x2B1C;" FontFamily="Segoe UI Symbol"/>
                     </AppBarToggleButton.Icon>
                 </AppBarToggleButton>
                 <AppBarToggleButton x:Name="optSaveSizeN" x:Uid="optSaveSizeN" Label="S: 256x256" Click="OptSave_Click">
                     <AppBarToggleButton.Icon>
-                        <FontIcon Glyph="&#xE743;" FontFamily="Segoe MDL2 Assets"/>
+                        <FontIcon Glyph="&#x25FB;" FontFamily="Segoe UI Symbol"/>
                     </AppBarToggleButton.Icon>
                 </AppBarToggleButton>
                 <AppBarToggleButton x:Name="optSaveSizeS" x:Uid="optSaveSizeS" Label="S: 128x128" Click="OptSave_Click">
                     <AppBarToggleButton.Icon>
-                        <FontIcon Glyph="&#xE2B2;" FontFamily="Segoe MDL2 Assets"/>
+                        <FontIcon Glyph="&#x25FD;" FontFamily="Segoe UI Symbol"/>
                     </AppBarToggleButton.Icon>
                 </AppBarToggleButton>
             </CommandBar.SecondaryCommands>

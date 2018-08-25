@@ -100,22 +100,22 @@
                 </AppBarToggleButton>
                 <AppBarToggleButton x:Name="optSaveSizeL" x:Uid="optSaveSizeL" Label="L: 1024x1024" Click="OptSave_Click">
                     <AppBarToggleButton.Icon>
-                        <FontIcon Glyph="&#xE747;" FontFamily="Segoe MDL2 Assets"/>
+                        <FontIcon Glyph="&#xE003;" FontFamily="Segoe MDL2 Assets"/>
                     </AppBarToggleButton.Icon>
                 </AppBarToggleButton>
                 <AppBarToggleButton x:Name="optSaveSizeM" x:Uid="optSaveSizeM" Label="M: 512x512" Click="OptSave_Click">
                     <AppBarToggleButton.Icon>
-                        <FontIcon Glyph="&#xE744;" FontFamily="Segoe MDL2 Assets"/>
+                        <FontIcon Glyph="&#x2B1C;" FontFamily="Segoe UI Symbol"/>
                     </AppBarToggleButton.Icon>
                 </AppBarToggleButton>
                 <AppBarToggleButton x:Name="optSaveSizeN" x:Uid="optSaveSizeN" Label="S: 256x256" Click="OptSave_Click">
                     <AppBarToggleButton.Icon>
-                        <FontIcon Glyph="&#xE743;" FontFamily="Segoe MDL2 Assets"/>
+                        <FontIcon Glyph="&#x25FB;" FontFamily="Segoe UI Symbol"/>
                     </AppBarToggleButton.Icon>
                 </AppBarToggleButton>
                 <AppBarToggleButton x:Name="optSaveSizeS" x:Uid="optSaveSizeS" Label="S: 128x128" Click="OptSave_Click">
                     <AppBarToggleButton.Icon>
-                        <FontIcon Glyph="&#xE2B2;" FontFamily="Segoe MDL2 Assets"/>
+                        <FontIcon Glyph="&#x25FD;" FontFamily="Segoe UI Symbol"/>
                     </AppBarToggleButton.Icon>
                 </AppBarToggleButton>
 
@@ -141,10 +141,13 @@
                  ScrollViewer.HorizontalScrollBarVisibility="Auto" 
                  TextChanged="edQR_TextChanged"
                  AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" />
-        <Image Grid.Row="1" Grid.Column="1" x:Name="imgQR" x:Uid="imgQR" Margin="12, 24, 0, 0"
-               Stretch="Uniform"
-               AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" />
-
+        <Rectangle Grid.Row="1" Grid.Column="1" x:Name="rectDrop" Fill="Transparent" Stretch="Fill" Margin="12, 28, 0, 0"
+            AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" >
+        </Rectangle>
+        <Viewbox Grid.Row="1" Grid.Column="1" StretchDirection="DownOnly" Margin="12, 24, 0, 0" >
+            <Image x:Name="imgQR" x:Uid="imgQR" Stretch="None" 
+                AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" />
+        </Viewbox>
     </Grid>
 
 </Page>
