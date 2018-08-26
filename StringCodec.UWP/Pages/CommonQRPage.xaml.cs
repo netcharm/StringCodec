@@ -200,7 +200,8 @@ namespace StringCodec.UWP.Pages
             var dlgResult = await dlgCommon.ShowAsync();
             if (dlgResult == ContentDialogResult.Primary)
             {
-
+                edQR.Text = dlgCommon.ResultText;
+                imgQR.Source = edQR.Text.EncodeQR(CURRENT_FGCOLOR, CURRENT_BGCOLOR, CURRENT_ECL);
             }
         }
 

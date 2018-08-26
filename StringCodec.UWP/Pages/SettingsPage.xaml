@@ -8,7 +8,7 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-
+    <Grid Margin="12, 0, 12,12">
+        <ToggleSwitch x:Name="nvSwitchTheme" x:Uid="nvSwitchTheme" Header="Theme Select" OffContent="Light Theme" OnContent="Dark Theme" IsOn="False" IsTapEnabled="True" Toggled="NvTheme_Toggled" />
     </Grid>
 </Page>

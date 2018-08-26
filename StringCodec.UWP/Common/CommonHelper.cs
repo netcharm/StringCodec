@@ -20,6 +20,7 @@ using Windows.Storage.Streams;
 using Windows.UI;
 using Windows.UI.Popups;
 using Windows.UI.Text;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -578,8 +579,35 @@ namespace StringCodec.UWP.Common
     class Utils
     {
         static public string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif" };
-        static public string[] text_ext = new string[] { ".txt", ".text", ".base64", ".url" };
+        static public string[] text_ext = new string[] { ".txt", ".text", ".base64", ".md", ".rst", ".url" };
         static public string[] url_ext = new string[] { ".url" };
+
+        private static Page rootPage = null;
+        static public void SetTheme(ElementTheme theme, Page page, bool save = true)
+        {
+            if (rootPage == null && page == null) return;
+            if (page != null) rootPage = page;
+
+            //remove the solid-colored backgrounds behind the caption controls and system back button
+            ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            titleBar.ButtonBackgroundColor = Colors.Transparent;
+            titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+            //titleBar.ButtonForegroundColor = (Color)Resources["SystemBaseHighColor"];
+
+            #region Set Theme & TitleBar button color
+            rootPage.RequestedTheme = theme;
+            if (rootPage.RequestedTheme == ElementTheme.Dark)
+            {
+                titleBar.ButtonForegroundColor = Colors.White;
+            }
+            else if (rootPage.RequestedTheme == ElementTheme.Light)
+            {
+                titleBar.ButtonForegroundColor = Colors.Black;
+            }
+            if (save) Settings.Set("AppTheme", (int)rootPage.RequestedTheme);
+            //ApplicationData.Current.LocalSettings.Values["AppTheme"] = (int)RequestedTheme;
+            #endregion
+        }
 
         #region Share Extentions
         static private DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
@@ -1237,10 +1265,11 @@ namespace StringCodec.UWP.Common
         }
         #endregion
 
-        #region Misc
+        #region Suggestion Routines
         static private ObservableCollection<String> suggestions = new ObservableCollection<string>();
-        static public ObservableCollection<String> GetSuggestion(string content)
+        static public ObservableCollection<String> LinkSuggestion(string content)
         {
+            content = content.Trim();
             ///
             /// Regex patterns
             ///
@@ -1290,7 +1319,20 @@ namespace StringCodec.UWP.Common
                 suggestions.Add($"ftp://{content}");
                 suggestions.Add($"git://{content}");
             }
+            if (Regex.IsMatch(content, @"[a-zA-Z@!@#$%&()-=_+]{3,}", RegexOptions.IgnoreCase | RegexOptions.Singleline))
+            {
+                suggestions.Add($"weixin://contacts/profile/{content}");
+                suggestions.Add($"https://weibo.come/{content}");
+                suggestions.Add($"https://www.facebook.com/{content}");
+                suggestions.Add($"https://twitter.com/{content}");
+                suggestions.Add($"https://github.com/{content}");
+            }
+
+            //
+            // if no any matched, so return "no suggestions" result
+            //
             if (suggestions.Count <= 0) suggestions.Add("No Suggestions!");
+
             return (suggestions);
         }
 

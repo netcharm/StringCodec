@@ -19,7 +19,7 @@
             <ColumnDefinition Width=".62*"/>
         </Grid.ColumnDefinitions>
 
-        <CommandBar Grid.Row="0" Grid.ColumnSpan="2">
+        <CommandBar Grid.Row="0" Grid.ColumnSpan="2" x:Name="cmdBar" x:Uid="cmdBar">
             <AppBarButton Grid.Column="0" x:Name="btnOpt" x:Uid="btnOpt" Icon="Bullets" Label="Options" VerticalAlignment="Center">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
@@ -27,12 +27,15 @@
                         <ToggleMenuFlyoutItem x:Name="optBarCodeISBN" x:Uid="optBarCodeISBN" Text="Book ISBN" Click="OptBarCodeFormat_Click"/>
                         <ToggleMenuFlyoutItem x:Name="optBarCodeProduct" x:Uid="optBarCodeProduct" Text="Product" Click="OptBarCodeFormat_Click"/>
                         <MenuFlyoutSeparator />
-                        <ToggleMenuFlyoutItem x:Name="optBarCodeLink" x:Uid="optBarCodeLink" Text="Web Link" Click="OptBarCodeFormat_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optBarCodeTele" x:Uid="optBarCodeTele" Text="Telephone" Click="OptBarCodeFormat_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optBarCodeMail" x:Uid="optBarCodeMail" Text="Mail" Click="OptBarCodeFormat_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optBarCodeSMS" x:Uid="optBarCodeSMS" Text="SMS" Click="OptBarCodeFormat_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optBarCodeVcard" x:Uid="optBarCodeVcard" Text="vCard" Click="OptBarCodeFormat_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optBarCodeVcal" x:Uid="optBarCodeVcal" Text="vCalendar" Click="OptBarCodeFormat_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optBarCodeEAN13" x:Uid="optBarCodeEAN13" Text="EAN-13" Click="OptBarCodeFormat_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optBarCode39" x:Uid="optBarCode39" Text="Code 39" Click="OptBarCodeFormat_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optBarCode128" x:Uid="optBarCode128" Text="Code 128" Click="OptBarCodeFormat_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optBarCodeUPCA" x:Uid="optBarCodeUPCA" Text="UPC-A" Click="OptBarCodeFormat_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optBarCodeUPCE" x:Uid="optBarCodeUPCE" Text="UPC-E" Click="OptBarCodeFormat_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optBarCode93" x:Uid="optBarCode93" Text="Code 93" Click="OptBarCodeFormat_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optBarCodeCodabar" x:Uid="optBarCodeCodabar" Text="Codabar" Click="OptBarCodeFormat_Click"/>
+                        <MenuFlyoutSeparator />
+                        <ToggleMenuFlyoutItem x:Name="optBarCodeChecksum" x:Uid="optBarCodeChecksum" Text="Calc Checksum" Click="OptBarCodeChecksum_Click"/>
                         <MenuFlyoutSeparator />
                         <MenuFlyoutItem x:Name="optFgColor" x:Uid="optFgColor" Text="Foreground Color" Click="OptColor_Click">
                             <MenuFlyoutItem.Icon>
@@ -102,6 +105,8 @@
                             <ToggleMenuFlyoutItem x:Name="optBarcodeTextSizeM" x:Uid="optBarcodeTextSizeM" Text="M: Middle" Click="OptBarCodeTextSize_Click"/>
                             <ToggleMenuFlyoutItem x:Name="optBarcodeTextSizeS" x:Uid="optBarcodeTextSizeS" Text="S: Small" Click="OptBarCodeTextSize_Click"/>
                             <ToggleMenuFlyoutItem x:Name="optBarcodeTextSizeXS" x:Uid="optBarcodeTextSizeXS" Text="XS: Extra Small" Click="OptBarCodeTextSize_Click"/>
+                            <MenuFlyoutSeparator />
+                            <ToggleMenuFlyoutItem x:Name="optBarcodeTextSizeNone" x:Uid="optBarcodeTextSizeNone" Text="None Text" Click="OptBarCodeTextSize_Click"/>
                         </MenuFlyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>
@@ -130,7 +135,7 @@
         <Rectangle Grid.Row="1" Grid.Column="1" x:Name="rectDrop" Fill="Transparent" Stretch="Fill" Margin="12, 28, 0, 0"
             AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" >
         </Rectangle>
-        <Viewbox Grid.Row="1" Grid.Column="1" StretchDirection="DownOnly" Margin="12, 24, 0, 0" >
+        <Viewbox Grid.Row="1" Grid.Column="1" StretchDirection="DownOnly" Margin="12, 28, 0, 0" >
             <Image x:Name="imgBarcode" x:Uid="imgBarcode" Stretch="None" 
                 AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" />
         </Viewbox>

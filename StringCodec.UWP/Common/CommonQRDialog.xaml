@@ -16,6 +16,10 @@
     PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
     SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
 
+    <ContentDialog.Resources>
+
+    </ContentDialog.Resources>
+    
     <Grid>
         <Pivot x:Name="pivot">
             <PivotItem x:Name="piLink" x:Uid="piLink" Header="Web Link">
@@ -39,16 +43,21 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="64"/>
                         <RowDefinition Height="64"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="64"/>
                     </Grid.RowDefinitions>
-                    <TextBox Grid.Row="0" Grid.Column="0" x:Name="edWifiSSID" x:Uid="edWifiSSID" Header="SSID:" PlaceholderText="SSID/Network Name"/>
-                    <TextBox Grid.Row="1" Grid.Column="0" x:Name="edWifiPass" x:Uid="edWifiPass" Header="Password:" PlaceholderText=" WIFI Password" />
-                    <ComboBox Grid.Row="2" Grid.Column="0" x:Name="edWifiEncypto" x:Uid="edWifiEncypto" Header="Encrypt Type:" PlaceholderText="Password Encrypt Type" SelectedIndex="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width=".5*"/>
+                        <ColumnDefinition Width=".5*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Row="0" Grid.ColumnSpan="2" x:Name="edWifiSSID" x:Uid="edWifiSSID" Header="SSID:" PlaceholderText="SSID/Network Name"/>
+                    <TextBox Grid.Row="1" Grid.ColumnSpan="2" x:Name="edWifiPass" x:Uid="edWifiPass" Header="Password:" PlaceholderText=" WIFI Password" />
+                    <ComboBox Grid.Row="3" Grid.Column="0" x:Name="edWifiEncypto" x:Uid="edWifiEncypto" Header="Encrypt Type:" PlaceholderText="Password Encrypt Type" SelectedIndex="2">
                         <x:String>WEP</x:String>
                         <x:String>WPA</x:String>
                         <x:String>WPA2</x:String>
                         <x:String>nopass</x:String>
                     </ComboBox>
+                    <CheckBox Grid.Row="2" Grid.Column="1" x:Name="edWifiHidden" x:Uid="edWifiHidden" Content="Hidden SSID" HorizontalAlignment="Right" HorizontalContentAlignment="Right" FlowDirection="RightToLeft"/>
                 </Grid>
             </PivotItem>
             <PivotItem x:Name="piMail" x:Uid="piMail" Header="Send Mail">
@@ -64,7 +73,7 @@
                     </Grid.RowDefinitions>
                     <TextBox Grid.Row="0" Grid.Column="0" x:Name="edMailTo" x:Uid="edMailTo" Header="Sent To:" PlaceholderText="Mail Address"/>
                     <TextBox Grid.Row="1" Grid.Column="0" x:Name="edMailSubject" x:Uid="edMailSubject" Header="Subjetc:" PlaceholderText="Mail Subject"/>
-                    <TextBox Grid.Row="2" Grid.Column="0" x:Name="edMailContent" x:Uid="edMailContent" Header="Content:" PlaceholderText="Mail Content"/>
+                    <TextBox Grid.Row="2" Grid.Column="0" x:Name="edMailContent" x:Uid="edMailContent" Header="Content:" PlaceholderText="Mail Content" AcceptsReturn="True"/>
                 </Grid>
             </PivotItem>
             <PivotItem x:Name="piGeo" x:Uid="piGeo" Header="Geo Query">

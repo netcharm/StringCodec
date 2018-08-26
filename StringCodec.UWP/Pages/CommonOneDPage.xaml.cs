@@ -36,6 +36,7 @@ namespace StringCodec.UWP.Pages
         private int CURRENT_SIZE = 512;
         private int CURRENT_TEXT_FONTSIZE = 48;
         private string CURRENT_FORMAT = "Express";
+        private bool CURRENT_CHECKSUM = false;
 
         static private string text_src = string.Empty;
         static public string Text
@@ -82,7 +83,7 @@ namespace StringCodec.UWP.Pages
                 {
                     imgBarcode.Stretch = Stretch.Uniform;
                     edBarcode.Text = data.ToString();
-                    imgBarcode.Source = await edBarcode.Text.EncodeBarcode(CURRENT_FORMAT, CURRENT_FGCOLOR, CURRENT_BGCOLOR, CURRENT_TEXT_FONTSIZE);
+                    imgBarcode.Source = await edBarcode.Text.EncodeBarcode(CURRENT_FORMAT, CURRENT_FGCOLOR, CURRENT_BGCOLOR, CURRENT_TEXT_FONTSIZE, CURRENT_CHECKSUM);
                 }
                 else if (data is WriteableBitmap)
                 {
@@ -106,8 +107,8 @@ namespace StringCodec.UWP.Pages
         {
             ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] {
                 optBarCodeExpress, optBarCodeISBN, optBarCodeProduct,
-                optBarCodeLink, optBarCodeTele, optBarCodeMail, optBarCodeSMS,
-                optBarCodeVcard, optBarCodeVcal
+                optBarCode39, optBarCode93, optBarCode128, optBarCodeEAN13,
+                optBarCodeUPCA, optBarCodeUPCE, optBarCodeCodabar
             };
 
             var btn = sender as ToggleMenuFlyoutItem;
@@ -121,6 +122,16 @@ namespace StringCodec.UWP.Pages
                     opt.IsChecked = true;
                 }
                 else opt.IsChecked = false;
+            }
+        }
+
+        private void OptBarCodeChecksum_Click(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as ToggleMenuFlyoutItem;
+            if (btn == optBarCodeChecksum)
+            {
+                CURRENT_CHECKSUM = btn.IsChecked;
+                return;
             }
         }
 
@@ -184,11 +195,12 @@ namespace StringCodec.UWP.Pages
         private void OptBarCodeTextSize_Click(object sender, RoutedEventArgs e)
         {
             ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] {
-                optBarcodeTextSizeXL, optBarcodeTextSizeL, optBarcodeTextSizeM, optBarcodeTextSizeS, optBarcodeTextSizeXS
+                optBarcodeTextSizeXL, optBarcodeTextSizeL, optBarcodeTextSizeM, optBarcodeTextSizeS, optBarcodeTextSizeXS,
+                optBarcodeTextSizeNone
             };
 
             var btn = sender as ToggleMenuFlyoutItem;
-            var SIZE_NAME = btn.Name.Substring(18);
+            var SIZE_NAME = btn.Name.Substring(18).ToUpper();
 
             foreach (ToggleMenuFlyoutItem opt in opts)
             {
@@ -215,10 +227,15 @@ namespace StringCodec.UWP.Pages
                 case "XS":
                     CURRENT_TEXT_FONTSIZE = 24;
                     break;
+                case "NONE":
+                    CURRENT_TEXT_FONTSIZE = 0;
+                    break;
                 default:
                     CURRENT_TEXT_FONTSIZE = 48;
                     break;
             }
+            (cmdBar.SecondaryCommands as AppBarButton).Flyout.Hide();
+            //optBarcodeTextSize.Flyout.Hide();
         }
 
         private void Base64_Click(object sender, RoutedEventArgs e)
@@ -241,7 +258,7 @@ namespace StringCodec.UWP.Pages
             switch (btn.Name)
             {
                 case "btnEncode":
-                    imgBarcode.Source = await edBarcode.Text.EncodeBarcode(CURRENT_FORMAT, CURRENT_FGCOLOR, CURRENT_BGCOLOR, CURRENT_TEXT_FONTSIZE);
+                    imgBarcode.Source = await edBarcode.Text.EncodeBarcode(CURRENT_FORMAT, CURRENT_FGCOLOR, CURRENT_BGCOLOR, CURRENT_TEXT_FONTSIZE, CURRENT_CHECKSUM);
                     break;
                 case "btnDecode":
                     edBarcode.Text = await (imgBarcode.Source as WriteableBitmap).Decode();

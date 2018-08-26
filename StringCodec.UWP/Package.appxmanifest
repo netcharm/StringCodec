@@ -30,6 +30,8 @@
               <uap:FileType>.jpg</uap:FileType>
               <uap:FileType>.gif</uap:FileType>
               <uap:FileType>.tif</uap:FileType>
+              <uap:FileType>.md</uap:FileType>
+              <uap:FileType>.rst</uap:FileType>
             </uap:SupportedFileTypes>
             <uap:DataFormat>Text</uap:DataFormat>
             <uap:DataFormat>Bitmap</uap:DataFormat>

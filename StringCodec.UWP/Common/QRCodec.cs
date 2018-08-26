@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI;
@@ -70,6 +72,36 @@ namespace StringCodec.UWP.Common
         }
         #endregion
 
+        #region
+        static private string CalcCode39(string text, bool sum=false)
+        {
+            string result = string.Empty;
+            Dictionary<char, int> charmap_39 = new Dictionary<char, int>() {
+                {'0', 0}, {'1', 1}, {'2', 2}, {'3', 3}, {'4', 4}, {'5', 5}, {'6', 6}, {'7', 7}, {'8', 8}, {'9', 9},
+                {'A', 10}, {'B', 11}, {'C', 12}, {'D', 13}, {'E', 14}, {'F', 15}, {'G', 16}, {'H', 17}, {'I', 18}, {'J', 19},
+                {'K', 20}, {'L', 21}, {'M', 22}, {'N', 23}, {'O', 24}, {'P', 25}, {'Q', 26}, {'R', 27}, {'S', 28}, {'T', 29},
+                {'U', 30}, {'V', 31}, {'W', 32}, {'X', 33}, {'Y', 34}, {'Z', 35}, {'-', 36}, {'.', 37}, {' ', 38}, {'$', 39},
+                {'/', 40}, {'+', 41}, {'%', 42}
+            };
+            result = Regex.Replace(text, @"[a-z]", "+$0").ToUpper();
+            result = Regex.Replace(result, @"[^a-zA-Z\d\+\-\/\%\$\.\*\ ]", "");
+            //var mo = Regex.Matches(text, @"([a-z])|([A-Z])|(\d)|([\+\-\*\/\%\$\.\*\ ])", RegexOptions.Multiline);
+
+            if (sum)
+            {
+                var checksum = 0;
+                foreach (char c in result)
+                {
+                    if (c == '*' || !charmap_39.ContainsKey(c)) continue;
+                    checksum += charmap_39[c];
+                }
+                checksum = checksum % 43;
+                result = $"{result}{charmap_39.FirstOrDefault(x => x.Value == checksum).Key}";
+            }
+            return (result);
+        }
+        #endregion
+
         static private void SetDecodeOptions(BarcodeReader br)
         {
             br.AutoRotate = true;
@@ -92,7 +124,7 @@ namespace StringCodec.UWP.Common
             //br.Options.PossibleFormats.Add(BarcodeFormat.QR_CODE);
         }
 
-        static async public Task<WriteableBitmap> EncodeBarcode(this string content, string format, Color fgcolor, Color bgcolor, int textsize)
+        static async public Task<WriteableBitmap> EncodeBarcode(this string content, string format, Color fgcolor, Color bgcolor, int textsize, bool checksum)
         {
             WriteableBitmap result = new WriteableBitmap(1,1);
             if (content.Length <= 0) return (result);
@@ -130,48 +162,40 @@ namespace StringCodec.UWP.Common
                     else
                         content = prod13;
                     break;
-                case "link":
-                    fmt = BarcodeFormat.QR_CODE;
-                    maxlen = 984;
-                    if (!content.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase) ||
-                       !content.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        content = "http://" + content;
-                    }
+                case "39":
+                    fmt = BarcodeFormat.CODE_39;
+                    maxlen = 1024;
+                    content = CalcCode39(content, checksum);
                     break;
-                case "tele":
-                    fmt = BarcodeFormat.QR_CODE;
-                    maxlen = 984;
-                    if (!content.StartsWith("tel:", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        content = "TEL:" + content;
-                    }
-                    break;
-                case "mail":
-                    fmt = BarcodeFormat.QR_CODE;
-                    maxlen = 984;
-                    if (!content.StartsWith("mailto:", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        var mail = "abc@abc.com";
-                        var subject = "main to ...";
-                        content = $"MAILTO:{mail}?SUBJECT={subject}&BODY={content}";
-                    }
-                    break;
-                case "sms":
-                    fmt = BarcodeFormat.QR_CODE;
-                    maxlen = 984;
-                    if (!content.StartsWith("smsto:", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        var phone = "1234567890";
-                        content = $"SMSTO:{phone}:{content}";
-                    }
-                    break;
-                case "vcard":
-                    fmt = BarcodeFormat.QR_CODE;
+                case "93":
+                    fmt = BarcodeFormat.CODE_93;
                     maxlen = 984;
                     break;
-                case "vcal":
-                    fmt = BarcodeFormat.QR_CODE;
+                case "128":
+                    fmt = BarcodeFormat.CODE_128;
+                    maxlen = 984;
+                    break;
+                case "ean13":
+                    fmt = BarcodeFormat.EAN_13;
+                    maxlen = 13;
+                    margin = 16;
+                    height = (int)(width * 26.26 / 37.29);
+                    string ean13 = content.Length >= 12 ? CalcISBN_13(content.Substring(0, 12)) : string.Empty;
+                    if (string.IsNullOrEmpty(ean13))
+                        return (result);
+                    else
+                        content = ean13;
+                    break;
+                case "upca":
+                    fmt = BarcodeFormat.UPC_A;
+                    maxlen = 984;
+                    break;
+                case "upce":
+                    fmt = BarcodeFormat.UPC_E;
+                    maxlen = 984;
+                    break;
+                case "codabar":
+                    fmt = BarcodeFormat.CODABAR;
                     maxlen = 984;
                     break;
                 default:
@@ -189,7 +213,7 @@ namespace StringCodec.UWP.Common
                 var bw = new BarcodeWriter();
                 bw.Options.Width = width;
                 bw.Options.Height = height;
-                bw.Options.PureBarcode = false;
+                bw.Options.PureBarcode = true;
                 bw.Options.GS1Format = true;
                 bw.Options.Hints.Add(EncodeHintType.MARGIN, margin);
                 bw.Options.Hints.Add(EncodeHintType.DISABLE_ECI, true);
@@ -210,13 +234,92 @@ namespace StringCodec.UWP.Common
                 int t = (int)Math.Ceiling(result.PixelHeight * 0.05);
                 int r = (int)Math.Ceiling(result.PixelWidth * 0.05);
                 int b = (int)Math.Ceiling(result.PixelHeight * 0.05);
+                var rectBarcode = new Rect(l, t, result.PixelWidth, result.PixelHeight);
 
-                var label = content.BarcodeLabel(format);
-                var labelimage = await label.ToBitmap("Consolas", FontStyle.Normal, textsize, fgcolor, bgcolor);
-                result = result.Extend(l, t, r, b + labelimage.PixelHeight, bgcolor);
-                var dstRect = new Rect((result.PixelWidth - labelimage.PixelWidth) / 2, result.PixelHeight - labelimage.PixelHeight - b, labelimage.PixelWidth, labelimage.PixelHeight);
-                var srcRect = new Rect(0, 0, labelimage.PixelWidth, labelimage.PixelHeight);
-                result.Blit(dstRect, labelimage, srcRect, WriteableBitmapExtensions.BlendMode.None);
+                var labels = content.BarcodeLabel(format, checksum);
+                if (textsize <= 0) labels.Clear();
+                switch (labels.Count)
+                {
+                    case 1:
+                        var label = labels[0];
+                        if (!string.IsNullOrEmpty(label))
+                        {
+                            var labelimage = await label.ToBitmap("Consolas", FontStyle.Normal, textsize, fgcolor, bgcolor);
+                            result = result.Extend(l, t, r, b + labelimage.PixelHeight, bgcolor);
+                            var dstRect = new Rect((result.PixelWidth - labelimage.PixelWidth) / 2, result.PixelHeight - labelimage.PixelHeight - b, labelimage.PixelWidth, labelimage.PixelHeight);
+                            if (dstRect.Width > rectBarcode.Width)
+                            {
+                                labelimage = labelimage.Resize((int)rectBarcode.Width, (int)dstRect.Height, WriteableBitmapExtensions.Interpolation.Bilinear);
+                                dstRect = new Rect(rectBarcode.X, dstRect.Y, rectBarcode.Width, dstRect.Height);
+                            }
+                            var srcRect = new Rect(0, 0, labelimage.PixelWidth, labelimage.PixelHeight);
+                            result.Blit(dstRect, labelimage, srcRect, WriteableBitmapExtensions.BlendMode.None);
+                        }
+                        break;
+                    case 2:
+                        var label_t = labels[0];
+                        var label_b = labels[1];
+                        if (!string.IsNullOrEmpty(label_t) && !string.IsNullOrEmpty(label_b))
+                        {
+                            var labelimage_t = await label_t.ToBitmap("Consolas", FontStyle.Normal, textsize, fgcolor, bgcolor);
+                            var labelimage_b = await label_b.ToBitmap("Consolas", FontStyle.Normal, textsize, fgcolor, bgcolor);
+                            result = result.Extend(l, t + labelimage_t.PixelHeight, r, b + labelimage_b.PixelHeight, bgcolor);
+
+                            var dstRect_t = new Rect((result.PixelWidth - labelimage_t.PixelWidth) / 2, t,
+                                labelimage_t.PixelWidth, labelimage_t.PixelHeight);
+                            if (dstRect_t.Width > rectBarcode.Width)
+                            {
+                                labelimage_t = labelimage_t.Resize((int)rectBarcode.Width, (int)dstRect_t.Height, WriteableBitmapExtensions.Interpolation.Bilinear);
+                                dstRect_t = new Rect(rectBarcode.X, dstRect_t.Y, rectBarcode.Width, dstRect_t.Height);
+                            }
+                            var srcRect_t = new Rect(0, 0, labelimage_t.PixelWidth, labelimage_t.PixelHeight);
+                            result.Blit(dstRect_t, labelimage_t, srcRect_t, WriteableBitmapExtensions.BlendMode.None);
+
+                            var dstRect_b = new Rect((result.PixelWidth - labelimage_b.PixelWidth) / 2, result.PixelHeight - labelimage_b.PixelHeight - b,
+                                labelimage_b.PixelWidth, labelimage_b.PixelHeight);
+                            if (dstRect_b.Width > rectBarcode.Width)
+                            {
+                                labelimage_b = labelimage_b.Resize((int)rectBarcode.Width, (int)dstRect_b.Height, WriteableBitmapExtensions.Interpolation.Bilinear);
+                                dstRect_b = new Rect(rectBarcode.X, dstRect_b.Y, rectBarcode.Width, dstRect_b.Height);
+                            }
+                            var srcRect_b = new Rect(0, 0, labelimage_b.PixelWidth, labelimage_b.PixelHeight);
+                            result.Blit(dstRect_b, labelimage_b, srcRect_b, WriteableBitmapExtensions.BlendMode.None);
+                        }
+                        else if(!string.IsNullOrEmpty(label_t) && string.IsNullOrEmpty(label_b))
+                        {
+                            var labelimage_t = await label_t.ToBitmap("Consolas", FontStyle.Normal, textsize, fgcolor, bgcolor);
+                            result = result.Extend(l, t + labelimage_t.PixelHeight, r, b, bgcolor);
+
+                            var dstRect_t = new Rect((result.PixelWidth - labelimage_t.PixelWidth) / 2, t,
+                                labelimage_t.PixelWidth, labelimage_t.PixelHeight);
+                            if (dstRect_t.Width > rectBarcode.Width)
+                            {
+                                labelimage_t = labelimage_t.Resize((int)rectBarcode.Width, (int)dstRect_t.Height, WriteableBitmapExtensions.Interpolation.Bilinear);
+                                dstRect_t = new Rect(rectBarcode.X, dstRect_t.Y, rectBarcode.Width, dstRect_t.Height);
+                            }
+                            var srcRect_t = new Rect(0, 0, labelimage_t.PixelWidth, labelimage_t.PixelHeight);
+                            result.Blit(dstRect_t, labelimage_t, srcRect_t, WriteableBitmapExtensions.BlendMode.None);
+                        }
+                        else if (string.IsNullOrEmpty(label_t) && !string.IsNullOrEmpty(label_b))
+                        {
+                            var labelimage_b = await label_t.ToBitmap("Consolas", FontStyle.Normal, textsize, fgcolor, bgcolor);
+                            result = result.Extend(l, t, r, b + labelimage_b.PixelHeight, bgcolor);
+
+                            var dstRect_b = new Rect((result.PixelWidth - labelimage_b.PixelWidth) / 2, result.PixelHeight - labelimage_b.PixelHeight - b,
+                                labelimage_b.PixelWidth, labelimage_b.PixelHeight);
+                            if (dstRect_b.Width > rectBarcode.Width)
+                            {
+                                labelimage_b = labelimage_b.Resize((int)rectBarcode.Width, (int)dstRect_b.Height, WriteableBitmapExtensions.Interpolation.Bilinear);
+                                dstRect_b = new Rect(rectBarcode.X, dstRect_b.Y, rectBarcode.Width, dstRect_b.Height);
+                            }
+                            var srcRect_b = new Rect(0, 0, labelimage_b.PixelWidth, labelimage_b.PixelHeight);
+                            result.Blit(dstRect_b, labelimage_b, srcRect_b, WriteableBitmapExtensions.BlendMode.None);
+                        }
+                        break;
+                    default:
+                        result = result.Extend(l, t, r, b, bgcolor);
+                        break;
+                }
             }
             catch (Exception ex)
             {
@@ -225,27 +328,33 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static public string BarcodeLabel(this string content, string format)
+        static public List<string> BarcodeLabel(this string content, string format, bool checksum)
         {
-            string result = content;
+            List<string> result = new List<string>();
             switch (format.ToLower())
             {
                 case "express":
-                    result = content;
+                    result.Add(content);
                     break;
                 case "isbn":
                     string isbn13 = content.Length >= 12 ? CalcISBN_13(content.Substring(0, 12)) : string.Empty;
-                    if (string.IsNullOrEmpty(isbn13))
-                        return (string.Empty);
-                    result = isbn13; //OneDimensionalCodeWriter.CalculateChecksumDigitModulo10(content);
-                    result = result.Insert(7, "   ");
-                    result = result.Insert(1, "   ");
+                    if (string.IsNullOrEmpty(isbn13)) return (result);
+                    //OneDimensionalCodeWriter.CalculateChecksumDigitModulo10(content);
+                    result.Add($"ISBN {isbn13.Insert(12, "-").Insert(3, "-")}");
+                    result.Add($"{isbn13.Insert(7, "   ").Insert(1, "   ")}   <");
                     break;
                 case "product":
-                    result = content;
+                    string prod13 = content.Length >= 12 ? CalcISBN_13(content.Substring(0, 12)) : string.Empty;
+                    if (string.IsNullOrEmpty(prod13)) return (result);
+                    result.Add($"{prod13.Insert(7, "   ").Insert(1, "   ")}   <");
+                    break;
+                case "39":
+                    var code39 = (Regex.Replace(content, @"[^a-zA-Z\d\+\-\*\/\%\$\.\*\ ]", ""));
+                    if (checksum) code39 = code39.Substring(0, code39.Length - 1);
+                    result.Add(code39);
                     break;
                 default:
-                    result = string.Empty;
+                    result.Clear();
                     break;
             }
             return (result);

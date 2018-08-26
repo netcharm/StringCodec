@@ -59,6 +59,7 @@ namespace StringCodec.UWP.Common
             pivot.Items.Clear();
             pivot.Items.Add(selecteditem);
             pivot.Title = string.Empty;
+            pivot.SelectedItem = selecteditem;
         }
 
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
@@ -71,6 +72,46 @@ namespace StringCodec.UWP.Common
                 var content = string.IsNullOrEmpty(edLinkContent.Text) ? string.Empty : $"/{edLinkContent.Text}";
                 result = $"{edLinkUrl.Text}{content.Replace("//", "", StringComparison.CurrentCultureIgnoreCase)}";
             }
+            else if (item == piWifi)
+            {
+                //WIFI:S:wifissid;P:wifipass;T:WPA/WPA2;H:1;
+                var hidden = edWifiHidden.IsChecked == true ? "1" : string.Empty;
+                result = $"WIFI:S:{edWifiSSID.Text};P:{edWifiPass.Text};T:{edWifiEncypto.SelectedValue};H:{hidden};";
+            }
+            else if(item == piMail)
+            {
+                result = $"mailto:{edMailTo.Text.Trim()}?subject={edMailSubject.Text.TrimEnd()}&body={edMailContent.Text.TrimEnd()}";
+            }
+            else if(item == piContact)
+            {
+                //BEGIN:VCARD
+                //VERSION:3.0
+                //N:FirstName
+                //TEL:13901234567
+                //EMAIL:abc@abc.com
+                //ADR;TYPE=WORK:Office Address
+                //ORG:OfficeName
+                //URL:https://cn.bing.com
+                //TEL;TYPE=WORK,VOICE:01088888888
+                //TEL;TYPE=HOME,VOICE:02099999999
+                //TITLE:Staff
+                //ADR;TYPE=HOME:Home Address
+                //NOTE:Note
+                //END:VCARD
+
+            }
+            else if(item == piEvent)
+            {
+                //BEGIN:VCALENDAR
+                //VERSION:2.0
+                //BEGIN:VEVENT
+                //SUMMARY;CHARSET=utf-8:summary
+                //LOCATION;CHARSET=utf-8:hongkong
+                //DTSTART:20180821T160000Z
+                //DTEND:20180821T160000Z
+                //END:VEVENT
+                //END:VCALENDAR
+            }
         }
 
         private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
@@ -81,7 +122,7 @@ namespace StringCodec.UWP.Common
         {
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
-                sender.ItemsSource = Utils.GetSuggestion(edLinkUrl.Text);
+                sender.ItemsSource = Utils.LinkSuggestion(edLinkUrl.Text);
             }
         }
 

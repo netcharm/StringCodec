@@ -39,7 +39,7 @@ namespace StringCodec.UWP
         //private ShareOperation operation;
         //private Utils utils = new Utils();
 
-        private void SetTitleBarTheme(ElementTheme theme)
+        private void SetTheme(ElementTheme theme, bool save = true)
         {
             //remove the solid-colored backgrounds behind the caption controls and system back button
             ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
@@ -64,11 +64,11 @@ namespace StringCodec.UWP
             {
                 titleBar.ButtonForegroundColor = Colors.White;
             }
-            else if(this.RequestedTheme == ElementTheme.Light)
+            else if (this.RequestedTheme == ElementTheme.Light)
             {
                 titleBar.ButtonForegroundColor = Colors.Black;
             }
-            Settings.Set("AppTheme", (int)RequestedTheme);
+            if (save) Settings.Set("AppTheme", (int)RequestedTheme);
             //ApplicationData.Current.LocalSettings.Values["AppTheme"] = (int)RequestedTheme;
             #endregion
         }
@@ -116,13 +116,15 @@ namespace StringCodec.UWP
             var theme = (ElementTheme)Settings.Get("AppTheme", ElementTheme.Default);
             //if (ApplicationData.Current.LocalSettings.Values.ContainsKey("AppTheme"))
             //    theme = (ElementTheme)ApplicationData.Current.LocalSettings.Values["AppTheme"];
-            SetTitleBarTheme(theme);
+            //nvSwitchTheme.IsTapEnabled = false;
+            SetTheme(theme, false);
+            //nvSwitchTheme.IsTapEnabled = true;
             #endregion
 
             ContentFrame.Navigated += NvMain_Navigated;
 
             nvMain.Header = nvMain.PaneTitle;
-            ContentFrame.Navigate(typeof(Pages.TextPage));
+            ContentFrame.Navigate(typeof(Pages.TextPage), this);
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -197,7 +199,7 @@ namespace StringCodec.UWP
                 }
                 else
                 {
-                    ContentFrame.Navigate(typeof(Pages.TextPage));
+                    ContentFrame.Navigate(typeof(Pages.TextPage), this);
                 }
 
             }
@@ -314,7 +316,7 @@ namespace StringCodec.UWP
             ////先判断是否选中了setting
             //if (args.IsSettingsInvoked)
             //{
-            //    ContentFrame.Navigate(typeof(Pages.SettingsPage));
+            //    ContentFrame.Navigate(typeof(Pages.SettingsPage), this);
             //}
             //else
             //{
@@ -326,7 +328,7 @@ namespace StringCodec.UWP
             //先判断是否选中了setting
             if (args.IsSettingsSelected)
             {
-                ContentFrame.Navigate(typeof(Pages.SettingsPage));
+                ContentFrame.Navigate(typeof(Pages.SettingsPage), this);
             }
             else
             {
@@ -334,25 +336,25 @@ namespace StringCodec.UWP
                 switch (item.Name)
                 {
                     case "nvItemText":
-                        ContentFrame.Navigate(typeof(Pages.TextPage));
+                        ContentFrame.Navigate(typeof(Pages.TextPage), this);
                         break;
                     case "nvItemQRCode":
-                        ContentFrame.Navigate(typeof(Pages.QRCodePage));
+                        ContentFrame.Navigate(typeof(Pages.QRCodePage), this);
                         break;
                     case "nvItemImage":
-                        ContentFrame.Navigate(typeof(Pages.ImagePage));
+                        ContentFrame.Navigate(typeof(Pages.ImagePage), this);
                         break;
                     case "nvItemCommonQR":
-                        ContentFrame.Navigate(typeof(Pages.CommonQRPage));
+                        ContentFrame.Navigate(typeof(Pages.CommonQRPage), this);
                         break;
                     case "nvItemCommonOneD":
-                        ContentFrame.Navigate(typeof(Pages.CommonOneDPage));
+                        ContentFrame.Navigate(typeof(Pages.CommonOneDPage), this);
                         break;
                     case "nvItemCharset":
-                        ContentFrame.Navigate(typeof(Pages.CharsetPage));
+                        ContentFrame.Navigate(typeof(Pages.CharsetPage), this);
                         break;
                     default:
-                        ContentFrame.Navigate(typeof(Pages.TextPage));
+                        ContentFrame.Navigate(typeof(Pages.TextPage), this);
                         break;
                 }
             }
@@ -365,25 +367,25 @@ namespace StringCodec.UWP
             //switch (tag)
             //{
             //    case "PageText":
-            //        ContentFrame.Navigate(typeof(Pages.TextPage));
+            //        ContentFrame.Navigate(typeof(Pages.TextPage), this);
             //        break;
             //    case "PageQR":
-            //        ContentFrame.Navigate(typeof(Pages.QRCodePage));
+            //        ContentFrame.Navigate(typeof(Pages.QRCodePage), this);
             //        break;
             //    case "PageImage":
-            //        ContentFrame.Navigate(typeof(Pages.ImagePage));
+            //        ContentFrame.Navigate(typeof(Pages.ImagePage), this);
             //        break;
             //    case "PageCommonQR":
-            //        ContentFrame.Navigate(typeof(Pages.WifiQRPage));
+            //        ContentFrame.Navigate(typeof(Pages.WifiQRPage), this);
             //        break;
             //    case "PageCommonOneD":
-            //        ContentFrame.Navigate(typeof(Pages.BarcodePage));
+            //        ContentFrame.Navigate(typeof(Pages.BarcodePage), this);
             //        break;
             //    case "PageCharset":
-            //        ContentFrame.Navigate(typeof(Pages.CharsetPage));
+            //        ContentFrame.Navigate(typeof(Pages.CharsetPage), this);
             //        break;
             //    default:
-            //        ContentFrame.Navigate(typeof(Pages.TextPage));
+            //        ContentFrame.Navigate(typeof(Pages.TextPage), this);
             //        break;
             //}
         }
@@ -391,13 +393,14 @@ namespace StringCodec.UWP
         private void NvMore_Click(object sender, RoutedEventArgs e)
         {
             if (this.RequestedTheme == ElementTheme.Dark)
-                SetTitleBarTheme(ElementTheme.Light);
+                SetTheme(ElementTheme.Light);
             else if (this.RequestedTheme == ElementTheme.Light)
-                SetTitleBarTheme(ElementTheme.Dark);
+                SetTheme(ElementTheme.Dark);
             else
-                SetTitleBarTheme(ElementTheme.Default);
+                SetTheme(ElementTheme.Default);
 
         }
+
 
     }
 }
