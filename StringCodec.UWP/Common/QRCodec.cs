@@ -15,17 +15,21 @@ using ZXing.Rendering;
 
 namespace StringCodec.UWP.Common
 {
-    static public class QRCodec
+    public static class QRCodec
     {
         public enum ERRORLEVEL { L, M, Q, H };
 
         #region Older codes
         #endregion
 
+        private static string monofontname = "Consolas";
         #region Calc ISBN checksum
-        static private string CalcISBN_10(string text)
+        private static string CalcISBN_10(string text)
         {
-            text = text.Replace("-", "").Replace(" ", "");
+            text = Regex.Replace(text, @"[^0-9]", "");
+
+            if (text.Length < 9) return (string.Empty);
+            else if (text.Length > 9) text = text.Substring(0, 9);
 
             long value = 0;
             if (!long.TryParse(text, out value)) return (string.Empty);
@@ -53,9 +57,12 @@ namespace StringCodec.UWP.Common
             return text.Substring(0, 9) + cd.ToString();
         }
 
-        static private string CalcISBN_13(string text)
+        private static string CalcISBN_13(string text)
         {
-            text = text.Replace("-", "").Replace(" ", "");
+            text = Regex.Replace(text, @"[^0-9]", "");
+
+            if (text.Length < 12) return (string.Empty);
+            else if (text.Length > 12) text = text.Substring(0, 12);
 
             long value = 0;
             if (!long.TryParse(text, out value)) return (string.Empty);
@@ -72,8 +79,8 @@ namespace StringCodec.UWP.Common
         }
         #endregion
 
-        #region
-        static private string CalcCode39(string text, bool sum=false)
+        #region Calc Code 39 checksum
+        private static string CalcCode39(string text, bool sum=false)
         {
             string result = string.Empty;
             Dictionary<char, int> charmap_39 = new Dictionary<char, int>() {
@@ -84,7 +91,7 @@ namespace StringCodec.UWP.Common
                 {'/', 40}, {'+', 41}, {'%', 42}
             };
             result = Regex.Replace(text, @"[a-z]", "+$0").ToUpper();
-            result = Regex.Replace(result, @"[^a-zA-Z\d\+\-\/\%\$\.\*\ ]", "");
+            result = Regex.Replace(result, @"[^a-zA-Z\d\+\-\/\%\$\.\ ]", "");
             //var mo = Regex.Matches(text, @"([a-z])|([A-Z])|(\d)|([\+\-\*\/\%\$\.\*\ ])", RegexOptions.Multiline);
 
             if (sum)
@@ -101,8 +108,78 @@ namespace StringCodec.UWP.Common
             return (result);
         }
         #endregion
+        
+        #region Calc UPC checksum
+        private static string CalcUPC_A(string text)
+        {
+            string result = Regex.Replace(text, @"[^0-9]", "");
+            if (result.Length < 11)
+            {
+                result = string.Empty;
+                return (result);
+            }
+            else if (result.Length > 11) result = result.Substring(0, 11);
 
-        static private void SetDecodeOptions(BarcodeReader br)
+            var even = 0;
+            var odd = 0;
+            for (int i = 0; i < result.Length; i += 2)
+                even += Convert.ToInt16($"{result[i]}");
+            for (int i = 1; i < result.Length; i += 2)
+                odd += Convert.ToInt16($"{result[i]}");
+            var sum = even * 3 + odd;
+            var checksum = sum % 10;
+            if (checksum == 0) checksum = 0;
+            else checksum = 10 - checksum;
+
+            return ($"{result}{checksum}");
+        }
+
+        private static string CalcUPC_E(string text)
+        {
+            string result = Regex.Replace(text, @"[^0-9]", "");
+            if (result.Length < 6)
+            {
+                result = string.Empty;
+                return (result);
+            }
+            else if (result.Length > 6) result = result.Substring(0, 6);
+
+            var upca = string.Empty;
+            switch (result.Substring(5, 1))
+            {
+                case "0":
+                case "1":
+                case "2":
+                    upca = Regex.Replace(result, @"([0-9]{2})([1-9]{3})([0-2])", "0$1-$3-0000$2").Replace("-", "");
+                    break;
+                case "3":
+                    upca = Regex.Replace(result, @"([0-9]{3})([1-9]{2})3", "0$1-00000$2").Replace("-", "");
+                    break;
+                case "4":
+                    upca = Regex.Replace(result, @"([0-9]{4})([1-9])4", "0$1-00000$2").Replace("-", "");
+                    break;
+                default:
+                    //
+                    // infact, the manufactory code must't contain '0' in this condition, and product code 
+                    // must in 5-9, but...
+                    //
+                    upca = Regex.Replace(result, @"([0-9]{5})([5-9])", "0$1-0000$2").Replace("-", "");
+                    break;
+            }
+            upca = CalcUPC_A(upca);
+            if (string.IsNullOrEmpty(upca)) return (string.Empty);
+            else return ($"0{result}{upca.Substring(11,1)}");
+        }
+        #endregion
+
+        #region
+        private static string CalcCode93(string text)
+        {
+            return (Regex.Replace(text, @"[^a-z,A-Z,0-9,_\-\.\$\/\+\%]", "").ToUpper());
+        }
+        #endregion
+
+        private static void SetDecodeOptions(BarcodeReader br)
         {
             br.AutoRotate = true;
             br.TryInverted = true;
@@ -138,7 +215,7 @@ namespace StringCodec.UWP.Common
             {
                 case "express":
                     fmt = BarcodeFormat.CODE_128;
-                    maxlen = 48;
+                    maxlen = 24;
                     height = 300;
                     break;
                 case "isbn":
@@ -146,17 +223,17 @@ namespace StringCodec.UWP.Common
                     maxlen = 13;
                     margin = 16;
                     height = (int)(width * 26.26 / 37.29);
-                    string isbn13 = content.Length >= 12 ? CalcISBN_13(content.Substring(0, 12)) : string.Empty;
+                    string isbn13 = CalcISBN_13(content);
                     if (string.IsNullOrEmpty(isbn13))
                         return (result);
                     content = isbn13;
                     break;
                 case "product":
                     fmt = BarcodeFormat.EAN_13;
-                    maxlen = 13;
+                    maxlen = 12;
                     margin = 16;
                     height = (int)(width * 26.26 / 37.29);
-                    string prod13 = content.Length >= 12 ? CalcISBN_13(content.Substring(0, 12)) : string.Empty;
+                    string prod13 = CalcUPC_A(content);
                     if (string.IsNullOrEmpty(prod13))
                         return (result);
                     else
@@ -170,6 +247,7 @@ namespace StringCodec.UWP.Common
                 case "93":
                     fmt = BarcodeFormat.CODE_93;
                     maxlen = 984;
+                    content = CalcCode93(content);
                     break;
                 case "128":
                     fmt = BarcodeFormat.CODE_128;
@@ -180,7 +258,7 @@ namespace StringCodec.UWP.Common
                     maxlen = 13;
                     margin = 16;
                     height = (int)(width * 26.26 / 37.29);
-                    string ean13 = content.Length >= 12 ? CalcISBN_13(content.Substring(0, 12)) : string.Empty;
+                    string ean13 = CalcISBN_13(content);
                     if (string.IsNullOrEmpty(ean13))
                         return (result);
                     else
@@ -188,15 +266,34 @@ namespace StringCodec.UWP.Common
                     break;
                 case "upca":
                     fmt = BarcodeFormat.UPC_A;
-                    maxlen = 984;
+                    maxlen = 12;
+                    margin = 16;
+                    height = (int)(width * 25.908 / 37.3126);
+                    string upca = CalcUPC_A(content);
+                    if (string.IsNullOrEmpty(upca))
+                        return (result);
+                    else
+                        content = upca;
                     break;
                 case "upce":
                     fmt = BarcodeFormat.UPC_E;
-                    maxlen = 984;
+                    maxlen = 8;
+                    margin = 16;
+                    height = (int)(width * 0.5);
+                    string upce = CalcUPC_E(content);
+                    if (string.IsNullOrEmpty(upce))
+                        return (result);
+                    else
+                        content = upce.Substring(0, upce.Length-1);
                     break;
                 case "codabar":
                     fmt = BarcodeFormat.CODABAR;
                     maxlen = 984;
+                    break;
+                case "itf":
+                    fmt = BarcodeFormat.ITF;
+                    maxlen = 984;
+                    height = (int)(width * 0.33333);
                     break;
                 default:
                     fmt = BarcodeFormat.CODE_128;
@@ -216,7 +313,6 @@ namespace StringCodec.UWP.Common
                 bw.Options.PureBarcode = true;
                 bw.Options.GS1Format = true;
                 bw.Options.Hints.Add(EncodeHintType.MARGIN, margin);
-                bw.Options.Hints.Add(EncodeHintType.DISABLE_ECI, true);
                 bw.Options.Hints.Add(EncodeHintType.CHARACTER_SET, "UTF-8");
 
                 bw.Format = fmt;
@@ -236,6 +332,34 @@ namespace StringCodec.UWP.Common
                 int b = (int)Math.Ceiling(result.PixelHeight * 0.05);
                 var rectBarcode = new Rect(l, t, result.PixelWidth, result.PixelHeight);
 
+                #region if EAN-13 then set Mark Space to Barcode
+                if (fmt == BarcodeFormat.EAN_13)
+                {
+                    var mark = bgcolor.ToBitmap(380, 40);
+                    var markRect = new Rect(0, 0, mark.PixelWidth, mark.PixelHeight);
+                    var rectMarkL = new Rect(result.PixelWidth / 2 - 15 - mark.PixelWidth, result.PixelHeight - mark.PixelHeight, mark.PixelWidth, mark.PixelHeight);
+                    var rectMarkR = new Rect(result.PixelWidth / 2 + 15, result.PixelHeight - mark.PixelHeight, mark.PixelWidth, mark.PixelHeight);
+                    result.Blit(rectMarkL, mark, markRect, WriteableBitmapExtensions.BlendMode.None);
+                    result.Blit(rectMarkR, mark, markRect, WriteableBitmapExtensions.BlendMode.None);
+                }
+                else if (fmt == BarcodeFormat.UPC_A)
+                {
+                    var mark = bgcolor.ToBitmap(315, 40);
+                    var markRect = new Rect(0, 0, mark.PixelWidth, mark.PixelHeight);
+                    var rectMarkL = new Rect(result.PixelWidth / 2 - 15 - mark.PixelWidth, result.PixelHeight - mark.PixelHeight, mark.PixelWidth, mark.PixelHeight);
+                    var rectMarkR = new Rect(result.PixelWidth / 2 + 15, result.PixelHeight - mark.PixelHeight, mark.PixelWidth, mark.PixelHeight);
+                    result.Blit(rectMarkL, mark, markRect, WriteableBitmapExtensions.BlendMode.None);
+                    result.Blit(rectMarkR, mark, markRect, WriteableBitmapExtensions.BlendMode.None);
+                }
+                else if (fmt == BarcodeFormat.UPC_E)
+                {
+                    var mark = bgcolor.ToBitmap(600, 40);
+                    var markRect = new Rect(0, 0, mark.PixelWidth, mark.PixelHeight);
+                    var rectMark = new Rect((result.PixelWidth - mark.PixelWidth) / 2 - 15, result.PixelHeight - mark.PixelHeight, mark.PixelWidth, mark.PixelHeight);
+                    result.Blit(rectMark, mark, markRect, WriteableBitmapExtensions.BlendMode.None);
+                }
+                #endregion
+
                 var labels = content.BarcodeLabel(format, checksum);
                 if (textsize <= 0) labels.Clear();
                 switch (labels.Count)
@@ -244,7 +368,7 @@ namespace StringCodec.UWP.Common
                         var label = labels[0];
                         if (!string.IsNullOrEmpty(label))
                         {
-                            var labelimage = await label.ToBitmap("Consolas", FontStyle.Normal, textsize, fgcolor, bgcolor);
+                            var labelimage = await label.ToBitmap(monofontname, FontStyle.Normal, textsize, fgcolor, bgcolor);
                             result = result.Extend(l, t, r, b + labelimage.PixelHeight, bgcolor);
                             var dstRect = new Rect((result.PixelWidth - labelimage.PixelWidth) / 2, result.PixelHeight - labelimage.PixelHeight - b, labelimage.PixelWidth, labelimage.PixelHeight);
                             if (dstRect.Width > rectBarcode.Width)
@@ -261,8 +385,8 @@ namespace StringCodec.UWP.Common
                         var label_b = labels[1];
                         if (!string.IsNullOrEmpty(label_t) && !string.IsNullOrEmpty(label_b))
                         {
-                            var labelimage_t = await label_t.ToBitmap("Consolas", FontStyle.Normal, textsize, fgcolor, bgcolor);
-                            var labelimage_b = await label_b.ToBitmap("Consolas", FontStyle.Normal, textsize, fgcolor, bgcolor);
+                            var labelimage_t = await label_t.ToBitmap(monofontname, FontStyle.Normal, textsize, fgcolor, bgcolor);
+                            var labelimage_b = await label_b.ToBitmap(monofontname, FontStyle.Normal, textsize, fgcolor, bgcolor);
                             result = result.Extend(l, t + labelimage_t.PixelHeight, r, b + labelimage_b.PixelHeight, bgcolor);
 
                             var dstRect_t = new Rect((result.PixelWidth - labelimage_t.PixelWidth) / 2, t,
@@ -287,7 +411,7 @@ namespace StringCodec.UWP.Common
                         }
                         else if(!string.IsNullOrEmpty(label_t) && string.IsNullOrEmpty(label_b))
                         {
-                            var labelimage_t = await label_t.ToBitmap("Consolas", FontStyle.Normal, textsize, fgcolor, bgcolor);
+                            var labelimage_t = await label_t.ToBitmap(monofontname, FontStyle.Normal, textsize, fgcolor, bgcolor);
                             result = result.Extend(l, t + labelimage_t.PixelHeight, r, b, bgcolor);
 
                             var dstRect_t = new Rect((result.PixelWidth - labelimage_t.PixelWidth) / 2, t,
@@ -302,7 +426,7 @@ namespace StringCodec.UWP.Common
                         }
                         else if (string.IsNullOrEmpty(label_t) && !string.IsNullOrEmpty(label_b))
                         {
-                            var labelimage_b = await label_t.ToBitmap("Consolas", FontStyle.Normal, textsize, fgcolor, bgcolor);
+                            var labelimage_b = await label_t.ToBitmap(monofontname, FontStyle.Normal, textsize, fgcolor, bgcolor);
                             result = result.Extend(l, t, r, b + labelimage_b.PixelHeight, bgcolor);
 
                             var dstRect_b = new Rect((result.PixelWidth - labelimage_b.PixelWidth) / 2, result.PixelHeight - labelimage_b.PixelHeight - b,
@@ -328,7 +452,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static public List<string> BarcodeLabel(this string content, string format, bool checksum)
+        public static List<string> BarcodeLabel(this string content, string format, bool checksum)
         {
             List<string> result = new List<string>();
             switch (format.ToLower())
@@ -337,21 +461,54 @@ namespace StringCodec.UWP.Common
                     result.Add(content);
                     break;
                 case "isbn":
-                    string isbn13 = content.Length >= 12 ? CalcISBN_13(content.Substring(0, 12)) : string.Empty;
-                    if (string.IsNullOrEmpty(isbn13)) return (result);
-                    //OneDimensionalCodeWriter.CalculateChecksumDigitModulo10(content);
-                    result.Add($"ISBN {isbn13.Insert(12, "-").Insert(3, "-")}");
-                    result.Add($"{isbn13.Insert(7, "   ").Insert(1, "   ")}   <");
+                    string isbn13 = CalcISBN_13(content);
+                    if (string.IsNullOrEmpty(isbn13)) result.Clear();
+                    else
+                    {
+                        //OneDimensionalCodeWriter.CalculateChecksumDigitModulo10(content);
+                        result.Add($"ISBN {isbn13.Insert(12, "-").Insert(9, "-").Insert(4, "-").Insert(3, "-")}");
+                        result.Add($"{isbn13.Insert(7, "     ").Insert(1, "   ")}   >");
+                    }
                     break;
                 case "product":
-                    string prod13 = content.Length >= 12 ? CalcISBN_13(content.Substring(0, 12)) : string.Empty;
-                    if (string.IsNullOrEmpty(prod13)) return (result);
-                    result.Add($"{prod13.Insert(7, "   ").Insert(1, "   ")}   <");
+                    string prod = CalcISBN_13(content);
+                    if (string.IsNullOrEmpty(prod)) result.Clear();
+                    else result.Add($"{prod.Insert(7, "     ").Insert(1, "   ")}   >");
+                    break;
+                case "ean13":
+                    string ean13 = CalcISBN_13(content);
+                    if (string.IsNullOrEmpty(ean13)) result.Clear();
+                    else result.Add($"{ean13.Insert(7, "     ").Insert(1, "   ")}   >");
                     break;
                 case "39":
-                    var code39 = (Regex.Replace(content, @"[^a-zA-Z\d\+\-\*\/\%\$\.\*\ ]", ""));
-                    if (checksum) code39 = code39.Substring(0, code39.Length - 1);
-                    result.Add(code39);
+                    var code39 = CalcCode39(content, checksum);
+                    if (string.IsNullOrEmpty(code39)) result.Clear();
+                    else
+                    {
+                        if (checksum) code39 = code39.Substring(0, code39.Length - 1);
+                        result.Add($"*{code39}*");
+                    }
+                    break;
+                case "93":
+                    var code93 = CalcCode93(content);
+                    if (string.IsNullOrEmpty(code93)) result.Clear();
+                    else result.Add(code93);
+                    break;
+                case "128":
+                    result.Add(content);
+                    break;
+                case "itf":
+                    result.Add(content);
+                    break;
+                case "upca":
+                    string upca = CalcUPC_A(content);
+                    if (string.IsNullOrEmpty(upca)) result.Clear();
+                    else result.Add(upca.Substring(0,12).Insert(11, "    ").Insert(6, "     ").Insert(1, "    "));
+                    break;
+                case "upce":
+                    string upce = CalcUPC_E(content.Substring(1));
+                    if (string.IsNullOrEmpty(upce)) result.Clear();
+                    else result.Add(upce.Insert(7, "       ").Insert(1, "      "));
                     break;
                 default:
                     result.Clear();
@@ -360,7 +517,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static public WriteableBitmap EncodeQR(this string content, Color fgcolor, Color bgcolor, ERRORLEVEL ECL)
+        public static WriteableBitmap EncodeQR(this string content, Color fgcolor, Color bgcolor, ERRORLEVEL ECL)
         {
             WriteableBitmap result = new WriteableBitmap(1, 1);
             if (content.Length <= 0) return(result);
@@ -404,7 +561,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static public async Task<string> Decode(this WriteableBitmap image)
+        public static async Task<string> Decode(this WriteableBitmap image)
         {
             string result = string.Empty;
             if (image == null) return (result);

@@ -52,10 +52,9 @@
                     <TextBox Grid.Row="0" Grid.ColumnSpan="2" x:Name="edWifiSSID" x:Uid="edWifiSSID" Header="SSID:" PlaceholderText="SSID/Network Name"/>
                     <TextBox Grid.Row="1" Grid.ColumnSpan="2" x:Name="edWifiPass" x:Uid="edWifiPass" Header="Password:" PlaceholderText=" WIFI Password" />
                     <ComboBox Grid.Row="3" Grid.Column="0" x:Name="edWifiEncypto" x:Uid="edWifiEncypto" Header="Encrypt Type:" PlaceholderText="Password Encrypt Type" SelectedIndex="2">
+                        <x:String>WPA/WPA2</x:String>
                         <x:String>WEP</x:String>
-                        <x:String>WPA</x:String>
-                        <x:String>WPA2</x:String>
-                        <x:String>nopass</x:String>
+                        <x:String>None</x:String>
                     </ComboBox>
                     <CheckBox Grid.Row="2" Grid.Column="1" x:Name="edWifiHidden" x:Uid="edWifiHidden" Content="Hidden SSID" HorizontalAlignment="Right" HorizontalContentAlignment="Right" FlowDirection="RightToLeft"/>
                 </Grid>

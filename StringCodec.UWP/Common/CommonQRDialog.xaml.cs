@@ -76,7 +76,22 @@ namespace StringCodec.UWP.Common
             {
                 //WIFI:S:wifissid;P:wifipass;T:WPA/WPA2;H:1;
                 var hidden = edWifiHidden.IsChecked == true ? "1" : string.Empty;
-                result = $"WIFI:S:{edWifiSSID.Text};P:{edWifiPass.Text};T:{edWifiEncypto.SelectedValue};H:{hidden};";
+                var encypto = "WPA";
+                switch (edWifiEncypto.SelectedIndex)
+                {
+                    case 0:
+                        encypto = "WPA";
+                        break;
+                    case 1:
+                        encypto = "WEP";
+                        break;
+                    case 2:
+                        encypto = "None";
+                        break;
+                    default:
+                        break;
+                }
+                result = $"WIFI:S:{edWifiSSID.Text};P:{edWifiPass.Text};T:{encypto};H:{hidden};";
             }
             else if(item == piMail)
             {

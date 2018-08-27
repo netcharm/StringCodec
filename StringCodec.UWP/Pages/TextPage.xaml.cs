@@ -70,9 +70,12 @@ namespace StringCodec.UWP.Pages
         {
             if (e.Parameter != null)
             {
-                var data = e.Parameter;
-                edSrc.Text = data.ToString();
-                edDst.Text = TextCodecs.Encode(edSrc.Text, CURRENT_CODEC, CURRENT_LINEBREAK);
+                if(e.Parameter is string)
+                {
+                    var data = e.Parameter;
+                    edSrc.Text = data.ToString();
+                    edDst.Text = TextCodecs.Encode(edSrc.Text, CURRENT_CODEC, CURRENT_LINEBREAK);
+                }
             }
         }
 

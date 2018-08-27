@@ -108,7 +108,7 @@ namespace StringCodec.UWP.Pages
             ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] {
                 optBarCodeExpress, optBarCodeISBN, optBarCodeProduct,
                 optBarCode39, optBarCode93, optBarCode128, optBarCodeEAN13,
-                optBarCodeUPCA, optBarCodeUPCE, optBarCodeCodabar
+                optBarCodeUPCA, optBarCodeUPCE, optBarCodeITF
             };
 
             var btn = sender as ToggleMenuFlyoutItem;
@@ -234,8 +234,7 @@ namespace StringCodec.UWP.Pages
                     CURRENT_TEXT_FONTSIZE = 48;
                     break;
             }
-            (cmdBar.SecondaryCommands as AppBarButton).Flyout.Hide();
-            //optBarcodeTextSize.Flyout.Hide();
+            cmdBar.IsOpen = false;
         }
 
         private void Base64_Click(object sender, RoutedEventArgs e)
@@ -249,6 +248,11 @@ namespace StringCodec.UWP.Pages
             {
                 if (string.IsNullOrEmpty(edBarcode.Text)) return;
                 Frame.Navigate(typeof(TextPage), edBarcode.Text);
+            }
+            else if (sender == btnTextToQR)
+            {
+                if (string.IsNullOrEmpty(edBarcode.Text)) return;
+                Frame.Navigate(typeof(QRCodePage), edBarcode.Text);
             }
         }
 

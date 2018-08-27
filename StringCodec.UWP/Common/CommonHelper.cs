@@ -28,10 +28,10 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace StringCodec.UWP.Common
 {
-    static public class WriteableBitmapExtetions
+    public static class WriteableBitmapExtetions
     {
         #region FrameworkElement UIElement to WriteableBitmap
-        static public async Task<WriteableBitmap> ToBitmap(this FrameworkElement element)
+        public static async Task<WriteableBitmap> ToBitmap(this FrameworkElement element)
         {
             WriteableBitmap result = null;
             using (var fileStream = new InMemoryRandomAccessStream())
@@ -60,7 +60,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static public async Task<WriteableBitmap> ToBitmap(this FrameworkElement element, Color bgcolor)
+        public static async Task<WriteableBitmap> ToBitmap(this FrameworkElement element, Color bgcolor)
         {
             WriteableBitmap result = null;
             using (var fileStream = new InMemoryRandomAccessStream())
@@ -96,7 +96,7 @@ namespace StringCodec.UWP.Common
         #endregion
 
         #region Text with family size style color to WriteableBitmap
-        static public async Task<WriteableBitmap> ToBitmap(this string text, Panel root, string fontfamily, int fontsize, Color fgcolor, Color bgcolor)
+        public static async Task<WriteableBitmap> ToBitmap(this string text, Panel root, string fontfamily, int fontsize, Color fgcolor, Color bgcolor)
         {
             WriteableBitmap result = null;
 
@@ -126,7 +126,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static private Rect CalcRect(this string text, string fontfamily, FontStyle fontstyle, int fontsize, bool compact)
+        private static Rect CalcRect(this string text, string fontfamily, FontStyle fontstyle, int fontsize, bool compact)
         {
             Rect result = Rect.Empty;
             using (var fileStream = new InMemoryRandomAccessStream())
@@ -156,7 +156,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static public async Task<WriteableBitmap> ToBitmap(this string text, string fontfamily, FontStyle fontstyle, int fontsize, Color fgcolor, Color bgcolor)
+        public static async Task<WriteableBitmap> ToBitmap(this string text, string fontfamily, FontStyle fontstyle, int fontsize, Color fgcolor, Color bgcolor)
         {
             WriteableBitmap result = null;
             using (var fileStream = new InMemoryRandomAccessStream())
@@ -201,8 +201,18 @@ namespace StringCodec.UWP.Common
         }
         #endregion
 
+        #region Create WriteableBitmap wiht Color 
+        public static WriteableBitmap ToBitmap(this Color bgcolor, int width, int height)
+        {
+            if (width <= 0 || height <= 0) return (null);
+            WriteableBitmap result = new WriteableBitmap(width, height);
+            result.FillRectangle(0, 0, width, height, bgcolor);
+            return (result);
+        }
+        #endregion
+
         #region DrawText to WriteableBitmap
-        static public async void DrawText(this WriteableBitmap image, int x, int y, string text, string fontfamily, FontStyle fontstyle, int fontsize, Color fgcolor, Color bgcolor)
+        public static async void DrawText(this WriteableBitmap image, int x, int y, string text, string fontfamily, FontStyle fontstyle, int fontsize, Color fgcolor, Color bgcolor)
         {
             var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
 
@@ -212,7 +222,7 @@ namespace StringCodec.UWP.Common
             return;
         }
 
-        static public async void DrawText(this UIElement target, int x, int y, string text, string fontfamily, int fontsize, Color fgcolor, Color bgcolor)
+        public static async void DrawText(this UIElement target, int x, int y, string text, string fontfamily, int fontsize, Color fgcolor, Color bgcolor)
         {
             using (var fileStream = new InMemoryRandomAccessStream())
             {
@@ -243,7 +253,7 @@ namespace StringCodec.UWP.Common
             }
         }
 
-        static public async void DrawText(this WriteableBitmap image, UIElement target, int x, int y, string text, string fontfamily, int fontsize, Color fgcolor, Color bgcolor)
+        public static async void DrawText(this WriteableBitmap image, UIElement target, int x, int y, string text, string fontfamily, int fontsize, Color fgcolor, Color bgcolor)
         {
             using (var fileStream = new InMemoryRandomAccessStream())
             {
@@ -274,12 +284,12 @@ namespace StringCodec.UWP.Common
         #endregion
 
         #region WriteableBitmmap Effect
-        static public WriteableBitmap Extend(this WriteableBitmap image, double percent, Color bgcolor)
+        public static WriteableBitmap Extend(this WriteableBitmap image, double percent, Color bgcolor)
         {
             return (image.Extend(percent, percent, percent, percent, bgcolor));
         }
 
-        static public WriteableBitmap Extend(this WriteableBitmap image, double percent_left, double percent_top, double percent_right, double percent_bottom, Color bgcolor)
+        public static WriteableBitmap Extend(this WriteableBitmap image, double percent_left, double percent_top, double percent_right, double percent_bottom, Color bgcolor)
         {
             var iw = image.PixelWidth;
             var ih = image.PixelHeight;
@@ -290,12 +300,12 @@ namespace StringCodec.UWP.Common
             return (image.Extend(left, top, right, bottom, bgcolor));
         }
 
-        static public WriteableBitmap Extend(this WriteableBitmap image, int size, Color bgcolor)
+        public static WriteableBitmap Extend(this WriteableBitmap image, int size, Color bgcolor)
         {
             return(image.Extend(size, size, size, size, bgcolor));
         }
 
-        static public WriteableBitmap Extend(this WriteableBitmap image, int size_left, int size_top, int size_right, int size_bottom, Color bgcolor)
+        public static WriteableBitmap Extend(this WriteableBitmap image, int size_left, int size_top, int size_right, int size_bottom, Color bgcolor)
         {
             WriteableBitmap result = null;
 
@@ -305,11 +315,10 @@ namespace StringCodec.UWP.Common
 
             return (result);
         }
-
         #endregion
 
         #region WriteableBitmmap Converter
-        static public byte[] ToBytes(this WriteableBitmap image)
+        public static byte[] ToBytes(this WriteableBitmap image)
         {
             if (image == null) return (null);
 
@@ -317,7 +326,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static public async Task<WriteableBitmap> ToWriteableBitmmap(this BitmapImage image)
+        public static async Task<WriteableBitmap> ToWriteableBitmmap(this BitmapImage image)
         {
             WriteableBitmap result = null;
             if (image.UriSource != null)
@@ -331,7 +340,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static public async Task<WriteableBitmap> ToWriteableBitmmap(this Image image)
+        public static async Task<WriteableBitmap> ToWriteableBitmmap(this Image image)
         {
             WriteableBitmap result = null;
 
@@ -385,7 +394,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static public async Task<BitmapImage> ToBitmapImage(this WriteableBitmap image)
+        public static async Task<BitmapImage> ToBitmapImage(this WriteableBitmap image)
         {
             BitmapImage result = null;
             using (var fileStream = new InMemoryRandomAccessStream())
@@ -406,17 +415,17 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static public async Task<StorageFile> StoreTemporaryFile(this WriteableBitmap image, string prefix="")
+        public static async Task<StorageFile> StoreTemporaryFile(this WriteableBitmap image, string prefix="")
         {
             return(await image.StoreTemporaryFile(image.PixelBuffer, image.PixelWidth, image.PixelHeight, prefix));
         }
 
-        static public async Task<StorageFile> StoreTemporaryFile(this WriteableBitmap image, int width, int height, string prefix = "")
+        public static async Task<StorageFile> StoreTemporaryFile(this WriteableBitmap image, int width, int height, string prefix = "")
         {
             return (await image.StoreTemporaryFile(image.PixelBuffer, width, height, prefix));
         }
 
-        static public async Task<StorageFile> StoreTemporaryFile(this WriteableBitmap image, IBuffer pixelBuffer, int width, int height, string prefix="")
+        public static async Task<StorageFile> StoreTemporaryFile(this WriteableBitmap image, IBuffer pixelBuffer, int width, int height, string prefix="")
         {
             var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
             var now = DateTime.Now;
@@ -448,7 +457,7 @@ namespace StringCodec.UWP.Common
             return (null);
         }
 
-        static public async void SaveAsync(this WriteableBitmap image, StorageFile storageitem)
+        public static async void SaveAsync(this WriteableBitmap image, StorageFile storageitem)
         {
             if (storageitem != null)
             {
@@ -515,17 +524,17 @@ namespace StringCodec.UWP.Common
             }
         }
 
-        static public async Task<InMemoryRandomAccessStream> StoreMemoryStream(this WriteableBitmap image, string prefix = "")
+        public static async Task<InMemoryRandomAccessStream> StoreMemoryStream(this WriteableBitmap image, string prefix = "")
         {
             return (await image.StoreMemoryStream(image.PixelBuffer, image.PixelWidth, image.PixelHeight, prefix));
         }
 
-        static public async Task<InMemoryRandomAccessStream> StoreMemoryStream(this WriteableBitmap image, int width, int height, string prefix = "")
+        public static async Task<InMemoryRandomAccessStream> StoreMemoryStream(this WriteableBitmap image, int width, int height, string prefix = "")
         {
             return (await image.StoreMemoryStream(image.PixelBuffer, width, height, prefix));
         }
 
-        static public async Task<InMemoryRandomAccessStream> StoreMemoryStream(this WriteableBitmap image, IBuffer pixelBuffer, int width, int height, string prefix = "")
+        public static async Task<InMemoryRandomAccessStream> StoreMemoryStream(this WriteableBitmap image, IBuffer pixelBuffer, int width, int height, string prefix = "")
         {
             InMemoryRandomAccessStream result = new InMemoryRandomAccessStream();
 
@@ -555,7 +564,7 @@ namespace StringCodec.UWP.Common
     class Settings
     {
         #region Local Setting Helper
-        static public object Get(string key, object value=null)
+        public static object Get(string key, object value=null)
         {
             if (!ApplicationData.Current.LocalSettings.Values.ContainsKey(key))
             {
@@ -565,7 +574,7 @@ namespace StringCodec.UWP.Common
             else return ApplicationData.Current.LocalSettings.Values[key];
         }
 
-        static public bool Set(string key, object value)
+        public static bool Set(string key, object value)
         {
             ApplicationData.Current.LocalSettings.Values[key] = value;
             if (ApplicationData.Current.LocalSettings.Values.ContainsKey(key))
@@ -578,12 +587,12 @@ namespace StringCodec.UWP.Common
 
     class Utils
     {
-        static public string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif" };
-        static public string[] text_ext = new string[] { ".txt", ".text", ".base64", ".md", ".rst", ".url" };
-        static public string[] url_ext = new string[] { ".url" };
+        public static string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif" };
+        public static string[] text_ext = new string[] { ".txt", ".text", ".base64", ".md", ".rst", ".url" };
+        public static string[] url_ext = new string[] { ".url" };
 
         private static Page rootPage = null;
-        static public void SetTheme(ElementTheme theme, Page page, bool save = true)
+        public static void SetTheme(ElementTheme theme, Page page, bool save = true)
         {
             if (rootPage == null && page == null) return;
             if (page != null) rootPage = page;
@@ -610,14 +619,14 @@ namespace StringCodec.UWP.Common
         }
 
         #region Share Extentions
-        static private DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
-        static private StorageFile _tempExportFile;
-        //static private InMemoryRandomAccessStream _tempExportStream;
-        static private bool SHARE_INITED = false;
-        static private WriteableBitmap SHARED_IMAGE = null;
-        static private string SHARED_TEXT = string.Empty;
+        private static DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
+        private static StorageFile _tempExportFile;
+        //private static InMemoryRandomAccessStream _tempExportStream;
+        private static bool SHARE_INITED = false;
+        private static WriteableBitmap SHARED_IMAGE = null;
+        private static string SHARED_TEXT = string.Empty;
 
-        static private async void DataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
+        private static async void DataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
         {
             try
             {
@@ -654,7 +663,7 @@ namespace StringCodec.UWP.Common
             }
         }
 
-        static public async Task<FileUpdateStatus> Share(WriteableBitmap image, string prefix="")
+        public static async Task<FileUpdateStatus> Share(WriteableBitmap image, string prefix="")
         {
             if (!SHARE_INITED)
             {
@@ -691,7 +700,7 @@ namespace StringCodec.UWP.Common
             return status;
         }
 
-        static public FileUpdateStatus Share(string text)
+        public static FileUpdateStatus Share(string text)
         {
             if (!SHARE_INITED)
             {
@@ -713,7 +722,7 @@ namespace StringCodec.UWP.Common
         #endregion
 
         #region Clipboard Extentions
-        static public void SetClipboard(string text)
+        public static void SetClipboard(string text)
         {
             DataPackage dataPackage = new DataPackage();
             dataPackage.RequestedOperation = DataPackageOperation.Copy;
@@ -721,12 +730,12 @@ namespace StringCodec.UWP.Common
             Clipboard.SetContent(dataPackage);
         }
 
-        static public void SetClipboard(Image image, int size)
+        public static void SetClipboard(Image image, int size)
         {
             SetClipboard(image, size, size);
         }
 
-        static public async void SetClipboard(Image image, int width, int height)
+        public static async void SetClipboard(Image image, int width, int height)
         {
             if (image.Source == null) return;
 
@@ -876,7 +885,7 @@ namespace StringCodec.UWP.Common
             }
         }
 
-        static public async Task<string> GetClipboard(string text)
+        public static async Task<string> GetClipboard(string text)
         {
             DataPackageView dataPackageView = Clipboard.GetContent();
             if (dataPackageView.Contains(StandardDataFormats.Text))
@@ -888,7 +897,7 @@ namespace StringCodec.UWP.Common
             return (text);
         }
 
-        static public async Task<string> GetClipboard(string text, Image image = null)
+        public static async Task<string> GetClipboard(string text, Image image = null)
         {
             DataPackageView dataPackageView = Clipboard.GetContent();
             if (dataPackageView.Contains(StandardDataFormats.Text))
@@ -1049,12 +1058,12 @@ namespace StringCodec.UWP.Common
         #endregion
 
         #region ContentDialog Extentions
-        static public async Task<Color> ShowColorDialog()
+        public static async Task<Color> ShowColorDialog()
         {
             return (await ShowColorDialog(Colors.White));
         }
 
-        static public async Task<Color> ShowColorDialog(Color color)
+        public static async Task<Color> ShowColorDialog(Color color)
         {
             Color result = color;
 
@@ -1068,7 +1077,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static public async Task<int> ShowProgressDialog(IProgress<int> progress)
+        public static async Task<int> ShowProgressDialog(IProgress<int> progress)
         {
             var dlgProgress = new ProgressDialog();
             await dlgProgress.ShowAsync();
@@ -1076,7 +1085,7 @@ namespace StringCodec.UWP.Common
             return 0;
         }
 
-        static public async Task<string> ShowSaveDialog(string content)
+        public static async Task<string> ShowSaveDialog(string content)
         {
             string result = string.Empty;
 
@@ -1105,7 +1114,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static public async Task<string> ShowSaveDialog(Image image, string prefix = "")
+        public static async Task<string> ShowSaveDialog(Image image, string prefix = "")
         {
             var bmp = await image.ToWriteableBitmmap();
             var width = bmp.PixelWidth;
@@ -1113,12 +1122,12 @@ namespace StringCodec.UWP.Common
             return (await ShowSaveDialog(image, width, height, prefix));
         }
 
-        static public async Task<string> ShowSaveDialog(Image image, int size, string prefix = "")
+        public static async Task<string> ShowSaveDialog(Image image, int size, string prefix = "")
         {
             return (await ShowSaveDialog(image, size, size, prefix));
         }
 
-        static public async Task<string> ShowSaveDialog(Image image, int width, int height, string prefix = "")
+        public static async Task<string> ShowSaveDialog(Image image, int width, int height, string prefix = "")
         {
             if (image.Source == null) return (string.Empty);
             string result = string.Empty;
@@ -1266,8 +1275,8 @@ namespace StringCodec.UWP.Common
         #endregion
 
         #region Suggestion Routines
-        static private ObservableCollection<String> suggestions = new ObservableCollection<string>();
-        static public ObservableCollection<String> LinkSuggestion(string content)
+        private static ObservableCollection<String> suggestions = new ObservableCollection<string>();
+        public static ObservableCollection<String> LinkSuggestion(string content)
         {
             content = content.Trim();
             ///
