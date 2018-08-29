@@ -56,6 +56,9 @@ namespace StringCodec.UWP.Pages
             optECL_L.IsChecked = true;
             optSaveSizeM.IsChecked = true;
 
+            optCommonLink.IsChecked = true;
+            ContentPage.SelectedIndex = 0;
+
             optUsingDialog.IsChecked = CURRENT_USINGDIALOG;
         }
 
@@ -127,6 +130,17 @@ namespace StringCodec.UWP.Pages
         {
             //optUsingDialog.IsChecked = !optUsingDialog.IsChecked;
             CURRENT_USINGDIALOG = optUsingDialog.IsChecked == true ? true : false;
+            if (CURRENT_USINGDIALOG)
+            {
+                edContent.Items.Clear();
+                edQR.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                edQR.Visibility = Visibility.Collapsed;
+                edContent.Items.Clear();
+                edContent.Items.Add(ContentPage.SelectedItem);
+            }
         }
 
         private void OptECL_Click(object sender, RoutedEventArgs e)
@@ -206,29 +220,32 @@ namespace StringCodec.UWP.Pages
             {
                 selectedIndex = 5;
             }
-            ContentPage.SelectedIndex = selectedIndex;
-
-            if (CURRENT_USINGDIALOG)
+            if (selectedIndex >= 0)
             {
-                edContent.Items.Clear();
-                edQR.Visibility = Visibility.Visible;
+                ContentPage.SelectedIndex = selectedIndex;
 
-                var dlgCommon = new CommonQRDialog();
-                dlgCommon.Items.Clear();
-                dlgCommon.Items.Add(ContentPage.SelectedItem);
-                var dlgResult = await dlgCommon.ShowAsync();
-                if (dlgResult == ContentDialogResult.Primary)
+                if (CURRENT_USINGDIALOG)
                 {
-                    edQR.Text = ContentPage.GetContents();
-                    imgQR.Source = edQR.Text.EncodeQR(CURRENT_FGCOLOR, CURRENT_BGCOLOR, CURRENT_ECL);
+                    edContent.Items.Clear();
+                    edQR.Visibility = Visibility.Visible;
+
+                    var dlgCommon = new CommonQRDialog();
+                    dlgCommon.Items.Clear();
+                    dlgCommon.Items.Add(ContentPage.SelectedItem);
+                    var dlgResult = await dlgCommon.ShowAsync();
+                    if (dlgResult == ContentDialogResult.Primary)
+                    {
+                        edQR.Text = ContentPage.GetContents();
+                        imgQR.Source = edQR.Text.EncodeQR(CURRENT_FGCOLOR, CURRENT_BGCOLOR, CURRENT_ECL);
+                    }
+                    dlgCommon.Items.Clear();
                 }
-                dlgCommon.Items.Clear();
-            }
-            else
-            {
-                edQR.Visibility = Visibility.Collapsed;
-                edContent.Items.Clear();
-                edContent.Items.Add(ContentPage.SelectedItem);
+                else
+                {
+                    edQR.Visibility = Visibility.Collapsed;
+                    edContent.Items.Clear();
+                    edContent.Items.Add(ContentPage.SelectedItem);
+                }
             }
         }
 

@@ -84,10 +84,60 @@
                 </Grid>
             </PivotItem>
             <PivotItem x:Name="piContact" x:Uid="piContact" Header="Contact Info">
-                <TextBlock Text="urgent emails go here." />
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" ZoomMode="Enabled" Padding="0,0,16,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width=".33*" />
+                            <ColumnDefinition Width=".33*"/>
+                            <ColumnDefinition Width=".33*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="64"/>
+                            <RowDefinition Height="32"/>
+                            <RowDefinition Height="64"/>
+                            <RowDefinition Height="64"/>
+                            <RowDefinition Height="64"/>
+                            <RowDefinition Height="32"/>
+                            <RowDefinition Height="64"/>
+                            <RowDefinition Height="64"/>
+                            <RowDefinition Height="64"/>
+                            <RowDefinition Height="32"/>
+                            <RowDefinition Height="*" MinHeight="120"/>
+                        </Grid.RowDefinitions>
+                        <TextBox Grid.Row="0" Grid.Column="0" x:Name="edContactNameFirst" x:Uid="edContactNameFirst" Header="First Name:" Margin="0, 0, 0, 0" />
+                        <TextBox Grid.Row="0" Grid.Column="1" x:Name="edContactNameMiddle" x:Uid="edContactNameMiddle" Header="Middle Name:" Margin="8, 0, 0, 0" />
+                        <TextBox Grid.Row="0" Grid.Column="2" x:Name="edContactNameLast" x:Uid="edContactNameLast" Header="Last Name:" Margin="8, 0, 0, 0" />
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edContactPrivate" Text="Private" FontWeight="Bold" Margin="0, 0, 0, 0" VerticalAlignment="Bottom" FontFamily="Segoe UI"/>
+                        <Line Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Stroke="{ThemeResource SystemControlAcrylicWindowBrush}" StrokeThickness="2" X2="10" Stretch="Fill" VerticalAlignment="Bottom"/>
+                        <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edContactUrl" x:Uid="edContactUrl" Header="Home Page:" Margin="0, 0, 0, 0" FontFamily="Segoe UI" />
+                        <TextBox Grid.Row="3" Grid.Column="0" x:Name="edContactMobile" x:Uid="edContactMobile" Header="Mobile:" Margin="0, 0, 0, 0" />
+                        <TextBox Grid.Row="3" Grid.Column="1" x:Name="edContactTelHome" x:Uid="edContactTelHome" Header="Telephone:" Margin="8, 0, 0, 0" />
+                        <TextBox Grid.Row="3" Grid.Column="2" x:Name="edContactMail" x:Uid="edContactMail" Header="Home Mail:" Margin="8, 0, 0, 0" />
+                        <TextBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" x:Name="edContactAdrHome" x:Uid="edContactAdrHome" Header="Address:" Margin="0, 0, 0, 0" />
+                        <TextBox Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="1" x:Name="edContactAdrHomePostal" x:Uid="edContactAdrHomePostal" Header="Postal:" Margin="8, 0, 0, 0" />
+
+                        <TextBlock Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edContactPublic" Text="Public" FontWeight="Bold" Margin="0, 0, 0, 0" VerticalAlignment="Bottom"/>
+                        <Line Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Stroke="{ThemeResource SystemControlAcrylicWindowBrush}" StrokeThickness="2" X2="10" Stretch="Fill" VerticalAlignment="Bottom" />
+                        <TextBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edContactOrg" x:Uid="edContactOrg" Header="Company:" Margin="0, 0, 0, 0" />
+                        <TextBox Grid.Row="7" Grid.Column="0" x:Name="edContactTitle" x:Uid="edContactTitle" Header="Title:" Margin="0, 0, 0, 0" />
+                        <TextBox Grid.Row="7" Grid.Column="1" x:Name="edContactTelWork" x:Uid="edContactTelWork" Header="Telephone:" Margin="8, 0, 0, 0" />
+                        <TextBox Grid.Row="7" Grid.Column="2" x:Name="edContactMailWork" x:Uid="edContactMailWork" Header="Mail:" Margin="8, 0, 0, 0" />
+                        <TextBox Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" x:Name="edContactAdrWork" x:Uid="edContactAdrWork" Header="Address:" Margin="0, 0, 0, 0" />
+                        <TextBox Grid.Row="8" Grid.Column="2" Grid.ColumnSpan="1" x:Name="edContactAdrWorkPostal" x:Uid="edContactAdrWorkPostal" Header="Postal:" Margin="8, 0, 0, 0" />
+
+                        <TextBlock Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edContactMisc" Text="Misc" FontWeight="Bold" Margin="0, 0, 0, 0" VerticalAlignment="Bottom"/>
+                        <Line Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" Stroke="{ThemeResource SystemControlAcrylicWindowBrush}" StrokeThickness="2" X2="10" Stretch="Fill" VerticalAlignment="Bottom"/>
+                        <TextBox Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edContactNote" x:Uid="edContactNote" Header="Note:" Margin="0, 0, 0, 0" />
+                    </Grid>
+                </ScrollViewer>
             </PivotItem>
             <PivotItem x:Name="piEvent" x:Uid="piEvent" Header="Time Event">
-                <TextBlock Text="urgent emails go here." />
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" ZoomMode="Disabled" Padding="0,0,24,0">
+                    <Grid>
+
+                    </Grid>
+                </ScrollViewer>
             </PivotItem>
         </Pivot>
     </Grid>

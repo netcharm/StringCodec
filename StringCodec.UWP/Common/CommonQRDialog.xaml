@@ -8,8 +8,6 @@
     mc:Ignorable="d"
     x:Name="CommonQrInputDialog"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    MinWidth="320"
-    MinHeight="240"
     Loaded="Dialog_Loaded"
     PrimaryButtonText="OK"
     SecondaryButtonText="Cancel"

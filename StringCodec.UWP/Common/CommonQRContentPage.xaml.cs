@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -123,35 +124,48 @@ namespace StringCodec.UWP.Common
             {
                 result = $"mailto:{edMailTo.Text.Trim()}?subject={edMailSubject.Text.TrimEnd()}&body={edMailContent.Text.TrimEnd()}";
             }
+            else if (item == piGeo)
+            {
+                result = string.Empty;
+            }
             else if (item == piContact)
             {
-                //BEGIN:VCARD
-                //VERSION:3.0
-                //N:FirstName
-                //TEL:13901234567
-                //EMAIL:abc@abc.com
-                //ADR;TYPE=WORK:Office Address
-                //ORG:OfficeName
-                //URL:https://cn.bing.com
-                //TEL;TYPE=WORK,VOICE:01088888888
-                //TEL;TYPE=HOME,VOICE:02099999999
-                //TITLE:Staff
-                //ADR;TYPE=HOME:Home Address
-                //NOTE:Note
-                //END:VCARD
-
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine($"BEGIN:VCARD");
+                sb.AppendLine($"VERSION:3.0");
+                sb.AppendLine($"FN:{edContactNameFirst.Text.Trim()} {edContactNameMiddle.Text.Trim()} {edContactNameLast.Text.Trim()}");
+                sb.AppendLine($"TEL;CELL;VOICE:{edContactMobile.Text.Trim()}");
+                sb.AppendLine($"TEL;HOME;VOICE:{edContactTelHome.Text.Trim()}");
+                sb.AppendLine($"EMAIL:{edContactMail.Text.Trim()}");
+                sb.AppendLine($"URL:{edContactUrl.Text.Trim()}");
+                sb.AppendLine($"ADR;HOME;POSTAL:{edContactAdrHome.Text.Trim()};{edContactAdrWorkPostal.Text.Trim()}");
+                sb.AppendLine($"ORG:{edContactOrg.Text.Trim()}");
+                sb.AppendLine($"TITLE:{edContactTitle.Text.Trim()}");
+                sb.AppendLine($"TEL;WORK;VOICE:{edContactTelWork.Text.Trim()}");
+                sb.AppendLine($"ADR;WORK;POSTAL:{edContactAdrWork.Text.Trim()};{edContactAdrWorkPostal.Text.Trim()}");
+                sb.AppendLine($"NOTE:{edContactNote.Text.Trim()}");
+                sb.AppendLine($"END:VCARD");
+                result = string.Join("\n", sb);
             }
             else if (item == piEvent)
             {
-                //BEGIN:VCALENDAR
-                //VERSION:2.0
-                //BEGIN:VEVENT
-                //SUMMARY;CHARSET=utf-8:summary
-                //LOCATION;CHARSET=utf-8:hongkong
-                //DTSTART:20180821T160000Z
-                //DTEND:20180821T160000Z
-                //END:VEVENT
-                //END:VCALENDAR
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine($"BEGIN:VCALENDAR");
+                sb.AppendLine($"VERSION:2.0");
+                sb.AppendLine($"BEGIN:VEVENT");
+                //sb.AppendLine($"SUMMARY;CHARSET=utf-8:{}");
+                //sb.AppendLine($"LOCATION;CHARSET=utf-8:{}");
+                //sb.AppendLine($"ADR;TYPE=WORK:{}");
+                //sb.AppendLine($"DTSTART:{}");
+                //sb.AppendLine($"DTEND:{}");
+                //sb.AppendLine($"RRULE:FREQ={};INTERVAL={};BYMONTH={};BYMONTHDAY={}");
+                //sb.AppendLine($"LOCATION:{};{}");
+                //sb.AppendLine($"URL:{};{}");
+                //sb.AppendLine($"GEO:{};{}");
+                //sb.AppendLine($"DESCRIPTION:{}");
+                sb.AppendLine($"END:VEVENT");
+                sb.AppendLine($"END:VCALENDAR");
+                result = string.Join("\n", sb);
             }
             return (result);
         }
