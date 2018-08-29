@@ -17,11 +17,11 @@
                         <RowDefinition Height="64"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <AutoSuggestBox Grid.Row="0" x:Name="edLinkUrl" x:Uid="edLinkUrl" Header="Url:" PlaceholderText="Url address" VerticalAlignment="Bottom"
+                    <AutoSuggestBox Grid.Row="0" x:Name="edLinkUrl" x:Uid="edLinkUrl" Header="Url" PlaceholderText="Url address" VerticalAlignment="Bottom"
                                     TextChanged="edLinkUrl_TextChanged"
                                     QuerySubmitted="edLinkUrl_QuerySubmitted"
                                     SuggestionChosen="edLinkUrl_SuggestionChosen" />
-                    <TextBox Grid.Row="1" Grid.ColumnSpan="2" x:Name="edLinkContent" x:Uid="edLinkContent" Header="Centent:" PlaceholderText="Url Parameters" VerticalAlignment="Stretch" MinHeight="120"/>
+                    <TextBox Grid.Row="1" Grid.ColumnSpan="2" x:Name="edLinkContent" x:Uid="edLinkContent" Header="Centent" PlaceholderText="Url Parameters" VerticalAlignment="Stretch" MinHeight="120"/>
                 </Grid>
             </PivotItem>
             <PivotItem x:Name="piWifi" x:Uid="piWifi" Header="WIFI Infomation">
@@ -38,9 +38,9 @@
                         <ColumnDefinition Width=".5*"/>
                         <ColumnDefinition Width=".5*"/>
                     </Grid.ColumnDefinitions>
-                    <TextBox Grid.Row="0" Grid.ColumnSpan="2" x:Name="edWifiSSID" x:Uid="edWifiSSID" Header="SSID:" PlaceholderText="SSID/Network Name"/>
-                    <TextBox Grid.Row="1" Grid.ColumnSpan="2" x:Name="edWifiPass" x:Uid="edWifiPass" Header="Password:" PlaceholderText=" WIFI Password" />
-                    <ComboBox Grid.Row="3" Grid.Column="0" x:Name="edWifiEncypto" x:Uid="edWifiEncypto" Header="Encrypt Type:" PlaceholderText="Password Encrypt Type" SelectedIndex="0">
+                    <TextBox Grid.Row="0" Grid.ColumnSpan="2" x:Name="edWifiSSID" x:Uid="edWifiSSID" Header="SSID" PlaceholderText="SSID/Network Name"/>
+                    <TextBox Grid.Row="1" Grid.ColumnSpan="2" x:Name="edWifiPass" x:Uid="edWifiPass" Header="Password" PlaceholderText=" WIFI Password" />
+                    <ComboBox Grid.Row="3" Grid.Column="0" x:Name="edWifiEncypto" x:Uid="edWifiEncypto" Header="Encrypt Type" PlaceholderText="Password Encrypt Type" SelectedIndex="0">
                         <x:String>WPA/WPA2</x:String>
                         <x:String>WEP</x:String>
                         <x:String>None</x:String>
@@ -59,9 +59,9 @@
                         <RowDefinition Height="64"/>
                         <RowDefinition Height="*" MinHeight="120"/>
                     </Grid.RowDefinitions>
-                    <TextBox Grid.Row="0" Grid.Column="0" x:Name="edMailTo" x:Uid="edMailTo" Header="Sent To:" PlaceholderText="Mail Address"/>
-                    <TextBox Grid.Row="1" Grid.Column="0" x:Name="edMailSubject" x:Uid="edMailSubject" Header="Subjetc:" PlaceholderText="Mail Subject"/>
-                    <TextBox Grid.Row="2" Grid.Column="0" x:Name="edMailContent" x:Uid="edMailContent" Header="Content:" PlaceholderText="Mail Content" AcceptsReturn="True"/>
+                    <TextBox Grid.Row="0" Grid.Column="0" x:Name="edMailTo" x:Uid="edMailTo" Header="Sent To" PlaceholderText="Mail Address"/>
+                    <TextBox Grid.Row="1" Grid.Column="0" x:Name="edMailSubject" x:Uid="edMailSubject" Header="Subjetc" PlaceholderText="Mail Subject"/>
+                    <TextBox Grid.Row="2" Grid.Column="0" x:Name="edMailContent" x:Uid="edMailContent" Header="Content" PlaceholderText="Mail Content" AcceptsReturn="True"/>
                 </Grid>
             </PivotItem>
             <PivotItem x:Name="piGeo" x:Uid="piGeo" Header="Geo Query">
@@ -75,9 +75,9 @@
                         <RowDefinition Height="96"/>
                         <RowDefinition Height="*" MinHeight="120"/>
                     </Grid.RowDefinitions>
-                    <TextBox Grid.Row="0" Grid.Column="0" x:Name="edGeoLat" x:Uid="edGeoLat" Header="Latitude:" PlaceholderText="Latitude" Margin="0, 0, 8, 0" VerticalAlignment="Bottom"/>
-                    <TextBox Grid.Row="0" Grid.Column="1" x:Name="edGeoLon" x:Uid="edGeoLon" Header="Longitude:" PlaceholderText="Longitude" Margin="8, 0, 0, 0" VerticalAlignment="Bottom"/>
-                    <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="edGeoQuery" x:Uid="edGeoQuery" Header="Query Content:" PlaceholderText="Url Parameters"/>
+                    <TextBox Grid.Row="0" Grid.Column="0" x:Name="edGeoLat" x:Uid="edGeoLat" Header="Latitude" PlaceholderText="Latitude" Margin="0, 0, 8, 0" VerticalAlignment="Bottom"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" x:Name="edGeoLon" x:Uid="edGeoLon" Header="Longitude" PlaceholderText="Longitude" Margin="8, 0, 0, 0" VerticalAlignment="Bottom"/>
+                    <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="edGeoQuery" x:Uid="edGeoQuery" Header="Query Content" PlaceholderText="Url Parameters"/>
                     <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" >
 
                     </Grid>
@@ -104,38 +104,62 @@
                             <RowDefinition Height="32"/>
                             <RowDefinition Height="*" MinHeight="120"/>
                         </Grid.RowDefinitions>
-                        <TextBox Grid.Row="0" Grid.Column="0" x:Name="edContactNameFirst" x:Uid="edContactNameFirst" Header="First Name:" Margin="0, 0, 0, 0" />
-                        <TextBox Grid.Row="0" Grid.Column="1" x:Name="edContactNameMiddle" x:Uid="edContactNameMiddle" Header="Middle Name:" Margin="8, 0, 0, 0" />
-                        <TextBox Grid.Row="0" Grid.Column="2" x:Name="edContactNameLast" x:Uid="edContactNameLast" Header="Last Name:" Margin="8, 0, 0, 0" />
+                        <TextBox Grid.Row="0" Grid.Column="0" x:Name="edContactNameFirst" x:Uid="edContactNameFirst" Header="First Name" Margin="0, 0, 0, 0" />
+                        <TextBox Grid.Row="0" Grid.Column="1" x:Name="edContactNameMiddle" x:Uid="edContactNameMiddle" Header="Middle Name" Margin="8, 0, 0, 0" />
+                        <TextBox Grid.Row="0" Grid.Column="2" x:Name="edContactNameLast" x:Uid="edContactNameLast" Header="Last Name" Margin="8, 0, 0, 0" />
 
                         <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edContactPrivate" Text="Private" FontWeight="Bold" Margin="0, 0, 0, 0" VerticalAlignment="Bottom" FontFamily="Segoe UI"/>
                         <Line Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Stroke="{ThemeResource SystemControlAcrylicWindowBrush}" StrokeThickness="2" X2="10" Stretch="Fill" VerticalAlignment="Bottom"/>
-                        <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edContactUrl" x:Uid="edContactUrl" Header="Home Page:" Margin="0, 0, 0, 0" FontFamily="Segoe UI" />
-                        <TextBox Grid.Row="3" Grid.Column="0" x:Name="edContactMobile" x:Uid="edContactMobile" Header="Mobile:" Margin="0, 0, 0, 0" />
-                        <TextBox Grid.Row="3" Grid.Column="1" x:Name="edContactTelHome" x:Uid="edContactTelHome" Header="Telephone:" Margin="8, 0, 0, 0" />
-                        <TextBox Grid.Row="3" Grid.Column="2" x:Name="edContactMail" x:Uid="edContactMail" Header="Home Mail:" Margin="8, 0, 0, 0" />
-                        <TextBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" x:Name="edContactAdrHome" x:Uid="edContactAdrHome" Header="Address:" Margin="0, 0, 0, 0" />
-                        <TextBox Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="1" x:Name="edContactAdrHomePostal" x:Uid="edContactAdrHomePostal" Header="Postal:" Margin="8, 0, 0, 0" />
+                        <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edContactUrl" x:Uid="edContactUrl" Header="Home Page" Margin="0, 0, 0, 0" FontFamily="Segoe UI" />
+                        <TextBox Grid.Row="3" Grid.Column="0" x:Name="edContactMobile" x:Uid="edContactMobile" Header="Mobile" Margin="0, 0, 0, 0" />
+                        <TextBox Grid.Row="3" Grid.Column="1" x:Name="edContactTelHome" x:Uid="edContactTelHome" Header="Telephone" Margin="8, 0, 0, 0" />
+                        <TextBox Grid.Row="3" Grid.Column="2" x:Name="edContactMail" x:Uid="edContactMail" Header="Home Mail" Margin="8, 0, 0, 0" />
+                        <TextBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" x:Name="edContactAdrHome" x:Uid="edContactAdrHome" Header="Address" Margin="0, 0, 0, 0" />
+                        <TextBox Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="1" x:Name="edContactAdrHomePostal" x:Uid="edContactAdrHomePostal" Header="Postal" Margin="8, 0, 0, 0" />
 
                         <TextBlock Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edContactPublic" Text="Public" FontWeight="Bold" Margin="0, 0, 0, 0" VerticalAlignment="Bottom"/>
                         <Line Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Stroke="{ThemeResource SystemControlAcrylicWindowBrush}" StrokeThickness="2" X2="10" Stretch="Fill" VerticalAlignment="Bottom" />
-                        <TextBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edContactOrg" x:Uid="edContactOrg" Header="Company:" Margin="0, 0, 0, 0" />
-                        <TextBox Grid.Row="7" Grid.Column="0" x:Name="edContactTitle" x:Uid="edContactTitle" Header="Title:" Margin="0, 0, 0, 0" />
-                        <TextBox Grid.Row="7" Grid.Column="1" x:Name="edContactTelWork" x:Uid="edContactTelWork" Header="Telephone:" Margin="8, 0, 0, 0" />
-                        <TextBox Grid.Row="7" Grid.Column="2" x:Name="edContactMailWork" x:Uid="edContactMailWork" Header="Mail:" Margin="8, 0, 0, 0" />
-                        <TextBox Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" x:Name="edContactAdrWork" x:Uid="edContactAdrWork" Header="Address:" Margin="0, 0, 0, 0" />
-                        <TextBox Grid.Row="8" Grid.Column="2" Grid.ColumnSpan="1" x:Name="edContactAdrWorkPostal" x:Uid="edContactAdrWorkPostal" Header="Postal:" Margin="8, 0, 0, 0" />
+                        <TextBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edContactOrg" x:Uid="edContactOrg" Header="Company" Margin="0, 0, 0, 0" />
+                        <TextBox Grid.Row="7" Grid.Column="0" x:Name="edContactTitle" x:Uid="edContactTitle" Header="Title" Margin="0, 0, 0, 0" />
+                        <TextBox Grid.Row="7" Grid.Column="1" x:Name="edContactTelWork" x:Uid="edContactTelWork" Header="Telephone" Margin="8, 0, 0, 0" />
+                        <TextBox Grid.Row="7" Grid.Column="2" x:Name="edContactMailWork" x:Uid="edContactMailWork" Header="Mail" Margin="8, 0, 0, 0" />
+                        <TextBox Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" x:Name="edContactAdrWork" x:Uid="edContactAdrWork" Header="Address" Margin="0, 0, 0, 0" />
+                        <TextBox Grid.Row="8" Grid.Column="2" Grid.ColumnSpan="1" x:Name="edContactAdrWorkPostal" x:Uid="edContactAdrWorkPostal" Header="Postal" Margin="8, 0, 0, 0" />
 
                         <TextBlock Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edContactMisc" Text="Misc" FontWeight="Bold" Margin="0, 0, 0, 0" VerticalAlignment="Bottom"/>
                         <Line Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" Stroke="{ThemeResource SystemControlAcrylicWindowBrush}" StrokeThickness="2" X2="10" Stretch="Fill" VerticalAlignment="Bottom"/>
-                        <TextBox Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edContactNote" x:Uid="edContactNote" Header="Note:" Margin="0, 0, 0, 0" />
+                        <TextBox Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edContactNote" x:Uid="edContactNote" Header="Note" Margin="0, 0, 0, 0" />
                     </Grid>
                 </ScrollViewer>
             </PivotItem>
             <PivotItem x:Name="piEvent" x:Uid="piEvent" Header="Time Event">
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" ZoomMode="Disabled" Padding="0,0,24,0">
                     <Grid>
-
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="64"/>
+                            <RowDefinition Height="64"/>
+                            <RowDefinition Height="64"/>
+                            <RowDefinition Height="64"/>
+                            <RowDefinition Height="64"/>
+                            <RowDefinition Height="64"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width=".80*"/>
+                            <ColumnDefinition Width=".10*"/>
+                            <ColumnDefinition Width=".10*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edEventSummary" x:Uid="edEventSummary" Header="Summary" Margin="0, 0, 0, 0" />
+                        <TextBox Grid.Row="1" Grid.Column="0" x:Name="edEventLocation" x:Uid="edEventLocation" Header="Location" Margin="0, 0, 0, 0" />
+                        <TextBox Grid.Row="1" Grid.Column="1" x:Name="edEventGeoLon" x:Uid="edEventGeoLon" Header="Longitude" Margin="8, 0, 0, 0" />
+                        <TextBox Grid.Row="1" Grid.Column="2" x:Name="edEventGeoLat" x:Uid="edEventGeoLat" Header="Latitude" Margin="8, 0, 0, 0" />
+                        <CheckBox Grid.Row="2" Grid.Column="3" x:Name="edEventFullDay" x:Uid="edEventFullDay" Content="Full Day" VerticalAlignment="Bottom" FlowDirection="RightToLeft" Margin="8, 0, 0, 0" />
+                        <CalendarDatePicker Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" x:Name="edEventDTStart" x:Uid="edEventDTStart" Header="Start" PlaceholderText="Start" Margin="0, 0, 0, 0" HorizontalAlignment="Stretch" FirstDayOfWeek="Monday" />
+                        <CalendarDatePicker Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" x:Name="edEventDTEnd" x:Uid="edEventDTEnd" Header="End" PlaceholderText="End" Margin="0, 0, 0, 0" HorizontalAlignment="Stretch" FirstDayOfWeek="Monday" />
+                        <TextBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edEventAddress" x:Uid="edEventAddress" Header="Address" Margin="0, 0, 0, 0" />
+                        <TextBox Grid.Row="5" Grid.Column="0" x:Name="edEventLink" x:Uid="edEventLink" Header="URL Link" Margin="0, 0, 0, 0" />
+                        <TextBox Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" x:Name="edEventUid" x:Uid="edEventUid" Header="User" Margin="8, 0, 0, 0" />
+                        <TextBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edEventDesc" x:Uid="edEventDesc" Header="Description" Margin="0, 0, 0, 0" />
                     </Grid>
                 </ScrollViewer>
             </PivotItem>
