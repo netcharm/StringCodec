@@ -417,9 +417,6 @@ namespace StringCodec.UWP.Pages
                     var bitmapImage = new WriteableBitmap(1, 1);
                     await bitmapImage.SetSourceAsync(await file.OpenAsync(FileAccessMode.Read));
                     // Set the image on the main page to the dropped image
-                    //if (bitmapImage.PixelWidth >= imgQR.RenderSize.Width || bitmapImage.PixelHeight >= imgQR.RenderSize.Height)
-                    //    imgQR.Stretch = Stretch.Uniform;
-                    //else imgQR.Stretch = Stretch.None;
                     byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
                     imgBarcode.Source = bitmapImage;
                 }

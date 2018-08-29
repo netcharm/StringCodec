@@ -34,6 +34,8 @@ namespace StringCodec.UWP.Pages
         private Color CURRENT_FGCOLOR = Colors.Black; //Color.FromArgb(255, 000, 000, 000);
         private int CURRENT_SIZE = 512;
 
+        private bool CURRENT_USINGDIALOG = true;
+
         private string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif" };
 
         static private string text_src = string.Empty;
@@ -42,6 +44,8 @@ namespace StringCodec.UWP.Pages
             get { return text_src; }
             set { text_src = value; }
         }
+
+        private CommonQRContentPage ContentPage = new CommonQRContentPage();
 
         public CommonQRPage()
         {
@@ -52,14 +56,7 @@ namespace StringCodec.UWP.Pages
             optECL_L.IsChecked = true;
             optSaveSizeM.IsChecked = true;
 
-            #region Add small image to Image control for dragdrop target
-            if (imgQR.Source == null)
-            {
-                var wb = new WriteableBitmap(1, 1);
-                imgQR.Stretch = Stretch.Uniform;
-                imgQR.Source = wb;
-            }
-            #endregion
+            optUsingDialog.IsChecked = CURRENT_USINGDIALOG;
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -69,7 +66,6 @@ namespace StringCodec.UWP.Pages
                 var data = e.Parameter;
                 if (data is string)
                 {
-                    imgQR.Stretch = Stretch.Uniform;
                     edQR.Text = data.ToString();
                     imgQR.Source = edQR.Text.EncodeQR(CURRENT_FGCOLOR, CURRENT_BGCOLOR, CURRENT_ECL);
                 }
@@ -127,6 +123,12 @@ namespace StringCodec.UWP.Pages
             }
         }
 
+        private void OptUsingDialog_Click(object sender, RoutedEventArgs e)
+        {
+            //optUsingDialog.IsChecked = !optUsingDialog.IsChecked;
+            CURRENT_USINGDIALOG = optUsingDialog.IsChecked == true ? true : false;
+        }
+
         private void OptECL_Click(object sender, RoutedEventArgs e)
         {
             ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] { optECL_L, optECL_M, optECL_Q, optECL_H };
@@ -170,38 +172,63 @@ namespace StringCodec.UWP.Pages
 
         private async void OptCommon_Click(object sender, RoutedEventArgs e)
         {
-            var dlgCommon = new CommonQRDialog();
+            ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] { optCommonLink, optCommonWifi, optCommonMail, optCommonGeo, optCommonContact, optCommonEvent };
+            var btn = sender as ToggleMenuFlyoutItem;
+            foreach (ToggleMenuFlyoutItem opt in opts)
+            {
+                if(opt == btn) opt.IsChecked = true;
+                else opt.IsChecked = false;
+            }
+
+            int selectedIndex = 0;
 
             if (sender == optCommonLink)
             {
-                dlgCommon.SelectedIndex = 0;
+                selectedIndex = 0;
             }
             else if (sender == optCommonWifi)
             {
-                dlgCommon.SelectedIndex = 1;
+                selectedIndex = 1;
             }
             else if (sender == optCommonMail)
             {
-                dlgCommon.SelectedIndex = 2;
+                selectedIndex = 2;
             }
             else if (sender == optCommonGeo)
             {
-                dlgCommon.SelectedIndex = 3;
+                selectedIndex = 3;
             }
             else if (sender == optCommonContact)
             {
-                dlgCommon.SelectedIndex = 4;
+                selectedIndex = 4;
             }
             else if (sender == optCommonEvent)
             {
-                dlgCommon.SelectedIndex = 5;
+                selectedIndex = 5;
             }
+            ContentPage.SelectedIndex = selectedIndex;
 
-            var dlgResult = await dlgCommon.ShowAsync();
-            if (dlgResult == ContentDialogResult.Primary)
+            if (CURRENT_USINGDIALOG)
             {
-                edQR.Text = dlgCommon.ResultText;
-                imgQR.Source = edQR.Text.EncodeQR(CURRENT_FGCOLOR, CURRENT_BGCOLOR, CURRENT_ECL);
+                edContent.Items.Clear();
+                edQR.Visibility = Visibility.Visible;
+
+                var dlgCommon = new CommonQRDialog();
+                dlgCommon.Items.Clear();
+                dlgCommon.Items.Add(ContentPage.SelectedItem);
+                var dlgResult = await dlgCommon.ShowAsync();
+                if (dlgResult == ContentDialogResult.Primary)
+                {
+                    edQR.Text = ContentPage.GetContents();
+                    imgQR.Source = edQR.Text.EncodeQR(CURRENT_FGCOLOR, CURRENT_BGCOLOR, CURRENT_ECL);
+                }
+                dlgCommon.Items.Clear();
+            }
+            else
+            {
+                edQR.Visibility = Visibility.Collapsed;
+                edContent.Items.Clear();
+                edContent.Items.Add(ContentPage.SelectedItem);
             }
         }
 
@@ -211,22 +238,14 @@ namespace StringCodec.UWP.Pages
             switch (btn.Name)
             {
                 case "btnEncode":
-                    imgQR.Stretch = Stretch.Uniform;
+                    edQR.Text = ContentPage.GetContents();
                     imgQR.Source = QRCodec.EncodeQR(edQR.Text, CURRENT_FGCOLOR, CURRENT_BGCOLOR, CURRENT_ECL);
-                    break;
-                case "btnDecode":
-                    edQR.Text = await QRCodec.Decode(imgQR.Source as WriteableBitmap);
                     break;
                 case "btnCopy":
                     Utils.SetClipboard(imgQR, CURRENT_SIZE);
                     break;
                 case "btnPaste":
                     edQR.Text = await Utils.GetClipboard(edQR.Text, imgQR);
-                    break;
-                case "btnCapture":
-                    imgQR.Stretch = Stretch.Uniform;
-                    var sc = new ScreenCapture(imgQR);
-                    await sc.StartCaptureAsync();
                     break;
                 case "btnSave":
                     await Utils.ShowSaveDialog(imgQR, CURRENT_SIZE, "QR");
@@ -325,5 +344,6 @@ namespace StringCodec.UWP.Pages
             //def.Complete();
         }
         #endregion
+
     }
 }

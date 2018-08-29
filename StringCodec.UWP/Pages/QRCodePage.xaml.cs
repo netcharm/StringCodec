@@ -69,8 +69,6 @@ namespace StringCodec.UWP.Pages
                 var data = e.Parameter;
                 if(data is string)
                 {
-                    imgQR.Stretch = Stretch.Uniform;
-                    //imgQR.Source = QRCodec.EncodeQR(edQR.Text, CURRENT_FGCOLOR, CURRENT_BGCOLOR, CURRENT_ECL);
                     edQR.Text = data.ToString();
                     imgQR.Source = edQR.Text.EncodeQR(CURRENT_FGCOLOR, CURRENT_BGCOLOR, CURRENT_ECL);
                 }
@@ -246,7 +244,6 @@ namespace StringCodec.UWP.Pages
             switch (btn.Name)
             {
                 case "btnEncode":
-                    imgQR.Stretch = Stretch.Uniform;
                     imgQR.Source = QRCodec.EncodeQR(edQR.Text, CURRENT_FGCOLOR, CURRENT_BGCOLOR, CURRENT_ECL);
                     break;
                 case "btnDecode":
@@ -259,7 +256,6 @@ namespace StringCodec.UWP.Pages
                     edQR.Text = await Utils.GetClipboard(edQR.Text, imgQR);
                     break;
                 case "btnCapture":
-                    imgQR.Stretch = Stretch.Uniform;
                     var sc = new ScreenCapture(imgQR);
                     await sc.StartCaptureAsync();
                     break;

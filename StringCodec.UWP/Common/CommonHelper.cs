@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
+using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
@@ -563,19 +564,29 @@ namespace StringCodec.UWP.Common
 
     class Settings
     {
+        private static PropertySet AppSetting = new PropertySet();
         #region Local Setting Helper
         public static object Get(string key, object value=null)
         {
-            if (!ApplicationData.Current.LocalSettings.Values.ContainsKey(key))
+            if (AppSetting.ContainsKey(key) && AppSetting[key] != null) return (AppSetting[key]);
+            else if (ApplicationData.Current.LocalSettings.Values.ContainsKey(key))
             {
-                if (value != null) ApplicationData.Current.LocalSettings.Values[key] = value;
+                return ApplicationData.Current.LocalSettings.Values[key];
+            }
+            else
+            {
+                if (value != null)
+                {
+                    ApplicationData.Current.LocalSettings.Values[key] = value;
+                    AppSetting[key] = value;
+                }
                 return (value);
             }
-            else return ApplicationData.Current.LocalSettings.Values[key];
         }
 
         public static bool Set(string key, object value)
         {
+            AppSetting[key] = value;
             ApplicationData.Current.LocalSettings.Values[key] = value;
             if (ApplicationData.Current.LocalSettings.Values.ContainsKey(key))
                 return (true);
@@ -1330,11 +1341,14 @@ namespace StringCodec.UWP.Common
             }
             if (Regex.IsMatch(content, @"[a-zA-Z@!@#$%&()-=_+]{3,}", RegexOptions.IgnoreCase | RegexOptions.Singleline))
             {
-                suggestions.Add($"weixin://contacts/profile/{content}");
-                suggestions.Add($"https://weibo.come/{content}");
-                suggestions.Add($"https://www.facebook.com/{content}");
-                suggestions.Add($"https://twitter.com/{content}");
-                suggestions.Add($"https://github.com/{content}");
+                if(!Regex.IsMatch(content, @"^((http)|(https)|(ftp)|(ftps)|(skype)|(mailto)|(tel)|(weixin)):", RegexOptions.IgnoreCase | RegexOptions.Singleline))
+                {
+                    suggestions.Add($"weixin://contacts/profile/{content}");
+                    suggestions.Add($"https://weibo.come/{content}");
+                    suggestions.Add($"https://www.facebook.com/{content}");
+                    suggestions.Add($"https://twitter.com/{content}");
+                    suggestions.Add($"https://github.com/{content}");
+                }
             }
 
             //
