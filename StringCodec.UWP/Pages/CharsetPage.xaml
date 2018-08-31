@@ -6,9 +6,140 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    Loaded="Page_Loaded"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width=".3*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
+        <CommandBar Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="cmdBar" x:Uid="cmdBar">
+            <AppBarButton x:Name="btnOpenFolder" x:Uid="btnOpenFolder" Label="Folder" Icon="OpenLocal" ToolTipService.ToolTip="Open Folder" VerticalAlignment="Center" Click="AppBarButton_Click"  />
+            <AppBarButton x:Name="btnOpenFile" x:Uid="btnOpenFile" Label="File" Icon="OpenFile" ToolTipService.ToolTip="Open File" VerticalAlignment="Center" Click="AppBarButton_Click"  />
+            <AppBarSeparator />
+            <AppBarButton Grid.Column="0" x:Name="btnOptSrc" x:Uid="btnOptSrc" Icon="Bullets" Label="Source" VerticalAlignment="Center">
+                <AppBarButton.Flyout>
+                    <MenuFlyout>
+                        <ToggleMenuFlyoutItem x:Name="optSrcUTF8" x:Uid="optSrcUTF8" Text="UTF-8" Click="OptSrc_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optSrcGBK" x:Uid="optSrcGBK" Text="GBK" Click="OptSrc_Click">
+                            <ToggleMenuFlyoutItem.Icon>
+                                <FontIcon Glyph="&#xE98A;" FontFamily="Segoe MDL2 Assets"/>
+                            </ToggleMenuFlyoutItem.Icon>
+                        </ToggleMenuFlyoutItem>
+                        <ToggleMenuFlyoutItem x:Name="optSrcBIG5" x:Uid="optSrcBIG5" Text="BIG-5" Click="OptSrc_Click">
+                            <ToggleMenuFlyoutItem.Icon>
+                                <FontIcon Glyph="&#xE88C;" FontFamily="Segoe MDL2 Assets"/>
+                            </ToggleMenuFlyoutItem.Icon>
+                        </ToggleMenuFlyoutItem>
+                        <ToggleMenuFlyoutItem x:Name="optSrcJIS" x:Uid="optSrcJIS" Text="Shift-JIS" Click="OptSrc_Click">
+                            <ToggleMenuFlyoutItem.Icon>
+                                <FontIcon Glyph="&#xE986;" FontFamily="Segoe MDL2 Assets"/>
+                            </ToggleMenuFlyoutItem.Icon>
+                        </ToggleMenuFlyoutItem>
+                        <ToggleMenuFlyoutItem x:Name="optSrcUnicode" x:Uid="optSrcUnicode" Text="Unicode" Click="OptSrc_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optSrcAscii" x:Uid="optSrcAscii" Text="ASCII" Click="OptSrc_Click">
+                            <ToggleMenuFlyoutItem.Icon>
+                                <FontIcon Glyph="&#xE97E;" FontFamily="Segoe MDL2 Assets"/>
+                            </ToggleMenuFlyoutItem.Icon>
+                        </ToggleMenuFlyoutItem>
+                        <MenuFlyoutSeparator/>
+                        <ToggleMenuFlyoutItem x:Name="optSrcAuto" x:Uid="optSrcAuto" Text="Default" Click="OptSrc_Click"/>
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+            <AppBarButton Grid.Column="0" x:Name="btnOptDst" x:Uid="btnOptDst" Icon="Bullets" Label="Target" VerticalAlignment="Center">
+                <AppBarButton.Flyout>
+                    <MenuFlyout>
+                        <ToggleMenuFlyoutItem x:Name="optDstUTF8" x:Uid="optDstUTF8" Text="UTF-8" Click="OptDst_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optDstGBK" x:Uid="optDstGBK" Text="GBK" Click="OptDst_Click">
+                            <ToggleMenuFlyoutItem.Icon>
+                                <FontIcon Glyph="&#xE98A;" FontFamily="Segoe MDL2 Assets"/>
+                            </ToggleMenuFlyoutItem.Icon>
+                        </ToggleMenuFlyoutItem>
+                        <ToggleMenuFlyoutItem x:Name="optDstBIG5" x:Uid="optDstBIG5" Text="BIG-5" Click="OptDst_Click">
+                            <ToggleMenuFlyoutItem.Icon>
+                                <FontIcon Glyph="&#xE88C;" FontFamily="Segoe MDL2 Assets"/>
+                            </ToggleMenuFlyoutItem.Icon>
+                        </ToggleMenuFlyoutItem>
+                        <ToggleMenuFlyoutItem x:Name="optDstJIS" x:Uid="optDstJIS" Text="Shift-JIS" Click="OptDst_Click">
+                            <ToggleMenuFlyoutItem.Icon>
+                                <FontIcon Glyph="&#xE986;" FontFamily="Segoe MDL2 Assets"/>
+                            </ToggleMenuFlyoutItem.Icon>
+                        </ToggleMenuFlyoutItem>
+                        <ToggleMenuFlyoutItem x:Name="optDstUnicode" x:Uid="optDstUnicode" Text="Unicode" Click="OptDst_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optDstAscii" x:Uid="optDstAscii" Text="ASCII" Click="OptDst_Click">
+                            <ToggleMenuFlyoutItem.Icon>
+                                <FontIcon Glyph="&#xE97E;" FontFamily="Segoe MDL2 Assets"/>
+                            </ToggleMenuFlyoutItem.Icon>
+                        </ToggleMenuFlyoutItem>
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+            <AppBarSeparator />
+            <AppBarButton x:Name="btnEncode" x:Uid="btnEncode" Label="Encode" Icon="Shuffle" VerticalAlignment="Center" Click="AppBarButton_Click"  />
+            <AppBarSeparator />
+            <AppBarButton x:Name="btnSave" x:Uid="btnSave" Label="Save" Icon="Save" VerticalAlignment="Center" Click="AppBarButton_Click" />
+            <AppBarButton x:Name="btnShare" x:Uid="btnShare" Label="Share" Icon="Share" VerticalAlignment="Center" Click="AppBarButton_Click" />
+
+            <CommandBar.SecondaryCommands>
+                <!-- More Button Dropdown menu -->
+                <AppBarButton x:Name="optFolderDeep" x:Uid="optFolderDeep" Label="Folder Deep">
+                    <AppBarButton.Flyout>
+                        <MenuFlyout Placement="Left">
+                            <ToggleMenuFlyoutItem x:Name="optFolderDeepF" x:Uid="optFolderDeepF" Text="All Sub-Tree" Click="OptFolderDeep_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optFolderDeep0" x:Uid="optFolderDeep0" Text="Current Folder" Click="OptFolderDeep_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optFolderDeep1" x:Uid="optFolderDeep1" Text="Level 1" Click="OptFolderDeep_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optFolderDeep2" x:Uid="optFolderDeep2" Text="Level 2" Click="OptFolderDeep_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optFolderDeep3" x:Uid="optFolderDeep3" Text="Level 3" Click="OptFolderDeep_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optFolderDeep4" x:Uid="optFolderDeep4" Text="Level 4" Click="OptFolderDeep_Click"/>
+                        </MenuFlyout>
+                    </AppBarButton.Flyout>
+                </AppBarButton>
+                <AppBarSeparator />
+                <AppBarToggleButton x:Name="optWrapText" x:Uid="optWrapText" Label="Wrap Text" Click="Opt_Click">
+                    <AppBarToggleButton.Icon>
+                        <FontIcon Glyph="&#xE751;" FontFamily="Segoe MDL2 Assets"/>
+                    </AppBarToggleButton.Icon>
+                </AppBarToggleButton>
+                <!--<AppBarButton Label="About"/>-->
+            </CommandBar.SecondaryCommands>
+
+            <CommandBar.Content>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <!--<ProgressRing Grid.Column="0" x:Name="ring" x:Uid="Ring" VerticalAlignment="Center"/>-->
+                    <TextBlock Grid.Column="1" x:Name="edInfo" x:Uid="edInfo" Text="" Margin="12,14" VerticalAlignment="Center"/>
+                </Grid>
+            </CommandBar.Content>
+        </CommandBar>
+
+
+        <!--<TreeViewList Grid.Row="1" Grid.Column="0" x:Name="tvFiles" x:Uid="tvFiles" 
+                      Header="Folder/File List" Margin="8,8,0,8" BorderBrush="{ThemeResource SystemControlAcrylicWindowBrush}" BorderThickness="2"
+                      AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop"/>-->
+
+        <TreeView Grid.Row="1" Grid.Column="0" x:Name="tvFiles" x:Uid="tvFiles" 
+                  Margin="8,8,0,8"
+                  ItemInvoked="TreeView_ItemInvoked"                   
+                  AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop"/>
+
+
+        <TextBox Grid.Row="1" Grid.Column="1" x:Name="edSrc" x:Uid="edSrc" 
+                 Header="Input:" PlaceholderText="Input at here" Margin="8,8,8,8"
+                 AcceptsReturn="True" CanDrag="True" 
+                 FontSize="16"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                 ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                 TextChanged="edSrc_TextChanged"
+                 AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" />
     </Grid>
 </Page>

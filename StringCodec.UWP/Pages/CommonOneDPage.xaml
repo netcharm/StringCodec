@@ -19,7 +19,7 @@
             <ColumnDefinition Width=".62*"/>
         </Grid.ColumnDefinitions>
 
-        <CommandBar Grid.Row="0" Grid.ColumnSpan="2" x:Name="cmdBar" x:Uid="cmdBar">
+        <CommandBar Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="cmdBar" x:Uid="cmdBar">
             <AppBarButton Grid.Column="0" x:Name="btnOpt" x:Uid="btnOpt" Icon="Bullets" Label="Options" VerticalAlignment="Center">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
@@ -102,7 +102,7 @@
                     </AppBarToggleButton.Icon>
                 </AppBarToggleButton>              
                 <AppBarSeparator />
-                <AppBarButton x:Name="optBarcodeTextSize" x:Uid="optBarcodeTextSize" Label="Barcode Text Size"  Content="Barcode Text Size" Icon="FontSize">
+                <AppBarButton x:Name="optBarcodeTextSize" x:Uid="optBarcodeTextSize" Label="Barcode Text Size" Icon="FontSize">
                     <AppBarButton.Flyout>
                         <MenuFlyout Placement="Left">
                             <ToggleMenuFlyoutItem x:Name="optBarcodeTextSizeXL" x:Uid="optBarcodeTextSizeXL" Text="XL: Extra Large" Click="OptBarCodeTextSize_Click"/>

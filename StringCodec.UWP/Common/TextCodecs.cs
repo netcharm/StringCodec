@@ -546,5 +546,160 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
+        static public string ConvertTo(this string text, Encoding SrcEnc, Encoding DstEnc)
+        {
+            var result = string.Empty;
+
+            if (DstEnc == SrcEnc) result = text;
+            else
+            {
+                byte[] arr = SrcEnc.GetBytes(text);
+                result = DstEnc.GetString(arr);
+            }
+
+            return (result);
+        }
+
+        static public string ConvertTo(this string text, Encoding enc)
+        {
+            var result = string.Empty;
+
+            //if (Encoding.Default.CodePage == 936)
+            //{
+            //    byte[] arr = Encoding.GetEncoding("GBK").GetBytes(text);
+            //    result = DstEnc.GetString(arr);
+            //}
+            //else if (Encoding.Default.CodePage == 950)
+            //{
+            //    byte[] arr = Encoding.GetEncoding("BIG5").GetBytes(text);
+            //    result = DstEnc.GetString(arr);
+            //}
+            //else if (Encoding.Default.CodePage == 932)
+            //{
+            //    byte[] arr = Encoding.GetEncoding("Shift-JIS").GetBytes(text);
+            //    result = DstEnc.GetString(arr);
+            //}
+            //else if (Encoding.Default.CodePage == 949)
+            //{
+            //    byte[] arr = Encoding.GetEncoding("Korean").GetBytes(text);
+            //    result = DstEnc.GetString(arr);
+            //}
+            //else if (Encoding.Default.CodePage == 1200)
+            //{
+            //    byte[] arr = Encoding.Unicode.GetBytes(text);
+            //    result = DstEnc.GetString(arr);
+            //}
+            //else if (Encoding.Default.CodePage == 1201)
+            //{
+            //    byte[] arr = Encoding.BigEndianUnicode.GetBytes(text);
+            //    result = DstEnc.GetString(arr);
+            //}
+            //else if (Encoding.Default.CodePage == 65000)
+            //{
+            //    byte[] arr = Encoding.UTF7.GetBytes(text);
+            //    result = DstEnc.GetString(arr);
+            //}
+            //else if (Encoding.Default.CodePage == 65001)
+            //{
+            //    byte[] arr = Encoding.UTF8.GetBytes(text);
+            //    result = DstEnc.GetString(arr);
+            //}
+            //else
+            //{
+            //    byte[] arr = Encoding.ASCII.GetBytes(text);
+            //    result = DstEnc.GetString(arr);
+            //}
+
+            byte[] arr = Encoding.Default.GetBytes(text);
+            if (arr != null && arr.Length > 0)
+                result = enc.GetString(arr);
+
+            return (result);
+        }
+
+        static public string ConvertFrom(this string text, Encoding enc, bool IsOEM=false)
+        {
+            var result = string.Empty;
+
+            if (IsOEM)
+            {
+                int cp = System.Globalization.CultureInfo.InstalledUICulture.TextInfo.OEMCodePage;
+
+                byte[] arr = null;
+                switch (cp)
+                {
+                    case 936:
+                        arr = Encoding.GetEncoding("GBK").GetBytes(text);
+                        break;
+                    case 950:
+                        arr = Encoding.GetEncoding("BIG5").GetBytes(text);
+                        break;
+                    case 932:
+                        arr = Encoding.GetEncoding("Shift-JIS").GetBytes(text);
+                        break;
+                    case 949:
+                        arr = Encoding.GetEncoding("Korean").GetBytes(text);
+                        break;
+                    case 1200:
+                        arr = arr = Encoding.Unicode.GetBytes(text);
+                        break;
+                    case 1201:
+                        arr = Encoding.BigEndianUnicode.GetBytes(text);
+                        break;
+                    case 65000:
+                        arr = Encoding.UTF7.GetBytes(text);
+                        break;
+                    case 65001:
+                        arr = Encoding.UTF8.GetBytes(text);
+                        break;
+                    default:
+                        arr = Encoding.ASCII.GetBytes(text);
+                        break;
+                }
+                if (arr != null && arr.Length > 0)
+                    result = enc.GetString(arr);
+            }
+            else
+            {
+                byte[] arr = enc.GetBytes(text);
+                if (arr != null && arr.Length > 0)
+                    result = Encoding.Default.GetString(arr);
+            }
+            return (result);
+        }
+
+        static public string ToString(this byte[] array, Encoding enc)
+        {
+            var result = string.Empty;
+
+            if(array != null && array.Length > 0)
+            {
+                if (enc == Encoding.Unicode)
+                {
+                    if (array[0] == 0xFF && array[1] == 0xFE)
+                        result = enc.GetString(array.Skip(2).ToArray());
+                    else
+                        result = enc.GetString(array);
+                }
+                else if (enc == Encoding.BigEndianUnicode)
+                {
+                    if (array[0] == 0xFE && array[1] == 0xFF)
+                        result = enc.GetString(array.Skip(2).ToArray());
+                    else
+                        result = enc.GetString(array);
+                }
+                else if (enc == Encoding.UTF8)
+                {
+                    if (array[0] == 0xEF && array[1] == 0xBB && array[2] == 0xBF)
+                        result = enc.GetString(array.Skip(3).ToArray());
+                    else
+                        result = enc.GetString(array);
+                }
+                else
+                    result = enc.GetString(array);
+            }
+
+            return (result);
+        }
     }
 }

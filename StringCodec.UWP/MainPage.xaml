@@ -43,14 +43,14 @@
             <NavigationViewItem x:Name="nvItemImage" x:Uid="nvItemImage" Content="Image &lt;=&gt; BASE64" Icon="Pictures" Tag="PageImage" ToolTipService.ToolTip="Convert image to BASE64 string or decode BASE64 string to image" Tapped="NvMain_Click" />
             <NavigationViewItemSeparator/>
             <!--<NavigationViewItemHeader x:Name="nvItemOthers" x:Uid="nvItemOthers" Content="Others"/>-->
-            <NavigationViewItem x:Name="nvItemCommonQR" x:Uid="nvItemCommonQR" Content="Common QR Code" Tag="PageCommonQR" ToolTipService.ToolTip="Make Common QR Code" Tapped="NvMain_Click">
-                <NavigationViewItem.Icon>
-                    <FontIcon Glyph="&#xE701;" FontFamily="Segoe MDL2 Assets"/>
-                </NavigationViewItem.Icon>
-            </NavigationViewItem>
             <NavigationViewItem x:Name="nvItemCommonOneD" x:Uid="nvItemCommonOneD" Content="Common 1D Barcode" Tag="PageCommonOneD" ToolTipService.ToolTip="Make/Decode Common 1D Barcode" Tapped="NvMain_Click">
                 <NavigationViewItem.Icon>
                     <FontIcon Glyph="&#xF02A;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
+            <NavigationViewItem x:Name="nvItemCommonQR" x:Uid="nvItemCommonQR" Content="Common QR Code" Tag="PageCommonQR" ToolTipService.ToolTip="Make Common QR Code" Tapped="NvMain_Click">
+                <NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xE701;" FontFamily="Segoe MDL2 Assets"/>
                 </NavigationViewItem.Icon>
             </NavigationViewItem>
             <NavigationViewItemSeparator/>
