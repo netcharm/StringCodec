@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -31,7 +32,7 @@ namespace StringCodec.UWP.Pages
     public sealed partial class CharsetPage : Page
     {
         private Encoding CURRENT_SRCENC = Encoding.Default;
-        private Encoding CURRENT_DSTENC = Encoding.UTF8;
+        private Encoding CURRENT_DSTENC = Encoding.Default;
         private int CURRENT_TREEDEEP = 2;
         private Dictionary<TreeViewNode, IStorageItem> flist = new Dictionary<TreeViewNode, IStorageItem>();
         private byte[] fcontent = null;
@@ -59,9 +60,9 @@ namespace StringCodec.UWP.Pages
             }
         }
 
-        private async void AddTo(TreeViewNode node, IStorageItem item, int deeper = -1)
+        private async Task<bool> AddTo(TreeViewNode node, IStorageItem item, int deeper = -1)
         {
-            if (deeper >= CURRENT_TREEDEEP) return;
+            if (deeper >= CURRENT_TREEDEEP) return(true);
 
             var queryOptions = new QueryOptions();
             queryOptions.FolderDepth = FolderDepth.Shallow;
@@ -78,7 +79,7 @@ namespace StringCodec.UWP.Pages
                 var sfolders = await queryFolders.GetFoldersAsync();
                 foreach (var sfolder in sfolders)
                 {
-                    AddTo(root, sfolder, deeper++);
+                    var ret = await AddTo(root, sfolder, deeper++);
                 }
 
                 var queryFiles = folder.CreateFileQueryWithOptions(queryOptions);
@@ -101,9 +102,10 @@ namespace StringCodec.UWP.Pages
                 node.Children.Add(fnode);
                 flist.Add(fnode, file);
             }
+            return (true);
         }
 
-        private async void AddTo(TreeView tree, IStorageItem item)
+        private async Task<bool> AddTo(TreeView tree, IStorageItem item)
         {
             int deeper = -1;
             var queryOptions = new QueryOptions();
@@ -121,7 +123,7 @@ namespace StringCodec.UWP.Pages
                 var sfolders = await queryFolders.GetFoldersAsync();
                 foreach (var sfolder in sfolders)
                 {
-                    AddTo(root, sfolder, deeper++);
+                    var ret = await AddTo(root, sfolder, deeper++);
                 }
 
                 var queryFiles = folder.CreateFileQueryWithOptions(queryOptions);
@@ -144,6 +146,18 @@ namespace StringCodec.UWP.Pages
                 tree.RootNodes.Add(fnode);
                 flist.Add(fnode, file);
             }
+            return (true);
+        }
+
+        private async Task<bool> AddTo(TreeView tree, List<IStorageItem> items)
+        {
+            if (items == null) return(false);
+
+            foreach (var item in items)
+            {
+                await AddTo(tree, item);
+            }
+            return (true);
         }
 
         public CharsetPage()
@@ -152,7 +166,7 @@ namespace StringCodec.UWP.Pages
             NavigationCacheMode = NavigationCacheMode.Enabled;
 
             optSrcAuto.IsChecked = true;
-            optDstUTF8.IsChecked = true;
+            optDstAuto.IsChecked = true;
 
             optFolderDeep2.IsChecked = true;
         }
@@ -193,7 +207,7 @@ namespace StringCodec.UWP.Pages
 
         private void OptDst_Click(object sender, RoutedEventArgs e)
         {
-            ToggleMenuFlyoutItem[] btns = new ToggleMenuFlyoutItem[] { optDstAscii, optDstBIG5, optDstGBK, optDstJIS, optDstUnicode, optDstUTF8 };
+            ToggleMenuFlyoutItem[] btns = new ToggleMenuFlyoutItem[] { optDstAuto, optDstAscii, optDstBIG5, optDstGBK, optDstJIS, optDstUnicode, optDstUTF8 };
             foreach (var btn in btns)
             {
                 if (sender == btn) btn.IsChecked = true;
@@ -213,8 +227,8 @@ namespace StringCodec.UWP.Pages
                 CURRENT_DSTENC = Encoding.GetEncoding("Shift-JIS");
             else if (string.Equals(ENC_NAME, "ASCII", StringComparison.CurrentCultureIgnoreCase))
                 CURRENT_DSTENC = Encoding.ASCII;
-
-            edSrc.Text = edSrc.Text.ConvertTo(CURRENT_DSTENC);
+            else
+                CURRENT_SRCENC = Encoding.Default;
         }
 
         private void edSrc_TextChanged(object sender, TextChangedEventArgs e)
@@ -296,7 +310,7 @@ namespace StringCodec.UWP.Pages
                     {
                         flist.Clear();
                         tvFiles.RootNodes.Clear();
-                        AddTo(tvFiles, folder);
+                        var ret = await AddTo(tvFiles, folder);
 
                     }
                     break;
@@ -315,7 +329,7 @@ namespace StringCodec.UWP.Pages
 
                         foreach (var file in files)
                         {
-                            AddTo(tvFiles, file);
+                            var ret = await AddTo(tvFiles, file);
                         }
                     }
                     break;
@@ -357,7 +371,7 @@ namespace StringCodec.UWP.Pages
 #if DEBUG
                         System.Diagnostics.Debug.WriteLine($"Drag count:{items.Count}, {filename}");
 #endif
-                        if (Utils.text_ext.Contains(extension))
+                        //if (Utils.text_ext.Contains(extension))
                         {
                             canDrop = true;
 #if DEBUG
@@ -405,49 +419,12 @@ namespace StringCodec.UWP.Pages
                 var items = await e.DataView.GetStorageItemsAsync();
                 if (items.Count > 0)
                 {
-                    var storageFile = items[0] as StorageFile;
-                    if (Utils.url_ext.Contains(storageFile.FileType.ToLower()))
+                    var sItems = new List<IStorageItem>();
+                    foreach(var item in items)
                     {
-                        if (e.DataView.Contains(StandardDataFormats.WebLink))
-                        {
-                            var url = await e.DataView.GetWebLinkAsync();
-                            if (url.IsAbsoluteUri)
-                            {
-                                //edBase64.Text = url.ToString();
-                            }
-                            else if (url.IsFile || url.IsUnc)
-                            {
-                                //edBase64.Text = await FileIO.ReadTextAsync(storageFile);
-                            }
-                        }
-                        else if (e.DataView.Contains(StandardDataFormats.Text))
-                        {
-                            //var content = await e.DataView.GetHtmlFormatAsync();
-                            var content = await e.DataView.GetTextAsync();
-                            if (content.Length > 0)
-                            {
-                                //edBase64.Text = content;
-                            }
-                        }
+                        sItems.Add(item);
                     }
-                    //else if (Utils.text_ext.Contains(storageFile.FileType.ToLower()))
-                        //edBase64.Text = await FileIO.ReadTextAsync(storageFile);
-                }
-            }
-            else if (e.DataView.Contains(StandardDataFormats.WebLink))
-            {
-                var uri = await e.DataView.GetWebLinkAsync();
-
-                StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(uri);
-                if (!file.FileType.ToLower().Equals(".txt")) return;
-                //edBase64.Text = await FileIO.ReadTextAsync(file);
-            }
-            else if (e.DataView.Contains(StandardDataFormats.Text))
-            {
-                var content = await e.DataView.GetTextAsync();
-                if (content.Length > 0)
-                {
-                    //edBase64.Text = content;
+                    var ret = await AddTo(tvFiles, sItems);
                 }
             }
 

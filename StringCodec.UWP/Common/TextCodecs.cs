@@ -674,29 +674,56 @@ namespace StringCodec.UWP.Common
 
             if(array != null && array.Length > 0)
             {
-                if (enc == Encoding.Unicode)
-                {
-                    if (array[0] == 0xFF && array[1] == 0xFE)
-                        result = enc.GetString(array.Skip(2).ToArray());
-                    else
-                        result = enc.GetString(array);
-                }
-                else if (enc == Encoding.BigEndianUnicode)
-                {
-                    if (array[0] == 0xFE && array[1] == 0xFF)
-                        result = enc.GetString(array.Skip(2).ToArray());
-                    else
-                        result = enc.GetString(array);
-                }
-                else if (enc == Encoding.UTF8)
-                {
-                    if (array[0] == 0xEF && array[1] == 0xBB && array[2] == 0xBF)
-                        result = enc.GetString(array.Skip(3).ToArray());
-                    else
-                        result = enc.GetString(array);
-                }
+                // UTF-16
+                if      (array[0] == 0xFF && array[1] == 0xFE)
+                    result = Encoding.Unicode.GetString(array.Skip(2).ToArray());
+                // UTF-16 Big-Endian
+                else if (array[0] == 0xFE && array[1] == 0xFF)
+                    result = Encoding.BigEndianUnicode.GetString(array.Skip(2).ToArray());
+                // UTF-8
+                else if (array[0] == 0xEF && array[1] == 0xBB && array[2] == 0xBF)
+                    result = Encoding.UTF8.GetString(array.Skip(3).ToArray());
+                // UTF-32
+                else if (array[0] == 0xFF && array[1] == 0xFE && array[2] == 0x00 && array[3] == 0x00)
+                    result = Encoding.UTF32.GetString(array.Skip(4).ToArray());
+                // UTF-32 Big-Endian
+                else if (array[0] == 0x00 && array[1] == 0x00 && array[2] == 0xFE && array[3] == 0xFF)
+                    result = Encoding.GetEncoding("utf-32BE").GetString(array.Skip(4).ToArray());
+                // UTF-7
+                else if (array[0] == 0x2B && array[1] == 0x2F && array[2] == 0x76 && (array[2] == 0x38 || array[2] == 0x39 || array[2] == 0x2B || array[2] == 0x2F))
+                    result = Encoding.UTF7.GetString(array.Skip(4).ToArray());
+                // UTF-1
+                //else if (array[0] == 0xF7 && array[1] == 0x64 && array[2] == 0x4C)
+                //    result = Encoding.GetEncoding("UTF-1").GetString(array.Skip(3).ToArray());
+                // GB-18030
+                else if (array[0] == 0x84 && array[1] == 0x31 && array[2] == 0x95 && array[3] == 0x33)
+                    result = Encoding.GetEncoding("GB18030").GetString(array.Skip(4).ToArray());
                 else
                     result = enc.GetString(array);
+
+                //if (enc == Encoding.Unicode)
+                //{
+                //    if (array[0] == 0xFF && array[1] == 0xFE)
+                //        result = enc.GetString(array.Skip(2).ToArray());
+                //    else
+                //        result = enc.GetString(array);
+                //}
+                //else if (enc == Encoding.BigEndianUnicode)
+                //{
+                //    if (array[0] == 0xFE && array[1] == 0xFF)
+                //        result = enc.GetString(array.Skip(2).ToArray());
+                //    else
+                //        result = enc.GetString(array);
+                //}
+                //else if (enc == Encoding.UTF8)
+                //{
+                //    if (array[0] == 0xEF && array[1] == 0xBB && array[2] == 0xBF)
+                //        result = enc.GetString(array.Skip(3).ToArray());
+                //    else
+                //        result = enc.GetString(array);
+                //}
+                //else
+                //    result = enc.GetString(array);
             }
 
             return (result);

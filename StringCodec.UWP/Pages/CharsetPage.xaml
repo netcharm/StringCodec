@@ -78,6 +78,8 @@
                                 <FontIcon Glyph="&#xE97E;" FontFamily="Segoe MDL2 Assets"/>
                             </ToggleMenuFlyoutItem.Icon>
                         </ToggleMenuFlyoutItem>
+                        <MenuFlyoutSeparator/>
+                        <ToggleMenuFlyoutItem x:Name="optDstAuto" x:Uid="optDstAuto" Text="Default" Click="OptDst_Click"/>
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
