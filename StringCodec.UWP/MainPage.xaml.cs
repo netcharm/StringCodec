@@ -125,11 +125,13 @@ namespace StringCodec.UWP
 
             nvMain.Header = nvMain.PaneTitle;
             ContentFrame.Navigate(typeof(Pages.TextPage), this);
+
+            nvMain.IsPaneOpen = false;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-
+            nvMain.IsPaneOpen = false;
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)

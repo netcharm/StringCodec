@@ -700,31 +700,25 @@ namespace StringCodec.UWP.Common
                     result = Encoding.GetEncoding("GB18030").GetString(array.Skip(4).ToArray());
                 else
                     result = enc.GetString(array);
-
-                //if (enc == Encoding.Unicode)
-                //{
-                //    if (array[0] == 0xFF && array[1] == 0xFE)
-                //        result = enc.GetString(array.Skip(2).ToArray());
-                //    else
-                //        result = enc.GetString(array);
-                //}
-                //else if (enc == Encoding.BigEndianUnicode)
-                //{
-                //    if (array[0] == 0xFE && array[1] == 0xFF)
-                //        result = enc.GetString(array.Skip(2).ToArray());
-                //    else
-                //        result = enc.GetString(array);
-                //}
-                //else if (enc == Encoding.UTF8)
-                //{
-                //    if (array[0] == 0xEF && array[1] == 0xBB && array[2] == 0xBF)
-                //        result = enc.GetString(array.Skip(3).ToArray());
-                //    else
-                //        result = enc.GetString(array);
-                //}
-                //else
-                //    result = enc.GetString(array);
             }
+
+            return (result);
+        }
+
+        static public byte[] GetBOM(this Encoding enc)
+        {
+            byte[] result = new byte[] { };
+
+            if(enc == Encoding.UTF8 || enc.WebName.Equals("utf-8", StringComparison.CurrentCultureIgnoreCase))
+                result = new byte[3] { 0xEF, 0xBB, 0xBF };
+            else if (enc == Encoding.Unicode || enc.WebName.Equals("utf-16", StringComparison.CurrentCultureIgnoreCase))
+                result = new byte[2] { 0xFF, 0xFE };
+            else if (enc == Encoding.BigEndianUnicode || enc.WebName.Equals("unicodeFFFE", StringComparison.CurrentCultureIgnoreCase))
+                result = new byte[2] { 0xFE, 0xFF };
+            else if (enc == Encoding.UTF32 || enc.WebName.Equals("utf-32", StringComparison.CurrentCultureIgnoreCase))
+                result = new byte[4] { 0xFF, 0xFE, 0x00, 0x00 };
+            else if (enc == Encoding.GetEncoding("utf-32BE") || enc.WebName.Equals("utf-32BE", StringComparison.CurrentCultureIgnoreCase))
+                result = new byte[4] { 0x00, 0x00, 0xFE, 0xFF };
 
             return (result);
         }

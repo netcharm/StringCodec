@@ -62,7 +62,7 @@ namespace StringCodec.UWP.Pages
 
         private async Task<bool> AddTo(TreeViewNode node, IStorageItem item, int deeper = -1)
         {
-            if (deeper >= CURRENT_TREEDEEP) return(true);
+            if (deeper > CURRENT_TREEDEEP) return(true);
 
             var queryOptions = new QueryOptions();
             queryOptions.FolderDepth = FolderDepth.Shallow;
@@ -72,6 +72,7 @@ namespace StringCodec.UWP.Pages
                 var folder = item as StorageFolder;
                 StorageApplicationPermissions.FutureAccessList.AddOrReplace($"FolderToken_{folder.FolderRelativeId.Replace("\\", "_")}_{folder.Name}", folder);
                 var root = new TreeViewNode() { Content = folder.Name.ConvertFrom(CURRENT_SRCENC, true) };
+                root.HasUnrealizedChildren = true;
                 flist.Add(root, folder);
 
                 //var sfolders = await folder.GetFoldersAsync();
@@ -116,6 +117,8 @@ namespace StringCodec.UWP.Pages
                 var folder = item as StorageFolder;
                 StorageApplicationPermissions.FutureAccessList.AddOrReplace($"FolderToken_{folder.FolderRelativeId.Replace("\\", "_")}_{folder.Name}", folder);
                 var root = new TreeViewNode() { Content = folder.Name.ConvertFrom(CURRENT_SRCENC, true) };
+                root.HasUnrealizedChildren = true;
+                root.IsExpanded = true;
                 flist.Add(root, folder);
 
                 //var sfolders = await folder.GetFoldersAsync();
@@ -267,9 +270,62 @@ namespace StringCodec.UWP.Pages
             cmdBar.IsOpen = false;
         }
 
+        private async void TreeViewAction_Click(object sender, RoutedEventArgs e)
+        {
+            if (tvFiles.SelectedNodes.Count <= 0) return;
+
+            var cnode = tvFiles.SelectedNodes[0];
+            if (!flist.ContainsKey(cnode)) return;
+
+            var f = flist[cnode];
+            if (sender == ActionRename)
+            {
+                await f.RenameAsync(f.Name.ConvertFrom(CURRENT_SRCENC, true), NameCollisionOption.GenerateUniqueName);
+            }
+            else if (sender == ActionRenameAll)
+            {
+
+            }
+            else if (sender == ActionConvert)
+            {
+                if (f is StorageFile)
+                {
+                    var file = f as StorageFile;
+                    if (Utils.text_ext.Contains(file.FileType))
+                    {
+                        IBuffer buffer = await FileIO.ReadBufferAsync(file);
+                        DataReader reader = DataReader.FromBuffer(buffer);
+                        byte[] fileContent = new byte[reader.UnconsumedBufferLength];
+                        reader.ReadBytes(fileContent);
+                        var fs = fileContent.ToString(CURRENT_SRCENC);
+
+                        byte[] BOM = CURRENT_DSTENC.GetBOM();
+                        byte[] fa = CURRENT_DSTENC.GetBytes(fs);
+                        fa = BOM.Concat(fa).ToArray();
+                        await FileIO.WriteBytesAsync(file, fa);
+                        //using (var ws = await file.OpenAsync(FileAccessMode.ReadWrite))
+                        //{
+                        //    DataWriter writer = new DataWriter(ws.GetOutputStreamAt(0));
+                        //    writer.WriteBytes(BOM);
+                        //    writer.WriteBytes(fa);
+                        //    await ws.FlushAsync();
+                        //}
+                    }
+                }
+
+                await f.RenameAsync(f.Name, NameCollisionOption.GenerateUniqueName);
+            }
+            else if (sender == ActionConvertAll)
+            {
+
+            }
+        }
+
         private async void TreeView_ItemInvoked(TreeView sender, TreeViewItemInvokedEventArgs args)
         {
             TreeViewNode item = args.InvokedItem as TreeViewNode;
+            tvFiles.SelectedNodes.Clear();
+            tvFiles.SelectedNodes.Add(item);
             if (flist.ContainsKey(item))
             {
                 var file = flist[item];
@@ -278,7 +334,7 @@ namespace StringCodec.UWP.Pages
                     if(file is StorageFile)
                     {
                         var f = file as StorageFile;
-                        if (Utils.text_ext.Contains((f).FileType))
+                        if (Utils.text_ext.Contains(f.FileType))
                         {
                             //edSrc.Text = await FileIO.ReadTextAsync(f, Windows.Storage.Streams.UnicodeEncoding.Utf8);
                             IBuffer buffer = await FileIO.ReadBufferAsync(f);
@@ -333,15 +389,20 @@ namespace StringCodec.UWP.Pages
                         }
                     }
                     break;
-                case "btnEncode":
+                case "btnRename":
                     break;
-                case "btnPaste":
-                    break;
-                case "btnSave":
-                    await Utils.ShowSaveDialog(edSrc.Text);
+                case "btnConvert":
                     break;
                 case "btnShare":
-                    Utils.Share(edSrc.Text);
+                    if (tvFiles.SelectedNodes.Count > 0)
+                    {
+                        var f = tvFiles.SelectedNodes[0];
+                        if (flist.ContainsKey(f))
+                        {
+                            Utils.Share(flist[f] as StorageFile);
+                        }
+                        //Utils.Share(edSrc.Text);
+                    }
                     break;
                 default:
                     break;

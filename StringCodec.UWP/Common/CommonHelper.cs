@@ -667,6 +667,11 @@ namespace StringCodec.UWP.Common
                     //requestData.SetBitmap(imageStreamRef);
                     #endregion
                 }
+                else if(_tempExportFile != null)
+                {
+                    List<IStorageItem> imageItems = new List<IStorageItem> { _tempExportFile };
+                    requestData.SetStorageItems(imageItems);
+                }
             }
             catch (Exception ex)
             {
@@ -685,6 +690,8 @@ namespace StringCodec.UWP.Common
             //ApplicationData.Current.TemporaryFolder.
             SHARED_TEXT = string.Empty;
             SHARED_IMAGE = null;
+            _tempExportFile = null;
+
             FileUpdateStatus status = FileUpdateStatus.Failed;
             if (image == null || image.PixelWidth <= 0 || image.PixelHeight <= 0) return (status);
 
@@ -721,6 +728,8 @@ namespace StringCodec.UWP.Common
 
             SHARED_TEXT = string.Empty;
             SHARED_IMAGE = null;
+            _tempExportFile = null;
+
             FileUpdateStatus status = FileUpdateStatus.Failed;
             if (string.IsNullOrEmpty(text)) return (status);
 
@@ -730,6 +739,29 @@ namespace StringCodec.UWP.Common
             //return status;
             return status;
         }
+
+        public static FileUpdateStatus Share(StorageFile file)
+        {
+            if (!SHARE_INITED)
+            {
+                dataTransferManager.DataRequested += DataTransferManager_DataRequested;
+                SHARE_INITED = true;
+            }
+
+            SHARED_TEXT = string.Empty;
+            SHARED_IMAGE = null;
+            _tempExportFile = null;
+
+            FileUpdateStatus status = FileUpdateStatus.Failed;
+            if (file == null) return (status);
+
+            _tempExportFile = file;
+            DataTransferManager.ShowShareUI();
+            status = FileUpdateStatus.Complete;
+            //return status;
+            return status;
+        }
+
         #endregion
 
         #region Clipboard Extentions
