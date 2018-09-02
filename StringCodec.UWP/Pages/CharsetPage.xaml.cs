@@ -14,6 +14,7 @@ using Windows.Storage.AccessCache;
 using Windows.Storage.Pickers;
 using Windows.Storage.Search;
 using Windows.Storage.Streams;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -34,6 +35,10 @@ namespace StringCodec.UWP.Pages
         private Encoding CURRENT_SRCENC = Encoding.Default;
         private Encoding CURRENT_DSTENC = Encoding.Default;
         private int CURRENT_TREEDEEP = 2;
+        private bool CURRENT_RENAME_REPLACE = false;
+        private bool CURRENT_CONVERT_ORIGINAL = true;
+        private bool IsDropped = false;
+
         private Dictionary<TreeViewNode, IStorageItem> flist = new Dictionary<TreeViewNode, IStorageItem>();
         private byte[] fcontent = null;
 
@@ -60,6 +65,39 @@ namespace StringCodec.UWP.Pages
             }
         }
 
+        private async Task<bool> RefreshFolder(TreeViewNode node)
+        {
+            bool result = false;
+            if (flist.ContainsKey(node))
+            {
+                node.Children.Clear();
+
+                var item = flist[node];
+                var folder = item as StorageFolder;
+
+                var queryOptions = new QueryOptions();
+                queryOptions.FolderDepth = FolderDepth.Shallow;
+
+                var queryFolders = folder.CreateFolderQueryWithOptions(queryOptions);
+                var sfolders = await queryFolders.GetFoldersAsync();
+                foreach (var sfolder in sfolders)
+                {
+                    var ret = await AddTo(node, sfolder, node.Depth);
+                }
+
+                var queryFiles = folder.CreateFileQueryWithOptions(queryOptions);
+                var sfiles = await queryFiles.GetFilesAsync();
+                foreach (var file in sfiles)
+                {
+                    var fnode = new TreeViewNode() { Content = file.Name.ConvertFrom(CURRENT_SRCENC, true) };
+                    node.Children.Add(fnode);
+                    flist.Add(fnode, file);
+                }
+                result = true;
+            }
+            return (result);
+        }
+
         private async Task<bool> AddTo(TreeViewNode node, IStorageItem item, int deeper = -1)
         {
             if (deeper > CURRENT_TREEDEEP) return(true);
@@ -70,7 +108,8 @@ namespace StringCodec.UWP.Pages
             if (item is StorageFolder)
             {
                 var folder = item as StorageFolder;
-                StorageApplicationPermissions.FutureAccessList.AddOrReplace($"FolderToken_{folder.FolderRelativeId.Replace("\\", "_")}_{folder.Name}", folder);
+                //StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace($"FolderToken_{folder.FolderRelativeId.Replace("\\", "_")}_{folder.Name}", folder);
+                //StorageApplicationPermissions.FutureAccessList.AddOrReplace($"FolderToken_{folder.FolderRelativeId.Replace("\\", "_")}_{folder.Name}", folder);
                 var root = new TreeViewNode() { Content = folder.Name.ConvertFrom(CURRENT_SRCENC, true) };
                 root.HasUnrealizedChildren = true;
                 flist.Add(root, folder);
@@ -87,7 +126,8 @@ namespace StringCodec.UWP.Pages
                 var sfiles = await queryFiles.GetFilesAsync();
                 foreach (var file in sfiles)
                 {
-                    StorageApplicationPermissions.FutureAccessList.AddOrReplace($"FileToken_{file.FolderRelativeId.Replace("\\", "_")}_{file.Name}", file);
+                    //StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace($"FileToken_{file.FolderRelativeId.Replace("\\", "_")}_{file.Name}", file);
+                    //StorageApplicationPermissions.FutureAccessList.AddOrReplace($"FileToken_{file.FolderRelativeId.Replace("\\", "_")}_{file.Name}", file);
                     var fnode = new TreeViewNode() { Content = file.Name.ConvertFrom(CURRENT_SRCENC, true) };
                     root.Children.Add(fnode);
                     flist.Add(fnode, file);
@@ -98,7 +138,8 @@ namespace StringCodec.UWP.Pages
             else if (item is StorageFile)
             {
                 var file = item as StorageFile;
-                StorageApplicationPermissions.FutureAccessList.AddOrReplace($"FileToken_{file.FolderRelativeId.Replace("\\", "_")}_{file.Name}", file);
+                //StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace($"FileToken_{file.FolderRelativeId.Replace("\\", "_")}_{file.Name}", file);
+                //StorageApplicationPermissions.FutureAccessList.AddOrReplace($"FileToken_{file.FolderRelativeId.Replace("\\", "_")}_{file.Name}", file);
                 var fnode = new TreeViewNode() { Content = file.Name.ConvertFrom(CURRENT_SRCENC, true) };
                 node.Children.Add(fnode);
                 flist.Add(fnode, file);
@@ -115,7 +156,8 @@ namespace StringCodec.UWP.Pages
             if (item is StorageFolder)
             {
                 var folder = item as StorageFolder;
-                StorageApplicationPermissions.FutureAccessList.AddOrReplace($"FolderToken_{folder.FolderRelativeId.Replace("\\", "_")}_{folder.Name}", folder);
+                //StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace($"FolderToken_{folder.FolderRelativeId.Replace("\\", "_")}_{folder.Name}", folder);
+                //StorageApplicationPermissions.FutureAccessList.AddOrReplace($"FolderToken_{folder.FolderRelativeId.Replace("\\", "_")}_{folder.Name}", folder);
                 var root = new TreeViewNode() { Content = folder.Name.ConvertFrom(CURRENT_SRCENC, true) };
                 root.HasUnrealizedChildren = true;
                 root.IsExpanded = true;
@@ -133,7 +175,8 @@ namespace StringCodec.UWP.Pages
                 var sfiles = await queryFiles.GetFilesAsync();
                 foreach (var file in sfiles)
                 {
-                    StorageApplicationPermissions.FutureAccessList.AddOrReplace($"FileToken_{file.FolderRelativeId.Replace("\\", "_")}_{file.Name}", file);
+                    //StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace($"FileToken_{file.FolderRelativeId.Replace("\\", "_")}_{file.Name}", file);
+                    //StorageApplicationPermissions.FutureAccessList.AddOrReplace($"FileToken_{file.FolderRelativeId.Replace("\\", "_")}_{file.Name}", file);
                     var fnode = new TreeViewNode() { Content = file.Name.ConvertFrom(CURRENT_SRCENC, true) };
                     root.Children.Add(fnode);
                     flist.Add(fnode, file);
@@ -144,11 +187,14 @@ namespace StringCodec.UWP.Pages
             else if (item is StorageFile)
             {
                 var file = item as StorageFile;
-                StorageApplicationPermissions.FutureAccessList.AddOrReplace($"FileToken_{file.FolderRelativeId.Replace("\\", "_")}_{file.Name}", file);
+                //StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace($"FileToken_{file.FolderRelativeId.Replace("\\", "_")}_{file.Name}", file);
+                //StorageApplicationPermissions.FutureAccessList.AddOrReplace($"FileToken_{file.FolderRelativeId.Replace("\\", "_")}_{file.Name}", file);
+                //CachedFileManager.DeferUpdates(file);
                 var fnode = new TreeViewNode() { Content = file.Name.ConvertFrom(CURRENT_SRCENC, true) };
                 tree.RootNodes.Add(fnode);
                 flist.Add(fnode, file);
             }
+
             return (true);
         }
 
@@ -163,6 +209,104 @@ namespace StringCodec.UWP.Pages
             return (true);
         }
 
+        private async Task<bool> RenameFile()
+        {
+            bool result = false;
+            try
+            {
+                if (IsDropped) return(result);
+                if (tvFiles.SelectedNodes.Count <= 0) return (result);
+
+                var cnode = tvFiles.SelectedNodes[0];
+                if (!flist.ContainsKey(cnode)) return (result);
+
+                var f = flist[cnode];
+
+                if (CURRENT_RENAME_REPLACE)
+                    await f.RenameAsync(f.Name.ConvertFrom(CURRENT_SRCENC, true), NameCollisionOption.ReplaceExisting);
+                else
+                    await f.RenameAsync(f.Name.ConvertFrom(CURRENT_SRCENC, true), NameCollisionOption.GenerateUniqueName);
+
+                cnode.Content = f.Name;
+                if (cnode.HasChildren)
+                {
+                    await RefreshFolder(cnode);
+                }
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                await new MessageDialog(ex.Message, "ERROR").ShowAsync();
+            }
+            return (result);
+        }
+
+        private async Task<bool> ConvertFileContent()
+        {
+            bool result = false;
+
+            if (IsDropped) return(result);
+            if (tvFiles.SelectedNodes.Count <= 0) return (result);
+
+            var cnode = tvFiles.SelectedNodes[0];
+            if (!flist.ContainsKey(cnode)) return (result);
+
+            var f = flist[cnode];
+
+            if (f is StorageFile)
+            {
+                var file = f as StorageFile;
+                result = await Utils.ConvertFile(file, CURRENT_SRCENC, CURRENT_DSTENC, CURRENT_CONVERT_ORIGINAL);
+
+                #region old codes
+                //if (Utils.text_ext.Contains(file.FileType))
+                //{
+                //    IBuffer buffer = await FileIO.ReadBufferAsync(file);
+                //    DataReader reader = DataReader.FromBuffer(buffer);
+                //    byte[] fileContent = new byte[reader.UnconsumedBufferLength];
+                //    reader.ReadBytes(fileContent);
+                //    var fs = fileContent.ToString(CURRENT_SRCENC);
+
+                //    byte[] BOM = CURRENT_DSTENC.GetBOM();
+                //    byte[] fa = CURRENT_DSTENC.GetBytes(fs);
+                //    fa = BOM.Concat(fa).ToArray();
+
+                //    if (CURRENT_CONVERT_ORIGINAL)
+                //    {
+                //        await FileIO.WriteBytesAsync(file, fa);
+                //        //using (var ws = await file.OpenAsync(FileAccessMode.ReadWrite))
+                //        //{
+                //        //    DataWriter writer = new DataWriter(ws.GetOutputStreamAt(0));
+                //        //    writer.WriteBytes(BOM);
+                //        //    writer.WriteBytes(fa);
+                //        //    await ws.FlushAsync();
+                //        //}
+                //    }
+                //    else
+                //    {
+                //        FileSavePicker fsp = new FileSavePicker();
+                //        fsp.SuggestedStartLocation = PickerLocationId.Unspecified;
+                //        fsp.SuggestedFileName = file.Name;
+                //        fsp.SuggestedSaveFile = file;
+                //        StorageFile TargetFile = await fsp.PickSaveFileAsync();
+                //        if(TargetFile != null)
+                //        {
+                //            StorageApplicationPermissions.MostRecentlyUsedList.Add(TargetFile, TargetFile.Name);
+                //            if (StorageApplicationPermissions.FutureAccessList.Entries.Count >= 1000)
+                //                StorageApplicationPermissions.FutureAccessList.Remove(StorageApplicationPermissions.FutureAccessList.Entries.Last().Token);
+                //            StorageApplicationPermissions.FutureAccessList.Add(TargetFile, TargetFile.Name);
+
+                //            // 在用户完成更改并调用CompleteUpdatesAsync之前，阻止对文件的更新
+                //            CachedFileManager.DeferUpdates(TargetFile);
+                //            await FileIO.WriteBytesAsync(TargetFile, fa);
+                //        }
+                //    }
+                //}
+                #endregion
+            }
+            return (result);
+        }
+
         public CharsetPage()
         {
             this.InitializeComponent();
@@ -170,6 +314,9 @@ namespace StringCodec.UWP.Pages
 
             optSrcAuto.IsChecked = true;
             optDstAuto.IsChecked = true;
+
+            optActionRename.IsChecked = CURRENT_RENAME_REPLACE;
+            optActionConvert.IsChecked = CURRENT_CONVERT_ORIGINAL;
 
             optFolderDeep2.IsChecked = true;
         }
@@ -205,7 +352,8 @@ namespace StringCodec.UWP.Pages
                 CURRENT_SRCENC = Encoding.Default;
 
             ConvertFrom(tvFiles, CURRENT_SRCENC);
-            edSrc.Text = fcontent.ToString(CURRENT_SRCENC);
+            if(fcontent != null && fcontent is byte[])
+                edSrc.Text = fcontent.ToString(CURRENT_SRCENC);
         }
 
         private void OptDst_Click(object sender, RoutedEventArgs e)
@@ -236,7 +384,7 @@ namespace StringCodec.UWP.Pages
 
         private void edSrc_TextChanged(object sender, TextChangedEventArgs e)
         {
-
+            edInfo.Text = $"Count: {edSrc.Text.Length}";
         }
 
         private void Opt_Click(object sender, RoutedEventArgs e)
@@ -272,52 +420,29 @@ namespace StringCodec.UWP.Pages
 
         private async void TreeViewAction_Click(object sender, RoutedEventArgs e)
         {
-            if (tvFiles.SelectedNodes.Count <= 0) return;
-
-            var cnode = tvFiles.SelectedNodes[0];
-            if (!flist.ContainsKey(cnode)) return;
-
-            var f = flist[cnode];
-            if (sender == ActionRename)
+            if (sender == ActionRename || sender == TreeActionRename)
             {
-                await f.RenameAsync(f.Name.ConvertFrom(CURRENT_SRCENC, true), NameCollisionOption.GenerateUniqueName);
+                await RenameFile();
             }
             else if (sender == ActionRenameAll)
             {
 
             }
-            else if (sender == ActionConvert)
+            else if( sender == optActionRename)
             {
-                if (f is StorageFile)
-                {
-                    var file = f as StorageFile;
-                    if (Utils.text_ext.Contains(file.FileType))
-                    {
-                        IBuffer buffer = await FileIO.ReadBufferAsync(file);
-                        DataReader reader = DataReader.FromBuffer(buffer);
-                        byte[] fileContent = new byte[reader.UnconsumedBufferLength];
-                        reader.ReadBytes(fileContent);
-                        var fs = fileContent.ToString(CURRENT_SRCENC);
-
-                        byte[] BOM = CURRENT_DSTENC.GetBOM();
-                        byte[] fa = CURRENT_DSTENC.GetBytes(fs);
-                        fa = BOM.Concat(fa).ToArray();
-                        await FileIO.WriteBytesAsync(file, fa);
-                        //using (var ws = await file.OpenAsync(FileAccessMode.ReadWrite))
-                        //{
-                        //    DataWriter writer = new DataWriter(ws.GetOutputStreamAt(0));
-                        //    writer.WriteBytes(BOM);
-                        //    writer.WriteBytes(fa);
-                        //    await ws.FlushAsync();
-                        //}
-                    }
-                }
-
-                await f.RenameAsync(f.Name, NameCollisionOption.GenerateUniqueName);
+                CURRENT_RENAME_REPLACE = optActionRename.IsChecked;
+            }
+            else if (sender == ActionConvert || sender == TeeeActionConvert)
+            {
+                await ConvertFileContent();
             }
             else if (sender == ActionConvertAll)
             {
 
+            }
+            else if (sender == optActionConvert)
+            {
+                CURRENT_CONVERT_ORIGINAL = optActionConvert.IsChecked;
             }
         }
 
@@ -331,21 +456,34 @@ namespace StringCodec.UWP.Pages
                 var file = flist[item];
                 if (file != null)
                 {
-                    if(file is StorageFile)
+                    if(file is StorageFile)                        
                     {
-                        var f = file as StorageFile;
-                        if (Utils.text_ext.Contains(f.FileType))
+                        try
                         {
-                            //edSrc.Text = await FileIO.ReadTextAsync(f, Windows.Storage.Streams.UnicodeEncoding.Utf8);
-                            IBuffer buffer = await FileIO.ReadBufferAsync(f);
-                            DataReader reader = DataReader.FromBuffer(buffer);
-                            byte[] fileContent = new byte[reader.UnconsumedBufferLength];
-                            reader.ReadBytes(fileContent);
-                            fcontent = (byte[])fileContent.Clone();
-                            edSrc.Text = fcontent.ToString(CURRENT_SRCENC);
-                            //string text = Encoding.Default.GetString(fileContent, 0, fileContent.Length);
-                            //edSrc.Text = text;
-                            args.Handled = true;
+                            var f = file as StorageFile;
+                            if (Utils.text_ext.Contains(f.FileType))
+                            {
+                                //edSrc.Text = await FileIO.ReadTextAsync(f, Windows.Storage.Streams.UnicodeEncoding.Utf8);
+                                IBuffer buffer = await FileIO.ReadBufferAsync(f);
+                                DataReader reader = DataReader.FromBuffer(buffer);
+                                byte[] fileContent = new byte[reader.UnconsumedBufferLength];
+                                reader.ReadBytes(fileContent);
+                                fcontent = (byte[])fileContent.Clone();
+                                if (fcontent != null && fcontent is byte[])
+                                    edSrc.Text = fcontent.ToString(CURRENT_SRCENC);
+                                //string text = Encoding.Default.GetString(fileContent, 0, fileContent.Length);
+                                //edSrc.Text = text;
+                                args.Handled = true;
+                            }
+                            else
+                            {
+                                edSrc.Text = string.Empty;
+                                fcontent = null;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            await new MessageDialog(ex.Message, "ERROR").ShowAsync();
                         }
                     }
                 }
@@ -367,6 +505,7 @@ namespace StringCodec.UWP.Pages
                         flist.Clear();
                         tvFiles.RootNodes.Clear();
                         var ret = await AddTo(tvFiles, folder);
+                        IsDropped = false;
 
                     }
                     break;
@@ -386,6 +525,7 @@ namespace StringCodec.UWP.Pages
                         foreach (var file in files)
                         {
                             var ret = await AddTo(tvFiles, file);
+                            IsDropped = false;
                         }
                     }
                     break;
@@ -425,25 +565,18 @@ namespace StringCodec.UWP.Pages
                     var items = await e.DataView.GetStorageItemsAsync();
                     if (items.Count > 0)
                     {
-                        canDrop = false;
-                        var item = items[0] as StorageFile;
-                        string filename = item.Name;
-                        string extension = item.FileType.ToLower();
+                        canDrop = true;
+                        var item = items[0];
 #if DEBUG
-                        System.Diagnostics.Debug.WriteLine($"Drag count:{items.Count}, {filename}");
+                        System.Diagnostics.Debug.WriteLine($"Drag count:{items.Count}, {item.Name}");
 #endif
-                        //if (Utils.text_ext.Contains(extension))
-                        {
-                            canDrop = true;
-#if DEBUG
-                            System.Diagnostics.Debug.WriteLine("Drag text to TextBox Control");
-#endif
-                        }
                     }
                 }
                 catch (Exception ex)
                 {
+#if DEBUG
                     System.Diagnostics.Debug.WriteLine(ex.Message);
+#endif
                 }
                 deferral.Complete();
             }
@@ -451,20 +584,11 @@ namespace StringCodec.UWP.Pages
 
         private void OnDragOver(object sender, DragEventArgs e)
         {
-            //if (canDrop && !e.Handled)
-            //{
-            //    { e.AcceptedOperation = DataPackageOperation.Copy; }
-            //    System.Diagnostics.Debug.WriteLine("drag ok");
-            //}
-            //return;
+
 #if DEBUG
             System.Diagnostics.Debug.WriteLine($"Drag Over Sender:{sender}");
 #endif
-            if (e.DataView.Contains(StandardDataFormats.Text))
-            {
-                e.AcceptedOperation = DataPackageOperation.Copy;
-            }
-            else if (e.DataView.Contains(StandardDataFormats.StorageItems))
+            if (e.DataView.Contains(StandardDataFormats.StorageItems))
             {
                 if (canDrop) e.AcceptedOperation = DataPackageOperation.Copy;
             }
@@ -486,12 +610,21 @@ namespace StringCodec.UWP.Pages
                         sItems.Add(item);
                     }
                     var ret = await AddTo(tvFiles, sItems);
+                    IsDropped = true;
                 }
             }
 
             //def.Complete();
         }
         #endregion
+
+        private void TreeNode_RightTapped(object sender, RightTappedRoutedEventArgs e)
+        {
+#if DEBUG
+            System.Diagnostics.Debug.WriteLine($"Right Tapped Sender:{sender}");
+            System.Diagnostics.Debug.WriteLine($"Right Tapped Name  :{e.OriginalSource}");
+#endif
+        }
 
     }
 }

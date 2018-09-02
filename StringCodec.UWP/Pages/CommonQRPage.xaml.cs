@@ -203,6 +203,7 @@ namespace StringCodec.UWP.Pages
             else if (sender == optCommonWifi)
             {
                 selectedIndex = 1;
+                ContentPage.SSID = await WIFI.GetNetwoksSSID();
             }
             else if (sender == optCommonMail)
             {

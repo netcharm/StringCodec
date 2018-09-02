@@ -70,6 +70,10 @@ namespace StringCodec.UWP.Common
             get { return result; }
         }
 
+        public string SSID
+        {
+            set { edWifiSSID.Text = value; }
+        }
 
         public CommonQRContentPage()
         {
@@ -85,7 +89,6 @@ namespace StringCodec.UWP.Common
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-
         }
 
         public string GetContents()

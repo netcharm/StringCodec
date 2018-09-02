@@ -6,9 +6,11 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.Devices.WiFi;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
@@ -599,7 +601,7 @@ namespace StringCodec.UWP.Common
     class Utils
     {
         public static string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif" };
-        public static string[] text_ext = new string[] { ".txt", ".text", ".base64", ".md", ".rst", ".url" };
+        public static string[] text_ext = new string[] { ".txt", ".text", ".base64", ".md", ".me", ".html", ".rst", ".url" };
         public static string[] url_ext = new string[] { ".url" };
 
         private static Page rootPage = null;
@@ -1315,6 +1317,64 @@ namespace StringCodec.UWP.Common
             }
             return (result);
         }
+
+        public static async Task<bool> ConvertFile(StorageFile file, Encoding SrcEnc, Encoding DstEnc, bool overwrite = false)
+        {
+            bool result = false;
+            try
+            {
+                if (text_ext.Contains(file.FileType))
+                {
+                    IBuffer buffer = await FileIO.ReadBufferAsync(file);
+                    DataReader reader = DataReader.FromBuffer(buffer);
+                    byte[] fileContent = new byte[reader.UnconsumedBufferLength];
+                    reader.ReadBytes(fileContent);
+                    var fs = fileContent.ToString(SrcEnc);
+
+                    byte[] BOM = DstEnc.GetBOM();
+                    byte[] fa = DstEnc.GetBytes(fs);
+                    fa = BOM.Concat(fa).ToArray();
+
+                    if (overwrite)
+                    {
+                        await FileIO.WriteBytesAsync(file, fa);
+                        //using (var ws = await file.OpenAsync(FileAccessMode.ReadWrite))
+                        //{
+                        //    DataWriter writer = new DataWriter(ws.GetOutputStreamAt(0));
+                        //    writer.WriteBytes(BOM);
+                        //    writer.WriteBytes(fa);
+                        //    await ws.FlushAsync();
+                        //}
+                        result = true;
+                    }
+                    else
+                    {
+                        FileSavePicker fsp = new FileSavePicker();
+                        fsp.SuggestedStartLocation = PickerLocationId.Unspecified;
+                        fsp.SuggestedFileName = file.Name;
+                        fsp.SuggestedSaveFile = file;
+                        StorageFile TargetFile = await fsp.PickSaveFileAsync();
+                        if (TargetFile != null)
+                        {
+                            StorageApplicationPermissions.MostRecentlyUsedList.Add(TargetFile, TargetFile.Name);
+                            if (StorageApplicationPermissions.FutureAccessList.Entries.Count >= 1000)
+                                StorageApplicationPermissions.FutureAccessList.Remove(StorageApplicationPermissions.FutureAccessList.Entries.Last().Token);
+                            StorageApplicationPermissions.FutureAccessList.Add(TargetFile, TargetFile.Name);
+
+                            // 在用户完成更改并调用CompleteUpdatesAsync之前，阻止对文件的更新
+                            CachedFileManager.DeferUpdates(TargetFile);
+                            await FileIO.WriteBytesAsync(TargetFile, fa);
+                            result = true;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                await new MessageDialog(ex.Message, "ERROR").ShowAsync();
+            }
+            return (result);
+        }
         #endregion
 
         #region Suggestion Routines
@@ -1390,8 +1450,62 @@ namespace StringCodec.UWP.Common
 
             return (suggestions);
         }
-
         #endregion
 
+    }
+
+    class WIFI
+    {
+        #region Network Info
+        /// <summary>
+        /// Gets connection ssid for the current Wifi Connection.
+        /// </summary>
+        /// <returns> string value of current ssid/></returns>
+        /// 
+        public static async Task<string> GetNetwoksSSID()
+        {
+            string result = string.Empty;
+            try
+            {
+                var access = await WiFiAdapter.RequestAccessAsync();
+                if (access != WiFiAccessStatus.Allowed)
+                {
+#if DEBUG
+                    //result = "Acess Denied for wifi Control";
+#endif
+                }
+                else
+                {
+                    var ret = await Windows.Devices.Enumeration.DeviceInformation.FindAllAsync(WiFiAdapter.GetDeviceSelector());
+                    if (ret.Count >= 1)
+                    {
+                        WiFiAdapter firstAdapter = await WiFiAdapter.FromIdAsync(ret[0].Id);
+                        var connectedProfile = await firstAdapter.NetworkAdapter.GetConnectedProfileAsync();
+                        if (connectedProfile != null)
+                        {
+                            result = connectedProfile.ProfileName;
+                        }
+                        else if (connectedProfile == null)
+                        {
+#if DEBUG
+                            //result = "WiFi adapter disconnected";
+#endif
+                        }
+                    }
+                    else
+                    {
+#if DEBUG
+                        //result = "No WiFi Adapters detected on this machine";
+#endif
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                await new MessageDialog(ex.Message, "ERROR").ShowAsync();
+            }
+            return (result);
+        }
+        #endregion
     }
 }

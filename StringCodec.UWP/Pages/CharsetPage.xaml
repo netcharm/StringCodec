@@ -10,24 +10,45 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
+        <!--<DataTemplate x:Key="TreeViewItemDataTemplate" x:DataType="TreeViewNode">
+            <Grid Height="36" IsRightTapEnabled="True" RightTapped="TreeNode_RightTapped">
+                <Rectangle x:Name="rectDrop" Fill="Transparent" Stretch="Fill" IsRightTapEnabled="True" RightTapped="TreeNode_RightTapped">
+                    <Rectangle.ContextFlyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem x:Name="ActionRename" x:Uid="ActionRename" Text="Rename To Current Charset" Click="TreeViewAction_Click" />
+                            <MenuFlyoutItem x:Name="ActionConvert" x:Uid="ActionConvert" Text="Convert Content To Target Charset" Click="TreeViewAction_Click" />
+                        </MenuFlyout>
+                    </Rectangle.ContextFlyout>
+                </Rectangle>
+                <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding Content}" HorizontalAlignment="Left" VerticalAlignment="Center" IsRightTapEnabled="True" RightTapped="TreeNode_RightTapped">
+                </TextBlock>
+            </Grid>
+        </DataTemplate>-->
+        
         <!--<DataTemplate x:Key="TreeViewItemDataTemplate">
-            <Grid Height="44">
+            <Grid Height="44" IsRightTapEnabled="True" RightTapped="TreeNode_RightTapped">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="24" />
+                    <RowDefinition Height="44" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="24"/>
+                    --><!--<ColumnDefinition Width="24"/>--><!--
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <AppBarButton Grid.Row="0" Grid.Column="0" x:Name="Icon" x:Uid="Icon" Icon="Folder" Content="F" IsEnabled="False" Width="20" Height="20"/>
-                <TextBlock Grid.Row="0" Grid.Column="1" 
+                --><!--<Grid.ContextFlyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem x:Name="ActionRename" x:Uid="ActionRename" Text="Rename To Current Charset" Click="TreeViewAction_Click" />
+                        <MenuFlyoutItem x:Name="ActionConvert" x:Uid="ActionConvert" Text="Convert Content To Target Charset" Click="TreeViewAction_Click" />
+                    </MenuFlyout>
+                </Grid.ContextFlyout>--><!--
+                <Rectangle Grid.Row="0" Grid.Column="0" x:Name="rectDrop" Fill="Transparent" Stretch="Fill"/>
+                <TextBlock Grid.Row="0" Grid.Column="0"
                     Text="{Binding Content}"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     Style="{ThemeResource BodyTextBlockStyle}"/>
             </Grid>
         </DataTemplate>
-
+        
         <Style TargetType="TreeView">
             <Setter Property="IsTabStop" Value="False" />
             <Setter Property="Template">
@@ -36,16 +57,22 @@
                         <TreeViewList x:Name="ListControl"
                                       ItemTemplate="{StaticResource TreeViewItemDataTemplate}"
                                       ItemContainerStyle="{StaticResource TreeViewItemStyle}"
-                                      CanDragItems="True"
-                                      AllowDrop="True"
-                                      CanReorderItems="True">
-                            <TreeViewList.ItemContainerTransitions>
+                                      CanDragItems="False"
+                                      AllowDrop="False"
+                                      CanReorderItems="False">
+                            <TreeViewList.ContextFlyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem x:Name="ActionRename" x:Uid="ActionRename" Text="Rename To Current Charset" Click="TreeViewAction_Click" />
+                                    <MenuFlyoutItem x:Name="ActionConvert" x:Uid="ActionConvert" Text="Convert Content To Target Charset" Click="TreeViewAction_Click" />
+                                </MenuFlyout>
+                            </TreeViewList.ContextFlyout>
+                            --><!--<TreeViewList.ItemContainerTransitions>
                                 <TransitionCollection>
                                     <ContentThemeTransition />
                                     <ReorderThemeTransition />
                                     <EntranceThemeTransition IsStaggeringEnabled="False" />
                                 </TransitionCollection>
-                            </TreeViewList.ItemContainerTransitions>
+                            </TreeViewList.ItemContainerTransitions>--><!--
                         </TreeViewList>
                     </ControlTemplate>
                 </Setter.Value>
@@ -97,13 +124,15 @@
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
-            <AppBarButton x:Name="btnRename" x:Uid="btnRename" Label="Rename" Icon="Rename" VerticalAlignment="Center" Click="AppBarButton_Click">
-                <AppBarButton.Flyout>
+            <AppBarButton x:Name="btnRename" x:Uid="btnRename" Label="Rename" Icon="Rename" ToolTipService.ToolTip="Rename selected filename to current source charset" VerticalAlignment="Center" Click="AppBarButton_Click">
+                <AppBarButton.ContextFlyout>
                     <MenuFlyout>
-                        <MenuFlyoutItem x:Name="ActionRename" x:Uid="ActionRename" Text="Rename To Current Charset" Click="TreeViewAction_Click"  />
-                        <MenuFlyoutItem x:Name="ActionRenameAll" x:Uid="ActionRenameAll" Text="Rename All To Current Charset" Click="TreeViewAction_Click" />
+                        <MenuFlyoutItem x:Name="ActionRename" x:Uid="ActionRename" Text="Rename Selected Item" Click="TreeViewAction_Click"  />
+                        <MenuFlyoutItem x:Name="ActionRenameAll" x:Uid="ActionRenameAll" Text="Rename All Items" IsEnabled="False" Visibility="Collapsed" Click="TreeViewAction_Click" />
+                        <MenuFlyoutSeparator/>
+                        <ToggleMenuFlyoutItem x:Name="optActionRename" x:Uid="optActionRename" Text="Replace Exists File" Click="TreeViewAction_Click" />
                     </MenuFlyout>
-                </AppBarButton.Flyout>
+                </AppBarButton.ContextFlyout>
             </AppBarButton>
             <AppBarSeparator />
             <AppBarButton Grid.Column="0" x:Name="btnOptDst" x:Uid="btnOptDst" Icon="Bullets" Label="Target" VerticalAlignment="Center">
@@ -136,13 +165,23 @@
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
-            <AppBarButton x:Name="btnConvert" x:Uid="btnConvert" Label="Convert" Icon="Save" VerticalAlignment="Center" Click="AppBarButton_Click">
-                <AppBarButton.Flyout>
+            <AppBarButton x:Name="btnConvert" x:Uid="btnConvert" Label="Convert" Icon="Save" ToolTipService.ToolTip="Convert selected file content to selected target charset" VerticalAlignment="Center" Click="AppBarButton_Click">
+                <AppBarButton.ContextFlyout>
                     <MenuFlyout>
-                        <MenuFlyoutItem x:Name="ActionConvert" x:Uid="ActionConvert" Text="Convert Content To Target Charset" Click="TreeViewAction_Click" />
-                        <MenuFlyoutItem x:Name="ActionConvertAll" x:Uid="ActionConvertAll" Text="Convert All Content To Target Charset" Click="TreeViewAction_Click" />
+                        <MenuFlyoutItem x:Name="ActionConvert" x:Uid="ActionConvert" Text="Convert Selected File" Click="TreeViewAction_Click" />
+                        <MenuFlyoutItem x:Name="ActionConvertAll" x:Uid="ActionConvertAll" Text="Convert All Text File" IsEnabled="False" Visibility="Collapsed" Click="TreeViewAction_Click" />
+                        <MenuFlyoutSeparator/>
+                        <ToggleMenuFlyoutItem x:Name="optActionConvert" x:Uid="optActionConvert" Text="Overwrite Original File" Click="TreeViewAction_Click" />
                     </MenuFlyout>
-                </AppBarButton.Flyout>
+                </AppBarButton.ContextFlyout>
+                <!--<AppBarButton.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem x:Name="ActionConvert" x:Uid="ActionConvert" Text="Convert Selected Text File" Click="TreeViewAction_Click" />
+                        <MenuFlyoutItem x:Name="ActionConvertAll" x:Uid="ActionConvertAll" Text="Convert All Text File" IsEnabled="False" Visibility="Collapsed" Click="TreeViewAction_Click" />
+                        <MenuFlyoutSeparator/>
+                        <ToggleMenuFlyoutItem x:Name="optActionConvert" x:Uid="optActionConvert" Text="Overwrite Original File" Click="TreeViewAction_Click" />
+                    </MenuFlyout>
+                </AppBarButton.Flyout>-->
             </AppBarButton>
             <AppBarSeparator />
             <AppBarButton x:Name="btnShare" x:Uid="btnShare" Label="Share" Icon="Share" VerticalAlignment="Center" Click="AppBarButton_Click" />
@@ -191,17 +230,17 @@
                   Margin="8,8,0,8" CanDrag="False" SelectionMode="Single"
                   ScrollViewer.VerticalScrollBarVisibility="Auto" 
                   ScrollViewer.HorizontalScrollBarVisibility="Auto" 
-                  ItemInvoked="TreeView_ItemInvoked"
-                  AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop">
-            <!--<TreeView.ContextFlyout>
+                  ItemInvoked="TreeView_ItemInvoked" IsRightTapEnabled="True"
+                  AllowDrop="False" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" RightTapped="TreeNode_RightTapped">
+            <TreeView.ContextFlyout>
                 <MenuFlyout>
-                    <MenuFlyoutItem x:Name="ActionRename" x:Uid="ActionRename" Text="Rename To Current Charset" Click="TreeViewAction_Click"  />
-                    <MenuFlyoutItem x:Name="ActionRenameAll" x:Uid="ActionRenameAll" Text="Rename All To Current Charset" Click="TreeViewAction_Click" />
-                    <MenuFlyoutSeparator/>
-                    <MenuFlyoutItem x:Name="ActionConvert" x:Uid="ActionConvert" Text="Convert Content To Target Charset" Click="TreeViewAction_Click" />
-                    <MenuFlyoutItem x:Name="ActionConvertAll" x:Uid="ActionConvertAll" Text="Convert All Content To Target Charset" Click="TreeViewAction_Click" />
-                </MenuFlyout> 
-            </TreeView.ContextFlyout>-->
+                    <MenuFlyoutItem x:Name="TreeActionRename" x:Uid="ActionRename" Text="Rename Selected Item" Click="TreeViewAction_Click"  />
+                    <!--<MenuFlyoutItem x:Name="ActionRenameAll" x:Uid="ActionRenameAll" Text="Rename All To Current Charset" Click="TreeViewAction_Click" />-->
+                    <!--<MenuFlyoutSeparator/>-->
+                    <MenuFlyoutItem x:Name="TeeeActionConvert" x:Uid="ActionConvert" Text="Convert Selected File" Click="TreeViewAction_Click" />
+                    <!--<MenuFlyoutItem x:Name="ActionConvertAll" x:Uid="ActionConvertAll" Text="Convert All Content To Target Charset" Click="TreeViewAction_Click" />-->
+                </MenuFlyout>
+            </TreeView.ContextFlyout>
         </TreeView>
 
         <TextBox Grid.Row="1" Grid.Column="1" x:Name="edSrc" x:Uid="edSrc" 
@@ -211,6 +250,6 @@
                  ScrollViewer.VerticalScrollBarVisibility="Auto" 
                  ScrollViewer.HorizontalScrollBarVisibility="Auto" 
                  TextChanged="edSrc_TextChanged"
-                 AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" />
+                 AllowDrop="False" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" />
     </Grid>
 </Page>
