@@ -447,7 +447,7 @@ namespace StringCodec.UWP.Common
             }
             catch (Exception ex)
             {
-                await new MessageDialog(ex.Message, "ERROR").ShowAsync();
+                await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
             }
             return (result);
         }
@@ -591,7 +591,7 @@ namespace StringCodec.UWP.Common
             }
             catch (Exception ex)
             {
-                await new MessageDialog(ex.Message, "ERROR").ShowAsync();
+                await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
             }
             return (result);
         }

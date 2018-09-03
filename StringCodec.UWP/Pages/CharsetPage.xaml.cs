@@ -236,7 +236,7 @@ namespace StringCodec.UWP.Pages
             }
             catch (Exception ex)
             {
-                await new MessageDialog(ex.Message, "ERROR").ShowAsync();
+                await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
             }
             return (result);
         }
@@ -384,7 +384,7 @@ namespace StringCodec.UWP.Pages
 
         private void edSrc_TextChanged(object sender, TextChangedEventArgs e)
         {
-            edInfo.Text = $"Count: {edSrc.Text.Length}";
+            edInfo.Text = $"{"Count".T()}: {edSrc.Text.Length}";
         }
 
         private void Opt_Click(object sender, RoutedEventArgs e)
@@ -483,7 +483,7 @@ namespace StringCodec.UWP.Pages
                         }
                         catch (Exception ex)
                         {
-                            await new MessageDialog(ex.Message, "ERROR").ShowAsync();
+                            await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
                         }
                     }
                 }
@@ -530,8 +530,10 @@ namespace StringCodec.UWP.Pages
                     }
                     break;
                 case "btnRename":
+                    await RenameFile();
                     break;
                 case "btnConvert":
+                    await ConvertFileContent();
                     break;
                 case "btnShare":
                     if (tvFiles.SelectedNodes.Count > 0)
@@ -539,7 +541,8 @@ namespace StringCodec.UWP.Pages
                         var f = tvFiles.SelectedNodes[0];
                         if (flist.ContainsKey(f))
                         {
-                            Utils.Share(flist[f] as StorageFile);
+                            if(flist[f] is StorageFile)
+                                Utils.Share(flist[f] as StorageFile);
                         }
                         //Utils.Share(edSrc.Text);
                     }

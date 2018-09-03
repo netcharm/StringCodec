@@ -234,10 +234,10 @@
                   AllowDrop="False" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" RightTapped="TreeNode_RightTapped">
             <TreeView.ContextFlyout>
                 <MenuFlyout>
-                    <MenuFlyoutItem x:Name="TreeActionRename" x:Uid="ActionRename" Text="Rename Selected Item" Click="TreeViewAction_Click"  />
+                    <MenuFlyoutItem x:Name="TreeActionRename" x:Uid="TreeActionRename" Text="Rename Selected Item" Click="TreeViewAction_Click"  />
                     <!--<MenuFlyoutItem x:Name="ActionRenameAll" x:Uid="ActionRenameAll" Text="Rename All To Current Charset" Click="TreeViewAction_Click" />-->
                     <!--<MenuFlyoutSeparator/>-->
-                    <MenuFlyoutItem x:Name="TeeeActionConvert" x:Uid="ActionConvert" Text="Convert Selected File" Click="TreeViewAction_Click" />
+                    <MenuFlyoutItem x:Name="TeeeActionConvert" x:Uid="TeeeActionConvert" Text="Convert Selected File" Click="TreeViewAction_Click" />
                     <!--<MenuFlyoutItem x:Name="ActionConvertAll" x:Uid="ActionConvertAll" Text="Convert All Content To Target Charset" Click="TreeViewAction_Click" />-->
                 </MenuFlyout>
             </TreeView.ContextFlyout>

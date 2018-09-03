@@ -121,7 +121,7 @@ namespace StringCodec.UWP.Pages
 
         private void edQR_TextChanged(object sender, TextChangedEventArgs e)
         {
-            lblInfo.Text = $"Count: {edQR.Text.Length}";
+            lblInfo.Text = $"{"Count".T()}: {edQR.Text.Length}";
             text_src = edQR.Text;
         }
 
@@ -338,7 +338,7 @@ namespace StringCodec.UWP.Pages
                 }
                 catch(Exception ex)
                 {
-                    await new MessageDialog(ex.Message, "ERROR").ShowAsync();
+                    await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
                 }
             }
             else if (sender == edQR)

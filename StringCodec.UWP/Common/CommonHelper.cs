@@ -31,7 +31,7 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace StringCodec.UWP.Common
 {
-    public static class WriteableBitmapExtetions
+    public static class WriteableBitmapExtentions
     {
         #region FrameworkElement UIElement to WriteableBitmap
         public static async Task<WriteableBitmap> ToBitmap(this FrameworkElement element)
@@ -598,6 +598,31 @@ namespace StringCodec.UWP.Common
         #endregion
     }
 
+    public static class TextExtentions
+    {
+        #region I18N
+        public static string _(this string text)
+        {
+            return (AppResources.GetString(text));
+        }
+
+        public static string T(this string text)
+        {
+            return (AppResources.GetString(text));
+        }
+
+        public static string GetString(this string text)
+        {
+            return (AppResources.GetString(text));
+        }
+
+        public static string GetText(this string text)
+        {
+            return (AppResources.GetString(text));
+        }
+        #endregion
+    }
+
     class Utils
     {
         public static string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif" };
@@ -677,7 +702,7 @@ namespace StringCodec.UWP.Common
             }
             catch (Exception ex)
             {
-                await new MessageDialog(ex.Message, "ERROR").ShowAsync();
+                await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
             }
         }
 
@@ -926,7 +951,7 @@ namespace StringCodec.UWP.Common
             }
             catch (Exception ex)
             {
-                await new MessageDialog(ex.Message, "ERROR").ShowAsync();
+                await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
             }
         }
 
@@ -1095,7 +1120,7 @@ namespace StringCodec.UWP.Common
                 }
                 catch (Exception ex)
                 {
-                    await new MessageDialog(ex.Message, "ERROR").ShowAsync();
+                    await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
                 }
             }
             return (text);
@@ -1371,7 +1396,7 @@ namespace StringCodec.UWP.Common
             }
             catch (Exception ex)
             {
-                await new MessageDialog(ex.Message, "ERROR").ShowAsync();
+                await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
             }
             return (result);
         }
@@ -1502,7 +1527,7 @@ namespace StringCodec.UWP.Common
             }
             catch (Exception ex)
             {
-                await new MessageDialog(ex.Message, "ERROR").ShowAsync();
+                await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
             }
             return (result);
         }

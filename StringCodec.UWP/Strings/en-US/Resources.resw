@@ -1,42 +1,744 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<root>	
-	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="resheader">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>1.3</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AppName" xml:space="preserve">
+    <value>StringCodec</value>
+  </data>
+  <data name="ERROR" xml:space="preserve">
+    <value>ERROR</value>
+  </data>
+  <data name="NvMainNavigationViewPaneTitle" xml:space="preserve">
+    <value>String Encoding &amp; Decoding</value>
+  </data>
+  <data name="nvItemText.Content" xml:space="preserve">
+    <value>Text Encode/Decode</value>
+  </data>
+  <data name="nvItemText.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Text Encode/Decode</value>
+  </data>
+  <data name="nvItemQRCode.Content" xml:space="preserve">
+    <value>QR Encode/Decode</value>
+  </data>
+  <data name="nvItemQRCode.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Make QR Code or decode content from QR Code image</value>
+  </data>
+  <data name="nvItemImage.Content" xml:space="preserve">
+    <value>Image &lt;=&gt; BASE64</value>
+  </data>
+  <data name="nvItemImage.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Convert image to BASE64 string or decode BASE64 string to image</value>
+  </data>
+  <data name="nvItemCommonOneD.Content" xml:space="preserve">
+    <value>Common 1D Barcode</value>
+  </data>
+  <data name="nvItemCommonOneD.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Make/Decode Common 1D Barcode</value>
+  </data>
+  <data name="nvItemCommonQR.Content" xml:space="preserve">
+    <value>Common QR Code</value>
+  </data>
+  <data name="nvItemCommonQR.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Make Common QR Code</value>
+  </data>
+  <data name="nvItemCharset.Content" xml:space="preserve">
+    <value>Folder&amp;File Charset</value>
+  </data>
+  <data name="nvItemCharset.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Converting folder/file names with specified character sets</value>
+  </data>
+  <data name="nvAbout.Content" xml:space="preserve">
+    <value>More info</value>
+  </data>
+  <data name="nvAbout.ToolTipService.ToolTip" xml:space="preserve">
+    <value>About Me...</value>
+  </data>
+  <data name="piLink.Header" xml:space="preserve">
+    <value>Web Link</value>
+  </data>
+  <data name="edLinkUrl.Header" xml:space="preserve">
+    <value>Url</value>
+  </data>
+  <data name="edLinkUrl.PlaceholderText" xml:space="preserve">
+    <value>Url address</value>
+  </data>
+  <data name="edLinkContent.Header" xml:space="preserve">
+    <value>Centent</value>
+  </data>
+  <data name="edLinkContent.PlaceholderText" xml:space="preserve">
+    <value>Url Parameters</value>
+  </data>
+  <data name="piWifi.Header" xml:space="preserve">
+    <value>WIFI Infomation</value>
+  </data>
+  <data name="edWifiSSID.Header" xml:space="preserve">
+    <value>SSID</value>
+  </data>
+  <data name="edWifiSSID.PlaceholderText" xml:space="preserve">
+    <value>SSID/Network Name</value>
+  </data>
+  <data name="edWifiPass.Header" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="edWifiPass.PlaceholderText" xml:space="preserve">
+    <value>WIFI Password</value>
+  </data>
+  <data name="edWifiEncypto.Header" xml:space="preserve">
+    <value>Encrypt Type</value>
+  </data>
+  <data name="edWifiEncypto.PlaceholderText" xml:space="preserve">
+    <value>Password Encrypt Type</value>
+  </data>
+  <data name="edWifiHidden.Content" xml:space="preserve">
+    <value>Hidden SSID</value>
+  </data>
+  <data name="piMail.Header" xml:space="preserve">
+    <value>Send Mail</value>
+  </data>
+  <data name="edMailTo.Header" xml:space="preserve">
+    <value>Sent To</value>
+  </data>
+  <data name="edMailTo.PlaceholderText" xml:space="preserve">
+    <value>Mail Address</value>
+  </data>
+  <data name="edMailSubject.Header" xml:space="preserve">
+    <value>Subjetc</value>
+  </data>
+  <data name="edMailSubject.PlaceholderText" xml:space="preserve">
+    <value>Mail Subject</value>
+  </data>
+  <data name="edMailContent.Header" xml:space="preserve">
+    <value>Content</value>
+  </data>
+  <data name="edMailContent.PlaceholderText" xml:space="preserve">
+    <value>Mail Content</value>
+  </data>
+  <data name="piGeo.Header" xml:space="preserve">
+    <value>Geo Query</value>
+  </data>
+  <data name="edGeoLat.Header" xml:space="preserve">
+    <value>Latitude</value>
+  </data>
+  <data name="edGeoLat.PlaceholderText" xml:space="preserve">
+    <value>Latitude</value>
+  </data>
+  <data name="edGeoLon.Header" xml:space="preserve">
+    <value>Longitude</value>
+  </data>
+  <data name="edGeoLon.PlaceholderText" xml:space="preserve">
+    <value>Longitude</value>
+  </data>
+  <data name="edGeoQuery.Header" xml:space="preserve">
+    <value>Query Content</value>
+  </data>
+  <data name="edGeoQuery.PlaceholderText" xml:space="preserve">
+    <value>Url Parameters</value>
+  </data>
+  <data name="piContact.Header" xml:space="preserve">
+    <value>Contact Info</value>
+  </data>
+  <data name="edContactNameFirst.Header" xml:space="preserve">
+    <value>First Name</value>
+  </data>
+  <data name="edContactNameMiddle.Header" xml:space="preserve">
+    <value>Middle Name</value>
+  </data>
+  <data name="edContactNameLast.Header" xml:space="preserve">
+    <value>Last Name</value>
+  </data>
+  <data name="edContactPrivate.Text" xml:space="preserve">
+    <value>Private</value>
+  </data>
+  <data name="edContactUrl.Header" xml:space="preserve">
+    <value>Home Page</value>
+  </data>
+  <data name="edContactMobile.Header" xml:space="preserve">
+    <value>Mobile</value>
+  </data>
+  <data name="edContactTelHome.Header" xml:space="preserve">
+    <value>Telephone</value>
+  </data>
+  <data name="edContactMail.Header" xml:space="preserve">
+    <value>Home Mail</value>
+  </data>
+  <data name="edContactAdrHome.Header" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="edContactAdrHomePostal.Header" xml:space="preserve">
+    <value>Postal</value>
+  </data>
+  <data name="edContactPublic.Text" xml:space="preserve">
+    <value>Public</value>
+  </data>
+  <data name="edContactOrg.Header" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="edContactTitle.Header" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="edContactTelWork.Header" xml:space="preserve">
+    <value>Telephone</value>
+  </data>
+  <data name="edContactMailWork.Header" xml:space="preserve">
+    <value>Mail</value>
+  </data>
+  <data name="edContactAdrWork.Header" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="edContactAdrWorkPostal.Header" xml:space="preserve">
+    <value>Postal</value>
+  </data>
+  <data name="edContactMisc.Text" xml:space="preserve">
+    <value>Misc</value>
+  </data>
+  <data name="edContactNote.Header" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="piEvent.Header" xml:space="preserve">
+    <value>Time Event</value>
+  </data>
+  <data name="edEventSummary.Header" xml:space="preserve">
+    <value>Summary</value>
+  </data>
+  <data name="edEventLocation.Header" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="edEventGeoLon.Header" xml:space="preserve">
+    <value>Longitude</value>
+  </data>
+  <data name="edEventGeoLat.Header" xml:space="preserve">
+    <value>Latitude</value>
+  </data>
+  <data name="edEventFullDay.Content" xml:space="preserve">
+    <value>Full Day</value>
+  </data>
+  <data name="edEventDTStart.Header" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="edEventDTStart.PlaceholderText" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="edEventDTEnd.Header" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="edEventDTEnd.PlaceholderText" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="edEventAddress.Header" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="edEventLink.Header" xml:space="preserve">
+    <value>URL Link</value>
+  </data>
+  <data name="edEventUid.Header" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="edEventDesc.Header" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Percent.Text" xml:space="preserve">
+    <value>0%</value>
+  </data>
+  <data name="btnOpenFolder.Label" xml:space="preserve">
+    <value>Folder</value>
+  </data>
+  <data name="btnOpenFolder.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Open Folder</value>
+  </data>
+  <data name="btnOpenFile.Label" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="btnOpenFile.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Open File</value>
+  </data>
+  <data name="btnOptSrc.Label" xml:space="preserve">
+    <value>Source</value>
+  </data>
+  <data name="optSrcUTF8.Text" xml:space="preserve">
+    <value>UTF-8</value>
+  </data>
+  <data name="optSrcGBK.Text" xml:space="preserve">
+    <value>GBK</value>
+  </data>
+  <data name="optSrcBIG5.Text" xml:space="preserve">
+    <value>BIG-5</value>
+  </data>
+  <data name="optSrcJIS.Text" xml:space="preserve">
+    <value>Shift-JIS</value>
+  </data>
+  <data name="optSrcUnicode.Text" xml:space="preserve">
+    <value>Unicode</value>
+  </data>
+  <data name="optSrcAscii.Text" xml:space="preserve">
+    <value>ASCII</value>
+  </data>
+  <data name="optSrcAuto.Text" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="btnRename.Label" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+  <data name="btnRename.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Rename selected filename to current source charset</value>
+  </data>
+  <data name="ActionRename.Text" xml:space="preserve">
+    <value>Rename Selected Item</value>
+  </data>
+  <data name="ActionRenameAll.Text" xml:space="preserve">
+    <value>Rename All Items</value>
+  </data>
+  <data name="optActionRename.Text" xml:space="preserve">
+    <value>Replace Exists File</value>
+  </data>
+  <data name="btnOptDst.Label" xml:space="preserve">
+    <value>Target</value>
+  </data>
+  <data name="optDstUTF8.Text" xml:space="preserve">
+    <value>UTF-8</value>
+  </data>
+  <data name="optDstGBK.Text" xml:space="preserve">
+    <value>GBK</value>
+  </data>
+  <data name="optDstBIG5.Text" xml:space="preserve">
+    <value>BIG-5</value>
+  </data>
+  <data name="optDstJIS.Text" xml:space="preserve">
+    <value>Shift-JIS</value>
+  </data>
+  <data name="optDstUnicode.Text" xml:space="preserve">
+    <value>Unicode</value>
+  </data>
+  <data name="optDstAscii.Text" xml:space="preserve">
+    <value>ASCII</value>
+  </data>
+  <data name="optDstAuto.Text" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="btnConvert.Label" xml:space="preserve">
+    <value>Convert</value>
+  </data>
+  <data name="btnConvert.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Convert selected file content to selected target charset</value>
+  </data>
+  <data name="ActionConvert.Text" xml:space="preserve">
+    <value>Convert Selected File</value>
+  </data>
+  <data name="ActionConvertAll.Text" xml:space="preserve">
+    <value>Convert All Text File</value>
+  </data>
+  <data name="optActionConvert.Text" xml:space="preserve">
+    <value>Overwrite Original File</value>
+  </data>
+  <data name="optFolderDeep.Label" xml:space="preserve">
+    <value>Folder Deep</value>
+  </data>
+  <data name="optFolderDeepF.Text" xml:space="preserve">
+    <value>All Sub-Tree</value>
+  </data>
+  <data name="optFolderDeep0.Text" xml:space="preserve">
+    <value>Current Folder</value>
+  </data>
+  <data name="optFolderDeep1.Text" xml:space="preserve">
+    <value>Level 1</value>
+  </data>
+  <data name="optFolderDeep2.Text" xml:space="preserve">
+    <value>Level 2</value>
+  </data>
+  <data name="optFolderDeep3.Text" xml:space="preserve">
+    <value>Level 3</value>
+  </data>
+  <data name="optFolderDeep4.Text" xml:space="preserve">
+    <value>Level 4</value>
+  </data>
+  <data name="optWrapText.Label" xml:space="preserve">
+    <value>Wrap Text</value>
+  </data>
+  <data name="TreeActionRename.Text" xml:space="preserve">
+    <value>Rename Selected Item</value>
+  </data>
+  <data name="TeeeActionConvert.Text" xml:space="preserve">
+    <value>Convert Selected File</value>
+  </data>
+  <data name="edSrc.Header" xml:space="preserve">
+    <value>Input:</value>
+  </data>
+  <data name="edSrc.PlaceholderText" xml:space="preserve">
+    <value>Input at here</value>
+  </data>
+  <data name="btnOpt.Label" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="optBarCodeExpress.Text" xml:space="preserve">
+    <value>Express No.</value>
+  </data>
+  <data name="optBarCodeISBN.Text" xml:space="preserve">
+    <value>Book ISBN</value>
+  </data>
+  <data name="optBarCodeProduct.Text" xml:space="preserve">
+    <value>Product</value>
+  </data>
+  <data name="optBarCodeEAN13.Text" xml:space="preserve">
+    <value>EAN-13</value>
+  </data>
+  <data name="optBarCode39.Text" xml:space="preserve">
+    <value>Code 39</value>
+  </data>
+  <data name="optBarCode128.Text" xml:space="preserve">
+    <value>Code 128</value>
+  </data>
+  <data name="optBarCodeUPCA.Text" xml:space="preserve">
+    <value>UPC-A</value>
+  </data>
+  <data name="optBarCodeUPCE.Text" xml:space="preserve">
+    <value>UPC-E</value>
+  </data>
+  <data name="optBarCode93.Text" xml:space="preserve">
+    <value>Code 93</value>
+  </data>
+  <data name="optBarCodeITF.Text" xml:space="preserve">
+    <value>Interleaved 2 of 5</value>
+  </data>
+  <data name="optBarCodeChecksum.Text" xml:space="preserve">
+    <value>Calc Checksum</value>
+  </data>
+  <data name="optFgColor.Text" xml:space="preserve">
+    <value>Foreground Color</value>
+  </data>
+  <data name="optBgColor.Text" xml:space="preserve">
+    <value>Background Color</value>
+  </data>
+  <data name="optResetColor.Text" xml:space="preserve">
+    <value>Reset Color</value>
+  </data>
+  <data name="btnCopy.Label" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="btnPaste.Label" xml:space="preserve">
+    <value>Paste</value>
+  </data>
+  <data name="btnEncode.Label" xml:space="preserve">
+    <value>Encode</value>
+  </data>
+  <data name="btnDecode.Label" xml:space="preserve">
+    <value>Decode</value>
+  </data>
+  <data name="btnCapture.Label" xml:space="preserve">
+    <value>Capture</value>
+  </data>
+  <data name="btnSave.Label" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="btnShare.Label" xml:space="preserve">
+    <value>Share</value>
+  </data>
+  <data name="btnImageToBase64.Label" xml:space="preserve">
+    <value>Image to BASE64</value>
+  </data>
+  <data name="btnTextToDecode.Label" xml:space="preserve">
+    <value>Text to String Decode</value>
+  </data>
+  <data name="btnTextToQR.Label" xml:space="preserve">
+    <value>Text to QRCode</value>
+  </data>
+  <data name="optSaveSizeWindow.Label" xml:space="preserve">
+    <value>Display Size</value>
+  </data>
+  <data name="optSaveSizeL.Label" xml:space="preserve">
+    <value>L: 1024x1024</value>
+  </data>
+  <data name="optSaveSizeM.Label" xml:space="preserve">
+    <value>M: 512x512</value>
+  </data>
+  <data name="optSaveSizeN.Label" xml:space="preserve">
+    <value>S: 256x256</value>
+  </data>
+  <data name="optSaveSizeS.Label" xml:space="preserve">
+    <value>S: 128x128</value>
+  </data>
+  <data name="optBarcodeTextSize.Label" xml:space="preserve">
+    <value>Barcode Text Size</value>
+  </data>
+  <data name="optBarcodeTextSizeXL.Text" xml:space="preserve">
+    <value>XL: Extra Large</value>
+  </data>
+  <data name="optBarcodeTextSizeL.Text" xml:space="preserve">
+    <value>L: Large</value>
+  </data>
+  <data name="optBarcodeTextSizeM.Text" xml:space="preserve">
+    <value>M: Middle</value>
+  </data>
+  <data name="optBarcodeTextSizeS.Text" xml:space="preserve">
+    <value>S: Small</value>
+  </data>
+  <data name="optBarcodeTextSizeXS.Text" xml:space="preserve">
+    <value>XS: Extra Small</value>
+  </data>
+  <data name="optBarcodeTextSizeNone.Text" xml:space="preserve">
+    <value>None Text</value>
+  </data>
+  <data name="edInfo.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="edBarcode.Header" xml:space="preserve">
+    <value>Text:</value>
+  </data>
+  <data name="edBarcode.PlaceholderText" xml:space="preserve">
+    <value>Input text at here</value>
+  </data>
+  <data name="btnCommonType.Label" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="optCommonLink.Text" xml:space="preserve">
+    <value>Web Link</value>
+  </data>
+  <data name="optCommonWifi.Text" xml:space="preserve">
+    <value>WIFI Infomation</value>
+  </data>
+  <data name="optCommonMail.Text" xml:space="preserve">
+    <value>E-Mail Send</value>
+  </data>
+  <data name="optCommonGeo.Text" xml:space="preserve">
+    <value>GEO Query</value>
+  </data>
+  <data name="optCommonContact.Text" xml:space="preserve">
+    <value>Contact Into</value>
+  </data>
+  <data name="optCommonEvent.Text" xml:space="preserve">
+    <value>Time Event</value>
+  </data>
+  <data name="optECL_L.Text" xml:space="preserve">
+    <value>ECC Level : L</value>
+  </data>
+  <data name="optECL_M.Text" xml:space="preserve">
+    <value>ECC Level : M</value>
+  </data>
+  <data name="optECL_Q.Text" xml:space="preserve">
+    <value>ECC Level : Q</value>
+  </data>
+  <data name="optECL_H.Text" xml:space="preserve">
+    <value>ECC Level : H</value>
+  </data>
+  <data name="optUsingDialog.Label" xml:space="preserve">
+    <value>Using Dialog</value>
+  </data>
+  <data name="edQR.Header" xml:space="preserve">
+    <value>Text [Max=984]:</value>
+  </data>
+  <data name="edQR.PlaceholderText" xml:space="preserve">
+    <value>Input text at here</value>
+  </data>
+  <data name="optPrefix.Text" xml:space="preserve">
+    <value>Add Prefix to BASE64</value>
+  </data>
+  <data name="optLineBreak.Text" xml:space="preserve">
+    <value>Line Break</value>
+  </data>
+  <data name="optFmtPng.Text" xml:space="preserve">
+    <value>PNG Image File</value>
+  </data>
+  <data name="optFmtJpg.Text" xml:space="preserve">
+    <value>JPG Image File</value>
+  </data>
+  <data name="optFmtBmp.Text" xml:space="preserve">
+    <value>BMP Image File</value>
+  </data>
+  <data name="optFmtGif.Text" xml:space="preserve">
+    <value>GIF Image File</value>
+  </data>
+  <data name="optFmtTif.Text" xml:space="preserve">
+    <value>TIF Image File</value>
+  </data>
+  <data name="btnImageQRCode.Label" xml:space="preserve">
+    <value>Image to QRCode</value>
+  </data>
+  <data name="btnImageOneD.Label" xml:space="preserve">
+    <value>Image to 1D Barcode</value>
+  </data>
+  <data name="edBase64.Header" xml:space="preserve">
+    <value>BASE64:</value>
+  </data>
+  <data name="edBase64.PlaceholderText" xml:space="preserve">
+    <value>Input text at here</value>
+  </data>
+  <data name="btnOk.Content" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="btnCancel.Content" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="nvSwitchTheme.Header" xml:space="preserve">
+    <value>Theme Select</value>
+  </data>
+  <data name="optURL.Text" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="optBase64.Text" xml:space="preserve">
+    <value>BASE64</value>
+  </data>
+  <data name="optUUE.Text" xml:space="preserve">
+    <value>UUE</value>
+  </data>
+  <data name="optXXE.Text" xml:space="preserve">
+    <value>XXE</value>
+  </data>
+  <data name="optQuoted.Text" xml:space="preserve">
+    <value>Quoted</value>
+  </data>
+  <data name="optRaw.Text" xml:space="preserve">
+    <value>RAW</value>
+  </data>
+  <data name="optThunder.Text" xml:space="preserve">
+    <value>Thunder</value>
+  </data>
+  <data name="optFlashGet.Text" xml:space="preserve">
+    <value>FlashGet</value>
+  </data>
+  <data name="optUTF8.Text" xml:space="preserve">
+    <value>UTF-8</value>
+  </data>
+  <data name="optGBK.Text" xml:space="preserve">
+    <value>GBK</value>
+  </data>
+  <data name="optBIG5.Text" xml:space="preserve">
+    <value>BIG-5</value>
+  </data>
+  <data name="optJIS.Text" xml:space="preserve">
+    <value>Shift-JIS</value>
+  </data>
+  <data name="optUnicode.Text" xml:space="preserve">
+    <value>Unicode</value>
+  </data>
+  <data name="optAscii.Text" xml:space="preserve">
+    <value>ASCII</value>
+  </data>
+  <data name="btnSrcQRCode.Label" xml:space="preserve">
+    <value>Input to QRCode</value>
+  </data>
+  <data name="btnDstQRCode.Label" xml:space="preserve">
+    <value>Output to QRCode</value>
+  </data>
+  <data name="edDst.Header" xml:space="preserve">
+    <value>Output:</value>
+  </data>
+  <data name="edDst.PlaceholderText" xml:space="preserve">
+    <value>Here is output</value>
+  </data>
+  <data name="Count" xml:space="preserve">
+    <value>Count</value>
+  </data>
 </root>

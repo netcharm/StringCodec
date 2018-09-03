@@ -77,6 +77,9 @@ namespace StringCodec.UWP
         {
             this.InitializeComponent();
 
+            nvMain.PaneTitle = "NvMainNavigationViewPaneTitle".T();
+            //ApplicationView.GetForCurrentView().Title = AppResources.AppName;
+
             NavigationCacheMode = NavigationCacheMode.Enabled;
 
             #region Extented the supported string charsets
@@ -207,7 +210,7 @@ namespace StringCodec.UWP
             }
             catch (Exception ex)
             {
-                await new MessageDialog(ex.Message, "ERROR").ShowAsync();
+                await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
             }
         }
 

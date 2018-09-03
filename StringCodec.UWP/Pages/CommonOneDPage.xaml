@@ -124,7 +124,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <!--<ProgressRing Grid.Column="0" x:Name="ring" x:Uid="Ring" VerticalAlignment="Center"/>-->
-                    <TextBlock Grid.Column="1" x:Name="lblInfo" x:Uid="edInfo" Text="Count: 0" Margin="12,14" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" x:Name="lblInfo" x:Uid="edInfo" Text="" Margin="12,14" VerticalAlignment="Center"/>
                 </Grid>
             </CommandBar.Content>
         </CommandBar>

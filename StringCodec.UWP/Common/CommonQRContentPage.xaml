@@ -39,7 +39,7 @@
                         <ColumnDefinition Width=".5*"/>
                     </Grid.ColumnDefinitions>
                     <TextBox Grid.Row="0" Grid.ColumnSpan="2" x:Name="edWifiSSID" x:Uid="edWifiSSID" Header="SSID" PlaceholderText="SSID/Network Name"/>
-                    <TextBox Grid.Row="1" Grid.ColumnSpan="2" x:Name="edWifiPass" x:Uid="edWifiPass" Header="Password" PlaceholderText=" WIFI Password" />
+                    <TextBox Grid.Row="1" Grid.ColumnSpan="2" x:Name="edWifiPass" x:Uid="edWifiPass" Header="Password" PlaceholderText="WIFI Password" />
                     <ComboBox Grid.Row="3" Grid.Column="0" x:Name="edWifiEncypto" x:Uid="edWifiEncypto" Header="Encrypt Type" PlaceholderText="Password Encrypt Type" SelectedIndex="0">
                         <x:String>WPA/WPA2</x:String>
                         <x:String>WEP</x:String>
@@ -108,7 +108,7 @@
                         <TextBox Grid.Row="0" Grid.Column="1" x:Name="edContactNameMiddle" x:Uid="edContactNameMiddle" Header="Middle Name" Margin="8, 0, 0, 0" />
                         <TextBox Grid.Row="0" Grid.Column="2" x:Name="edContactNameLast" x:Uid="edContactNameLast" Header="Last Name" Margin="8, 0, 0, 0" />
 
-                        <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edContactPrivate" Text="Private" FontWeight="Bold" Margin="0, 0, 0, 0" VerticalAlignment="Bottom" FontFamily="Segoe UI"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edContactPrivate" x:Uid="edContactPrivate" Text="Private" FontWeight="Bold" Margin="0, 0, 0, 0" VerticalAlignment="Bottom" FontFamily="Segoe UI"/>
                         <Line Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Stroke="{ThemeResource SystemControlAcrylicWindowBrush}" StrokeThickness="2" X2="10" Stretch="Fill" VerticalAlignment="Bottom"/>
                         <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edContactUrl" x:Uid="edContactUrl" Header="Home Page" Margin="0, 0, 0, 0" FontFamily="Segoe UI" />
                         <TextBox Grid.Row="3" Grid.Column="0" x:Name="edContactMobile" x:Uid="edContactMobile" Header="Mobile" Margin="0, 0, 0, 0" />
@@ -117,7 +117,7 @@
                         <TextBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" x:Name="edContactAdrHome" x:Uid="edContactAdrHome" Header="Address" Margin="0, 0, 0, 0" />
                         <TextBox Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="1" x:Name="edContactAdrHomePostal" x:Uid="edContactAdrHomePostal" Header="Postal" Margin="8, 0, 0, 0" />
 
-                        <TextBlock Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edContactPublic" Text="Public" FontWeight="Bold" Margin="0, 0, 0, 0" VerticalAlignment="Bottom"/>
+                        <TextBlock Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edContactPublic" x:Uid="edContactPublic" Text="Public" FontWeight="Bold" Margin="0, 0, 0, 0" VerticalAlignment="Bottom"/>
                         <Line Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Stroke="{ThemeResource SystemControlAcrylicWindowBrush}" StrokeThickness="2" X2="10" Stretch="Fill" VerticalAlignment="Bottom" />
                         <TextBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edContactOrg" x:Uid="edContactOrg" Header="Company" Margin="0, 0, 0, 0" />
                         <TextBox Grid.Row="7" Grid.Column="0" x:Name="edContactTitle" x:Uid="edContactTitle" Header="Title" Margin="0, 0, 0, 0" />
@@ -126,7 +126,7 @@
                         <TextBox Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" x:Name="edContactAdrWork" x:Uid="edContactAdrWork" Header="Address" Margin="0, 0, 0, 0" />
                         <TextBox Grid.Row="8" Grid.Column="2" Grid.ColumnSpan="1" x:Name="edContactAdrWorkPostal" x:Uid="edContactAdrWorkPostal" Header="Postal" Margin="8, 0, 0, 0" />
 
-                        <TextBlock Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edContactMisc" Text="Misc" FontWeight="Bold" Margin="0, 0, 0, 0" VerticalAlignment="Bottom"/>
+                        <TextBlock Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edContactMisc" x:Uid="edContactMisc" Text="Misc" FontWeight="Bold" Margin="0, 0, 0, 0" VerticalAlignment="Bottom"/>
                         <Line Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" Stroke="{ThemeResource SystemControlAcrylicWindowBrush}" StrokeThickness="2" X2="10" Stretch="Fill" VerticalAlignment="Bottom"/>
                         <TextBox Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edContactNote" x:Uid="edContactNote" Header="Note" Margin="0, 0, 0, 0" />
                     </Grid>

@@ -87,7 +87,7 @@ namespace StringCodec.UWP.Pages
 
         private void edQR_TextChanged(object sender, TextChangedEventArgs e)
         {
-            lblInfo.Text = $"Count: {edQR.Text.Length}";
+            lblInfo.Text = $"{"Count".T()}: {edQR.Text.Length}";
             text_src = edQR.Text;
         }
 

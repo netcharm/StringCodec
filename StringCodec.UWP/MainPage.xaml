@@ -8,14 +8,14 @@
     mc:Ignorable="d"
     MinWidth="600"
     MinHeight="480"
-    Loaded="Page_Loaded"
+    Loaded="Page_Loaded"    
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
         
     </Page.Resources>
 
-    <NavigationView x:Name="nvMain"
+    <NavigationView x:Name="nvMain" x:Uid="NvMain"
                     Loaded="NvMain_Loaded" 
                     SelectionChanged="NvMain_SelectionChanged" 
                     ItemInvoked="NvMain_ItemInvoked"
@@ -27,9 +27,10 @@
                     Margin="0,0,0,0"
                     IsSettingsVisible="{Binding ElementName=settingsCheck,Path=IsChecked}"
                     IsTabStop="False">
-        <NavigationView.AutoSuggestBox>
+        
+        <!--<NavigationView.AutoSuggestBox>
             <AutoSuggestBox x:Name="nvAutoSuggestBox" QueryIcon="Find"/>
-        </NavigationView.AutoSuggestBox>
+        </NavigationView.AutoSuggestBox>-->
 
         <NavigationView.MenuItems>
             <NavigationViewItemSeparator/>

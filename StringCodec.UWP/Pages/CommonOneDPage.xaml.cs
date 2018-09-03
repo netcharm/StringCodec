@@ -99,7 +99,7 @@ namespace StringCodec.UWP.Pages
 
         private void edBarcode_TextChanged(object sender, TextChangedEventArgs e)
         {
-            lblInfo.Text = $"Count: {edBarcode.Text.Length}";
+            lblInfo.Text = $"{"Count".T()}: {edBarcode.Text.Length}";
             text_src = edBarcode.Text;
         }
 
@@ -348,7 +348,7 @@ namespace StringCodec.UWP.Pages
                 }
                 catch (Exception ex)
                 {
-                    await new MessageDialog(ex.Message, "ERROR").ShowAsync();
+                    await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
                 }
             }
             else if (sender == edBarcode)
