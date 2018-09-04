@@ -178,7 +178,7 @@
     <value>Url address</value>
   </data>
   <data name="edLinkContent.Header" xml:space="preserve">
-    <value>Centent</value>
+    <value>Content</value>
   </data>
   <data name="edLinkContent.PlaceholderText" xml:space="preserve">
     <value>Url Parameters</value>
@@ -722,5 +722,11 @@
   </data>
   <data name="UIThemeSwitch.OnContent" xml:space="preserve">
     <value>Dark Theme</value>
+  </data>
+  <data name="edSrcContent.Header" xml:space="preserve">
+    <value>Content</value>
+  </data>
+  <data name="edSrcContent.PlaceholderText" xml:space="preserve">
+    <value>Here is text file contents</value>
   </data>
 </root>

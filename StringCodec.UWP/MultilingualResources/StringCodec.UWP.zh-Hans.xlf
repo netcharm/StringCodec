@@ -83,7 +83,7 @@
           <target state="translated">地址</target>
         </trans-unit>
         <trans-unit id="edLinkContent.Header" translate="yes" xml:space="preserve">
-          <source>Centent</source>
+          <source>Content</source>
           <target state="translated">内容</target>
         </trans-unit>
         <trans-unit id="edLinkContent.PlaceholderText" translate="yes" xml:space="preserve">
@@ -536,7 +536,7 @@
         </trans-unit>
         <trans-unit id="optBarcodeTextSizeNone.Text" translate="yes" xml:space="preserve">
           <source>None Text</source>
-          <target state="translated">没有文本</target>
+          <target state="translated">不显示文本</target>
         </trans-unit>
         <trans-unit id="edInfo.Text" translate="yes" xml:space="preserve">
           <source></source>
@@ -813,6 +813,14 @@
         <trans-unit id="UILanguageJA.Content" translate="yes" xml:space="preserve">
           <source>Japanese</source>
           <target state="translated">日语</target>
+        </trans-unit>
+        <trans-unit id="edSrcContent.Header" translate="yes" xml:space="preserve">
+          <source>Content</source>
+          <target state="translated">文本内容</target>
+        </trans-unit>
+        <trans-unit id="edSrcContent.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Here is text file contents</source>
+          <target state="translated">此处显示选中文本文件的内容</target>
         </trans-unit>
       </group>
     </body>

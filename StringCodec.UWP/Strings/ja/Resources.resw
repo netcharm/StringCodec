@@ -12,4 +12,616 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AppName" xml:space="preserve">
+    <value>テキストコーデック</value>
+  </data>
+  <data name="ERROR" xml:space="preserve">
+    <value>エラー</value>
+  </data>
+  <data name="nvItemQRCode.Content" xml:space="preserve">
+    <value>QR のエンコード/デコード</value>
+  </data>
+  <data name="nvItemText.Content" xml:space="preserve">
+    <value>テキストのエンコード/デコード</value>
+  </data>
+  <data name="nvItemImage.Content" xml:space="preserve">
+    <value>イメージから/への BASE64</value>
+  </data>
+  <data name="nvItemText.ToolTipService.ToolTip" xml:space="preserve">
+    <value>テキストのエンコードし、デコード</value>
+  </data>
+  <data name="nvItemQRCode.ToolTipService.ToolTip" xml:space="preserve">
+    <value>QR コード、または QR コード画像からコンテンツをデコード</value>
+  </data>
+  <data name="nvItemImage.ToolTipService.ToolTip" xml:space="preserve">
+    <value>画像を BASE64 文字列に変換またはイメージに BASE64 文字列をデコード</value>
+  </data>
+  <data name="nvItemCommonOneD.Content" xml:space="preserve">
+    <value>慣用的な 1 次元バーコード</value>
+  </data>
+  <data name="nvItemCommonOneD.ToolTipService.ToolTip" xml:space="preserve">
+    <value>慣用的な 1 次元バーコードを作る/デコードします。</value>
+  </data>
+  <data name="nvItemCommonQR.Content" xml:space="preserve">
+    <value>慣用 QR コード</value>
+  </data>
+  <data name="nvItemCommonQR.ToolTipService.ToolTip" xml:space="preserve">
+    <value>慣用の QR コードを作る</value>
+  </data>
+  <data name="nvItemCharset.Content" xml:space="preserve">
+    <value>フォルダー&amp;ファイル文字セット</value>
+  </data>
+  <data name="nvItemCharset.ToolTipService.ToolTip" xml:space="preserve">
+    <value>指定された文字セットのフォルダー/ファイル名を変換します。</value>
+  </data>
+  <data name="nvAbout.Content" xml:space="preserve">
+    <value>情報をもっと見る</value>
+  </data>
+  <data name="nvAbout.ToolTipService.ToolTip" xml:space="preserve">
+    <value>私は. について</value>
+  </data>
+  <data name="piLink.Header" xml:space="preserve">
+    <value>Web リンク</value>
+  </data>
+  <data name="edLinkUrl.Header" xml:space="preserve">
+    <value>Url</value>
+  </data>
+  <data name="edLinkUrl.PlaceholderText" xml:space="preserve">
+    <value>Url アドレス</value>
+  </data>
+  <data name="edLinkContent.Header" xml:space="preserve">
+    <value>コンテンツ</value>
+  </data>
+  <data name="edLinkContent.PlaceholderText" xml:space="preserve">
+    <value>Url パラメーター</value>
+  </data>
+  <data name="piWifi.Header" xml:space="preserve">
+    <value>WIFI 情報</value>
+  </data>
+  <data name="edWifiSSID.Header" xml:space="preserve">
+    <value>SSID</value>
+  </data>
+  <data name="edWifiSSID.PlaceholderText" xml:space="preserve">
+    <value>SSID またはネットワーク名</value>
+  </data>
+  <data name="edWifiPass.Header" xml:space="preserve">
+    <value>パスワード</value>
+  </data>
+  <data name="edWifiPass.PlaceholderText" xml:space="preserve">
+    <value>WIFI のパスワード</value>
+  </data>
+  <data name="edWifiEncypto.Header" xml:space="preserve">
+    <value>暗号化の種類</value>
+  </data>
+  <data name="edWifiEncypto.PlaceholderText" xml:space="preserve">
+    <value>パスワードの暗号化の種類</value>
+  </data>
+  <data name="edWifiHidden.Content" xml:space="preserve">
+    <value>非表示の SSID</value>
+  </data>
+  <data name="piMail.Header" xml:space="preserve">
+    <value>メールを送信します。</value>
+  </data>
+  <data name="edMailTo.Header" xml:space="preserve">
+    <value>送信先</value>
+  </data>
+  <data name="edMailTo.PlaceholderText" xml:space="preserve">
+    <value>メール アドレス</value>
+  </data>
+  <data name="edMailSubject.Header" xml:space="preserve">
+    <value>全訳</value>
+  </data>
+  <data name="edMailSubject.PlaceholderText" xml:space="preserve">
+    <value>件名</value>
+  </data>
+  <data name="edMailContent.Header" xml:space="preserve">
+    <value>コンテンツ</value>
+  </data>
+  <data name="edMailContent.PlaceholderText" xml:space="preserve">
+    <value>メールの内容</value>
+  </data>
+  <data name="piGeo.Header" xml:space="preserve">
+    <value>ジオ クエリ</value>
+  </data>
+  <data name="edGeoLat.Header" xml:space="preserve">
+    <value>緯度</value>
+  </data>
+  <data name="edGeoLat.PlaceholderText" xml:space="preserve">
+    <value>緯度</value>
+  </data>
+  <data name="edGeoLon.Header" xml:space="preserve">
+    <value>経度</value>
+  </data>
+  <data name="edGeoLon.PlaceholderText" xml:space="preserve">
+    <value>経度</value>
+  </data>
+  <data name="edGeoQuery.Header" xml:space="preserve">
+    <value>クエリの内容</value>
+  </data>
+  <data name="edGeoQuery.PlaceholderText" xml:space="preserve">
+    <value>Url パラメーター</value>
+  </data>
+  <data name="piContact.Header" xml:space="preserve">
+    <value>連絡先情報</value>
+  </data>
+  <data name="edContactNameFirst.Header" xml:space="preserve">
+    <value>名</value>
+  </data>
+  <data name="edContactNameMiddle.Header" xml:space="preserve">
+    <value>ミドル ネーム</value>
+  </data>
+  <data name="edContactNameLast.Header" xml:space="preserve">
+    <value>姓</value>
+  </data>
+  <data name="edContactPrivate.Text" xml:space="preserve">
+    <value>プライベート</value>
+  </data>
+  <data name="edContactUrl.Header" xml:space="preserve">
+    <value>ホーム ページ</value>
+  </data>
+  <data name="edContactMobile.Header" xml:space="preserve">
+    <value>携帯電話</value>
+  </data>
+  <data name="edContactMail.Header" xml:space="preserve">
+    <value>電子メール</value>
+  </data>
+  <data name="edContactPublic.Text" xml:space="preserve">
+    <value>パブリック</value>
+  </data>
+  <data name="edContactOrg.Header" xml:space="preserve">
+    <value>会社</value>
+  </data>
+  <data name="edContactTitle.Header" xml:space="preserve">
+    <value>タイトル</value>
+  </data>
+  <data name="edContactMisc.Text" xml:space="preserve">
+    <value>その他</value>
+  </data>
+  <data name="edContactNote.Header" xml:space="preserve">
+    <value>注意</value>
+  </data>
+  <data name="piEvent.Header" xml:space="preserve">
+    <value>時間イベント</value>
+  </data>
+  <data name="edEventSummary.Header" xml:space="preserve">
+    <value>概要</value>
+  </data>
+  <data name="edEventLocation.Header" xml:space="preserve">
+    <value>位置</value>
+  </data>
+  <data name="edEventGeoLon.Header" xml:space="preserve">
+    <value>経度</value>
+  </data>
+  <data name="edEventGeoLat.Header" xml:space="preserve">
+    <value>緯度</value>
+  </data>
+  <data name="edEventFullDay.Content" xml:space="preserve">
+    <value>全日</value>
+  </data>
+  <data name="edEventDTStart.Header" xml:space="preserve">
+    <value>開始</value>
+  </data>
+  <data name="edEventDTStart.PlaceholderText" xml:space="preserve">
+    <value>開始</value>
+  </data>
+  <data name="edEventDTEnd.Header" xml:space="preserve">
+    <value>終わり</value>
+  </data>
+  <data name="edEventDTEnd.PlaceholderText" xml:space="preserve">
+    <value>終わり</value>
+  </data>
+  <data name="edEventAddress.Header" xml:space="preserve">
+    <value>アドレス</value>
+  </data>
+  <data name="edEventLink.Header" xml:space="preserve">
+    <value>URL リンク</value>
+  </data>
+  <data name="edEventUid.Header" xml:space="preserve">
+    <value>ユーザー</value>
+  </data>
+  <data name="edEventDesc.Header" xml:space="preserve">
+    <value>説明</value>
+  </data>
+  <data name="Percent.Text" xml:space="preserve">
+    <value>0%</value>
+  </data>
+  <data name="btnOpenFolder.Label" xml:space="preserve">
+    <value>フォルダー</value>
+  </data>
+  <data name="btnOpenFolder.ToolTipService.ToolTip" xml:space="preserve">
+    <value>フォルダーを開く</value>
+  </data>
+  <data name="btnOpenFile.Label" xml:space="preserve">
+    <value>ファイル</value>
+  </data>
+  <data name="btnOpenFile.ToolTipService.ToolTip" xml:space="preserve">
+    <value>ファイルを開く</value>
+  </data>
+  <data name="btnOptSrc.Label" xml:space="preserve">
+    <value>ソース</value>
+  </data>
+  <data name="btnRename.Label" xml:space="preserve">
+    <value>名前の変更</value>
+  </data>
+  <data name="btnRename.ToolTipService.ToolTip" xml:space="preserve">
+    <value>選択したファイル名を現在のソース文字セットに変更します。</value>
+  </data>
+  <data name="ActionRename.Text" xml:space="preserve">
+    <value>選択した項目の名前を変更します。</value>
+  </data>
+  <data name="ActionRenameAll.Text" xml:space="preserve">
+    <value>すべての項目の名前を変更します。</value>
+  </data>
+  <data name="optActionRename.Text" xml:space="preserve">
+    <value>置換ファイルが存在します。</value>
+  </data>
+  <data name="btnOptDst.Label" xml:space="preserve">
+    <value>ターゲット</value>
+  </data>
+  <data name="btnConvert.Label" xml:space="preserve">
+    <value>変換</value>
+  </data>
+  <data name="btnConvert.ToolTipService.ToolTip" xml:space="preserve">
+    <value>選択したファイルの内容を選択した文字に変換します。</value>
+  </data>
+  <data name="ActionConvert.Text" xml:space="preserve">
+    <value>選択したファイルを変換します。</value>
+  </data>
+  <data name="ActionConvertAll.Text" xml:space="preserve">
+    <value>すべてのテキスト ファイルに変換します。</value>
+  </data>
+  <data name="optActionConvert.Text" xml:space="preserve">
+    <value>元のファイルを上書き</value>
+  </data>
+  <data name="optFolderDeep.Label" xml:space="preserve">
+    <value>フォルダー深い</value>
+  </data>
+  <data name="optFolderDeepF.Text" xml:space="preserve">
+    <value>サブのすべてのツリーします。</value>
+  </data>
+  <data name="optFolderDeep0.Text" xml:space="preserve">
+    <value>現在のフォルダー</value>
+  </data>
+  <data name="optFolderDeep1.Text" xml:space="preserve">
+    <value>レベル 1</value>
+  </data>
+  <data name="optFolderDeep2.Text" xml:space="preserve">
+    <value>レベル 2</value>
+  </data>
+  <data name="optFolderDeep3.Text" xml:space="preserve">
+    <value>レベル 3</value>
+  </data>
+  <data name="optFolderDeep4.Text" xml:space="preserve">
+    <value>レベル 4</value>
+  </data>
+  <data name="optWrapText.Label" xml:space="preserve">
+    <value>テキストを折り返す</value>
+  </data>
+  <data name="edSrc.Header" xml:space="preserve">
+    <value>入力</value>
+  </data>
+  <data name="edSrc.PlaceholderText" xml:space="preserve">
+    <value>ここで入力します。</value>
+  </data>
+  <data name="btnOpt.Label" xml:space="preserve">
+    <value>オプション</value>
+  </data>
+  <data name="optBarCodeExpress.Text" xml:space="preserve">
+    <value>エクスプレス号</value>
+  </data>
+  <data name="optBarCodeISBN.Text" xml:space="preserve">
+    <value>本および刊行物 ISBN</value>
+  </data>
+  <data name="optBarCodeProduct.Text" xml:space="preserve">
+    <value>製品</value>
+  </data>
+  <data name="optBarCodeEAN13.Text" xml:space="preserve">
+    <value>EAN-13</value>
+  </data>
+  <data name="optBarCode39.Text" xml:space="preserve">
+    <value>Code 39</value>
+  </data>
+  <data name="optBarCode128.Text" xml:space="preserve">
+    <value>Code 128</value>
+  </data>
+  <data name="optBarCodeUPCA.Text" xml:space="preserve">
+    <value>UPC-A</value>
+  </data>
+  <data name="optBarCodeUPCE.Text" xml:space="preserve">
+    <value>UPC-E</value>
+  </data>
+  <data name="optBarCode93.Text" xml:space="preserve">
+    <value>Code 93</value>
+  </data>
+  <data name="optBarCodeITF.Text" xml:space="preserve">
+    <value>Interleaved 2 of 5</value>
+  </data>
+  <data name="optBarCodeChecksum.Text" xml:space="preserve">
+    <value>チェックサムを計算する</value>
+  </data>
+  <data name="optFgColor.Text" xml:space="preserve">
+    <value>前景の色</value>
+  </data>
+  <data name="optBgColor.Text" xml:space="preserve">
+    <value>背景色</value>
+  </data>
+  <data name="optResetColor.Text" xml:space="preserve">
+    <value>リセット ・ カラー</value>
+  </data>
+  <data name="btnCopy.Label" xml:space="preserve">
+    <value>コピー</value>
+  </data>
+  <data name="btnPaste.Label" xml:space="preserve">
+    <value>ペースト</value>
+  </data>
+  <data name="btnEncode.Label" xml:space="preserve">
+    <value>エンコード</value>
+  </data>
+  <data name="btnDecode.Label" xml:space="preserve">
+    <value>デコード</value>
+  </data>
+  <data name="btnCapture.Label" xml:space="preserve">
+    <value>キャプチャ</value>
+  </data>
+  <data name="btnSave.Label" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="btnImageToBase64.Label" xml:space="preserve">
+    <value>BASE64 をイメージ</value>
+  </data>
+  <data name="btnTextToDecode.Label" xml:space="preserve">
+    <value>テキスト文字列をデコードします。</value>
+  </data>
+  <data name="btnTextToQR.Label" xml:space="preserve">
+    <value>Qr コードにテキスト</value>
+  </data>
+  <data name="optSaveSizeWindow.Label" xml:space="preserve">
+    <value>表示サイズ</value>
+  </data>
+  <data name="optSaveSizeL.Label" xml:space="preserve">
+    <value>L: 1024x1024</value>
+  </data>
+  <data name="optSaveSizeM.Label" xml:space="preserve">
+    <value>M: 512x512</value>
+  </data>
+  <data name="optSaveSizeN.Label" xml:space="preserve">
+    <value>S: 256x256</value>
+  </data>
+  <data name="optSaveSizeS.Label" xml:space="preserve">
+    <value>S: 128x128</value>
+  </data>
+  <data name="optBarcodeTextSize.Label" xml:space="preserve">
+    <value>バーコードのテキスト サイズ</value>
+  </data>
+  <data name="optBarcodeTextSizeXL.Text" xml:space="preserve">
+    <value>XL: 特大</value>
+  </data>
+  <data name="optBarcodeTextSizeL.Text" xml:space="preserve">
+    <value>L: 大</value>
+  </data>
+  <data name="optBarcodeTextSizeM.Text" xml:space="preserve">
+    <value>M: 中間</value>
+  </data>
+  <data name="optBarcodeTextSizeS.Text" xml:space="preserve">
+    <value>S: 小</value>
+  </data>
+  <data name="optBarcodeTextSizeXS.Text" xml:space="preserve">
+    <value>XS: 余分な小</value>
+  </data>
+  <data name="optBarcodeTextSizeNone.Text" xml:space="preserve">
+    <value>テキストを表示しない</value>
+  </data>
+  <data name="edInfo.Text" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="edBarcode.Header" xml:space="preserve">
+    <value>テキスト</value>
+  </data>
+  <data name="edBarcode.PlaceholderText" xml:space="preserve">
+    <value>ここにテキストを入力</value>
+  </data>
+  <data name="btnCommonType.Label" xml:space="preserve">
+    <value>タイプ</value>
+  </data>
+  <data name="optCommonLink.Text" xml:space="preserve">
+    <value>Web リンク</value>
+  </data>
+  <data name="optCommonWifi.Text" xml:space="preserve">
+    <value>WIFI 情報</value>
+  </data>
+  <data name="optCommonMail.Text" xml:space="preserve">
+    <value>電子メール送信</value>
+  </data>
+  <data name="optCommonGeo.Text" xml:space="preserve">
+    <value>ジオ クエリ</value>
+  </data>
+  <data name="optCommonContact.Text" xml:space="preserve">
+    <value>お問い合わせください。</value>
+  </data>
+  <data name="optCommonEvent.Text" xml:space="preserve">
+    <value>時間イベント</value>
+  </data>
+  <data name="optECL_L.Text" xml:space="preserve">
+    <value>ECC のレベル: L</value>
+  </data>
+  <data name="optECL_M.Text" xml:space="preserve">
+    <value>ECC のレベル: M</value>
+  </data>
+  <data name="optECL_Q.Text" xml:space="preserve">
+    <value>ECC のレベル: Q</value>
+  </data>
+  <data name="optECL_H.Text" xml:space="preserve">
+    <value>ECC のレベル: H</value>
+  </data>
+  <data name="optUsingDialog.Label" xml:space="preserve">
+    <value>ダイアログを使用してください。</value>
+  </data>
+  <data name="edQR.Header" xml:space="preserve">
+    <value>本文 [Max = 984]。</value>
+  </data>
+  <data name="edQR.PlaceholderText" xml:space="preserve">
+    <value>ここにテキストを入力</value>
+  </data>
+  <data name="optPrefix.Text" xml:space="preserve">
+    <value>BASE64 にプレフィックスを追加します。</value>
+  </data>
+  <data name="optLineBreak.Text" xml:space="preserve">
+    <value>改行</value>
+  </data>
+  <data name="optFmtPng.Text" xml:space="preserve">
+    <value>PNG 画像ファイル</value>
+  </data>
+  <data name="optFmtJpg.Text" xml:space="preserve">
+    <value>JPG 画像ファイル</value>
+  </data>
+  <data name="optFmtBmp.Text" xml:space="preserve">
+    <value>BMP イメージ ファイル</value>
+  </data>
+  <data name="optFmtGif.Text" xml:space="preserve">
+    <value>GIF 画像ファイル</value>
+  </data>
+  <data name="optFmtTif.Text" xml:space="preserve">
+    <value>TIF イメージ ファイル</value>
+  </data>
+  <data name="btnImageQRCode.Label" xml:space="preserve">
+    <value>Qr コードにイメージ</value>
+  </data>
+  <data name="btnImageOneD.Label" xml:space="preserve">
+    <value>1 D バーコード イメージ</value>
+  </data>
+  <data name="edBase64.Header" xml:space="preserve">
+    <value>BASE64</value>
+  </data>
+  <data name="edBase64.PlaceholderText" xml:space="preserve">
+    <value>ここにテキストを入力</value>
+  </data>
+  <data name="btnOk.Content" xml:space="preserve">
+    <value>わかりました</value>
+  </data>
+  <data name="btnCancel.Content" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="optURL.Text" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="optBase64.Text" xml:space="preserve">
+    <value>BASE64</value>
+  </data>
+  <data name="optUUE.Text" xml:space="preserve">
+    <value>UUE</value>
+  </data>
+  <data name="optXXE.Text" xml:space="preserve">
+    <value>XXE</value>
+  </data>
+  <data name="optQuoted.Text" xml:space="preserve">
+    <value>引用符</value>
+  </data>
+  <data name="optRaw.Text" xml:space="preserve">
+    <value>RAW</value>
+  </data>
+  <data name="optThunder.Text" xml:space="preserve">
+    <value>Thunder</value>
+  </data>
+  <data name="optFlashGet.Text" xml:space="preserve">
+    <value>FlashGet</value>
+  </data>
+  <data name="optUTF8.Text" xml:space="preserve">
+    <value>UTF-8</value>
+  </data>
+  <data name="optGBK.Text" xml:space="preserve">
+    <value>GBK</value>
+  </data>
+  <data name="optBIG5.Text" xml:space="preserve">
+    <value>BIG-5</value>
+  </data>
+  <data name="optJIS.Text" xml:space="preserve">
+    <value>Shift-JIS</value>
+  </data>
+  <data name="optUnicode.Text" xml:space="preserve">
+    <value>Unicode</value>
+  </data>
+  <data name="optAscii.Text" xml:space="preserve">
+    <value>ASCII</value>
+  </data>
+  <data name="btnSrcQRCode.Label" xml:space="preserve">
+    <value>Qr コードを入力</value>
+  </data>
+  <data name="btnDstQRCode.Label" xml:space="preserve">
+    <value>Qr コード出力</value>
+  </data>
+  <data name="edDst.Header" xml:space="preserve">
+    <value>出力</value>
+  </data>
+  <data name="edDst.PlaceholderText" xml:space="preserve">
+    <value>ここでは、出力です。</value>
+  </data>
+  <data name="NvMainNavigationViewPaneTitle" xml:space="preserve">
+    <value>&amp;デコード エンコード文字列</value>
+  </data>
+  <data name="btnShare.Label" xml:space="preserve">
+    <value>共有</value>
+  </data>
+  <data name="Count" xml:space="preserve">
+    <value>カウント</value>
+  </data>
+  <data name="Image File" xml:space="preserve">
+    <value>イメージ ファイル</value>
+  </data>
+  <data name="Text File" xml:space="preserve">
+    <value>テキスト ファイル</value>
+  </data>
+  <data name="edContactTel.Header" xml:space="preserve">
+    <value>電話</value>
+  </data>
+  <data name="edContactAdr.Header" xml:space="preserve">
+    <value>アドレス</value>
+  </data>
+  <data name="edContactAdrPostal.Header" xml:space="preserve">
+    <value>郵便</value>
+  </data>
+  <data name="optDefault.Text" xml:space="preserve">
+    <value>デフォルト</value>
+  </data>
+  <data name="UIThemeSwitch.Header" xml:space="preserve">
+    <value>テーマを選択</value>
+  </data>
+  <data name="UILanguageSwitch.Header" xml:space="preserve">
+    <value>言語の選択</value>
+  </data>
+  <data name="UIThemeSwitch.OffContent" xml:space="preserve">
+    <value>光のテーマ</value>
+  </data>
+  <data name="UIThemeSwitch.OnContent" xml:space="preserve">
+    <value>暗いテーマ</value>
+  </data>
+  <data name="edWifiEncyptoNONE.Content" xml:space="preserve">
+    <value>いいえパスなし</value>
+  </data>
+  <data name="edWifiEncyptoWEP.Content" xml:space="preserve">
+    <value>WEP</value>
+  </data>
+  <data name="edWifiEncyptoWPA.Content" xml:space="preserve">
+    <value>WPA/WPA2</value>
+  </data>
+  <data name="UILanguageCHS.Content" xml:space="preserve">
+    <value>簡体字中国語</value>
+  </data>
+  <data name="UILanguageCHT.Content" xml:space="preserve">
+    <value>繁体字中国語</value>
+  </data>
+  <data name="UILanguageDefault.Content" xml:space="preserve">
+    <value>デフォルト</value>
+  </data>
+  <data name="UILanguageEN.Content" xml:space="preserve">
+    <value>英語</value>
+  </data>
+  <data name="UILanguageJA.Content" xml:space="preserve">
+    <value>日本語</value>
+  </data>
+  <data name="edSrcContent.Header" xml:space="preserve">
+    <value>テキストコンテンツ</value>
+  </data>
+  <data name="edSrcContent.PlaceholderText" xml:space="preserve">
+    <value>選択したテキストファイルの内容がここに表示されます</value>
+  </data>
 </root>

@@ -12,4 +12,616 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AppName" xml:space="preserve">
+    <value>文本編碼解碼工具</value>
+  </data>
+  <data name="ERROR" xml:space="preserve">
+    <value>錯誤</value>
+  </data>
+  <data name="nvItemQRCode.Content" xml:space="preserve">
+    <value>QR二維碼編碼和解碼</value>
+  </data>
+  <data name="nvItemText.Content" xml:space="preserve">
+    <value>文本編碼和解碼</value>
+  </data>
+  <data name="nvItemImage.Content" xml:space="preserve">
+    <value>圖像和BASE64互轉換</value>
+  </data>
+  <data name="nvItemText.ToolTipService.ToolTip" xml:space="preserve">
+    <value>文本編碼和解碼</value>
+  </data>
+  <data name="nvItemQRCode.ToolTipService.ToolTip" xml:space="preserve">
+    <value>生成QR二維碼或者從圖像內容解讀二維碼</value>
+  </data>
+  <data name="nvItemImage.ToolTipService.ToolTip" xml:space="preserve">
+    <value>轉換圖像為BASE64文本或者從BASE64文本解碼圖像</value>
+  </data>
+  <data name="nvItemCommonOneD.Content" xml:space="preserve">
+    <value>常用一維條形碼</value>
+  </data>
+  <data name="nvItemCommonOneD.ToolTipService.ToolTip" xml:space="preserve">
+    <value>生成和解讀常用一維條形碼</value>
+  </data>
+  <data name="nvItemCommonQR.Content" xml:space="preserve">
+    <value>常用QR二維碼</value>
+  </data>
+  <data name="nvItemCommonQR.ToolTipService.ToolTip" xml:space="preserve">
+    <value>生成常用的QR二維碼</value>
+  </data>
+  <data name="nvItemCharset.Content" xml:space="preserve">
+    <value>檔案夾和檔案的字符集</value>
+  </data>
+  <data name="nvItemCharset.ToolTipService.ToolTip" xml:space="preserve">
+    <value>轉換檔案夾和檔案的名稱以及文本內容到指定的字符集</value>
+  </data>
+  <data name="nvAbout.Content" xml:space="preserve">
+    <value>更多信息</value>
+  </data>
+  <data name="nvAbout.ToolTipService.ToolTip" xml:space="preserve">
+    <value>關於我...</value>
+  </data>
+  <data name="piLink.Header" xml:space="preserve">
+    <value>網頁連結</value>
+  </data>
+  <data name="edLinkUrl.Header" xml:space="preserve">
+    <value>網路地址</value>
+  </data>
+  <data name="edLinkUrl.PlaceholderText" xml:space="preserve">
+    <value>地址</value>
+  </data>
+  <data name="edLinkContent.Header" xml:space="preserve">
+    <value>內容</value>
+  </data>
+  <data name="edLinkContent.PlaceholderText" xml:space="preserve">
+    <value>參數</value>
+  </data>
+  <data name="piWifi.Header" xml:space="preserve">
+    <value>WIFI網路信息</value>
+  </data>
+  <data name="edWifiSSID.Header" xml:space="preserve">
+    <value>WIFI網路名稱(SSID)</value>
+  </data>
+  <data name="edWifiSSID.PlaceholderText" xml:space="preserve">
+    <value>WIFI網路名稱(SSID)</value>
+  </data>
+  <data name="edWifiPass.Header" xml:space="preserve">
+    <value>密碼</value>
+  </data>
+  <data name="edWifiPass.PlaceholderText" xml:space="preserve">
+    <value>WIFI密碼</value>
+  </data>
+  <data name="edWifiEncypto.Header" xml:space="preserve">
+    <value>加密方式</value>
+  </data>
+  <data name="edWifiEncypto.PlaceholderText" xml:space="preserve">
+    <value>密碼加密方式</value>
+  </data>
+  <data name="edWifiHidden.Content" xml:space="preserve">
+    <value>隱藏網路名稱(SSID)</value>
+  </data>
+  <data name="piMail.Header" xml:space="preserve">
+    <value>發送郵件</value>
+  </data>
+  <data name="edMailTo.Header" xml:space="preserve">
+    <value>發送到</value>
+  </data>
+  <data name="edMailTo.PlaceholderText" xml:space="preserve">
+    <value>郵件地址</value>
+  </data>
+  <data name="edMailSubject.Header" xml:space="preserve">
+    <value>郵件主題</value>
+  </data>
+  <data name="edMailSubject.PlaceholderText" xml:space="preserve">
+    <value>郵件主題</value>
+  </data>
+  <data name="edMailContent.Header" xml:space="preserve">
+    <value>內容</value>
+  </data>
+  <data name="edMailContent.PlaceholderText" xml:space="preserve">
+    <value>郵件內容</value>
+  </data>
+  <data name="piGeo.Header" xml:space="preserve">
+    <value>地理信息查詢</value>
+  </data>
+  <data name="edGeoLat.Header" xml:space="preserve">
+    <value>緯度</value>
+  </data>
+  <data name="edGeoLat.PlaceholderText" xml:space="preserve">
+    <value>緯度</value>
+  </data>
+  <data name="edGeoLon.Header" xml:space="preserve">
+    <value>經度</value>
+  </data>
+  <data name="edGeoLon.PlaceholderText" xml:space="preserve">
+    <value>經度</value>
+  </data>
+  <data name="edGeoQuery.Header" xml:space="preserve">
+    <value>查詢內容</value>
+  </data>
+  <data name="edGeoQuery.PlaceholderText" xml:space="preserve">
+    <value>網頁連結參數</value>
+  </data>
+  <data name="piContact.Header" xml:space="preserve">
+    <value>聯繫人信息</value>
+  </data>
+  <data name="edContactNameFirst.Header" xml:space="preserve">
+    <value>名字</value>
+  </data>
+  <data name="edContactNameMiddle.Header" xml:space="preserve">
+    <value>中間名</value>
+  </data>
+  <data name="edContactNameLast.Header" xml:space="preserve">
+    <value>姓氏</value>
+  </data>
+  <data name="edContactPrivate.Text" xml:space="preserve">
+    <value>私人信息</value>
+  </data>
+  <data name="edContactUrl.Header" xml:space="preserve">
+    <value>主頁</value>
+  </data>
+  <data name="edContactMobile.Header" xml:space="preserve">
+    <value>移動電話</value>
+  </data>
+  <data name="edContactMail.Header" xml:space="preserve">
+    <value>電子郵件</value>
+  </data>
+  <data name="edContactPublic.Text" xml:space="preserve">
+    <value>公開信息</value>
+  </data>
+  <data name="edContactOrg.Header" xml:space="preserve">
+    <value>公司</value>
+  </data>
+  <data name="edContactTitle.Header" xml:space="preserve">
+    <value>職位</value>
+  </data>
+  <data name="edContactMisc.Text" xml:space="preserve">
+    <value>其它</value>
+  </data>
+  <data name="edContactNote.Header" xml:space="preserve">
+    <value>備註</value>
+  </data>
+  <data name="piEvent.Header" xml:space="preserve">
+    <value>行程事件</value>
+  </data>
+  <data name="edEventSummary.Header" xml:space="preserve">
+    <value>摘要</value>
+  </data>
+  <data name="edEventLocation.Header" xml:space="preserve">
+    <value>位置</value>
+  </data>
+  <data name="edEventGeoLon.Header" xml:space="preserve">
+    <value>經度</value>
+  </data>
+  <data name="edEventGeoLat.Header" xml:space="preserve">
+    <value>緯度</value>
+  </data>
+  <data name="edEventFullDay.Content" xml:space="preserve">
+    <value>全天</value>
+  </data>
+  <data name="edEventDTStart.Header" xml:space="preserve">
+    <value>開始</value>
+  </data>
+  <data name="edEventDTStart.PlaceholderText" xml:space="preserve">
+    <value>開始</value>
+  </data>
+  <data name="edEventDTEnd.Header" xml:space="preserve">
+    <value>結束</value>
+  </data>
+  <data name="edEventDTEnd.PlaceholderText" xml:space="preserve">
+    <value>結束</value>
+  </data>
+  <data name="edEventAddress.Header" xml:space="preserve">
+    <value>地址</value>
+  </data>
+  <data name="edEventLink.Header" xml:space="preserve">
+    <value>網頁連結</value>
+  </data>
+  <data name="edEventUid.Header" xml:space="preserve">
+    <value>使用者</value>
+  </data>
+  <data name="edEventDesc.Header" xml:space="preserve">
+    <value>描述</value>
+  </data>
+  <data name="Percent.Text" xml:space="preserve">
+    <value>0%</value>
+  </data>
+  <data name="btnOpenFolder.Label" xml:space="preserve">
+    <value>檔案夾</value>
+  </data>
+  <data name="btnOpenFolder.ToolTipService.ToolTip" xml:space="preserve">
+    <value>打開檔案夾</value>
+  </data>
+  <data name="btnOpenFile.Label" xml:space="preserve">
+    <value>檔案</value>
+  </data>
+  <data name="btnOpenFile.ToolTipService.ToolTip" xml:space="preserve">
+    <value>打開檔案</value>
+  </data>
+  <data name="btnOptSrc.Label" xml:space="preserve">
+    <value>來源</value>
+  </data>
+  <data name="btnRename.Label" xml:space="preserve">
+    <value>重命名</value>
+  </data>
+  <data name="btnRename.ToolTipService.ToolTip" xml:space="preserve">
+    <value>重命名選擇的檔案或檔案夾為當前指定的來源字符集</value>
+  </data>
+  <data name="ActionRename.Text" xml:space="preserve">
+    <value>重命名選擇的檔案或檔案夾</value>
+  </data>
+  <data name="ActionRenameAll.Text" xml:space="preserve">
+    <value>重命名所有檔案或檔案夾</value>
+  </data>
+  <data name="optActionRename.Text" xml:space="preserve">
+    <value>替換存在的檔案</value>
+  </data>
+  <data name="btnOptDst.Label" xml:space="preserve">
+    <value>目標</value>
+  </data>
+  <data name="btnConvert.Label" xml:space="preserve">
+    <value>轉換</value>
+  </data>
+  <data name="btnConvert.ToolTipService.ToolTip" xml:space="preserve">
+    <value>轉換選擇的文本檔案內容到指定的目標字符集</value>
+  </data>
+  <data name="ActionConvert.Text" xml:space="preserve">
+    <value>轉換選擇的文本檔案</value>
+  </data>
+  <data name="ActionConvertAll.Text" xml:space="preserve">
+    <value>轉換所有的文本檔案</value>
+  </data>
+  <data name="optActionConvert.Text" xml:space="preserve">
+    <value>覆寫原始檔案</value>
+  </data>
+  <data name="optFolderDeep.Label" xml:space="preserve">
+    <value>檔案夾深度</value>
+  </data>
+  <data name="optFolderDeepF.Text" xml:space="preserve">
+    <value>全部子目錄</value>
+  </data>
+  <data name="optFolderDeep0.Text" xml:space="preserve">
+    <value>當前檔案夾</value>
+  </data>
+  <data name="optFolderDeep1.Text" xml:space="preserve">
+    <value>1 級子檔案夾</value>
+  </data>
+  <data name="optFolderDeep2.Text" xml:space="preserve">
+    <value>2 級子檔案夾</value>
+  </data>
+  <data name="optFolderDeep3.Text" xml:space="preserve">
+    <value>3 級子檔案夾</value>
+  </data>
+  <data name="optFolderDeep4.Text" xml:space="preserve">
+    <value>4 級子檔案夾</value>
+  </data>
+  <data name="optWrapText.Label" xml:space="preserve">
+    <value>文本自動折行</value>
+  </data>
+  <data name="edSrc.Header" xml:space="preserve">
+    <value>輸入</value>
+  </data>
+  <data name="edSrc.PlaceholderText" xml:space="preserve">
+    <value>在此輸入</value>
+  </data>
+  <data name="btnOpt.Label" xml:space="preserve">
+    <value>選項</value>
+  </data>
+  <data name="optBarCodeExpress.Text" xml:space="preserve">
+    <value>快遞單號</value>
+  </data>
+  <data name="optBarCodeISBN.Text" xml:space="preserve">
+    <value>圖書ISBN</value>
+  </data>
+  <data name="optBarCodeProduct.Text" xml:space="preserve">
+    <value>日常商品</value>
+  </data>
+  <data name="optBarCodeEAN13.Text" xml:space="preserve">
+    <value>EAN-13</value>
+  </data>
+  <data name="optBarCode39.Text" xml:space="preserve">
+    <value>Code 39</value>
+  </data>
+  <data name="optBarCode128.Text" xml:space="preserve">
+    <value>Code 128</value>
+  </data>
+  <data name="optBarCodeUPCA.Text" xml:space="preserve">
+    <value>UPC-A</value>
+  </data>
+  <data name="optBarCodeUPCE.Text" xml:space="preserve">
+    <value>UPC-E</value>
+  </data>
+  <data name="optBarCode93.Text" xml:space="preserve">
+    <value>Code 93</value>
+  </data>
+  <data name="optBarCodeITF.Text" xml:space="preserve">
+    <value>Interleaved 2 of 5</value>
+  </data>
+  <data name="optBarCodeChecksum.Text" xml:space="preserve">
+    <value>計算校驗和</value>
+  </data>
+  <data name="optFgColor.Text" xml:space="preserve">
+    <value>前景色</value>
+  </data>
+  <data name="optBgColor.Text" xml:space="preserve">
+    <value>背景色</value>
+  </data>
+  <data name="optResetColor.Text" xml:space="preserve">
+    <value>重置為默認顏色</value>
+  </data>
+  <data name="btnCopy.Label" xml:space="preserve">
+    <value>複製</value>
+  </data>
+  <data name="btnPaste.Label" xml:space="preserve">
+    <value>粘貼</value>
+  </data>
+  <data name="btnEncode.Label" xml:space="preserve">
+    <value>編碼</value>
+  </data>
+  <data name="btnDecode.Label" xml:space="preserve">
+    <value>解碼</value>
+  </data>
+  <data name="btnCapture.Label" xml:space="preserve">
+    <value>截屏</value>
+  </data>
+  <data name="btnSave.Label" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="btnImageToBase64.Label" xml:space="preserve">
+    <value>圖像編碼為BASE64</value>
+  </data>
+  <data name="btnTextToDecode.Label" xml:space="preserve">
+    <value>文本內容解碼</value>
+  </data>
+  <data name="btnTextToQR.Label" xml:space="preserve">
+    <value>文本生成QR二維碼</value>
+  </data>
+  <data name="optSaveSizeWindow.Label" xml:space="preserve">
+    <value>當前顯示的大小</value>
+  </data>
+  <data name="optSaveSizeL.Label" xml:space="preserve">
+    <value>L: 1024x1024</value>
+  </data>
+  <data name="optSaveSizeM.Label" xml:space="preserve">
+    <value>M: 512x512</value>
+  </data>
+  <data name="optSaveSizeN.Label" xml:space="preserve">
+    <value>S: 256x256</value>
+  </data>
+  <data name="optSaveSizeS.Label" xml:space="preserve">
+    <value>S: 128x128</value>
+  </data>
+  <data name="optBarcodeTextSize.Label" xml:space="preserve">
+    <value>條碼文字大小</value>
+  </data>
+  <data name="optBarcodeTextSizeXL.Text" xml:space="preserve">
+    <value>XL: 特大</value>
+  </data>
+  <data name="optBarcodeTextSizeL.Text" xml:space="preserve">
+    <value>L: 大號</value>
+  </data>
+  <data name="optBarcodeTextSizeM.Text" xml:space="preserve">
+    <value>M: 中號</value>
+  </data>
+  <data name="optBarcodeTextSizeS.Text" xml:space="preserve">
+    <value>S: 小號</value>
+  </data>
+  <data name="optBarcodeTextSizeXS.Text" xml:space="preserve">
+    <value>XS: 特小</value>
+  </data>
+  <data name="optBarcodeTextSizeNone.Text" xml:space="preserve">
+    <value>不顯示文本</value>
+  </data>
+  <data name="edInfo.Text" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="edBarcode.Header" xml:space="preserve">
+    <value>文本</value>
+  </data>
+  <data name="edBarcode.PlaceholderText" xml:space="preserve">
+    <value>在此輸入文本</value>
+  </data>
+  <data name="btnCommonType.Label" xml:space="preserve">
+    <value>類型</value>
+  </data>
+  <data name="optCommonLink.Text" xml:space="preserve">
+    <value>網頁連結</value>
+  </data>
+  <data name="optCommonWifi.Text" xml:space="preserve">
+    <value>WIFI 無線網信息</value>
+  </data>
+  <data name="optCommonMail.Text" xml:space="preserve">
+    <value>發送電子郵件</value>
+  </data>
+  <data name="optCommonGeo.Text" xml:space="preserve">
+    <value>地理信息查詢</value>
+  </data>
+  <data name="optCommonContact.Text" xml:space="preserve">
+    <value>聯繫人信息</value>
+  </data>
+  <data name="optCommonEvent.Text" xml:space="preserve">
+    <value>行程事件</value>
+  </data>
+  <data name="optECL_L.Text" xml:space="preserve">
+    <value>糾錯級別: L</value>
+  </data>
+  <data name="optECL_M.Text" xml:space="preserve">
+    <value>糾錯級別: M</value>
+  </data>
+  <data name="optECL_Q.Text" xml:space="preserve">
+    <value>糾錯級別: Q</value>
+  </data>
+  <data name="optECL_H.Text" xml:space="preserve">
+    <value>糾錯級別: H</value>
+  </data>
+  <data name="optUsingDialog.Label" xml:space="preserve">
+    <value>使用對話框模式</value>
+  </data>
+  <data name="edQR.Header" xml:space="preserve">
+    <value>文本 [最多984個字符]:</value>
+  </data>
+  <data name="edQR.PlaceholderText" xml:space="preserve">
+    <value>在此輸入文本</value>
+  </data>
+  <data name="optPrefix.Text" xml:space="preserve">
+    <value>添加前導信息到BASE64文本</value>
+  </data>
+  <data name="optLineBreak.Text" xml:space="preserve">
+    <value>插入換行符</value>
+  </data>
+  <data name="optFmtPng.Text" xml:space="preserve">
+    <value>PNG 圖像檔案</value>
+  </data>
+  <data name="optFmtJpg.Text" xml:space="preserve">
+    <value>JPG 圖像檔案</value>
+  </data>
+  <data name="optFmtBmp.Text" xml:space="preserve">
+    <value>BMP 圖像檔案</value>
+  </data>
+  <data name="optFmtGif.Text" xml:space="preserve">
+    <value>GIF 圖像檔案</value>
+  </data>
+  <data name="optFmtTif.Text" xml:space="preserve">
+    <value>TIF 圖像檔案</value>
+  </data>
+  <data name="btnImageQRCode.Label" xml:space="preserve">
+    <value>圖像轉到QR二維碼生成頁面</value>
+  </data>
+  <data name="btnImageOneD.Label" xml:space="preserve">
+    <value>圖像轉到一維條形碼生成頁面</value>
+  </data>
+  <data name="edBase64.Header" xml:space="preserve">
+    <value>BASE64</value>
+  </data>
+  <data name="edBase64.PlaceholderText" xml:space="preserve">
+    <value>在此輸入文本</value>
+  </data>
+  <data name="btnOk.Content" xml:space="preserve">
+    <value>確認</value>
+  </data>
+  <data name="btnCancel.Content" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="optURL.Text" xml:space="preserve">
+    <value>網址</value>
+  </data>
+  <data name="optBase64.Text" xml:space="preserve">
+    <value>BASE64</value>
+  </data>
+  <data name="optUUE.Text" xml:space="preserve">
+    <value>UUE</value>
+  </data>
+  <data name="optXXE.Text" xml:space="preserve">
+    <value>XXE</value>
+  </data>
+  <data name="optQuoted.Text" xml:space="preserve">
+    <value>Quoted</value>
+  </data>
+  <data name="optRaw.Text" xml:space="preserve">
+    <value>RAW</value>
+  </data>
+  <data name="optThunder.Text" xml:space="preserve">
+    <value>迅雷連結</value>
+  </data>
+  <data name="optFlashGet.Text" xml:space="preserve">
+    <value>FlashGet 連結</value>
+  </data>
+  <data name="optUTF8.Text" xml:space="preserve">
+    <value>UTF-8</value>
+  </data>
+  <data name="optGBK.Text" xml:space="preserve">
+    <value>GBK</value>
+  </data>
+  <data name="optBIG5.Text" xml:space="preserve">
+    <value>BIG-5</value>
+  </data>
+  <data name="optJIS.Text" xml:space="preserve">
+    <value>Shift-JIS</value>
+  </data>
+  <data name="optUnicode.Text" xml:space="preserve">
+    <value>Unicode</value>
+  </data>
+  <data name="optAscii.Text" xml:space="preserve">
+    <value>ASCII</value>
+  </data>
+  <data name="btnSrcQRCode.Label" xml:space="preserve">
+    <value>輸入的文本生成QR二維碼</value>
+  </data>
+  <data name="btnDstQRCode.Label" xml:space="preserve">
+    <value>輸入的文本生成QR二維碼</value>
+  </data>
+  <data name="edDst.Header" xml:space="preserve">
+    <value>輸出</value>
+  </data>
+  <data name="edDst.PlaceholderText" xml:space="preserve">
+    <value>此處為輸出顯示</value>
+  </data>
+  <data name="NvMainNavigationViewPaneTitle" xml:space="preserve">
+    <value>文本編碼解碼工具</value>
+  </data>
+  <data name="btnShare.Label" xml:space="preserve">
+    <value>共享</value>
+  </data>
+  <data name="Count" xml:space="preserve">
+    <value>字數</value>
+  </data>
+  <data name="Image File" xml:space="preserve">
+    <value>圖像檔案</value>
+  </data>
+  <data name="Text File" xml:space="preserve">
+    <value>文本檔案</value>
+  </data>
+  <data name="edContactTel.Header" xml:space="preserve">
+    <value>固定電話</value>
+  </data>
+  <data name="edContactAdr.Header" xml:space="preserve">
+    <value>地址</value>
+  </data>
+  <data name="edContactAdrPostal.Header" xml:space="preserve">
+    <value>郵政編碼</value>
+  </data>
+  <data name="optDefault.Text" xml:space="preserve">
+    <value>系統默認</value>
+  </data>
+  <data name="UIThemeSwitch.Header" xml:space="preserve">
+    <value>界面主題選擇</value>
+  </data>
+  <data name="UILanguageSwitch.Header" xml:space="preserve">
+    <value>界面語言選擇</value>
+  </data>
+  <data name="UIThemeSwitch.OffContent" xml:space="preserve">
+    <value>淺色</value>
+  </data>
+  <data name="UIThemeSwitch.OnContent" xml:space="preserve">
+    <value>深色</value>
+  </data>
+  <data name="edWifiEncyptoNONE.Content" xml:space="preserve">
+    <value>沒有密碼</value>
+  </data>
+  <data name="edWifiEncyptoWEP.Content" xml:space="preserve">
+    <value>WEP</value>
+  </data>
+  <data name="edWifiEncyptoWPA.Content" xml:space="preserve">
+    <value>WPA/WPA2</value>
+  </data>
+  <data name="UILanguageCHS.Content" xml:space="preserve">
+    <value>簡體中文</value>
+  </data>
+  <data name="UILanguageCHT.Content" xml:space="preserve">
+    <value>繁體中文</value>
+  </data>
+  <data name="UILanguageDefault.Content" xml:space="preserve">
+    <value>系統默認</value>
+  </data>
+  <data name="UILanguageEN.Content" xml:space="preserve">
+    <value>英語</value>
+  </data>
+  <data name="UILanguageJA.Content" xml:space="preserve">
+    <value>日語</value>
+  </data>
+  <data name="edSrcContent.Header" xml:space="preserve">
+    <value>文本內容</value>
+  </data>
+  <data name="edSrcContent.PlaceholderText" xml:space="preserve">
+    <value>此處顯示選中文本檔案的內容</value>
+  </data>
 </root>

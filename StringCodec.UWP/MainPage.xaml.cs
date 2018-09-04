@@ -123,7 +123,7 @@ namespace StringCodec.UWP
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
 
             //var theme = ElementTheme.Default;
-            var theme = (ElementTheme)Settings.Get("AppTheme", ElementTheme.Default);
+            var theme = (ElementTheme)Settings.Get("AppTheme", (int)ElementTheme.Default);
             //if (ApplicationData.Current.LocalSettings.Values.ContainsKey("AppTheme"))
             //    theme = (ElementTheme)ApplicationData.Current.LocalSettings.Values["AppTheme"];
             //nvSwitchTheme.IsTapEnabled = false;

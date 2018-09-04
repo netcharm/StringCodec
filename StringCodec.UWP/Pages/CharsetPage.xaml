@@ -243,7 +243,7 @@
             </TreeView.ContextFlyout>
         </TreeView>
 
-        <TextBox Grid.Row="1" Grid.Column="1" x:Name="edSrc" x:Uid="edSrc" 
+        <TextBox Grid.Row="1" Grid.Column="1" x:Name="edSrc" x:Uid="edSrcContent" 
                  Header="Contents:" PlaceholderText="Here is text file contents" Margin="8,8,8,8"
                  AcceptsReturn="True" CanDrag="False"
                  FontSize="16"

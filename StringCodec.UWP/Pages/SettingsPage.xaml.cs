@@ -126,21 +126,21 @@ namespace StringCodec.UWP.Pages
             await Settings.SetUILanguage(lang, UILanguageSwitch.IsEnabled);
             if(rootPage != null && UILanguageSwitch.IsEnabled)
             {
-                //return;
+                return;
 
                 AppResources.Reload();
 
                 //
                 // if NavigationCacheMode set to "Required"
                 //
-                ApplicationLanguages.PrimaryLanguageOverride = lang;
-                await Task.Delay(300);
-                Frame rootFrame = Window.Current.Content as Frame;
-                rootFrame.Content = null;
-                rootFrame = null;
-                rootFrame = new Frame();
-                rootFrame.Navigate(typeof(MainPage), null);
-                Window.Current.Content = rootFrame;
+                //ApplicationLanguages.PrimaryLanguageOverride = lang;
+                //await Task.Delay(300);
+                //Frame rootFrame = Window.Current.Content as Frame;
+                //rootFrame.Content = null;
+                //rootFrame = null;
+                //rootFrame = new Frame();
+                //rootFrame.Navigate(typeof(MainPage), null);
+                //Window.Current.Content = rootFrame;
 
                 //rootPage.NavigationCacheMode = NavigationCacheMode.Disabled;
                 //rootPage.Frame.CacheSize = 0;

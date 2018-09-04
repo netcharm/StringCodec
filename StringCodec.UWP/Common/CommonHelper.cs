@@ -581,7 +581,8 @@ namespace StringCodec.UWP.Common
             {
                 if (value != null)
                 {
-                    ApplicationData.Current.LocalSettings.Values[key] = value;
+                    ApplicationData.Current.LocalSettings.Values.Add(key, value);
+                    //ApplicationData.Current.LocalSettings.Values[key] = value;
                     AppSetting[key] = value;
                 }
                 return (value);
