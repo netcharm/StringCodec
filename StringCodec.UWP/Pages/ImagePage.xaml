@@ -75,7 +75,7 @@
         </CommandBar>
 
         <TextBox Grid.Row="1" Grid.Column="0" x:Name="edBase64" x:Uid="edBase64" 
-                 Header="BASE64:" PlaceholderText="Input text at here"
+                 Header="BASE64" PlaceholderText="Input text at here"
                  AcceptsReturn="True" TextWrapping="Wrap" CanDrag="True" 
                  FontFamily="Consolas" FontSize="16" 
                  ScrollViewer.VerticalScrollBarVisibility="Auto" 

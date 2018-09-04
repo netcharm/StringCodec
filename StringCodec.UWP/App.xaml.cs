@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StringCodec.UWP.Common;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -29,6 +30,8 @@ namespace StringCodec.UWP
         /// </summary>
         public App()
         {
+            Settings.SetUILanguage(Settings.GetUILanguage());
+
             this.InitializeComponent();
             this.Suspending += OnSuspending;
         }

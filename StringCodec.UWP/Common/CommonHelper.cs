@@ -13,6 +13,7 @@ using Windows.ApplicationModel.DataTransfer;
 using Windows.Devices.WiFi;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Globalization;
 using Windows.Graphics.Display;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
@@ -20,6 +21,7 @@ using Windows.Storage.AccessCache;
 using Windows.Storage.Pickers;
 using Windows.Storage.Provider;
 using Windows.Storage.Streams;
+using Windows.System.UserProfile;
 using Windows.UI;
 using Windows.UI.Popups;
 using Windows.UI.Text;
@@ -596,6 +598,54 @@ namespace StringCodec.UWP.Common
                 return (false);
         }
         #endregion
+
+        #region Helper Routines
+        public static async Task<int> SetUILanguage(string lang, bool save = false)
+        {
+            var LanguageIndex = 0;
+            switch (lang.ToLower())
+            {
+                case "default":
+                    LanguageIndex = 0;
+                    break;
+                case "en-us":
+                    LanguageIndex = 1;
+                    break;
+                case "zh-hans":
+                    LanguageIndex = 2;
+                    break;
+                case "zh-hant":
+                    LanguageIndex = 3;
+                    break;
+                case "ja":
+                    LanguageIndex = 4;
+                    break;
+                default:
+                    LanguageIndex = 0;
+                    break;
+            }
+            var langs = GlobalizationPreferences.Languages;
+            var cl = langs.First().Split("-");
+
+            if (LanguageIndex == 0)
+                lang = $"{cl[0]}-{cl[1]}";
+
+            ApplicationLanguages.PrimaryLanguageOverride = lang;
+
+            if (save)
+            {
+                Set("UILanguage", lang);
+                await new MessageDialog("Language will be changed on next startup", "INFO".T()).ShowAsync();
+            }
+
+            return (LanguageIndex);
+        }
+
+        public static string GetUILanguage()
+        {
+            return((string)Get("UILanguage", string.Empty));
+        }
+        #endregion
     }
 
     public static class TextExtentions
@@ -1164,7 +1214,7 @@ namespace StringCodec.UWP.Common
             var now = DateTime.Now;
             FileSavePicker fp = new FileSavePicker();
             fp.SuggestedStartLocation = PickerLocationId.Desktop;
-            fp.FileTypeChoices.Add("Text File", new List<string>() { ".txt" });
+            fp.FileTypeChoices.Add("Text File".T(), new List<string>() { ".txt" });
             fp.SuggestedFileName = $"{now.ToString("yyyyMMddHHmmssff")}.txt";
             StorageFile TargetFile = await fp.PickSaveFileAsync();
             if (TargetFile != null)

@@ -23,12 +23,12 @@
           <target state="new">Text Encode/Decode</target>
         </trans-unit>
         <trans-unit id="nvItemImage.Content" translate="yes" xml:space="preserve">
-          <source>Image <it id="1" pos="open">&lt;=&gt;</it> BASE64</source>
-          <target state="new">Image <it id="1" pos="open">&lt;=&gt;</it> BASE64</target>
+          <source>Image From/To BASE64</source>
+          <target state="new">Image From/To BASE64</target>
         </trans-unit>
         <trans-unit id="nvItemText.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
-          <source>Text Encode/Decode</source>
-          <target state="new">Text Encode/Decode</target>
+          <source>Text Encode and Decode</source>
+          <target state="new">Text Encode and Decode</target>
         </trans-unit>
         <trans-unit id="nvItemQRCode.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Make QR Code or decode content from QR Code image</source>
@@ -206,21 +206,9 @@
           <source>Mobile</source>
           <target state="new">Mobile</target>
         </trans-unit>
-        <trans-unit id="edContactTelHome.Header" translate="yes" xml:space="preserve">
-          <source>Telephone</source>
-          <target state="new">Telephone</target>
-        </trans-unit>
         <trans-unit id="edContactMail.Header" translate="yes" xml:space="preserve">
-          <source>Home Mail</source>
-          <target state="new">Home Mail</target>
-        </trans-unit>
-        <trans-unit id="edContactAdrHome.Header" translate="yes" xml:space="preserve">
-          <source>Address</source>
-          <target state="new">Address</target>
-        </trans-unit>
-        <trans-unit id="edContactAdrHomePostal.Header" translate="yes" xml:space="preserve">
-          <source>Postal</source>
-          <target state="new">Postal</target>
+          <source>E-Mail</source>
+          <target state="new">E-Mail</target>
         </trans-unit>
         <trans-unit id="edContactPublic.Text" translate="yes" xml:space="preserve">
           <source>Public</source>
@@ -233,22 +221,6 @@
         <trans-unit id="edContactTitle.Header" translate="yes" xml:space="preserve">
           <source>Title</source>
           <target state="new">Title</target>
-        </trans-unit>
-        <trans-unit id="edContactTelWork.Header" translate="yes" xml:space="preserve">
-          <source>Telephone</source>
-          <target state="new">Telephone</target>
-        </trans-unit>
-        <trans-unit id="edContactMailWork.Header" translate="yes" xml:space="preserve">
-          <source>Mail</source>
-          <target state="new">Mail</target>
-        </trans-unit>
-        <trans-unit id="edContactAdrWork.Header" translate="yes" xml:space="preserve">
-          <source>Address</source>
-          <target state="new">Address</target>
-        </trans-unit>
-        <trans-unit id="edContactAdrWorkPostal.Header" translate="yes" xml:space="preserve">
-          <source>Postal</source>
-          <target state="new">Postal</target>
         </trans-unit>
         <trans-unit id="edContactMisc.Text" translate="yes" xml:space="preserve">
           <source>Misc</source>
@@ -338,34 +310,6 @@
           <source>Source</source>
           <target state="new">Source</target>
         </trans-unit>
-        <trans-unit id="optSrcUTF8.Text" translate="yes" xml:space="preserve">
-          <source>UTF-8</source>
-          <target state="new">UTF-8</target>
-        </trans-unit>
-        <trans-unit id="optSrcGBK.Text" translate="yes" xml:space="preserve">
-          <source>GBK</source>
-          <target state="new">GBK</target>
-        </trans-unit>
-        <trans-unit id="optSrcBIG5.Text" translate="yes" xml:space="preserve">
-          <source>BIG-5</source>
-          <target state="new">BIG-5</target>
-        </trans-unit>
-        <trans-unit id="optSrcJIS.Text" translate="yes" xml:space="preserve">
-          <source>Shift-JIS</source>
-          <target state="new">Shift-JIS</target>
-        </trans-unit>
-        <trans-unit id="optSrcUnicode.Text" translate="yes" xml:space="preserve">
-          <source>Unicode</source>
-          <target state="new">Unicode</target>
-        </trans-unit>
-        <trans-unit id="optSrcAscii.Text" translate="yes" xml:space="preserve">
-          <source>ASCII</source>
-          <target state="new">ASCII</target>
-        </trans-unit>
-        <trans-unit id="optSrcAuto.Text" translate="yes" xml:space="preserve">
-          <source>Default</source>
-          <target state="new">Default</target>
-        </trans-unit>
         <trans-unit id="btnRename.Label" translate="yes" xml:space="preserve">
           <source>Rename</source>
           <target state="new">Rename</target>
@@ -389,34 +333,6 @@
         <trans-unit id="btnOptDst.Label" translate="yes" xml:space="preserve">
           <source>Target</source>
           <target state="new">Target</target>
-        </trans-unit>
-        <trans-unit id="optDstUTF8.Text" translate="yes" xml:space="preserve">
-          <source>UTF-8</source>
-          <target state="new">UTF-8</target>
-        </trans-unit>
-        <trans-unit id="optDstGBK.Text" translate="yes" xml:space="preserve">
-          <source>GBK</source>
-          <target state="new">GBK</target>
-        </trans-unit>
-        <trans-unit id="optDstBIG5.Text" translate="yes" xml:space="preserve">
-          <source>BIG-5</source>
-          <target state="new">BIG-5</target>
-        </trans-unit>
-        <trans-unit id="optDstJIS.Text" translate="yes" xml:space="preserve">
-          <source>Shift-JIS</source>
-          <target state="new">Shift-JIS</target>
-        </trans-unit>
-        <trans-unit id="optDstUnicode.Text" translate="yes" xml:space="preserve">
-          <source>Unicode</source>
-          <target state="new">Unicode</target>
-        </trans-unit>
-        <trans-unit id="optDstAscii.Text" translate="yes" xml:space="preserve">
-          <source>ASCII</source>
-          <target state="new">ASCII</target>
-        </trans-unit>
-        <trans-unit id="optDstAuto.Text" translate="yes" xml:space="preserve">
-          <source>Default</source>
-          <target state="new">Default</target>
         </trans-unit>
         <trans-unit id="btnConvert.Label" translate="yes" xml:space="preserve">
           <source>Convert</source>
@@ -470,17 +386,9 @@
           <source>Wrap Text</source>
           <target state="new">Wrap Text</target>
         </trans-unit>
-        <trans-unit id="TreeActionRename.Text" translate="yes" xml:space="preserve">
-          <source>Rename Selected Item</source>
-          <target state="new">Rename Selected Item</target>
-        </trans-unit>
-        <trans-unit id="TeeeActionConvert.Text" translate="yes" xml:space="preserve">
-          <source>Convert Selected File</source>
-          <target state="new">Convert Selected File</target>
-        </trans-unit>
         <trans-unit id="edSrc.Header" translate="yes" xml:space="preserve">
-          <source>Input:</source>
-          <target state="new">Input:</target>
+          <source>Input</source>
+          <target state="new">Input</target>
         </trans-unit>
         <trans-unit id="edSrc.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Input at here</source>
@@ -635,8 +543,8 @@
           <target state="new"></target>
         </trans-unit>
         <trans-unit id="edBarcode.Header" translate="yes" xml:space="preserve">
-          <source>Text:</source>
-          <target state="new">Text:</target>
+          <source>Text</source>
+          <target state="new">Text</target>
         </trans-unit>
         <trans-unit id="edBarcode.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Input text at here</source>
@@ -735,8 +643,8 @@
           <target state="new">Image to 1D Barcode</target>
         </trans-unit>
         <trans-unit id="edBase64.Header" translate="yes" xml:space="preserve">
-          <source>BASE64:</source>
-          <target state="new">BASE64:</target>
+          <source>BASE64</source>
+          <target state="new">BASE64</target>
         </trans-unit>
         <trans-unit id="edBase64.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Input text at here</source>
@@ -749,10 +657,6 @@
         <trans-unit id="btnCancel.Content" translate="yes" xml:space="preserve">
           <source>Cancel</source>
           <target state="new">Cancel</target>
-        </trans-unit>
-        <trans-unit id="nvSwitchTheme.Header" translate="yes" xml:space="preserve">
-          <source>Theme Select</source>
-          <target state="new">Theme Select</target>
         </trans-unit>
         <trans-unit id="optURL.Text" translate="yes" xml:space="preserve">
           <source>URL</source>
@@ -819,8 +723,8 @@
           <target state="new">Output to QRCode</target>
         </trans-unit>
         <trans-unit id="edDst.Header" translate="yes" xml:space="preserve">
-          <source>Output:</source>
-          <target state="new">Output:</target>
+          <source>Output</source>
+          <target state="new">Output</target>
         </trans-unit>
         <trans-unit id="edDst.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Here is output</source>
@@ -837,6 +741,78 @@
         <trans-unit id="Count" translate="yes" xml:space="preserve">
           <source>Count</source>
           <target state="new">Count</target>
+        </trans-unit>
+        <trans-unit id="Image File" translate="yes" xml:space="preserve">
+          <source>Image File</source>
+          <target state="new">Image File</target>
+        </trans-unit>
+        <trans-unit id="Text File" translate="yes" xml:space="preserve">
+          <source>Text File</source>
+          <target state="new">Text File</target>
+        </trans-unit>
+        <trans-unit id="edContactTel.Header" translate="yes" xml:space="preserve">
+          <source>Telephone</source>
+          <target state="new">Telephone</target>
+        </trans-unit>
+        <trans-unit id="edContactAdr.Header" translate="yes" xml:space="preserve">
+          <source>Address</source>
+          <target state="new">Address</target>
+        </trans-unit>
+        <trans-unit id="edContactAdrPostal.Header" translate="yes" xml:space="preserve">
+          <source>Postal</source>
+          <target state="new">Postal</target>
+        </trans-unit>
+        <trans-unit id="optDefault.Text" translate="yes" xml:space="preserve">
+          <source>Default</source>
+          <target state="new">Default</target>
+        </trans-unit>
+        <trans-unit id="UIThemeSwitch.Header" translate="yes" xml:space="preserve">
+          <source>Theme Select</source>
+          <target state="new">Theme Select</target>
+        </trans-unit>
+        <trans-unit id="UILanguageSwitch.Header" translate="yes" xml:space="preserve">
+          <source>Language Select</source>
+          <target state="new">Language Select</target>
+        </trans-unit>
+        <trans-unit id="UIThemeSwitch.OffContent" translate="yes" xml:space="preserve">
+          <source>Light Theme</source>
+          <target state="new">Light Theme</target>
+        </trans-unit>
+        <trans-unit id="UIThemeSwitch.OnContent" translate="yes" xml:space="preserve">
+          <source>Dark Theme</source>
+          <target state="new">Dark Theme</target>
+        </trans-unit>
+        <trans-unit id="edWifiEncyptoNONE.Content" translate="yes" xml:space="preserve">
+          <source>No Pass</source>
+          <target state="new">No Pass</target>
+        </trans-unit>
+        <trans-unit id="edWifiEncyptoWEP.Content" translate="yes" xml:space="preserve">
+          <source>WEP</source>
+          <target state="new">WEP</target>
+        </trans-unit>
+        <trans-unit id="edWifiEncyptoWPA.Content" translate="yes" xml:space="preserve">
+          <source>WPA/WPA2</source>
+          <target state="new">WPA/WPA2</target>
+        </trans-unit>
+        <trans-unit id="UILanguageCHS.Content" translate="yes" xml:space="preserve">
+          <source>Chinese Simplified</source>
+          <target state="new">Chinese Simplified</target>
+        </trans-unit>
+        <trans-unit id="UILanguageCHT.Content" translate="yes" xml:space="preserve">
+          <source>Chinese Traditional</source>
+          <target state="new">Chinese Traditional</target>
+        </trans-unit>
+        <trans-unit id="UILanguageDefault.Content" translate="yes" xml:space="preserve">
+          <source>Default</source>
+          <target state="new">Default</target>
+        </trans-unit>
+        <trans-unit id="UILanguageEN.Content" translate="yes" xml:space="preserve">
+          <source>English</source>
+          <target state="new">English</target>
+        </trans-unit>
+        <trans-unit id="UILanguageJA.Content" translate="yes" xml:space="preserve">
+          <source>Japanese</source>
+          <target state="new">Japanese</target>
         </trans-unit>
       </group>
     </body>

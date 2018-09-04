@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Globalization;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -27,7 +29,7 @@ namespace StringCodec.UWP.Pages
     {
         MainPage rootPage = null;
 
-        private void SetTheme(ElementTheme theme, bool save = true)
+        private void SetUITheme(ElementTheme theme, bool save = true)
         {
             if (rootPage == null) return;
 
@@ -48,7 +50,6 @@ namespace StringCodec.UWP.Pages
                 titleBar.ButtonForegroundColor = Colors.Black;
             }
             if (save) Settings.Set("AppTheme", (int)rootPage.RequestedTheme);
-            //ApplicationData.Current.LocalSettings.Values["AppTheme"] = (int)RequestedTheme;
             #endregion
         }
 
@@ -58,34 +59,94 @@ namespace StringCodec.UWP.Pages
             NavigationCacheMode = NavigationCacheMode.Enabled;
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             if (e.Parameter != null && e.Parameter is MainPage)
             {
+                #region Display Theme Toggle with Current Theme 
                 rootPage = e.Parameter as MainPage;
-                nvSwitchTheme.IsTapEnabled = false;
+                UIThemeSwitch.IsTapEnabled = false;
                 if (rootPage.RequestedTheme == ElementTheme.Dark)
                 {
-                    nvSwitchTheme.IsOn = true;
+                    UIThemeSwitch.IsOn = true;
                 }
                 else if (rootPage.RequestedTheme == ElementTheme.Light)
                 {
-                    nvSwitchTheme.IsOn = false;
+                    UIThemeSwitch.IsOn = false;
                 }
-                nvSwitchTheme.IsTapEnabled = true;
+                UIThemeSwitch.IsTapEnabled = true;
+                #endregion
+
+                #region Display UI Language with Current Language
+                var lang = (string)Settings.Get("UILanguage", string.Empty);
+                UILanguageSwitch.IsEnabled = false;
+                UILanguageSwitch.SelectedIndex = await Settings.SetUILanguage(lang, false);
+                UILanguageSwitch.IsEnabled = true;
+                #endregion
             }
         }
 
-        private void NvTheme_Toggled(object sender, RoutedEventArgs e)
+        private void UITheme_Toggled(object sender, RoutedEventArgs e)
         {
-            if (sender == nvSwitchTheme)
+            if (sender == UIThemeSwitch)
             {
                 var theme = sender as ToggleSwitch;
                 if (!theme.IsTapEnabled) return;
                 if (theme.IsOn)
-                    SetTheme(ElementTheme.Dark);
+                    SetUITheme(ElementTheme.Dark);
                 else
-                    SetTheme(ElementTheme.Light);
+                    SetUITheme(ElementTheme.Light);
+            }
+        }
+
+        private async void UILanguage_Chganged(object sender, SelectionChangedEventArgs e)
+        {
+            var lang = "Default";
+            switch(UILanguageSwitch.SelectedIndex)
+            {
+                case 0:
+                    lang = "";
+                    break;
+                case 1:
+                    lang = "en-US";
+                    break;
+                case 2:
+                    lang = "zh-Hans";
+                    break;
+                case 3:
+                    lang = "zh-Hant";
+                    break;
+                case 4:
+                    lang = "ja";
+                    break;
+                default:
+                    lang = "";
+                    break;
+            }           
+            await Settings.SetUILanguage(lang, UILanguageSwitch.IsEnabled);
+            if(rootPage != null && UILanguageSwitch.IsEnabled)
+            {
+                //return;
+
+                AppResources.Reload();
+
+                //
+                // if NavigationCacheMode set to "Required"
+                //
+                ApplicationLanguages.PrimaryLanguageOverride = lang;
+                await Task.Delay(300);
+                Frame rootFrame = Window.Current.Content as Frame;
+                rootFrame.Content = null;
+                rootFrame = null;
+                rootFrame = new Frame();
+                rootFrame.Navigate(typeof(MainPage), null);
+                Window.Current.Content = rootFrame;
+
+                //rootPage.NavigationCacheMode = NavigationCacheMode.Disabled;
+                //rootPage.Frame.CacheSize = 0;
+                //rootPage.Frame.Navigate(rootPage.GetType());
+                //rootPage.Container.CacheSize = 0;
+                //rootPage.Container.Navigate(this.GetType(), rootPage);
             }
         }
     }

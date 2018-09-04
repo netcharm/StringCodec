@@ -19,19 +19,19 @@
     <value>错误</value>
   </data>
   <data name="nvItemQRCode.Content" xml:space="preserve">
-    <value>QR二维码编码/解码</value>
+    <value>QR二维码编码和解码</value>
   </data>
   <data name="nvItemText.Content" xml:space="preserve">
-    <value>文本编码/解码</value>
+    <value>文本编码和解码</value>
   </data>
   <data name="nvItemImage.Content" xml:space="preserve">
-    <value>图像 &lt;=&gt; BASE64</value>
+    <value>图像和BASE64互转换</value>
   </data>
   <data name="nvItemText.ToolTipService.ToolTip" xml:space="preserve">
-    <value>文本编码/解码</value>
+    <value>文本编码和解码</value>
   </data>
   <data name="nvItemQRCode.ToolTipService.ToolTip" xml:space="preserve">
-    <value>生成QR二维码或者从图像内容解码</value>
+    <value>生成QR二维码或者从图像内容解读二维码</value>
   </data>
   <data name="nvItemImage.ToolTipService.ToolTip" xml:space="preserve">
     <value>转换图像为BASE64文本或者从BASE64文本解码图像</value>
@@ -40,7 +40,7 @@
     <value>常用一维条形码</value>
   </data>
   <data name="nvItemCommonOneD.ToolTipService.ToolTip" xml:space="preserve">
-    <value>生成/解码常用一维条形码</value>
+    <value>生成和解读常用一维条形码</value>
   </data>
   <data name="nvItemCommonQR.Content" xml:space="preserve">
     <value>常用QR二维码</value>
@@ -109,7 +109,7 @@
     <value>邮件地址</value>
   </data>
   <data name="edMailSubject.Header" xml:space="preserve">
-    <value>主题</value>
+    <value>邮件主题</value>
   </data>
   <data name="edMailSubject.PlaceholderText" xml:space="preserve">
     <value>邮件主题</value>
@@ -120,17 +120,110 @@
   <data name="edMailContent.PlaceholderText" xml:space="preserve">
     <value>邮件内容</value>
   </data>
-  <data name="edContactAdrHome.Header" xml:space="preserve">
-    <value>地址</value>
+  <data name="piGeo.Header" xml:space="preserve">
+    <value>地理信息查询</value>
+  </data>
+  <data name="edGeoLat.Header" xml:space="preserve">
+    <value>纬度</value>
+  </data>
+  <data name="edGeoLat.PlaceholderText" xml:space="preserve">
+    <value>纬度</value>
+  </data>
+  <data name="edGeoLon.Header" xml:space="preserve">
+    <value>经度</value>
+  </data>
+  <data name="edGeoLon.PlaceholderText" xml:space="preserve">
+    <value>经度</value>
+  </data>
+  <data name="edGeoQuery.Header" xml:space="preserve">
+    <value>查询内容</value>
+  </data>
+  <data name="edGeoQuery.PlaceholderText" xml:space="preserve">
+    <value>网页链接参数</value>
+  </data>
+  <data name="piContact.Header" xml:space="preserve">
+    <value>联系人信息</value>
+  </data>
+  <data name="edContactNameFirst.Header" xml:space="preserve">
+    <value>名字</value>
+  </data>
+  <data name="edContactNameMiddle.Header" xml:space="preserve">
+    <value>中间名</value>
+  </data>
+  <data name="edContactNameLast.Header" xml:space="preserve">
+    <value>姓氏</value>
+  </data>
+  <data name="edContactPrivate.Text" xml:space="preserve">
+    <value>私人信息</value>
+  </data>
+  <data name="edContactUrl.Header" xml:space="preserve">
+    <value>主页</value>
+  </data>
+  <data name="edContactMobile.Header" xml:space="preserve">
+    <value>移动电话</value>
+  </data>
+  <data name="edContactMail.Header" xml:space="preserve">
+    <value>电子邮件</value>
+  </data>
+  <data name="edContactPublic.Text" xml:space="preserve">
+    <value>公开信息</value>
+  </data>
+  <data name="edContactOrg.Header" xml:space="preserve">
+    <value>公司</value>
   </data>
   <data name="edContactTitle.Header" xml:space="preserve">
     <value>职位</value>
   </data>
-  <data name="edContactAdrWork.Header" xml:space="preserve">
-    <value>地址</value>
+  <data name="edContactMisc.Text" xml:space="preserve">
+    <value>其它</value>
+  </data>
+  <data name="edContactNote.Header" xml:space="preserve">
+    <value>备注</value>
+  </data>
+  <data name="piEvent.Header" xml:space="preserve">
+    <value>行程事件</value>
+  </data>
+  <data name="edEventSummary.Header" xml:space="preserve">
+    <value>摘要</value>
+  </data>
+  <data name="edEventLocation.Header" xml:space="preserve">
+    <value>位置</value>
+  </data>
+  <data name="edEventGeoLon.Header" xml:space="preserve">
+    <value>经度</value>
+  </data>
+  <data name="edEventGeoLat.Header" xml:space="preserve">
+    <value>纬度</value>
+  </data>
+  <data name="edEventFullDay.Content" xml:space="preserve">
+    <value>全天</value>
+  </data>
+  <data name="edEventDTStart.Header" xml:space="preserve">
+    <value>开始</value>
+  </data>
+  <data name="edEventDTStart.PlaceholderText" xml:space="preserve">
+    <value>开始</value>
+  </data>
+  <data name="edEventDTEnd.Header" xml:space="preserve">
+    <value>结束</value>
+  </data>
+  <data name="edEventDTEnd.PlaceholderText" xml:space="preserve">
+    <value>结束</value>
   </data>
   <data name="edEventAddress.Header" xml:space="preserve">
     <value>地址</value>
+  </data>
+  <data name="edEventLink.Header" xml:space="preserve">
+    <value>网页链接</value>
+  </data>
+  <data name="edEventUid.Header" xml:space="preserve">
+    <value>用户</value>
+  </data>
+  <data name="edEventDesc.Header" xml:space="preserve">
+    <value>描述</value>
+  </data>
+  <data name="Percent.Text" xml:space="preserve">
+    <value>0%</value>
   </data>
   <data name="btnOpenFolder.Label" xml:space="preserve">
     <value>文件夹</value>
@@ -146,9 +239,6 @@
   </data>
   <data name="btnOptSrc.Label" xml:space="preserve">
     <value>来源</value>
-  </data>
-  <data name="optSrcAuto.Text" xml:space="preserve">
-    <value>系统默认</value>
   </data>
   <data name="btnRename.Label" xml:space="preserve">
     <value>重命名</value>
@@ -167,9 +257,6 @@
   </data>
   <data name="btnOptDst.Label" xml:space="preserve">
     <value>目标</value>
-  </data>
-  <data name="optDstAuto.Text" xml:space="preserve">
-    <value>系统默认</value>
   </data>
   <data name="btnConvert.Label" xml:space="preserve">
     <value>转换</value>
@@ -210,14 +297,8 @@
   <data name="optWrapText.Label" xml:space="preserve">
     <value>文本自动折行</value>
   </data>
-  <data name="TreeActionRename.Text" xml:space="preserve">
-    <value>重命名选择的文件或文件夹</value>
-  </data>
-  <data name="TeeeActionConvert.Text" xml:space="preserve">
-    <value>转换选择的文本文件内容</value>
-  </data>
   <data name="edSrc.Header" xml:space="preserve">
-    <value>输入:</value>
+    <value>输入</value>
   </data>
   <data name="edSrc.PlaceholderText" xml:space="preserve">
     <value>在此输入</value>
@@ -233,6 +314,27 @@
   </data>
   <data name="optBarCodeProduct.Text" xml:space="preserve">
     <value>日常商品</value>
+  </data>
+  <data name="optBarCodeEAN13.Text" xml:space="preserve">
+    <value>EAN-13</value>
+  </data>
+  <data name="optBarCode39.Text" xml:space="preserve">
+    <value>Code 39</value>
+  </data>
+  <data name="optBarCode128.Text" xml:space="preserve">
+    <value>Code 128</value>
+  </data>
+  <data name="optBarCodeUPCA.Text" xml:space="preserve">
+    <value>UPC-A</value>
+  </data>
+  <data name="optBarCodeUPCE.Text" xml:space="preserve">
+    <value>UPC-E</value>
+  </data>
+  <data name="optBarCode93.Text" xml:space="preserve">
+    <value>Code 93</value>
+  </data>
+  <data name="optBarCodeITF.Text" xml:space="preserve">
+    <value>Interleaved 2 of 5</value>
   </data>
   <data name="optBarCodeChecksum.Text" xml:space="preserve">
     <value>计算校验和</value>
@@ -276,6 +378,18 @@
   <data name="optSaveSizeWindow.Label" xml:space="preserve">
     <value>当前显示的大小</value>
   </data>
+  <data name="optSaveSizeL.Label" xml:space="preserve">
+    <value>L: 1024x1024</value>
+  </data>
+  <data name="optSaveSizeM.Label" xml:space="preserve">
+    <value>M: 512x512</value>
+  </data>
+  <data name="optSaveSizeN.Label" xml:space="preserve">
+    <value>S: 256x256</value>
+  </data>
+  <data name="optSaveSizeS.Label" xml:space="preserve">
+    <value>S: 128x128</value>
+  </data>
   <data name="optBarcodeTextSize.Label" xml:space="preserve">
     <value>条码文字大小</value>
   </data>
@@ -297,8 +411,11 @@
   <data name="optBarcodeTextSizeNone.Text" xml:space="preserve">
     <value>没有文本</value>
   </data>
+  <data name="edInfo.Text" xml:space="preserve">
+    <value></value>
+  </data>
   <data name="edBarcode.Header" xml:space="preserve">
-    <value>文本:</value>
+    <value>文本</value>
   </data>
   <data name="edBarcode.PlaceholderText" xml:space="preserve">
     <value>在此输入文本</value>
@@ -312,8 +429,17 @@
   <data name="optCommonWifi.Text" xml:space="preserve">
     <value>WIFI 无线网信息</value>
   </data>
+  <data name="optCommonMail.Text" xml:space="preserve">
+    <value>发送电子邮件</value>
+  </data>
+  <data name="optCommonGeo.Text" xml:space="preserve">
+    <value>地理信息查询</value>
+  </data>
   <data name="optCommonContact.Text" xml:space="preserve">
     <value>联系人信息</value>
+  </data>
+  <data name="optCommonEvent.Text" xml:space="preserve">
+    <value>行程事件</value>
   </data>
   <data name="optECL_L.Text" xml:space="preserve">
     <value>纠错级别: L</value>
@@ -363,26 +489,68 @@
   <data name="btnImageOneD.Label" xml:space="preserve">
     <value>图像转到一维条形码生成页面</value>
   </data>
+  <data name="edBase64.Header" xml:space="preserve">
+    <value>BASE64</value>
+  </data>
+  <data name="edBase64.PlaceholderText" xml:space="preserve">
+    <value>在此输入文本</value>
+  </data>
   <data name="btnOk.Content" xml:space="preserve">
     <value>确认</value>
   </data>
   <data name="btnCancel.Content" xml:space="preserve">
     <value>取消</value>
   </data>
-  <data name="nvSwitchTheme.Header" xml:space="preserve">
-    <value>主题选择</value>
+  <data name="optURL.Text" xml:space="preserve">
+    <value>网址</value>
+  </data>
+  <data name="optBase64.Text" xml:space="preserve">
+    <value>BASE64</value>
+  </data>
+  <data name="optUUE.Text" xml:space="preserve">
+    <value>UUE</value>
+  </data>
+  <data name="optXXE.Text" xml:space="preserve">
+    <value>XXE</value>
+  </data>
+  <data name="optQuoted.Text" xml:space="preserve">
+    <value>Quoted</value>
+  </data>
+  <data name="optRaw.Text" xml:space="preserve">
+    <value>RAW</value>
   </data>
   <data name="optThunder.Text" xml:space="preserve">
     <value>迅雷链接</value>
   </data>
+  <data name="optFlashGet.Text" xml:space="preserve">
+    <value>FlashGet 链接</value>
+  </data>
+  <data name="optUTF8.Text" xml:space="preserve">
+    <value>UTF-8</value>
+  </data>
+  <data name="optGBK.Text" xml:space="preserve">
+    <value>GBK</value>
+  </data>
+  <data name="optBIG5.Text" xml:space="preserve">
+    <value>BIG-5</value>
+  </data>
+  <data name="optJIS.Text" xml:space="preserve">
+    <value>Shift-JIS</value>
+  </data>
+  <data name="optUnicode.Text" xml:space="preserve">
+    <value>Unicode</value>
+  </data>
+  <data name="optAscii.Text" xml:space="preserve">
+    <value>ASCII</value>
+  </data>
   <data name="btnSrcQRCode.Label" xml:space="preserve">
-    <value>文本生成QR二维码</value>
+    <value>输入的文本生成QR二维码</value>
   </data>
   <data name="btnDstQRCode.Label" xml:space="preserve">
     <value>输入的文本生成QR二维码</value>
   </data>
   <data name="edDst.Header" xml:space="preserve">
-    <value>输出:</value>
+    <value>输出</value>
   </data>
   <data name="edDst.PlaceholderText" xml:space="preserve">
     <value>此处为输出显示</value>
@@ -395,5 +563,59 @@
   </data>
   <data name="Count" xml:space="preserve">
     <value>字数</value>
+  </data>
+  <data name="Image File" xml:space="preserve">
+    <value>图像文件</value>
+  </data>
+  <data name="Text File" xml:space="preserve">
+    <value>文本文件</value>
+  </data>
+  <data name="edContactTel.Header" xml:space="preserve">
+    <value>固定电话</value>
+  </data>
+  <data name="edContactAdr.Header" xml:space="preserve">
+    <value>地址</value>
+  </data>
+  <data name="edContactAdrPostal.Header" xml:space="preserve">
+    <value>邮政编码</value>
+  </data>
+  <data name="optDefault.Text" xml:space="preserve">
+    <value>系统默认</value>
+  </data>
+  <data name="UIThemeSwitch.Header" xml:space="preserve">
+    <value>界面主题选择</value>
+  </data>
+  <data name="UILanguageSwitch.Header" xml:space="preserve">
+    <value>界面语言选择</value>
+  </data>
+  <data name="UIThemeSwitch.OffContent" xml:space="preserve">
+    <value>浅色</value>
+  </data>
+  <data name="UIThemeSwitch.OnContent" xml:space="preserve">
+    <value>深色</value>
+  </data>
+  <data name="edWifiEncyptoNONE.Content" xml:space="preserve">
+    <value>没有密码</value>
+  </data>
+  <data name="edWifiEncyptoWEP.Content" xml:space="preserve">
+    <value>WEP</value>
+  </data>
+  <data name="edWifiEncyptoWPA.Content" xml:space="preserve">
+    <value>WPA/WPA2</value>
+  </data>
+  <data name="UILanguageCHS.Content" xml:space="preserve">
+    <value>简体中文</value>
+  </data>
+  <data name="UILanguageCHT.Content" xml:space="preserve">
+    <value>繁体中文</value>
+  </data>
+  <data name="UILanguageDefault.Content" xml:space="preserve">
+    <value>系统默认</value>
+  </data>
+  <data name="UILanguageEN.Content" xml:space="preserve">
+    <value>英语</value>
+  </data>
+  <data name="UILanguageJA.Content" xml:space="preserve">
+    <value>日语</value>
   </data>
 </root>

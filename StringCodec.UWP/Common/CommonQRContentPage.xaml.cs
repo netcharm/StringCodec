@@ -79,6 +79,12 @@ namespace StringCodec.UWP.Common
         {
             this.InitializeComponent();
 
+            //for(int i=0;i< edWifiEncypto.Items.Count();i++)
+            //{
+            //    var item = edWifiEncypto.Items[i] as string;
+            //    item = item.T();
+            //}
+
             CommonItems.Clear();
             foreach (var item in pivot.Items)
             {

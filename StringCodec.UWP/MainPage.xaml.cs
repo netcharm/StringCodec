@@ -39,6 +39,11 @@ namespace StringCodec.UWP
         //private ShareOperation operation;
         //private Utils utils = new Utils();
 
+        internal Frame Container
+        {
+            get { return (ContentFrame); }
+        }
+
         private void SetTheme(ElementTheme theme, bool save = true)
         {
             //remove the solid-colored backgrounds behind the caption controls and system back button
@@ -77,8 +82,10 @@ namespace StringCodec.UWP
         {
             this.InitializeComponent();
 
+            NavigationCacheMode = NavigationCacheMode.Disabled;
+            ApplicationView.GetForCurrentView().Title = AppResources.AppName;
             nvMain.PaneTitle = "NvMainNavigationViewPaneTitle".T();
-            //ApplicationView.GetForCurrentView().Title = AppResources.AppName;
+            //nvMain.SettingsItem
 
             NavigationCacheMode = NavigationCacheMode.Enabled;
 

@@ -130,7 +130,7 @@
     <value>Text Encode/Decode</value>
   </data>
   <data name="nvItemText.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Text Encode/Decode</value>
+    <value>Text Encode and Decode</value>
   </data>
   <data name="nvItemQRCode.Content" xml:space="preserve">
     <value>QR Encode/Decode</value>
@@ -139,7 +139,7 @@
     <value>Make QR Code or decode content from QR Code image</value>
   </data>
   <data name="nvItemImage.Content" xml:space="preserve">
-    <value>Image &lt;=&gt; BASE64</value>
+    <value>Image From/To BASE64</value>
   </data>
   <data name="nvItemImage.ToolTipService.ToolTip" xml:space="preserve">
     <value>Convert image to BASE64 string or decode BASE64 string to image</value>
@@ -270,16 +270,16 @@
   <data name="edContactMobile.Header" xml:space="preserve">
     <value>Mobile</value>
   </data>
-  <data name="edContactTelHome.Header" xml:space="preserve">
+  <data name="edContactTel.Header" xml:space="preserve">
     <value>Telephone</value>
   </data>
   <data name="edContactMail.Header" xml:space="preserve">
-    <value>Home Mail</value>
+    <value>E-Mail</value>
   </data>
-  <data name="edContactAdrHome.Header" xml:space="preserve">
+  <data name="edContactAdr.Header" xml:space="preserve">
     <value>Address</value>
   </data>
-  <data name="edContactAdrHomePostal.Header" xml:space="preserve">
+  <data name="edContactAdrPostal.Header" xml:space="preserve">
     <value>Postal</value>
   </data>
   <data name="edContactPublic.Text" xml:space="preserve">
@@ -290,18 +290,6 @@
   </data>
   <data name="edContactTitle.Header" xml:space="preserve">
     <value>Title</value>
-  </data>
-  <data name="edContactTelWork.Header" xml:space="preserve">
-    <value>Telephone</value>
-  </data>
-  <data name="edContactMailWork.Header" xml:space="preserve">
-    <value>Mail</value>
-  </data>
-  <data name="edContactAdrWork.Header" xml:space="preserve">
-    <value>Address</value>
-  </data>
-  <data name="edContactAdrWorkPostal.Header" xml:space="preserve">
-    <value>Postal</value>
   </data>
   <data name="edContactMisc.Text" xml:space="preserve">
     <value>Misc</value>
@@ -369,25 +357,7 @@
   <data name="btnOptSrc.Label" xml:space="preserve">
     <value>Source</value>
   </data>
-  <data name="optSrcUTF8.Text" xml:space="preserve">
-    <value>UTF-8</value>
-  </data>
-  <data name="optSrcGBK.Text" xml:space="preserve">
-    <value>GBK</value>
-  </data>
-  <data name="optSrcBIG5.Text" xml:space="preserve">
-    <value>BIG-5</value>
-  </data>
-  <data name="optSrcJIS.Text" xml:space="preserve">
-    <value>Shift-JIS</value>
-  </data>
-  <data name="optSrcUnicode.Text" xml:space="preserve">
-    <value>Unicode</value>
-  </data>
-  <data name="optSrcAscii.Text" xml:space="preserve">
-    <value>ASCII</value>
-  </data>
-  <data name="optSrcAuto.Text" xml:space="preserve">
+  <data name="optDefault.Text" xml:space="preserve">
     <value>Default</value>
   </data>
   <data name="btnRename.Label" xml:space="preserve">
@@ -407,27 +377,6 @@
   </data>
   <data name="btnOptDst.Label" xml:space="preserve">
     <value>Target</value>
-  </data>
-  <data name="optDstUTF8.Text" xml:space="preserve">
-    <value>UTF-8</value>
-  </data>
-  <data name="optDstGBK.Text" xml:space="preserve">
-    <value>GBK</value>
-  </data>
-  <data name="optDstBIG5.Text" xml:space="preserve">
-    <value>BIG-5</value>
-  </data>
-  <data name="optDstJIS.Text" xml:space="preserve">
-    <value>Shift-JIS</value>
-  </data>
-  <data name="optDstUnicode.Text" xml:space="preserve">
-    <value>Unicode</value>
-  </data>
-  <data name="optDstAscii.Text" xml:space="preserve">
-    <value>ASCII</value>
-  </data>
-  <data name="optDstAuto.Text" xml:space="preserve">
-    <value>Default</value>
   </data>
   <data name="btnConvert.Label" xml:space="preserve">
     <value>Convert</value>
@@ -468,14 +417,8 @@
   <data name="optWrapText.Label" xml:space="preserve">
     <value>Wrap Text</value>
   </data>
-  <data name="TreeActionRename.Text" xml:space="preserve">
-    <value>Rename Selected Item</value>
-  </data>
-  <data name="TeeeActionConvert.Text" xml:space="preserve">
-    <value>Convert Selected File</value>
-  </data>
   <data name="edSrc.Header" xml:space="preserve">
-    <value>Input:</value>
+    <value>Input</value>
   </data>
   <data name="edSrc.PlaceholderText" xml:space="preserve">
     <value>Input at here</value>
@@ -595,7 +538,7 @@
     <value />
   </data>
   <data name="edBarcode.Header" xml:space="preserve">
-    <value>Text:</value>
+    <value>Text</value>
   </data>
   <data name="edBarcode.PlaceholderText" xml:space="preserve">
     <value>Input text at here</value>
@@ -670,7 +613,7 @@
     <value>Image to 1D Barcode</value>
   </data>
   <data name="edBase64.Header" xml:space="preserve">
-    <value>BASE64:</value>
+    <value>BASE64</value>
   </data>
   <data name="edBase64.PlaceholderText" xml:space="preserve">
     <value>Input text at here</value>
@@ -681,7 +624,7 @@
   <data name="btnCancel.Content" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="nvSwitchTheme.Header" xml:space="preserve">
+  <data name="UIThemeSwitch.Header" xml:space="preserve">
     <value>Theme Select</value>
   </data>
   <data name="optURL.Text" xml:space="preserve">
@@ -733,12 +676,51 @@
     <value>Output to QRCode</value>
   </data>
   <data name="edDst.Header" xml:space="preserve">
-    <value>Output:</value>
+    <value>Output</value>
   </data>
   <data name="edDst.PlaceholderText" xml:space="preserve">
     <value>Here is output</value>
   </data>
   <data name="Count" xml:space="preserve">
     <value>Count</value>
+  </data>
+  <data name="edWifiEncyptoNONE.Content" xml:space="preserve">
+    <value>No Pass</value>
+  </data>
+  <data name="edWifiEncyptoWEP.Content" xml:space="preserve">
+    <value>WEP</value>
+  </data>
+  <data name="edWifiEncyptoWPA.Content" xml:space="preserve">
+    <value>WPA/WPA2</value>
+  </data>
+  <data name="Image File" xml:space="preserve">
+    <value>Image File</value>
+  </data>
+  <data name="Text File" xml:space="preserve">
+    <value>Text File</value>
+  </data>
+  <data name="UILanguageCHS.Content" xml:space="preserve">
+    <value>Chinese Simplified</value>
+  </data>
+  <data name="UILanguageCHT.Content" xml:space="preserve">
+    <value>Chinese Traditional</value>
+  </data>
+  <data name="UILanguageDefault.Content" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="UILanguageEN.Content" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="UILanguageJA.Content" xml:space="preserve">
+    <value>Japanese</value>
+  </data>
+  <data name="UILanguageSwitch.Header" xml:space="preserve">
+    <value>Language Select</value>
+  </data>
+  <data name="UIThemeSwitch.OffContent" xml:space="preserve">
+    <value>Light Theme</value>
+  </data>
+  <data name="UIThemeSwitch.OnContent" xml:space="preserve">
+    <value>Dark Theme</value>
   </data>
 </root>

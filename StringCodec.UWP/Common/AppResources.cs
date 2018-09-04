@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
+using Windows.ApplicationModel.Resources.Core;
 
 namespace StringCodec.UWP.Common
 {
@@ -16,6 +17,15 @@ namespace StringCodec.UWP.Common
 
         private static ResourceLoader _loader;
         private static readonly Dictionary<string, string> ResourceCache = new Dictionary<string, string>();
+
+        public static void Reload()
+        {
+            ResourceContext.GetForCurrentView().Reset();
+            ResourceContext.GetForViewIndependentUse().Reset();
+
+            _loader = ResourceLoader.GetForCurrentView("Resources");
+            ResourceCache.Clear();
+        }
 
         public static string _(string key)
         {
@@ -31,12 +41,14 @@ namespace StringCodec.UWP.Common
         {
             if (ResourceCache.TryGetValue(key, out string s))
             {
+                if (string.IsNullOrEmpty(s)) s = key;
                 return s;
             }
             else
             {
                 s = CurrentResourceLoader.GetString(key);
                 ResourceCache[key] = s;
+                if (string.IsNullOrEmpty(s)) s = key;
                 return s;
             }
         }

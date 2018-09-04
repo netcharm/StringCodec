@@ -16,23 +16,23 @@
         </trans-unit>
         <trans-unit id="nvItemQRCode.Content" translate="yes" xml:space="preserve">
           <source>QR Encode/Decode</source>
-          <target state="translated">QR二维码编码/解码</target>
+          <target state="translated">QR二维码编码和解码</target>
         </trans-unit>
         <trans-unit id="nvItemText.Content" translate="yes" xml:space="preserve">
           <source>Text Encode/Decode</source>
-          <target state="translated">文本编码/解码</target>
+          <target state="translated">文本编码和解码</target>
         </trans-unit>
         <trans-unit id="nvItemImage.Content" translate="yes" xml:space="preserve">
-          <source>Image <it id="1" pos="open">&lt;=&gt;</it> BASE64</source>
-          <target state="translated">图像 <it id="1" pos="open">&lt;=&gt;</it> BASE64</target>
+          <source>Image From/To BASE64</source>
+          <target state="translated">图像和BASE64互转换</target>
         </trans-unit>
         <trans-unit id="nvItemText.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
-          <source>Text Encode/Decode</source>
-          <target state="translated">文本编码/解码</target>
+          <source>Text Encode and Decode</source>
+          <target state="translated">文本编码和解码</target>
         </trans-unit>
         <trans-unit id="nvItemQRCode.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Make QR Code or decode content from QR Code image</source>
-          <target state="translated">生成QR二维码或者从图像内容解码</target>
+          <target state="translated">生成QR二维码或者从图像内容解读二维码</target>
         </trans-unit>
         <trans-unit id="nvItemImage.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Convert image to BASE64 string or decode BASE64 string to image</source>
@@ -44,7 +44,7 @@
         </trans-unit>
         <trans-unit id="nvItemCommonOneD.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Make/Decode Common 1D Barcode</source>
-          <target state="translated">生成/解码常用一维条形码</target>
+          <target state="translated">生成和解读常用一维条形码</target>
         </trans-unit>
         <trans-unit id="nvItemCommonQR.Content" translate="yes" xml:space="preserve">
           <source>Common QR Code</source>
@@ -136,7 +136,7 @@
         </trans-unit>
         <trans-unit id="edMailSubject.Header" translate="yes" xml:space="preserve">
           <source>Subjetc</source>
-          <target state="translated">主题</target>
+          <target state="translated">邮件主题</target>
         </trans-unit>
         <trans-unit id="edMailSubject.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Mail Subject</source>
@@ -152,151 +152,123 @@
         </trans-unit>
         <trans-unit id="piGeo.Header" translate="yes" xml:space="preserve">
           <source>Geo Query</source>
-          <target state="new">Geo Query</target>
+          <target state="translated">地理信息查询</target>
         </trans-unit>
         <trans-unit id="edGeoLat.Header" translate="yes" xml:space="preserve">
           <source>Latitude</source>
-          <target state="new">Latitude</target>
+          <target state="translated">纬度</target>
         </trans-unit>
         <trans-unit id="edGeoLat.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Latitude</source>
-          <target state="new">Latitude</target>
+          <target state="translated">纬度</target>
         </trans-unit>
         <trans-unit id="edGeoLon.Header" translate="yes" xml:space="preserve">
           <source>Longitude</source>
-          <target state="new">Longitude</target>
+          <target state="translated">经度</target>
         </trans-unit>
         <trans-unit id="edGeoLon.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Longitude</source>
-          <target state="new">Longitude</target>
+          <target state="translated">经度</target>
         </trans-unit>
         <trans-unit id="edGeoQuery.Header" translate="yes" xml:space="preserve">
           <source>Query Content</source>
-          <target state="new">Query Content</target>
+          <target state="translated">查询内容</target>
         </trans-unit>
         <trans-unit id="edGeoQuery.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Url Parameters</source>
-          <target state="new">Url Parameters</target>
+          <target state="translated">网页链接参数</target>
         </trans-unit>
         <trans-unit id="piContact.Header" translate="yes" xml:space="preserve">
           <source>Contact Info</source>
-          <target state="new">Contact Info</target>
+          <target state="translated">联系人信息</target>
         </trans-unit>
         <trans-unit id="edContactNameFirst.Header" translate="yes" xml:space="preserve">
           <source>First Name</source>
-          <target state="new">First Name</target>
+          <target state="translated">名字</target>
         </trans-unit>
         <trans-unit id="edContactNameMiddle.Header" translate="yes" xml:space="preserve">
           <source>Middle Name</source>
-          <target state="new">Middle Name</target>
+          <target state="translated">中间名</target>
         </trans-unit>
         <trans-unit id="edContactNameLast.Header" translate="yes" xml:space="preserve">
           <source>Last Name</source>
-          <target state="new">Last Name</target>
+          <target state="translated">姓氏</target>
         </trans-unit>
         <trans-unit id="edContactPrivate.Text" translate="yes" xml:space="preserve">
           <source>Private</source>
-          <target state="new">Private</target>
+          <target state="translated">私人信息</target>
         </trans-unit>
         <trans-unit id="edContactUrl.Header" translate="yes" xml:space="preserve">
           <source>Home Page</source>
-          <target state="new">Home Page</target>
+          <target state="translated">主页</target>
         </trans-unit>
         <trans-unit id="edContactMobile.Header" translate="yes" xml:space="preserve">
           <source>Mobile</source>
-          <target state="new">Mobile</target>
-        </trans-unit>
-        <trans-unit id="edContactTelHome.Header" translate="yes" xml:space="preserve">
-          <source>Telephone</source>
-          <target state="new">Telephone</target>
+          <target state="translated">移动电话</target>
         </trans-unit>
         <trans-unit id="edContactMail.Header" translate="yes" xml:space="preserve">
-          <source>Home Mail</source>
-          <target state="new">Home Mail</target>
-        </trans-unit>
-        <trans-unit id="edContactAdrHome.Header" translate="yes" xml:space="preserve">
-          <source>Address</source>
-          <target state="translated">地址</target>
-        </trans-unit>
-        <trans-unit id="edContactAdrHomePostal.Header" translate="yes" xml:space="preserve">
-          <source>Postal</source>
-          <target state="new">Postal</target>
+          <source>E-Mail</source>
+          <target state="translated">电子邮件</target>
         </trans-unit>
         <trans-unit id="edContactPublic.Text" translate="yes" xml:space="preserve">
           <source>Public</source>
-          <target state="new">Public</target>
+          <target state="translated">公开信息</target>
         </trans-unit>
         <trans-unit id="edContactOrg.Header" translate="yes" xml:space="preserve">
           <source>Company</source>
-          <target state="new">Company</target>
+          <target state="translated">公司</target>
         </trans-unit>
         <trans-unit id="edContactTitle.Header" translate="yes" xml:space="preserve">
           <source>Title</source>
           <target state="translated">职位</target>
         </trans-unit>
-        <trans-unit id="edContactTelWork.Header" translate="yes" xml:space="preserve">
-          <source>Telephone</source>
-          <target state="new">Telephone</target>
-        </trans-unit>
-        <trans-unit id="edContactMailWork.Header" translate="yes" xml:space="preserve">
-          <source>Mail</source>
-          <target state="new">Mail</target>
-        </trans-unit>
-        <trans-unit id="edContactAdrWork.Header" translate="yes" xml:space="preserve">
-          <source>Address</source>
-          <target state="translated">地址</target>
-        </trans-unit>
-        <trans-unit id="edContactAdrWorkPostal.Header" translate="yes" xml:space="preserve">
-          <source>Postal</source>
-          <target state="new">Postal</target>
-        </trans-unit>
         <trans-unit id="edContactMisc.Text" translate="yes" xml:space="preserve">
           <source>Misc</source>
-          <target state="new">Misc</target>
+          <target state="translated">其它</target>
         </trans-unit>
         <trans-unit id="edContactNote.Header" translate="yes" xml:space="preserve">
           <source>Note</source>
-          <target state="new">Note</target>
+          <target state="translated">备注</target>
         </trans-unit>
         <trans-unit id="piEvent.Header" translate="yes" xml:space="preserve">
           <source>Time Event</source>
-          <target state="new">Time Event</target>
+          <target state="translated">行程事件</target>
         </trans-unit>
         <trans-unit id="edEventSummary.Header" translate="yes" xml:space="preserve">
           <source>Summary</source>
-          <target state="new">Summary</target>
+          <target state="translated">摘要</target>
         </trans-unit>
         <trans-unit id="edEventLocation.Header" translate="yes" xml:space="preserve">
           <source>Location</source>
-          <target state="new">Location</target>
+          <target state="translated">位置</target>
         </trans-unit>
         <trans-unit id="edEventGeoLon.Header" translate="yes" xml:space="preserve">
           <source>Longitude</source>
-          <target state="new">Longitude</target>
+          <target state="translated">经度</target>
         </trans-unit>
         <trans-unit id="edEventGeoLat.Header" translate="yes" xml:space="preserve">
           <source>Latitude</source>
-          <target state="new">Latitude</target>
+          <target state="translated">纬度</target>
         </trans-unit>
         <trans-unit id="edEventFullDay.Content" translate="yes" xml:space="preserve">
           <source>Full Day</source>
-          <target state="new">Full Day</target>
+          <target state="translated">全天</target>
         </trans-unit>
         <trans-unit id="edEventDTStart.Header" translate="yes" xml:space="preserve">
           <source>Start</source>
-          <target state="new">Start</target>
+          <target state="translated">开始</target>
         </trans-unit>
         <trans-unit id="edEventDTStart.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Start</source>
-          <target state="new">Start</target>
+          <target state="translated">开始</target>
         </trans-unit>
         <trans-unit id="edEventDTEnd.Header" translate="yes" xml:space="preserve">
           <source>End</source>
-          <target state="new">End</target>
+          <target state="translated">结束</target>
         </trans-unit>
         <trans-unit id="edEventDTEnd.PlaceholderText" translate="yes" xml:space="preserve">
           <source>End</source>
-          <target state="new">End</target>
+          <target state="translated">结束</target>
         </trans-unit>
         <trans-unit id="edEventAddress.Header" translate="yes" xml:space="preserve">
           <source>Address</source>
@@ -304,19 +276,19 @@
         </trans-unit>
         <trans-unit id="edEventLink.Header" translate="yes" xml:space="preserve">
           <source>URL Link</source>
-          <target state="new">URL Link</target>
+          <target state="translated">网页链接</target>
         </trans-unit>
         <trans-unit id="edEventUid.Header" translate="yes" xml:space="preserve">
           <source>User</source>
-          <target state="new">User</target>
+          <target state="translated">用户</target>
         </trans-unit>
         <trans-unit id="edEventDesc.Header" translate="yes" xml:space="preserve">
           <source>Description</source>
-          <target state="new">Description</target>
+          <target state="translated">描述</target>
         </trans-unit>
         <trans-unit id="Percent.Text" translate="yes" xml:space="preserve">
           <source>0%</source>
-          <target state="new">0%</target>
+          <target state="translated">0%</target>
         </trans-unit>
         <trans-unit id="btnOpenFolder.Label" translate="yes" xml:space="preserve">
           <source>Folder</source>
@@ -337,34 +309,6 @@
         <trans-unit id="btnOptSrc.Label" translate="yes" xml:space="preserve">
           <source>Source</source>
           <target state="translated">来源</target>
-        </trans-unit>
-        <trans-unit id="optSrcUTF8.Text" translate="yes" xml:space="preserve">
-          <source>UTF-8</source>
-          <target state="new">UTF-8</target>
-        </trans-unit>
-        <trans-unit id="optSrcGBK.Text" translate="yes" xml:space="preserve">
-          <source>GBK</source>
-          <target state="new">GBK</target>
-        </trans-unit>
-        <trans-unit id="optSrcBIG5.Text" translate="yes" xml:space="preserve">
-          <source>BIG-5</source>
-          <target state="new">BIG-5</target>
-        </trans-unit>
-        <trans-unit id="optSrcJIS.Text" translate="yes" xml:space="preserve">
-          <source>Shift-JIS</source>
-          <target state="new">Shift-JIS</target>
-        </trans-unit>
-        <trans-unit id="optSrcUnicode.Text" translate="yes" xml:space="preserve">
-          <source>Unicode</source>
-          <target state="new">Unicode</target>
-        </trans-unit>
-        <trans-unit id="optSrcAscii.Text" translate="yes" xml:space="preserve">
-          <source>ASCII</source>
-          <target state="new">ASCII</target>
-        </trans-unit>
-        <trans-unit id="optSrcAuto.Text" translate="yes" xml:space="preserve">
-          <source>Default</source>
-          <target state="translated">系统默认</target>
         </trans-unit>
         <trans-unit id="btnRename.Label" translate="yes" xml:space="preserve">
           <source>Rename</source>
@@ -389,34 +333,6 @@
         <trans-unit id="btnOptDst.Label" translate="yes" xml:space="preserve">
           <source>Target</source>
           <target state="translated">目标</target>
-        </trans-unit>
-        <trans-unit id="optDstUTF8.Text" translate="yes" xml:space="preserve">
-          <source>UTF-8</source>
-          <target state="new">UTF-8</target>
-        </trans-unit>
-        <trans-unit id="optDstGBK.Text" translate="yes" xml:space="preserve">
-          <source>GBK</source>
-          <target state="new">GBK</target>
-        </trans-unit>
-        <trans-unit id="optDstBIG5.Text" translate="yes" xml:space="preserve">
-          <source>BIG-5</source>
-          <target state="new">BIG-5</target>
-        </trans-unit>
-        <trans-unit id="optDstJIS.Text" translate="yes" xml:space="preserve">
-          <source>Shift-JIS</source>
-          <target state="new">Shift-JIS</target>
-        </trans-unit>
-        <trans-unit id="optDstUnicode.Text" translate="yes" xml:space="preserve">
-          <source>Unicode</source>
-          <target state="new">Unicode</target>
-        </trans-unit>
-        <trans-unit id="optDstAscii.Text" translate="yes" xml:space="preserve">
-          <source>ASCII</source>
-          <target state="new">ASCII</target>
-        </trans-unit>
-        <trans-unit id="optDstAuto.Text" translate="yes" xml:space="preserve">
-          <source>Default</source>
-          <target state="translated">系统默认</target>
         </trans-unit>
         <trans-unit id="btnConvert.Label" translate="yes" xml:space="preserve">
           <source>Convert</source>
@@ -470,17 +386,9 @@
           <source>Wrap Text</source>
           <target state="translated">文本自动折行</target>
         </trans-unit>
-        <trans-unit id="TreeActionRename.Text" translate="yes" xml:space="preserve">
-          <source>Rename Selected Item</source>
-          <target state="translated">重命名选择的文件或文件夹</target>
-        </trans-unit>
-        <trans-unit id="TeeeActionConvert.Text" translate="yes" xml:space="preserve">
-          <source>Convert Selected File</source>
-          <target state="translated">转换选择的文本文件内容</target>
-        </trans-unit>
         <trans-unit id="edSrc.Header" translate="yes" xml:space="preserve">
-          <source>Input:</source>
-          <target state="translated">输入:</target>
+          <source>Input</source>
+          <target state="translated">输入</target>
         </trans-unit>
         <trans-unit id="edSrc.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Input at here</source>
@@ -504,31 +412,31 @@
         </trans-unit>
         <trans-unit id="optBarCodeEAN13.Text" translate="yes" xml:space="preserve">
           <source>EAN-13</source>
-          <target state="new">EAN-13</target>
+          <target state="translated">EAN-13</target>
         </trans-unit>
         <trans-unit id="optBarCode39.Text" translate="yes" xml:space="preserve">
           <source>Code 39</source>
-          <target state="new">Code 39</target>
+          <target state="translated">Code 39</target>
         </trans-unit>
         <trans-unit id="optBarCode128.Text" translate="yes" xml:space="preserve">
           <source>Code 128</source>
-          <target state="new">Code 128</target>
+          <target state="translated">Code 128</target>
         </trans-unit>
         <trans-unit id="optBarCodeUPCA.Text" translate="yes" xml:space="preserve">
           <source>UPC-A</source>
-          <target state="new">UPC-A</target>
+          <target state="translated">UPC-A</target>
         </trans-unit>
         <trans-unit id="optBarCodeUPCE.Text" translate="yes" xml:space="preserve">
           <source>UPC-E</source>
-          <target state="new">UPC-E</target>
+          <target state="translated">UPC-E</target>
         </trans-unit>
         <trans-unit id="optBarCode93.Text" translate="yes" xml:space="preserve">
           <source>Code 93</source>
-          <target state="new">Code 93</target>
+          <target state="translated">Code 93</target>
         </trans-unit>
         <trans-unit id="optBarCodeITF.Text" translate="yes" xml:space="preserve">
           <source>Interleaved 2 of 5</source>
-          <target state="new">Interleaved 2 of 5</target>
+          <target state="translated">Interleaved 2 of 5</target>
         </trans-unit>
         <trans-unit id="optBarCodeChecksum.Text" translate="yes" xml:space="preserve">
           <source>Calc Checksum</source>
@@ -588,19 +496,19 @@
         </trans-unit>
         <trans-unit id="optSaveSizeL.Label" translate="yes" xml:space="preserve">
           <source>L: 1024x1024</source>
-          <target state="new">L: 1024x1024</target>
+          <target state="translated">L: 1024x1024</target>
         </trans-unit>
         <trans-unit id="optSaveSizeM.Label" translate="yes" xml:space="preserve">
           <source>M: 512x512</source>
-          <target state="new">M: 512x512</target>
+          <target state="translated">M: 512x512</target>
         </trans-unit>
         <trans-unit id="optSaveSizeN.Label" translate="yes" xml:space="preserve">
           <source>S: 256x256</source>
-          <target state="new">S: 256x256</target>
+          <target state="translated">S: 256x256</target>
         </trans-unit>
         <trans-unit id="optSaveSizeS.Label" translate="yes" xml:space="preserve">
           <source>S: 128x128</source>
-          <target state="new">S: 128x128</target>
+          <target state="translated">S: 128x128</target>
         </trans-unit>
         <trans-unit id="optBarcodeTextSize.Label" translate="yes" xml:space="preserve">
           <source>Barcode Text Size</source>
@@ -632,11 +540,11 @@
         </trans-unit>
         <trans-unit id="edInfo.Text" translate="yes" xml:space="preserve">
           <source></source>
-          <target state="new"></target>
+          <target state="translated"></target>
         </trans-unit>
         <trans-unit id="edBarcode.Header" translate="yes" xml:space="preserve">
-          <source>Text:</source>
-          <target state="translated">文本:</target>
+          <source>Text</source>
+          <target state="translated">文本</target>
         </trans-unit>
         <trans-unit id="edBarcode.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Input text at here</source>
@@ -656,11 +564,11 @@
         </trans-unit>
         <trans-unit id="optCommonMail.Text" translate="yes" xml:space="preserve">
           <source>E-Mail Send</source>
-          <target state="new">E-Mail Send</target>
+          <target state="translated">发送电子邮件</target>
         </trans-unit>
         <trans-unit id="optCommonGeo.Text" translate="yes" xml:space="preserve">
           <source>GEO Query</source>
-          <target state="new">GEO Query</target>
+          <target state="translated">地理信息查询</target>
         </trans-unit>
         <trans-unit id="optCommonContact.Text" translate="yes" xml:space="preserve">
           <source>Contact Into</source>
@@ -668,7 +576,7 @@
         </trans-unit>
         <trans-unit id="optCommonEvent.Text" translate="yes" xml:space="preserve">
           <source>Time Event</source>
-          <target state="new">Time Event</target>
+          <target state="translated">行程事件</target>
         </trans-unit>
         <trans-unit id="optECL_L.Text" translate="yes" xml:space="preserve">
           <source>ECC Level : L</source>
@@ -735,12 +643,12 @@
           <target state="translated">图像转到一维条形码生成页面</target>
         </trans-unit>
         <trans-unit id="edBase64.Header" translate="yes" xml:space="preserve">
-          <source>BASE64:</source>
-          <target state="new">BASE64:</target>
+          <source>BASE64</source>
+          <target state="translated">BASE64</target>
         </trans-unit>
         <trans-unit id="edBase64.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Input text at here</source>
-          <target state="new">Input text at here</target>
+          <target state="translated">在此输入文本</target>
         </trans-unit>
         <trans-unit id="btnOk.Content" translate="yes" xml:space="preserve">
           <source>OK</source>
@@ -750,33 +658,29 @@
           <source>Cancel</source>
           <target state="translated">取消</target>
         </trans-unit>
-        <trans-unit id="nvSwitchTheme.Header" translate="yes" xml:space="preserve">
-          <source>Theme Select</source>
-          <target state="translated">主题选择</target>
-        </trans-unit>
         <trans-unit id="optURL.Text" translate="yes" xml:space="preserve">
           <source>URL</source>
-          <target state="new">URL</target>
+          <target state="translated">网址</target>
         </trans-unit>
         <trans-unit id="optBase64.Text" translate="yes" xml:space="preserve">
           <source>BASE64</source>
-          <target state="new">BASE64</target>
+          <target state="translated">BASE64</target>
         </trans-unit>
         <trans-unit id="optUUE.Text" translate="yes" xml:space="preserve">
           <source>UUE</source>
-          <target state="new">UUE</target>
+          <target state="translated">UUE</target>
         </trans-unit>
         <trans-unit id="optXXE.Text" translate="yes" xml:space="preserve">
           <source>XXE</source>
-          <target state="new">XXE</target>
+          <target state="translated">XXE</target>
         </trans-unit>
         <trans-unit id="optQuoted.Text" translate="yes" xml:space="preserve">
           <source>Quoted</source>
-          <target state="new">Quoted</target>
+          <target state="translated">Quoted</target>
         </trans-unit>
         <trans-unit id="optRaw.Text" translate="yes" xml:space="preserve">
           <source>RAW</source>
-          <target state="new">RAW</target>
+          <target state="translated">RAW</target>
         </trans-unit>
         <trans-unit id="optThunder.Text" translate="yes" xml:space="preserve">
           <source>Thunder</source>
@@ -784,43 +688,43 @@
         </trans-unit>
         <trans-unit id="optFlashGet.Text" translate="yes" xml:space="preserve">
           <source>FlashGet</source>
-          <target state="new">FlashGet</target>
+          <target state="translated">FlashGet 链接</target>
         </trans-unit>
         <trans-unit id="optUTF8.Text" translate="yes" xml:space="preserve">
           <source>UTF-8</source>
-          <target state="new">UTF-8</target>
+          <target state="translated">UTF-8</target>
         </trans-unit>
         <trans-unit id="optGBK.Text" translate="yes" xml:space="preserve">
           <source>GBK</source>
-          <target state="new">GBK</target>
+          <target state="translated">GBK</target>
         </trans-unit>
         <trans-unit id="optBIG5.Text" translate="yes" xml:space="preserve">
           <source>BIG-5</source>
-          <target state="new">BIG-5</target>
+          <target state="translated">BIG-5</target>
         </trans-unit>
         <trans-unit id="optJIS.Text" translate="yes" xml:space="preserve">
           <source>Shift-JIS</source>
-          <target state="new">Shift-JIS</target>
+          <target state="translated">Shift-JIS</target>
         </trans-unit>
         <trans-unit id="optUnicode.Text" translate="yes" xml:space="preserve">
           <source>Unicode</source>
-          <target state="new">Unicode</target>
+          <target state="translated">Unicode</target>
         </trans-unit>
         <trans-unit id="optAscii.Text" translate="yes" xml:space="preserve">
           <source>ASCII</source>
-          <target state="new">ASCII</target>
+          <target state="translated">ASCII</target>
         </trans-unit>
         <trans-unit id="btnSrcQRCode.Label" translate="yes" xml:space="preserve">
           <source>Input to QRCode</source>
-          <target state="translated">文本生成QR二维码</target>
+          <target state="translated">输入的文本生成QR二维码</target>
         </trans-unit>
         <trans-unit id="btnDstQRCode.Label" translate="yes" xml:space="preserve">
           <source>Output to QRCode</source>
           <target state="translated">输入的文本生成QR二维码</target>
         </trans-unit>
         <trans-unit id="edDst.Header" translate="yes" xml:space="preserve">
-          <source>Output:</source>
-          <target state="translated">输出:</target>
+          <source>Output</source>
+          <target state="translated">输出</target>
         </trans-unit>
         <trans-unit id="edDst.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Here is output</source>
@@ -837,6 +741,78 @@
         <trans-unit id="Count" translate="yes" xml:space="preserve">
           <source>Count</source>
           <target state="translated">字数</target>
+        </trans-unit>
+        <trans-unit id="Image File" translate="yes" xml:space="preserve">
+          <source>Image File</source>
+          <target state="translated">图像文件</target>
+        </trans-unit>
+        <trans-unit id="Text File" translate="yes" xml:space="preserve">
+          <source>Text File</source>
+          <target state="translated">文本文件</target>
+        </trans-unit>
+        <trans-unit id="edContactTel.Header" translate="yes" xml:space="preserve">
+          <source>Telephone</source>
+          <target state="translated">固定电话</target>
+        </trans-unit>
+        <trans-unit id="edContactAdr.Header" translate="yes" xml:space="preserve">
+          <source>Address</source>
+          <target state="translated">地址</target>
+        </trans-unit>
+        <trans-unit id="edContactAdrPostal.Header" translate="yes" xml:space="preserve">
+          <source>Postal</source>
+          <target state="translated">邮政编码</target>
+        </trans-unit>
+        <trans-unit id="optDefault.Text" translate="yes" xml:space="preserve">
+          <source>Default</source>
+          <target state="translated">系统默认</target>
+        </trans-unit>
+        <trans-unit id="UIThemeSwitch.Header" translate="yes" xml:space="preserve">
+          <source>Theme Select</source>
+          <target state="translated">界面主题选择</target>
+        </trans-unit>
+        <trans-unit id="UILanguageSwitch.Header" translate="yes" xml:space="preserve">
+          <source>Language Select</source>
+          <target state="translated">界面语言选择</target>
+        </trans-unit>
+        <trans-unit id="UIThemeSwitch.OffContent" translate="yes" xml:space="preserve">
+          <source>Light Theme</source>
+          <target state="translated">浅色</target>
+        </trans-unit>
+        <trans-unit id="UIThemeSwitch.OnContent" translate="yes" xml:space="preserve">
+          <source>Dark Theme</source>
+          <target state="translated">深色</target>
+        </trans-unit>
+        <trans-unit id="edWifiEncyptoNONE.Content" translate="yes" xml:space="preserve">
+          <source>No Pass</source>
+          <target state="translated">没有密码</target>
+        </trans-unit>
+        <trans-unit id="edWifiEncyptoWEP.Content" translate="yes" xml:space="preserve">
+          <source>WEP</source>
+          <target state="translated">WEP</target>
+        </trans-unit>
+        <trans-unit id="edWifiEncyptoWPA.Content" translate="yes" xml:space="preserve">
+          <source>WPA/WPA2</source>
+          <target state="translated">WPA/WPA2</target>
+        </trans-unit>
+        <trans-unit id="UILanguageCHS.Content" translate="yes" xml:space="preserve">
+          <source>Chinese Simplified</source>
+          <target state="translated">简体中文</target>
+        </trans-unit>
+        <trans-unit id="UILanguageCHT.Content" translate="yes" xml:space="preserve">
+          <source>Chinese Traditional</source>
+          <target state="translated">繁体中文</target>
+        </trans-unit>
+        <trans-unit id="UILanguageDefault.Content" translate="yes" xml:space="preserve">
+          <source>Default</source>
+          <target state="translated">系统默认</target>
+        </trans-unit>
+        <trans-unit id="UILanguageEN.Content" translate="yes" xml:space="preserve">
+          <source>English</source>
+          <target state="translated">英语</target>
+        </trans-unit>
+        <trans-unit id="UILanguageJA.Content" translate="yes" xml:space="preserve">
+          <source>Japanese</source>
+          <target state="translated">日语</target>
         </trans-unit>
       </group>
     </body>
