@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     x:Name="CommonQrInputDialog"
+    x:Uid="CommonQRDialog"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     Loaded="Dialog_Loaded"
     PrimaryButtonText="OK"

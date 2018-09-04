@@ -830,6 +830,26 @@
           <source>Language will be changed on next startup</source>
           <target state="translated">インタフェース言語の設定は、次の起動後に有効になります。</target>
         </trans-unit>
+        <trans-unit id="ColorDialog.PrimaryButtonText" translate="yes" xml:space="preserve">
+          <source>OK</source>
+          <target state="translated">決定する</target>
+        </trans-unit>
+        <trans-unit id="ColorDialog.SecondaryButtonText" translate="yes" xml:space="preserve">
+          <source>Cancel</source>
+          <target state="translated">キャンセル</target>
+        </trans-unit>
+        <trans-unit id="ColorDialog.Title" translate="yes" xml:space="preserve">
+          <source>Color</source>
+          <target state="translated">キャンセル</target>
+        </trans-unit>
+        <trans-unit id="CommonQRDialog.PrimaryButtonText" translate="yes" xml:space="preserve">
+          <source>OK</source>
+          <target state="translated">決定する</target>
+        </trans-unit>
+        <trans-unit id="CommonQRDialog.SecondaryButtonText" translate="yes" xml:space="preserve">
+          <source>Cancel</source>
+          <target state="translated">キャンセル</target>
+        </trans-unit>
       </group>
     </body>
   </file>

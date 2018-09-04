@@ -830,6 +830,26 @@
           <source>Language will be changed on next startup</source>
           <target state="translated">界面语言设定将在下次启动后有效</target>
         </trans-unit>
+        <trans-unit id="ColorDialog.PrimaryButtonText" translate="yes" xml:space="preserve">
+          <source>OK</source>
+          <target state="translated">确定</target>
+        </trans-unit>
+        <trans-unit id="ColorDialog.SecondaryButtonText" translate="yes" xml:space="preserve">
+          <source>Cancel</source>
+          <target state="translated">取消</target>
+        </trans-unit>
+        <trans-unit id="ColorDialog.Title" translate="yes" xml:space="preserve">
+          <source>Color</source>
+          <target state="translated">颜色</target>
+        </trans-unit>
+        <trans-unit id="CommonQRDialog.PrimaryButtonText" translate="yes" xml:space="preserve">
+          <source>OK</source>
+          <target state="translated">确定</target>
+        </trans-unit>
+        <trans-unit id="CommonQRDialog.SecondaryButtonText" translate="yes" xml:space="preserve">
+          <source>Cancel</source>
+          <target state="translated">取消</target>
+        </trans-unit>
       </group>
     </body>
   </file>
