@@ -233,7 +233,7 @@ namespace StringCodec.UWP.Common
                     maxlen = 12;
                     margin = 16;
                     height = (int)(width * 26.26 / 37.29);
-                    string prod13 = CalcUPC_A(content);
+                    string prod13 = CalcISBN_13(content);
                     if (string.IsNullOrEmpty(prod13))
                         return (result);
                     else

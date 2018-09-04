@@ -373,7 +373,7 @@
     <value>テキスト文字列をデコードします。</value>
   </data>
   <data name="btnTextToQR.Label" xml:space="preserve">
-    <value>Qr コードにテキスト</value>
+    <value>QR コードにテキスト</value>
   </data>
   <data name="optSaveSizeWindow.Label" xml:space="preserve">
     <value>表示サイズ</value>
@@ -484,10 +484,10 @@
     <value>TIF イメージ ファイル</value>
   </data>
   <data name="btnImageQRCode.Label" xml:space="preserve">
-    <value>Qr コードにイメージ</value>
+    <value>QR コードにイメージ</value>
   </data>
   <data name="btnImageOneD.Label" xml:space="preserve">
-    <value>1 D バーコード イメージ</value>
+    <value>1D バーコード イメージ</value>
   </data>
   <data name="edBase64.Header" xml:space="preserve">
     <value>BASE64</value>
@@ -514,7 +514,7 @@
     <value>XXE</value>
   </data>
   <data name="optQuoted.Text" xml:space="preserve">
-    <value>引用符</value>
+    <value>Quoted</value>
   </data>
   <data name="optRaw.Text" xml:space="preserve">
     <value>RAW</value>
@@ -544,10 +544,10 @@
     <value>ASCII</value>
   </data>
   <data name="btnSrcQRCode.Label" xml:space="preserve">
-    <value>Qr コードを入力</value>
+    <value>QR コードを入力</value>
   </data>
   <data name="btnDstQRCode.Label" xml:space="preserve">
-    <value>Qr コード出力</value>
+    <value>QR コード出力</value>
   </data>
   <data name="edDst.Header" xml:space="preserve">
     <value>出力</value>
@@ -623,5 +623,11 @@
   </data>
   <data name="edSrcContent.PlaceholderText" xml:space="preserve">
     <value>選択したテキストファイルの内容がここに表示されます</value>
+  </data>
+  <data name="INFO" xml:space="preserve">
+    <value>プロンプト</value>
+  </data>
+  <data name="Language will be changed on next startup" xml:space="preserve">
+    <value>インタフェース言語の設定は、次の起動後に有効になります。</value>
   </data>
 </root>

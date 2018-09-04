@@ -636,7 +636,7 @@ namespace StringCodec.UWP.Common
             if (save)
             {
                 Set("UILanguage", lang);
-                await new MessageDialog("Language will be changed on next startup", "INFO".T()).ShowAsync();
+                await new MessageDialog("Language will be changed on next startup".T(), "INFO".T()).ShowAsync();
             }
 
             return (LanguageIndex);

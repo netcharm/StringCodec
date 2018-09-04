@@ -547,7 +547,7 @@
     <value>输入的文本生成QR二维码</value>
   </data>
   <data name="btnDstQRCode.Label" xml:space="preserve">
-    <value>输入的文本生成QR二维码</value>
+    <value>输出的文本生成QR二维码</value>
   </data>
   <data name="edDst.Header" xml:space="preserve">
     <value>输出</value>
@@ -623,5 +623,11 @@
   </data>
   <data name="edSrcContent.PlaceholderText" xml:space="preserve">
     <value>此处显示选中文本文件的内容</value>
+  </data>
+  <data name="INFO" xml:space="preserve">
+    <value>提示</value>
+  </data>
+  <data name="Language will be changed on next startup" xml:space="preserve">
+    <value>界面语言设定将在下次启动后有效</value>
   </data>
 </root>

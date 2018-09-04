@@ -720,7 +720,7 @@
         </trans-unit>
         <trans-unit id="btnDstQRCode.Label" translate="yes" xml:space="preserve">
           <source>Output to QRCode</source>
-          <target state="translated">输入的文本生成QR二维码</target>
+          <target state="translated">输出的文本生成QR二维码</target>
         </trans-unit>
         <trans-unit id="edDst.Header" translate="yes" xml:space="preserve">
           <source>Output</source>
@@ -821,6 +821,14 @@
         <trans-unit id="edSrcContent.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Here is text file contents</source>
           <target state="translated">此处显示选中文本文件的内容</target>
+        </trans-unit>
+        <trans-unit id="INFO" translate="yes" xml:space="preserve">
+          <source>Infomation</source>
+          <target state="translated">提示</target>
+        </trans-unit>
+        <trans-unit id="Language will be changed on next startup" translate="yes" xml:space="preserve">
+          <source>Language will be changed on next startup</source>
+          <target state="translated">界面语言设定将在下次启动后有效</target>
         </trans-unit>
       </group>
     </body>

@@ -729,4 +729,10 @@
   <data name="edSrcContent.PlaceholderText" xml:space="preserve">
     <value>Here is text file contents</value>
   </data>
+  <data name="INFO" xml:space="preserve">
+    <value>Infomation</value>
+  </data>
+  <data name="Language will be changed on next startup" xml:space="preserve">
+    <value>Language will be changed on next startup</value>
+  </data>
 </root>

@@ -488,7 +488,7 @@
         </trans-unit>
         <trans-unit id="btnTextToQR.Label" translate="yes" xml:space="preserve">
           <source>Text to QRCode</source>
-          <target state="translated" state-qualifier="mt-suggestion">Qr コードにテキスト</target>
+          <target state="translated" state-qualifier="mt-suggestion">QR コードにテキスト</target>
         </trans-unit>
         <trans-unit id="optSaveSizeWindow.Label" translate="yes" xml:space="preserve">
           <source>Display Size</source>
@@ -636,11 +636,11 @@
         </trans-unit>
         <trans-unit id="btnImageQRCode.Label" translate="yes" xml:space="preserve">
           <source>Image to QRCode</source>
-          <target state="translated" state-qualifier="mt-suggestion">Qr コードにイメージ</target>
+          <target state="translated" state-qualifier="mt-suggestion">QR コードにイメージ</target>
         </trans-unit>
         <trans-unit id="btnImageOneD.Label" translate="yes" xml:space="preserve">
           <source>Image to 1D Barcode</source>
-          <target state="translated" state-qualifier="mt-suggestion">1 D バーコード イメージ</target>
+          <target state="translated" state-qualifier="mt-suggestion">1D バーコード イメージ</target>
         </trans-unit>
         <trans-unit id="edBase64.Header" translate="yes" xml:space="preserve">
           <source>BASE64</source>
@@ -676,7 +676,7 @@
         </trans-unit>
         <trans-unit id="optQuoted.Text" translate="yes" xml:space="preserve">
           <source>Quoted</source>
-          <target state="translated">引用符</target>
+          <target state="translated">Quoted</target>
         </trans-unit>
         <trans-unit id="optRaw.Text" translate="yes" xml:space="preserve">
           <source>RAW</source>
@@ -716,11 +716,11 @@
         </trans-unit>
         <trans-unit id="btnSrcQRCode.Label" translate="yes" xml:space="preserve">
           <source>Input to QRCode</source>
-          <target state="translated" state-qualifier="mt-suggestion">Qr コードを入力</target>
+          <target state="translated" state-qualifier="mt-suggestion">QR コードを入力</target>
         </trans-unit>
         <trans-unit id="btnDstQRCode.Label" translate="yes" xml:space="preserve">
           <source>Output to QRCode</source>
-          <target state="translated" state-qualifier="mt-suggestion">Qr コード出力</target>
+          <target state="translated" state-qualifier="mt-suggestion">QR コード出力</target>
         </trans-unit>
         <trans-unit id="edDst.Header" translate="yes" xml:space="preserve">
           <source>Output</source>
@@ -821,6 +821,14 @@
         <trans-unit id="edSrcContent.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Here is text file contents</source>
           <target state="translated">選択したテキストファイルの内容がここに表示されます</target>
+        </trans-unit>
+        <trans-unit id="INFO" translate="yes" xml:space="preserve">
+          <source>Infomation</source>
+          <target state="translated">プロンプト</target>
+        </trans-unit>
+        <trans-unit id="Language will be changed on next startup" translate="yes" xml:space="preserve">
+          <source>Language will be changed on next startup</source>
+          <target state="translated">インタフェース言語の設定は、次の起動後に有効になります。</target>
         </trans-unit>
       </group>
     </body>
