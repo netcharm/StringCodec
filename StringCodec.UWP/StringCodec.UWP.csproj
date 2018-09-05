@@ -161,6 +161,7 @@
     <None Include="Readme.md" />
     <None Include="StringCodec.UWP_StoreKey.pfx" />
     <None Include="StringCodec.UWP_TemporaryKey.pfx" />
+    <None Include="WindowsStore\listingData9N49BK55S2JZ-1152921505688079961.csv" />
     <PRIResource Include="Strings\zh-Hans\Resources.resw" />
     <PRIResource Include="Strings\zh-Hant\Resources.resw" />
     <PRIResource Include="Strings\ja\Resources.resw" />
