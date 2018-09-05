@@ -1,7 +1,47 @@
 ﻿Field,ID,Type (Type),default,en-us,ja,zh-hans,zh-hant
-Description,2,Text,,,,,
-ReleaseNotes,3,Text,,,,,
-Title,4,Text,StringCodec,StringCodec,テキストコーデック,文本编码解码工具,文本編碼解碼工具
+Description,2,Text,,"# Intro
+
+This application is text string encode and decode tool.
+
+## Features
+
+1. URL encode/decode
+1. BASE64 encode/decode
+1. Raw bytes like \x0d\x0a encode/decode
+1. encode small image to base64 string or decode image from base64 string
+1. text to QR code, or decode QR code from clipboard image
+1. text to some 1D barcode, or decode content from clipboard image
+1. rename file or folder name to specified oem charset (UTF8, GBK, BIG5, SHIFT-JIS, ASCII, UNICODE)
+1. convert text file content from source charset to target charset (UTF8, GBK, BIG5, SHIFT-JIS, ASCII, UNICODE)","これはテキスト文字列のエンコードとデコードのための小さなツールで、結果をクリップボードからクリップボード/ペーストにコピーし、テキストや生成されたイメージを共有することもできます。
+
+1. URLエンコード/デコード
+2. BASE64符号化/復号化
+3. 生のバイト、\ x0d \ x0aのような文字列の内容のエンコード/デコード
+4. 小さな画像をbase64文字列としてエンコードするか、BASE64文字列から画像をデコードする
+5. テキストをQRコードに、またはQR QRコードをクリップボードから
+6. いくつかの1Dバーコードへのテキスト、またはクリップボードからのコンテンツのデコード
+7. ファイル名またはフォルダ名を指定されたOEM文字セットに変更します（現在、UTF8、GBK、BIG5、SHIFT-JIS、ASCII、UNICODEをサポートしています）
+8. ソース・キャラクタ・セットからターゲット・キャラクタ・セットへのテキスト・ファイル・コンテンツの変換（現在はUTF8、GBK、BIG5、SHIFT-JIS、ASCII、UNICODEをサポートしています）","这是一个用于文本字符串编码和解码小工具, 可以复制结果到剪贴板/从剪贴板粘贴以及共享文本或生成的图片.
+
+1. URL编码/解码
+2. BASE64编码/解码
+3. 原始字节，如\x0d\x0a这样的字符串内容的编码/解码
+4. 将小图像编码为base64字符串或从BASE64 字符串解码图像
+5. 文本到QR码，或从剪贴板图像解码QR二维码
+6. 文本到一些一维条形码，或从剪贴板图像解码内容
+7. 将文件或文件夹名称重命名为指定的 OEM 字符集（现支持 UTF8，GBK，BIG5，SHIFT-JIS，ASCII，UNICODE）
+8. 将文本文件内容从源字符集转换为目标字符集（现支持 UTF8，GBK，BIG5，SHIFT-JIS，ASCII，UNICODE）","這是一個用於文本字符串編碼和解碼小工具。備註: 截圖和簡體中文沒什麼區別, 就不重複上傳了.
+
+1. URL編碼/解碼
+2. BASE64編碼/解碼
+3. 原始字節，如\x0d\x0a這樣的字符串內容的編碼/解碼
+4. 將小圖像編碼為base64字符串或從BASE64 字符串解碼圖像
+5. 文本到QR碼，或從剪貼板圖像解碼QR二維碼
+6. 文本到一些一維條形碼，或從剪貼板圖像解碼內容
+7. 將檔案或檔案夾名稱重命名為指定的 OEM 字符集（現支持 UTF8，GBK，BIG5，SHIFT-JIS，ASCII，UNICODE）
+8. 將文本檔案內容從源字符集轉換為目標字符集（現支持 UTF8，GBK，BIG5，SHIFT-JIS，ASCII，UNICODE）"
+ReleaseNotes,3,Text,,,表示される日本語のテキストのほとんどはMicrosoft機械翻訳によるものですので、ご迷惑をおかけしてください。,,
+Title,4,Text,,StringCodec,テキストコーデック,文本编码解码工具,文本編碼解碼工具
 ShortTitle,5,Text,,,,,
 SortTitle,6,Text,,,,,
 VoiceTitle,7,Text,,,,,
@@ -9,26 +49,26 @@ ShortDescription,8,Text,,,,,
 DevStudio,9,Text,,,,,
 CopyrightTrademarkInformation,12,Text,,,,,
 AdditionalLicenseTerms,13,Text,,,,,
-DesktopScreenshot1,100,Relative path (or URL to file in Dev Center),,,,,
-DesktopScreenshot2,101,Relative path (or URL to file in Dev Center),,,,,
-DesktopScreenshot3,102,Relative path (or URL to file in Dev Center),,,,,
-DesktopScreenshot4,103,Relative path (or URL to file in Dev Center),,,,,
-DesktopScreenshot5,104,Relative path (or URL to file in Dev Center),,,,,
-DesktopScreenshot6,105,Relative path (or URL to file in Dev Center),,,,,
-DesktopScreenshot7,106,Relative path (or URL to file in Dev Center),,,,,
-DesktopScreenshot8,107,Relative path (or URL to file in Dev Center),,,,,
-DesktopScreenshot9,108,Relative path (or URL to file in Dev Center),,,,,
-DesktopScreenshot10,109,Relative path (or URL to file in Dev Center),,,,,
-DesktopScreenshotCaption1,150,Text,,,,,
-DesktopScreenshotCaption2,151,Text,,,,,
-DesktopScreenshotCaption3,152,Text,,,,,
-DesktopScreenshotCaption4,153,Text,,,,,
-DesktopScreenshotCaption5,154,Text,,,,,
-DesktopScreenshotCaption6,155,Text,,,,,
-DesktopScreenshotCaption7,156,Text,,,,,
-DesktopScreenshotCaption8,157,Text,,,,,
-DesktopScreenshotCaption9,158,Text,,,,,
-DesktopScreenshotCaption10,159,Text,,,,,
+DesktopScreenshot1,100,Relative path (or URL to file in Dev Center),,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688079961/listings/1152922700001118342/listingassets/2000000000017839999,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688079961/listings/1152922700001118344/listingassets/2000000000017845202,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688079961/listings/1152922700001118346/listingassets/2000000000017843766,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688079961/listings/1152922700001118348/listingassets/2000000000017843164
+DesktopScreenshot2,101,Relative path (or URL to file in Dev Center),,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688079961/listings/1152922700001118342/listingassets/2000000000017840226,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688079961/listings/1152922700001118344/listingassets/2000000000017845207,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688079961/listings/1152922700001118346/listingassets/2000000000017843910,
+DesktopScreenshot3,102,Relative path (or URL to file in Dev Center),,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688079961/listings/1152922700001118342/listingassets/2000000000017840292,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688079961/listings/1152922700001118344/listingassets/2000000000017845261,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688079961/listings/1152922700001118346/listingassets/2000000000017843911,
+DesktopScreenshot4,103,Relative path (or URL to file in Dev Center),,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688079961/listings/1152922700001118342/listingassets/2000000000017840297,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688079961/listings/1152922700001118344/listingassets/2000000000017845263,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688079961/listings/1152922700001118346/listingassets/2000000000017843912,
+DesktopScreenshot5,104,Relative path (or URL to file in Dev Center),,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688079961/listings/1152922700001118342/listingassets/2000000000017840347,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688079961/listings/1152922700001118344/listingassets/2000000000017845268,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688079961/listings/1152922700001118346/listingassets/2000000000017843913,
+DesktopScreenshot6,105,Relative path (or URL to file in Dev Center),,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688079961/listings/1152922700001118342/listingassets/2000000000017840421,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688079961/listings/1152922700001118344/listingassets/2000000000017845306,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688079961/listings/1152922700001118346/listingassets/2000000000017843915,
+DesktopScreenshot7,106,Relative path (or URL to file in Dev Center),,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688079961/listings/1152922700001118342/listingassets/2000000000017840425,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688079961/listings/1152922700001118344/listingassets/2000000000017845323,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688079961/listings/1152922700001118346/listingassets/2000000000017843916,
+DesktopScreenshot8,107,Relative path (or URL to file in Dev Center),,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688079961/listings/1152922700001118342/listingassets/2000000000017840535,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688079961/listings/1152922700001118344/listingassets/2000000000017845367,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688079961/listings/1152922700001118346/listingassets/2000000000017843919,
+DesktopScreenshot9,108,Relative path (or URL to file in Dev Center),,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688079961/listings/1152922700001118342/listingassets/2000000000017840582,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688079961/listings/1152922700001118344/listingassets/2000000000017845396,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688079961/listings/1152922700001118346/listingassets/2000000000017844091,
+DesktopScreenshot10,109,Relative path (or URL to file in Dev Center),,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688079961/listings/1152922700001118342/listingassets/2000000000017840588,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688079961/listings/1152922700001118344/listingassets/2000000000017845414,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688079961/listings/1152922700001118346/listingassets/2000000000017844095,
+DesktopScreenshotCaption1,150,Text,,Main UI,テキストコーデック表示,导航视图,
+DesktopScreenshotCaption2,151,Text,,QR Encode and Decode UI,ナビゲーションビュー,文本编码解码视图,
+DesktopScreenshotCaption3,152,Text,,Small Image From/To BASE64 UI,QRコード生成/解釈ビュー,二维码生成/解读视图,
+DesktopScreenshotCaption4,153,Text,,Common 1-D Barcode Encode and Decode UI,BASE64と画像変換ビュー,一维条码生成/解码视图,
+DesktopScreenshotCaption5,154,Text,,QR Code and 1D Barcode Foreground/Background Color picker dialog,バーコード生成/復号化ビュー,二维码/条码颜色选取对话框,
+DesktopScreenshotCaption6,155,Text,,Common QR Code Builder UI,特定のコンテンツのQRコード生成ビュー,特定内容的二维码生成视图,
+DesktopScreenshotCaption7,156,Text,,Common QR Code options flyout,指定したファイル/フォルダを開き、ファイル/フォルダ名を指定した文字セットに変更するか、ソースファイルセットから指定した文字セットに変更します,"打开指定的文件/文件夹, 以便对文件/文件夹的名称做指定字符集的重命名或者文本文件的内容从源字符集转换为指定的字符集",
+DesktopScreenshotCaption8,157,Text,,File and Folder rename/convert UI with source Shift-JIS text,上のコマンドボタンバーで、名前の変更/変換ボタンを右クリックして、関連するオプションを表示します。,"选中一个文件或者文件后, 就可以右键弹出快捷菜单以便重命名/文本内容转换",
+DesktopScreenshotCaption9,158,Text,,when selected one item you can right-click mouse/right tapped to popup a context flyout for fast rename/convert item,"选中一个文件或者文件后, 就可以右键弹出快捷菜单以便重命名/文本内容转换","在上方的命令按钮条上, 右键点击重命名/转换按钮会弹出相关的选项.",
+DesktopScreenshotCaption10,159,Text,,"right-click or right tapped on rename/convert AppBar command button, will popup the options for rename/convert",ビューセット、あなたが今、窓ダーク/ライトのテーマだけでなく、ユーザーインターフェースの言語を設定することができます流暢ではないが、私を許してください場合は、今、機械翻訳のための英語/簡体字中国語/繁体字中国語/日本語、日本語ベースのインターフェイスをサポートしています,"设定视图, 现在可以设定窗口主题深色/浅色, 以及用户界面的语言, 现在支持英语/简体中文/繁体中文/日语, 日语界面为机器翻译为主, 如有不通顺请见谅",
 MobileScreenshot1,200,Relative path (or URL to file in Dev Center),,,,,
 MobileScreenshot2,201,Relative path (or URL to file in Dev Center),,,,,
 MobileScreenshot3,202,Relative path (or URL to file in Dev Center),,,,,
@@ -103,9 +143,9 @@ XboxFeaturedPromo1080x1080,610,Relative path (or URL to file in Dev Center),,,,,
 OptionalPromo358x358,611,Relative path (or URL to file in Dev Center),,,,,
 OptionalPromo1000x800,612,Relative path (or URL to file in Dev Center),,,,,
 OptionalPromo414x180,613,Relative path (or URL to file in Dev Center),,,,,
-Feature1,700,Text,,,,,
-Feature2,701,Text,,,,,
-Feature3,702,Text,,,,,
+Feature1,700,Text,,"Text From/To URL, BASE64, QRCODE, BARCODE...",BASE64コーデック画像,BASE64 编解码图像,BASE64 编解码图像
+Feature2,701,Text,,,QRコードQRコードを生成する,生成QRCode二维码,生成QRCode二维码
+Feature3,702,Text,,,テキストまたはQRコード/画像を共有する,共享文本或者二维码/图像,共享文本或者二维码/图像
 Feature4,703,Text,,,,,
 Feature5,704,Text,,,,,
 Feature6,705,Text,,,,,
