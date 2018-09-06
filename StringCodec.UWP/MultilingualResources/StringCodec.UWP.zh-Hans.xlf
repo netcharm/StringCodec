@@ -850,9 +850,17 @@
           <source>Cancel</source>
           <target state="translated">取消</target>
         </trans-unit>
-        <trans-unit id="CleanTempFiles" translate="yes" xml:space="preserve">
+        <trans-unit id="CleanTempFiles.Content" translate="yes" xml:space="preserve">
           <source>Cleaning Temporary Files</source>
           <target state="translated">清理生成的临时文件</target>
+        </trans-unit>
+        <trans-unit id="has been deleted" translate="yes" xml:space="preserve">
+          <source>has been deleted</source>
+          <target state="translated">已經被清理</target>
+        </trans-unit>
+        <trans-unit id="file(s)" translate="yes" xml:space="preserve">
+          <source>file(s)</source>
+          <target state="translated">文件</target>
         </trans-unit>
       </group>
     </body>

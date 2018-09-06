@@ -1579,10 +1579,15 @@ namespace StringCodec.UWP.Common
             queryOptions.FolderDepth = FolderDepth.Shallow;
             var queryFolders =  ApplicationData.Current.TemporaryFolder.CreateItemQueryWithOptions(queryOptions);
             var sItems = await queryFolders.GetItemsAsync();
+            List<string> flist = new List<string>();
             foreach(var item in sItems)
             {
                 await item.DeleteAsync(StorageDeleteOption.PermanentDelete);
+                flist.Add(item.Name);
             }
+            if (flist.Count() >= 0)
+                await new MessageDialog($"{flist.Count()} {"file(s)".T()} {"has been deleted".T()}\n\n{string.Join(", ", flist)}", "INFO".T()).ShowAsync();
+
             result = true;
 
             return (result);

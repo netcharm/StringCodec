@@ -645,7 +645,13 @@
   <data name="CommonQRDialog.SecondaryButtonText" xml:space="preserve">
     <value>キャンセル</value>
   </data>
-  <data name="CleanTempFiles" xml:space="preserve">
-    <value>生成された一時ファイルを消去します</value>
+  <data name="CleanTempFiles.Content" xml:space="preserve">
+    <value>生成された一時ファイルをクリーンアップする</value>
+  </data>
+  <data name="has been deleted" xml:space="preserve">
+    <value>クリーンアップされました</value>
+  </data>
+  <data name="file(s)" xml:space="preserve">
+    <value>ファイル</value>
   </data>
 </root>

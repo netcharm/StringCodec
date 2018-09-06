@@ -750,7 +750,13 @@
   <data name="CommonQRDialog.SecondaryButtonText" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="CleanTempFiles" xml:space="preserve">
+  <data name="CleanTempFiles.Content" xml:space="preserve">
     <value>Cleaning Temporary Files</value>
+  </data>
+  <data name="file(s)" xml:space="preserve">
+    <value>file(s)</value>
+  </data>
+  <data name="has been deleted" xml:space="preserve">
+    <value>has been deleted</value>
   </data>
 </root>

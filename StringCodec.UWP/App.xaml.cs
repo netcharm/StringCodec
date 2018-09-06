@@ -30,7 +30,7 @@ namespace StringCodec.UWP
         /// </summary>
         public App()
         {
-            Settings.LoadUILanguage(Settings.GetUILanguage());
+            //Settings.LoadUILanguage(Settings.GetUILanguage());
 
             this.InitializeComponent();
             this.Suspending += OnSuspending;
@@ -43,6 +43,8 @@ namespace StringCodec.UWP
         /// <param name="e">有关启动请求和过程的详细信息。</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+            Settings.LoadUILanguage(Settings.GetUILanguage());
+
             // 不要在窗口已包含内容时重复应用程序初始化，
             // 只需确保窗口处于活动状态
             if (!(Window.Current.Content is Frame rootFrame))

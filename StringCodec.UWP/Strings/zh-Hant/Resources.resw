@@ -645,7 +645,13 @@
   <data name="CommonQRDialog.SecondaryButtonText" xml:space="preserve">
     <value>取消</value>
   </data>
-  <data name="CleanTempFiles" xml:space="preserve">
+  <data name="CleanTempFiles.Content" xml:space="preserve">
     <value>清理生成的臨時檔案</value>
+  </data>
+  <data name="has been deleted" xml:space="preserve">
+    <value>已经被清理</value>
+  </data>
+  <data name="file(s)" xml:space="preserve">
+    <value>檔案</value>
   </data>
 </root>
