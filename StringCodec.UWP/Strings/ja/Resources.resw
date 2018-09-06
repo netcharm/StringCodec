@@ -645,4 +645,7 @@
   <data name="CommonQRDialog.SecondaryButtonText" xml:space="preserve">
     <value>キャンセル</value>
   </data>
+  <data name="CleanTempFiles" xml:space="preserve">
+    <value>生成された一時ファイルを消去します</value>
+  </data>
 </root>

@@ -20,6 +20,7 @@ using Windows.Storage;
 using Windows.Storage.AccessCache;
 using Windows.Storage.Pickers;
 using Windows.Storage.Provider;
+using Windows.Storage.Search;
 using Windows.Storage.Streams;
 using Windows.System.UserProfile;
 using Windows.UI;
@@ -566,11 +567,36 @@ namespace StringCodec.UWP.Common
         #endregion
     }
 
+    public static class TextExtentions
+    {
+        #region I18N
+        public static string _(this string text)
+        {
+            return (AppResources.GetString(text));
+        }
+
+        public static string T(this string text)
+        {
+            return (AppResources.GetString(text));
+        }
+
+        public static string GetString(this string text)
+        {
+            return (AppResources.GetString(text));
+        }
+
+        public static string GetText(this string text)
+        {
+            return (AppResources.GetString(text));
+        }
+        #endregion
+    }
+
     class Settings
     {
         private static PropertySet AppSetting = new PropertySet();
         #region Local Setting Helper
-        public static object Get(string key, object value=null)
+        public static object Get(string key, object value = null)
         {
             if (AppSetting.ContainsKey(key) && AppSetting[key] != null) return (AppSetting[key]);
             else if (ApplicationData.Current.LocalSettings.Values.ContainsKey(key))
@@ -601,6 +627,46 @@ namespace StringCodec.UWP.Common
         #endregion
 
         #region Helper Routines
+        public static int LoadUILanguage(string lang)
+        {
+            var LanguageIndex = 0;
+            switch (lang.ToLower())
+            {
+                case "default":
+                    LanguageIndex = 0;
+                    break;
+                case "en-us":
+                    LanguageIndex = 1;
+                    break;
+                case "zh-hans":
+                    LanguageIndex = 2;
+                    break;
+                case "zh-hant":
+                    LanguageIndex = 3;
+                    break;
+                case "ja":
+                    LanguageIndex = 4;
+                    break;
+                default:
+                    LanguageIndex = 0;
+                    break;
+            }
+            var langs = GlobalizationPreferences.Languages;
+            var cl = langs.First().Split("-");
+
+            if (LanguageIndex == 0)
+                lang = $"{cl[0]}-{cl[1]}";
+
+            ApplicationLanguages.PrimaryLanguageOverride = lang;
+
+            return (LanguageIndex);
+        }
+
+        public static async Task<int> SaveUILanguage(string lang)
+        {
+            return(await SetUILanguage(lang, true));
+        }
+
         public static async Task<int> SetUILanguage(string lang, bool save = false)
         {
             var LanguageIndex = 0;
@@ -644,41 +710,8 @@ namespace StringCodec.UWP.Common
 
         public static string GetUILanguage()
         {
-            return((string)Get("UILanguage", string.Empty));
+            return ((string)Get("UILanguage", string.Empty));
         }
-        #endregion
-    }
-
-    public static class TextExtentions
-    {
-        #region I18N
-        public static string _(this string text)
-        {
-            return (AppResources.GetString(text));
-        }
-
-        public static string T(this string text)
-        {
-            return (AppResources.GetString(text));
-        }
-
-        public static string GetString(this string text)
-        {
-            return (AppResources.GetString(text));
-        }
-
-        public static string GetText(this string text)
-        {
-            return (AppResources.GetString(text));
-        }
-        #endregion
-    }
-
-    class Utils
-    {
-        public static string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif" };
-        public static string[] text_ext = new string[] { ".txt", ".text", ".base64", ".md", ".me", ".html", ".rst", ".url" };
-        public static string[] url_ext = new string[] { ".url" };
 
         private static Page rootPage = null;
         public static void SetTheme(ElementTheme theme, Page page, bool save = true)
@@ -706,6 +739,15 @@ namespace StringCodec.UWP.Common
             //ApplicationData.Current.LocalSettings.Values["AppTheme"] = (int)RequestedTheme;
             #endregion
         }
+
+        #endregion
+    }
+
+    class Utils
+    {
+        public static string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif" };
+        public static string[] text_ext = new string[] { ".txt", ".text", ".base64", ".md", ".me", ".html", ".rst", ".url" };
+        public static string[] url_ext = new string[] { ".url" };
 
         #region Share Extentions
         private static DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
@@ -1528,6 +1570,24 @@ namespace StringCodec.UWP.Common
         }
         #endregion
 
+        #region Temporary File
+        public static async Task<bool> CleanTemporary()
+        {
+            bool result = false;
+
+            var queryOptions = new QueryOptions();
+            queryOptions.FolderDepth = FolderDepth.Shallow;
+            var queryFolders =  ApplicationData.Current.TemporaryFolder.CreateItemQueryWithOptions(queryOptions);
+            var sItems = await queryFolders.GetItemsAsync();
+            foreach(var item in sItems)
+            {
+                await item.DeleteAsync(StorageDeleteOption.PermanentDelete);
+            }
+            result = true;
+
+            return (result);
+        }
+        #endregion
     }
 
     class WIFI

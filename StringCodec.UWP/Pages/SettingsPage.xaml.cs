@@ -59,7 +59,7 @@ namespace StringCodec.UWP.Pages
             NavigationCacheMode = NavigationCacheMode.Enabled;
         }
 
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             if (e.Parameter != null && e.Parameter is MainPage)
             {
@@ -80,7 +80,7 @@ namespace StringCodec.UWP.Pages
                 #region Display UI Language with Current Language
                 var lang = (string)Settings.Get("UILanguage", string.Empty);
                 UILanguageSwitch.IsEnabled = false;
-                UILanguageSwitch.SelectedIndex = await Settings.SetUILanguage(lang, false);
+                UILanguageSwitch.SelectedIndex = Settings.LoadUILanguage(lang);
                 UILanguageSwitch.IsEnabled = true;
                 #endregion
             }
@@ -128,7 +128,7 @@ namespace StringCodec.UWP.Pages
             {
                 return;
 
-                AppResources.Reload();
+                //AppResources.Reload();
 
                 //
                 // if NavigationCacheMode set to "Required"
@@ -148,6 +148,11 @@ namespace StringCodec.UWP.Pages
                 //rootPage.Container.CacheSize = 0;
                 //rootPage.Container.Navigate(this.GetType(), rootPage);
             }
+        }
+
+        private async void CleanTempFiles_Click(object sender, RoutedEventArgs e)
+        {
+            await Utils.CleanTemporary();
         }
     }
 }

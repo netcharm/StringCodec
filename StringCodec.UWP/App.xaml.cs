@@ -30,7 +30,7 @@ namespace StringCodec.UWP
         /// </summary>
         public App()
         {
-            Settings.SetUILanguage(Settings.GetUILanguage());
+            Settings.LoadUILanguage(Settings.GetUILanguage());
 
             this.InitializeComponent();
             this.Suspending += OnSuspending;

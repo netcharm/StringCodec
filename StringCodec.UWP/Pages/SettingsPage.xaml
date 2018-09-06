@@ -9,7 +9,13 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid Margin="12, 12, 12,12">
-        <StackPanel>
+        <Grid.RowDefinitions>
+            <!--<RowDefinition Height="64"/>
+            <RowDefinition Height="64"/>-->
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="64"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0">
             <ComboBox x:Name="UILanguageSwitch" x:Uid="UILanguageSwitch" Header="Language Select" SelectedIndex="0" IsEnabled="False" SelectionChanged="UILanguage_Chganged" >
                 <ComboBoxItem  x:Uid="UILanguageDefault" Content="Default"/>
                 <ComboBoxItem  x:Uid="UILanguageEN" Content="English"/>
@@ -20,5 +26,6 @@
             <Line Margin="0,12,0,0" Stroke="{ThemeResource SystemControlAcrylicWindowBrush}" StrokeThickness="2" X2="10" Stretch="Fill" VerticalAlignment="Bottom"/>
             <ToggleSwitch x:Name="UIThemeSwitch" x:Uid="UIThemeSwitch" Header="Theme Select" OffContent="Light Theme" OnContent="Dark Theme" IsOn="False" IsTapEnabled="True" Toggled="UITheme_Toggled" />
         </StackPanel>
+        <Button Grid.Row="1" x:Name="CleanTempFiles" x:Uid="CleanTempFiles" Content="Cleaning Temporary Files" Click="CleanTempFiles_Click" />
     </Grid>
 </Page>
