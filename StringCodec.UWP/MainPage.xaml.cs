@@ -188,20 +188,31 @@ namespace StringCodec.UWP
                         if (files.Count > 0)
                         {
                             //StorageFile file = await StorageFile.GetFileFromPathAsync(files[0].Path);
-                            StorageFile file = (StorageFile)files[0];
-                            if (file.IsOfType(StorageItemTypes.File))
+                            StorageFile storageFile = (StorageFile)files[0];
+                            if (storageFile.IsOfType(StorageItemTypes.File))
                             {
-                                var ext = file.FileType.ToLower();
-                                if(image_ext.Contains(ext))
+                                var ext = storageFile.FileType.ToLower();
+                                if (image_ext.Contains(ext))
                                 {
-                                    var bitmapImage = new WriteableBitmap(1, 1);
-                                    await bitmapImage.SetSourceAsync(await file.OpenAsync(FileAccessMode.Read));
-                                    byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
-                                    ContentFrame.Navigate(typeof(Pages.QRCodePage), bitmapImage);
+                                    if (ext.Equals(".svg"))
+                                    {
+                                        var bitmapImage = new SvgImageSource();
+                                        await bitmapImage.SetSourceAsync(await storageFile.OpenReadAsync());
+                                        byte[] bytes = WindowsRuntimeBufferExtensions.ToArray(await FileIO.ReadBufferAsync(storageFile));
+                                        var svg = new SVG() { Bytes = bytes, Source = bitmapImage };
+                                        ContentFrame.Navigate(typeof(Pages.SvgPage), svg);
+                                    }
+                                    else
+                                    {
+                                        var bitmapImage = new WriteableBitmap(1, 1);
+                                        await bitmapImage.SetSourceAsync(await storageFile.OpenAsync(FileAccessMode.Read));
+                                        byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
+                                        ContentFrame.Navigate(typeof(Pages.QRCodePage), bitmapImage);
+                                    }
                                 }
                                 else if(ext.Equals(".txt", StringComparison.CurrentCultureIgnoreCase))
                                 {
-                                    var txt = await FileIO.ReadTextAsync(file);
+                                    var txt = await FileIO.ReadTextAsync(storageFile);
                                     ContentFrame.Navigate(typeof(Pages.TextPage), txt);
                                 }
                             }

@@ -60,6 +60,7 @@
                     <FontIcon Glyph="&#xEC50;" FontFamily="Segoe MDL2 Assets"/>
                 </NavigationViewItem.Icon>
             </NavigationViewItem>
+            <NavigationViewItem x:Name="nvItemSvg" x:Uid="nvItemSvg" Content="SVG To Image" Icon="Pictures" Tag="PageSvg" ToolTipService.ToolTip="Converting SVG to image" Tapped="NvMain_Click"/>
         </NavigationView.MenuItems>
 
         <RS4Api:NavigationView.PaneFooter>

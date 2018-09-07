@@ -1,12 +1,11 @@
 ﻿<Page
-    x:Class="StringCodec.UWP.Pages.ImagePage"
+    x:Class="StringCodec.UWP.Pages.SvgPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:StringCodec.UWP.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Loaded="Page_Loaded"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid Margin="12, 0, 12, 12">
@@ -23,28 +22,17 @@
             <AppBarButton Grid.Column="0" x:Name="btnOpt" x:Uid="btnOpt" Icon="Bullets" Label="Options" VerticalAlignment="Center">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
-                        <ToggleMenuFlyoutItem x:Name="optPrefix" x:Uid="optPrefix" Text="Add Prefix to BASE64" Click="Opt_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optLinbeBreak" x:Uid="optLineBreak" Text="Add LineBreak to BASE64" Click="Opt_Click"/>
-                        <MenuFlyoutSeparator />
                         <ToggleMenuFlyoutItem x:Name="optFmtPng" x:Uid="optFmtPng" Text="PNG Image File" Click="OptFmt_Click"/>
                         <ToggleMenuFlyoutItem x:Name="optFmtJpg" x:Uid="optFmtJpg" Text="JPG Image File" Click="OptFmt_Click"/>
                         <ToggleMenuFlyoutItem x:Name="optFmtBmp" x:Uid="optFmtBmp" Text="BMP Image File" Click="OptFmt_Click"/>
                         <ToggleMenuFlyoutItem x:Name="optFmtGif" x:Uid="optFmtGif" Text="GIF Image File" Click="OptFmt_Click"/>
                         <ToggleMenuFlyoutItem x:Name="optFmtTif" x:Uid="optFmtTif" Text="TIF Image File" Click="OptFmt_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optFmtSvg" x:Uid="optFmtSvg" Text="SVG Image File" Visibility="Collapsed" Click="OptFmt_Click"/>
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
             <AppBarSeparator />
             <AppBarButton x:Name="btnCopy" x:Uid="btnCopy" Label="Copy" Icon="Copy" VerticalAlignment="Center" Click="AppBarButton_Click"  />
             <AppBarButton x:Name="btnPaste" x:Uid="btnPaste" Label="Paste" Icon="Paste" VerticalAlignment="Center" Click="AppBarButton_Click" />
-            <AppBarSeparator />
-            <AppBarButton x:Name="btnEncode" x:Uid="btnEncode" Label="Encode" Icon="Shuffle" VerticalAlignment="Center" Click="AppBarButton_Click"  />
-            <AppBarButton x:Name="btnDecode" x:Uid="btnDecode" Label="Decode" VerticalAlignment="Center" Click="AppBarButton_Click">
-                <AppBarButton.Icon>
-                    <FontIcon Glyph="&#xF03E;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
-                </AppBarButton.Icon>
-            </AppBarButton>
             <AppBarSeparator />
             <AppBarButton x:Name="btnSave" x:Uid="btnSave" Label="Save" Icon="Save" VerticalAlignment="Center" Click="AppBarButton_Click" />
             <AppBarButton x:Name="btnShare" x:Uid="btnShare" Label="Share" Icon="Share" VerticalAlignment="Center" Click="AppBarButton_Click" />
@@ -61,7 +49,6 @@
                         <FontIcon Glyph="&#xF02A;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
                     </AppBarButton.Icon>
                 </AppBarButton>
-                <AppBarButton x:Name="btnImageSvg" x:Uid="btnImageSvg" Content="Image to SVG" Icon="Pictures" Click="QRCode_Click"/>
             </CommandBar.SecondaryCommands>
 
             <CommandBar.Content>
@@ -76,19 +63,11 @@
             </CommandBar.Content>
         </CommandBar>
 
-        <TextBox Grid.Row="1" Grid.Column="0" x:Name="edBase64" x:Uid="edBase64" 
-                 Header="BASE64" PlaceholderText="Input text at here"
-                 AcceptsReturn="True" TextWrapping="Wrap" CanDrag="True" 
-                 FontFamily="Consolas" FontSize="16" 
-                 ScrollViewer.VerticalScrollBarVisibility="Auto" 
-                 ScrollViewer.HorizontalScrollBarVisibility="Auto" 
-                 TextChanged="edBase64_TextChanged"
-                 AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" />
         <Rectangle Grid.Row="1" Grid.Column="1" x:Name="rectDrop" Fill="Transparent" Stretch="Fill" Margin="12, 28, 0, 0"
             AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" >
         </Rectangle>
         <Viewbox Grid.Row="1" Grid.Column="1" StretchDirection="DownOnly" Margin="12, 28, 0, 0" >
-            <Image x:Name="imgBase64" x:Uid="imgBase64" Stretch="None" 
+            <Image x:Name="imgSvg" x:Uid="imgBase64" Stretch="None" 
                 AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" />
         </Viewbox>
     </Grid>

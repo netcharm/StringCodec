@@ -388,12 +388,17 @@ namespace StringCodec.UWP.Pages
                                 if (e.DataView.Contains(StandardDataFormats.WebLink))
                                 {
                                     var url = await e.DataView.GetWebLinkAsync();
-                                    var ms = await RandomAccessStreamReference.CreateFromUri(url).OpenReadAsync();
-                                    await bitmapImage.SetSourceAsync(ms);
-                                    await ms.FlushAsync();
+                                    var rms = await RandomAccessStreamReference.CreateFromUri(url).OpenReadAsync();
 
-                                    var bytes = WindowsRuntimeStreamExtensions.AsStreamForRead(ms.GetInputStreamAt(0));
-                                    imgBarcode.Tag = bytes;
+                                    var svg = await SVG.Load(rms);
+                                    bitmapImage = svg.Source;
+                                    imgBarcode.Tag = svg.Bytes;
+
+                                    //await bitmapImage.SetSourceAsync(rms);
+                                    //await rms.FlushAsync();
+
+                                    //var bytes = WindowsRuntimeStreamExtensions.AsStreamForRead(rms.GetInputStreamAt(0));
+                                    //imgBarcode.Tag = bytes;
                                 }
                                 else if (e.DataView.Contains(StandardDataFormats.Text))
                                 {
@@ -401,19 +406,28 @@ namespace StringCodec.UWP.Pages
                                     var content = await e.DataView.GetTextAsync();
                                     if (content.Length > 0)
                                     {
-                                        var ms = await RandomAccessStreamReference.CreateFromUri(new Uri(content)).OpenReadAsync();
-                                        await bitmapImage.SetSourceAsync(ms);
-                                        await ms.FlushAsync();
+                                        var rms = await RandomAccessStreamReference.CreateFromUri(new Uri(content)).OpenReadAsync();
 
-                                        var bytes = WindowsRuntimeStreamExtensions.AsStreamForRead(ms.GetInputStreamAt(0));
-                                        imgBarcode.Tag = bytes;
+                                        var svg = await SVG.Load(rms);
+                                        bitmapImage = svg.Source;
+                                        imgBarcode.Tag = svg.Bytes;
+
+                                        //await bitmapImage.SetSourceAsync(rms);
+                                        //await rms.FlushAsync();
+
+                                        //var bytes = WindowsRuntimeStreamExtensions.AsStreamForRead(rms.GetInputStreamAt(0));
+                                        //imgBarcode.Tag = bytes;
                                     }
                                 }
                                 else
                                 {
-                                    await bitmapImage.SetSourceAsync(await storageFile.OpenReadAsync());
-                                    byte[] bytes = WindowsRuntimeBufferExtensions.ToArray(await FileIO.ReadBufferAsync(storageFile));
-                                    imgBarcode.Tag = bytes;
+                                    var svg = await SVG.Load(storageFile);
+                                    bitmapImage = svg.Source;
+                                    imgBarcode.Tag = svg.Bytes;
+
+                                    //await bitmapImage.SetSourceAsync(await storageFile.OpenReadAsync());
+                                    //byte[] bytes = WindowsRuntimeBufferExtensions.ToArray(await FileIO.ReadBufferAsync(storageFile));
+                                    //imgBarcode.Tag = bytes;
                                 }
                                 imgBarcode.Source = bitmapImage;
                             }
@@ -462,12 +476,20 @@ namespace StringCodec.UWP.Pages
                             if (e.DataView.Contains(StandardDataFormats.WebLink))
                             {
                                 var url = await e.DataView.GetWebLinkAsync();
-                                var ms = await RandomAccessStreamReference.CreateFromUri(url).OpenReadAsync();
-                                await bitmapImage.SetSourceAsync(ms);
-                                await ms.FlushAsync();
+                                var rms = await RandomAccessStreamReference.CreateFromUri(url).OpenReadAsync();
 
-                                var bytes = WindowsRuntimeStreamExtensions.AsStreamForRead(ms.GetInputStreamAt(0));
-                                imgBarcode.Tag = bytes;
+                                var svg = await SVG.Load(rms);
+                                bitmapImage = svg.Source;
+                                imgBarcode.Tag = svg.Bytes;
+
+                                //await bitmapImage.SetSourceAsync(rms);
+                                //await rms.FlushAsync();
+
+                                //var byteStream = WindowsRuntimeStreamExtensions.AsStreamForRead(rms.GetInputStreamAt(0));
+                                //MemoryStream ms = new MemoryStream();
+                                //await byteStream.CopyToAsync(ms);
+                                //var bytes = ms.ToArray());
+                                //imgBarcode.Tag = bytes;
                             }
                             else if (e.DataView.Contains(StandardDataFormats.Text))
                             {
@@ -475,19 +497,28 @@ namespace StringCodec.UWP.Pages
                                 var content = await e.DataView.GetTextAsync();
                                 if (content.Length > 0)
                                 {
-                                    var ms = await RandomAccessStreamReference.CreateFromUri(new Uri(content)).OpenReadAsync();
-                                    await bitmapImage.SetSourceAsync(ms);
-                                    await ms.FlushAsync();
+                                    var rms = await RandomAccessStreamReference.CreateFromUri(new Uri(content)).OpenReadAsync();
 
-                                    var bytes = WindowsRuntimeStreamExtensions.AsStreamForRead(ms.GetInputStreamAt(0));
-                                    imgBarcode.Tag = bytes;
+                                    var svg = await SVG.Load(rms);
+                                    bitmapImage = svg.Source;
+                                    imgBarcode.Tag = svg.Bytes;
+
+                                    //await bitmapImage.SetSourceAsync(ms);
+                                    //await ms.FlushAsync();
+
+                                    //var bytes = WindowsRuntimeStreamExtensions.AsStreamForRead(ms.GetInputStreamAt(0));
+                                    //imgBarcode.Tag = bytes;
                                 }
                             }
                             else
                             {
-                                await bitmapImage.SetSourceAsync(await storageFile.OpenReadAsync());
-                                byte[] bytes = WindowsRuntimeBufferExtensions.ToArray(await FileIO.ReadBufferAsync(storageFile));
-                                imgBarcode.Tag = bytes;
+                                var svg = await SVG.Load(storageFile);
+                                bitmapImage = svg.Source;
+                                imgBarcode.Tag = svg.Bytes;
+
+                                //await bitmapImage.SetSourceAsync(await storageFile.OpenReadAsync());
+                                //byte[] bytes = WindowsRuntimeBufferExtensions.ToArray(await FileIO.ReadBufferAsync(storageFile));
+                                //imgBarcode.Tag = bytes;
                             }
                             imgBarcode.Source = bitmapImage;
                         }
