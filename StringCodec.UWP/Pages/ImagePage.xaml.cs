@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
@@ -70,8 +72,14 @@ namespace StringCodec.UWP.Pages
                     imgBase64.Source = data as WriteableBitmap;
                     if (CURRENT_LINEBREAK) edBase64.TextWrapping = TextWrapping.NoWrap;
                     else edBase64.TextWrapping = TextWrapping.Wrap;
-                    var wb = await imgBase64.ToWriteableBitmmap();
+                    var wb = await imgBase64.ToWriteableBitmap();
                     edBase64.Text = await wb.ToBase64(CURRENT_FORMAT, CURRENT_PREFIX, CURRENT_LINEBREAK);
+                    optFmtSvg.Visibility = Visibility.Collapsed;
+                    if (optFmtSvg.IsChecked)
+                    {
+                        optFmtSvg.IsChecked = false;
+                        optFmtPng.IsChecked = true;
+                    }
                 }
             }
         }
@@ -87,7 +95,7 @@ namespace StringCodec.UWP.Pages
 
         private void OptFmt_Click(object sender, RoutedEventArgs e)
         {
-            ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] { optFmtBmp, optFmtGif, optFmtJpg, optFmtPng, optFmtTif };
+            ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] { optFmtBmp, optFmtGif, optFmtJpg, optFmtPng, optFmtTif, optFmtSvg };
 
             var btn = sender as ToggleMenuFlyoutItem;
             var FMT_NAME = btn.Name.Substring(btn.Name.Length - 3).ToLower();
@@ -123,17 +131,19 @@ namespace StringCodec.UWP.Pages
             }
         }
 
-        private void QRCode_Click(object sender, RoutedEventArgs e)
+        private async void QRCode_Click(object sender, RoutedEventArgs e)
         {
             if (sender == btnImageQRCode)
             {
                 if (imgBase64.Source == null) return;
-                Frame.Navigate(typeof(QRCodePage), imgBase64.Source as WriteableBitmap);
+                //Frame.Navigate(typeof(QRCodePage), imgBase64.Source as WriteableBitmap);
+                Frame.Navigate(typeof(QRCodePage), await imgBase64.ToWriteableBitmap());
             }
             else if (sender == btnImageOneD)
             {
                 if (imgBase64.Source == null) return;
-                Frame.Navigate(typeof(CommonOneDPage), imgBase64.Source as WriteableBitmap);
+                //Frame.Navigate(typeof(CommonOneDPage), imgBase64.Source as WriteableBitmap);
+                Frame.Navigate(typeof(CommonOneDPage), await imgBase64.ToWriteableBitmap());
             }
         }
 
@@ -143,10 +153,47 @@ namespace StringCodec.UWP.Pages
             switch (btn.Name)
             {
                 case "btnEncode":
+                    string b64 = string.Empty;
                     edBase64.TextWrapping = TextWrapping.NoWrap;
-                    var wb = await imgBase64.ToWriteableBitmmap();
-                    //edBase64.Text = await wb.ToBase64(CURRENT_FORMAT, CURRENT_PREFIX, CURRENT_LINEBREAK);
-                    string b64 = await wb.ToBase64(CURRENT_FORMAT, CURRENT_PREFIX, CURRENT_LINEBREAK);
+                    if(imgBase64.Source is SvgImageSource && CURRENT_FORMAT.Equals(".svg"))
+                    {
+                        var lb = CURRENT_LINEBREAK ? Base64FormattingOptions.InsertLineBreaks : Base64FormattingOptions.None;
+                        var svgPrefix = $"data:image/svg+xml;base64,";
+                        if (!CURRENT_PREFIX) svgPrefix = string.Empty;
+
+                        SvgImageSource svg = imgBase64.Source as SvgImageSource;
+                        if (imgBase64.Tag is byte[])
+                        {
+                            b64 = $"{svgPrefix}{Convert.ToBase64String(imgBase64.Tag as byte[], lb)}";
+                        }
+                        else if (svg.UriSource != null)// && !string.IsNullOrEmpty(svg.UriSource.AbsoluteUri))
+                        {
+                            var svgRef = RandomAccessStreamReference.CreateFromUri(svg.UriSource);
+                            var rms = await svgRef.OpenReadAsync();
+                            await rms.FlushAsync();
+
+                            MemoryStream ms = new MemoryStream();
+                            rms.Seek(0);
+                            await rms.AsStreamForRead().CopyToAsync(ms);
+                            byte[] bytes = ms.ToArray();
+                            await ms.FlushAsync();
+                            b64 = $"{svgPrefix}{Convert.ToBase64String(bytes, lb)}";
+                        }
+                        else
+                        {
+                            var wb = await imgBase64.ToWriteableBitmap();
+                            if (wb != null)
+                            {
+                                b64 = await wb.ToBase64(CURRENT_FORMAT, CURRENT_PREFIX, CURRENT_LINEBREAK);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        var wb = await imgBase64.ToWriteableBitmap();
+                        //edBase64.Text = await wb.ToBase64(CURRENT_FORMAT, CURRENT_PREFIX, CURRENT_LINEBREAK);
+                        b64 = await wb.ToBase64(CURRENT_FORMAT, CURRENT_PREFIX, CURRENT_LINEBREAK);
+                    }
                     edBase64.Text = b64;
                     if (CURRENT_LINEBREAK) edBase64.TextWrapping = TextWrapping.NoWrap;
                     else edBase64.TextWrapping = TextWrapping.Wrap;
@@ -158,7 +205,15 @@ namespace StringCodec.UWP.Pages
                     break;
                 case "btnDecode":
                     //imgBase64.Source = await TextCodecs.Decode(edBase64.Text);
-                    imgBase64.Source = await edBase64.Text.Decoder();
+                    if(edBase64.Text.StartsWith("data:image/svg", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        imgBase64.Source = await edBase64.Text.DecodeSvg();
+                        string bs = Regex.Replace(edBase64.Text, @"data:image/.*?;base64,", "", RegexOptions.IgnoreCase);
+                        byte[] arr = Convert.FromBase64String(bs.Trim());
+                        imgBase64.Tag = arr;
+                    }
+                    else
+                        imgBase64.Source = await edBase64.Text.Decoder();
                     break;
                 case "btnCopy":
                     //Utils.SetClipboard(edBase64.Text);
@@ -166,12 +221,18 @@ namespace StringCodec.UWP.Pages
                     break;
                 case "btnPaste":
                     edBase64.Text = await Utils.GetClipboard(edBase64.Text, imgBase64);
+                    optFmtSvg.Visibility = Visibility.Collapsed;
+                    if (optFmtSvg.IsChecked)
+                    {
+                        optFmtSvg.IsChecked = false;
+                        optFmtPng.IsChecked = true;
+                    }
                     break;
                 case "btnSave":
                     await Utils.ShowSaveDialog(imgBase64);
                     break;
                 case "btnShare":
-                    await Utils.Share(imgBase64.Source as WriteableBitmap);
+                    await Utils.Share(await imgBase64.ToWriteableBitmap());
                     break;
                 default:
                     break;
@@ -281,6 +342,126 @@ namespace StringCodec.UWP.Pages
                         var storageFile = items[0] as StorageFile;
                         if (Utils.image_ext.Contains(storageFile.FileType.ToLower()))
                         {
+                            if (storageFile.FileType.ToLower().Equals(".svg"))
+                            {
+                                var bitmapImage = new SvgImageSource();
+
+                                if (e.DataView.Contains(StandardDataFormats.WebLink))
+                                {
+                                    var url = await e.DataView.GetWebLinkAsync();
+                                    var ms = await RandomAccessStreamReference.CreateFromUri(url).OpenReadAsync();
+                                    await bitmapImage.SetSourceAsync(ms);
+                                    await ms.FlushAsync();
+
+                                    var bytes = WindowsRuntimeStreamExtensions.AsStreamForRead(ms.GetInputStreamAt(0));
+                                    imgBase64.Tag = bytes;
+                                }
+                                else if (e.DataView.Contains(StandardDataFormats.Text))
+                                {
+                                    //var content = await e.DataView.GetHtmlFormatAsync();
+                                    var content = await e.DataView.GetTextAsync();
+                                    if (content.Length > 0)
+                                    {
+                                        var ms = await RandomAccessStreamReference.CreateFromUri(new Uri(content)).OpenReadAsync();
+                                        await bitmapImage.SetSourceAsync(ms);
+                                        await ms.FlushAsync();
+
+                                        var bytes = WindowsRuntimeStreamExtensions.AsStreamForRead(ms.GetInputStreamAt(0));
+                                        imgBase64.Tag = bytes;
+                                    }
+                                }
+                                else
+                                {
+                                    await bitmapImage.SetSourceAsync(await storageFile.OpenReadAsync());
+                                    byte[] bytes = WindowsRuntimeBufferExtensions.ToArray(await FileIO.ReadBufferAsync(storageFile));
+                                    imgBase64.Tag = bytes;
+                                }
+                                imgBase64.Source = bitmapImage;
+                                optFmtSvg.Visibility = Visibility.Visible;
+                            }
+                            else
+                            {
+
+                                var bitmapImage = new WriteableBitmap(1, 1);
+
+                                if (e.DataView.Contains(StandardDataFormats.WebLink))
+                                {
+                                    var url = await e.DataView.GetWebLinkAsync();
+                                    await bitmapImage.SetSourceAsync(await RandomAccessStreamReference.CreateFromUri(url).OpenReadAsync());
+                                }
+                                else if (e.DataView.Contains(StandardDataFormats.Text))
+                                {
+                                    //var content = await e.DataView.GetHtmlFormatAsync();
+                                    var content = await e.DataView.GetTextAsync();
+                                    if (content.Length > 0)
+                                    {
+                                        await bitmapImage.SetSourceAsync(await RandomAccessStreamReference.CreateFromUri(new Uri(content)).OpenReadAsync());
+                                    }
+                                }
+                                else
+                                {
+                                    await bitmapImage.SetSourceAsync(await storageFile.OpenReadAsync());
+                                }
+
+                                byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
+                                imgBase64.Source = bitmapImage;
+                                optFmtSvg.Visibility = Visibility.Collapsed;
+                                if (optFmtSvg.IsChecked)
+                                {
+                                    optFmtSvg.IsChecked = false;
+                                    optFmtPng.IsChecked = true;
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (e.DataView.Contains(StandardDataFormats.WebLink))
+                {
+                    var uri = await e.DataView.GetWebLinkAsync();
+
+                    StorageFile storageFile = await StorageFile.GetFileFromApplicationUriAsync(uri);
+
+                    if (Utils.image_ext.Contains(storageFile.FileType.ToLower()))
+                    {
+                        if (storageFile.FileType.ToLower().Equals(".svg"))
+                        {
+                            var bitmapImage = new SvgImageSource();
+
+                            if (e.DataView.Contains(StandardDataFormats.WebLink))
+                            {
+                                var url = await e.DataView.GetWebLinkAsync();
+                                var ms = await RandomAccessStreamReference.CreateFromUri(url).OpenReadAsync();
+                                await bitmapImage.SetSourceAsync(ms);
+                                await ms.FlushAsync();
+
+                                var bytes = WindowsRuntimeStreamExtensions.AsStreamForRead(ms.GetInputStreamAt(0));
+                                imgBase64.Tag = bytes;
+                            }
+                            else if (e.DataView.Contains(StandardDataFormats.Text))
+                            {
+                                //var content = await e.DataView.GetHtmlFormatAsync();
+                                var content = await e.DataView.GetTextAsync();
+                                if (content.Length > 0)
+                                {
+                                    var ms = await RandomAccessStreamReference.CreateFromUri(new Uri(content)).OpenReadAsync();
+                                    await bitmapImage.SetSourceAsync(ms);
+                                    await ms.FlushAsync();
+
+                                    var bytes = WindowsRuntimeStreamExtensions.AsStreamForRead(ms.GetInputStreamAt(0));
+                                    imgBase64.Tag = bytes;
+                                }
+                            }
+                            else
+                            {
+                                await bitmapImage.SetSourceAsync(await storageFile.OpenReadAsync());
+                                byte[] bytes = WindowsRuntimeBufferExtensions.ToArray(await FileIO.ReadBufferAsync(storageFile));
+                                imgBase64.Tag = bytes;
+                            }
+                            imgBase64.Source = bitmapImage;
+                            optFmtSvg.Visibility = Visibility.Visible;
+                        }
+                        else
+                        {
                             var bitmapImage = new WriteableBitmap(1, 1);
 
                             if (e.DataView.Contains(StandardDataFormats.WebLink))
@@ -304,20 +485,19 @@ namespace StringCodec.UWP.Pages
 
                             byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
                             imgBase64.Source = bitmapImage;
+                            optFmtSvg.Visibility = Visibility.Collapsed;
+                            if (optFmtSvg.IsChecked)
+                            {
+                                optFmtSvg.IsChecked = false;
+                                optFmtPng.IsChecked = true;
+                            }
                         }
                     }
-                }
-                else if (e.DataView.Contains(StandardDataFormats.WebLink))
-                {
-                    var uri = await e.DataView.GetWebLinkAsync();
 
-                    StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(uri);
-                    //dp.SetBitmap(RandomAccessStreamReference.CreateFromUri(uri));
-
-                    var bitmapImage = new WriteableBitmap(1, 1);
-                    await bitmapImage.SetSourceAsync(await file.OpenAsync(FileAccessMode.Read));
-                    byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
-                    imgBase64.Source = bitmapImage;
+                    //var bitmapImage = new WriteableBitmap(1, 1);
+                    //await bitmapImage.SetSourceAsync(await storageFile.OpenAsync(FileAccessMode.Read));
+                    //byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
+                    //imgBase64.Source = bitmapImage;
                 }
             }
             else if (sender == edBase64)

@@ -654,4 +654,10 @@
   <data name="file(s)" xml:space="preserve">
     <value>ファイル</value>
   </data>
+  <data name="Can't save to SVG file, will be saved as PNG file like" xml:space="preserve">
+    <value>現在のイメージをSVGファイルとして保存することはできず、PNGファイルとして保存されます。</value>
+  </data>
+  <data name="optFmtSvg.Text" xml:space="preserve">
+    <value>SVG 画像ファイル</value>
+  </data>
 </root>

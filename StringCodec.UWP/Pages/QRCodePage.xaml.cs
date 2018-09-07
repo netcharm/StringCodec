@@ -1,5 +1,6 @@
 ﻿using StringCodec.UWP.Common;
 using System;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel.DataTransfer;
@@ -224,12 +225,12 @@ namespace StringCodec.UWP.Pages
             }
         }
 
-        private void Base64_Click(object sender, RoutedEventArgs e)
+        private async void Base64_Click(object sender, RoutedEventArgs e)
         {
             if(sender == btnImageToBase64)
             {
                 if (imgQR.Source == null) return;
-                Frame.Navigate(typeof(ImagePage), imgQR.Source as WriteableBitmap);
+                Frame.Navigate(typeof(ImagePage), await imgQR.ToWriteableBitmap());
             }
             else if(sender == btnTextToDecode)
             {
@@ -247,7 +248,8 @@ namespace StringCodec.UWP.Pages
                     imgQR.Source = QRCodec.EncodeQR(edQR.Text, CURRENT_FGCOLOR, CURRENT_BGCOLOR, CURRENT_ECL);
                     break;
                 case "btnDecode":
-                    edQR.Text = await QRCodec.Decode(imgQR.Source as WriteableBitmap);
+                    edQR.Text = await QRCodec.Decode(await imgQR.ToWriteableBitmap());
+                    
                     break;
                 case "btnCopy":
                     Utils.SetClipboard(imgQR, CURRENT_SIZE);
@@ -263,7 +265,7 @@ namespace StringCodec.UWP.Pages
                     await Utils.ShowSaveDialog(imgQR, CURRENT_SIZE, "QR");
                     break;
                 case "btnShare":
-                    await Utils.Share(imgQR.Source as WriteableBitmap, "QR");
+                    await Utils.Share(await imgQR.ToWriteableBitmap(), "QR");
                     break;
                 default:
                     break;
@@ -371,12 +373,124 @@ namespace StringCodec.UWP.Pages
                         var storageFile = items[0] as StorageFile;
                         if (Utils.image_ext.Contains(storageFile.FileType.ToLower()))
                         {
+                            if (storageFile.FileType.ToLower().Equals(".svg"))
+                            {
+                                var bitmapImage = new SvgImageSource();
+
+                                if (e.DataView.Contains(StandardDataFormats.WebLink))
+                                {
+                                    var url = await e.DataView.GetWebLinkAsync();
+                                    var ms = await RandomAccessStreamReference.CreateFromUri(url).OpenReadAsync();
+                                    await bitmapImage.SetSourceAsync(ms);
+                                    await ms.FlushAsync();
+
+                                    var bytes = WindowsRuntimeStreamExtensions.AsStreamForRead(ms.GetInputStreamAt(0));
+                                    imgQR.Tag = bytes;
+                                }
+                                else if (e.DataView.Contains(StandardDataFormats.Text))
+                                {
+                                    //var content = await e.DataView.GetHtmlFormatAsync();
+                                    var content = await e.DataView.GetTextAsync();
+                                    if (content.Length > 0)
+                                    {
+                                        var ms = await RandomAccessStreamReference.CreateFromUri(new Uri(content)).OpenReadAsync();
+                                        await bitmapImage.SetSourceAsync(ms);
+                                        await ms.FlushAsync();
+
+                                        var bytes = WindowsRuntimeStreamExtensions.AsStreamForRead(ms.GetInputStreamAt(0));
+                                        imgQR.Tag = bytes;
+                                    }
+                                }
+                                else
+                                {
+                                    await bitmapImage.SetSourceAsync(await storageFile.OpenReadAsync());
+                                    byte[] bytes = WindowsRuntimeBufferExtensions.ToArray(await FileIO.ReadBufferAsync(storageFile));
+                                    imgQR.Tag = bytes;
+                                }
+                                imgQR.Source = bitmapImage;
+                            }
+                            else
+                            {
+
+                                var bitmapImage = new WriteableBitmap(1, 1);
+
+                                if (e.DataView.Contains(StandardDataFormats.WebLink))
+                                {
+                                    var url = await e.DataView.GetWebLinkAsync();
+                                    await bitmapImage.SetSourceAsync(await RandomAccessStreamReference.CreateFromUri(url).OpenReadAsync());
+                                }
+                                else if (e.DataView.Contains(StandardDataFormats.Text))
+                                {
+                                    //var content = await e.DataView.GetHtmlFormatAsync();
+                                    var content = await e.DataView.GetTextAsync();
+                                    if (content.Length > 0)
+                                    {
+                                        await bitmapImage.SetSourceAsync(await RandomAccessStreamReference.CreateFromUri(new Uri(content)).OpenReadAsync());
+                                    }
+                                }
+                                else
+                                {
+                                    await bitmapImage.SetSourceAsync(await storageFile.OpenReadAsync());
+                                }
+
+                                byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
+                                imgQR.Source = bitmapImage;
+                            }
+                        }
+                    }
+                }
+                else if (e.DataView.Contains(StandardDataFormats.WebLink))
+                {
+                    var uri = await e.DataView.GetWebLinkAsync();
+
+                    StorageFile storageFile = await StorageFile.GetFileFromApplicationUriAsync(uri);
+                    if (Utils.image_ext.Contains(storageFile.FileType.ToLower()))
+                    {
+                        if (storageFile.FileType.ToLower().Equals(".svg"))
+                        {
+                            var bitmapImage = new SvgImageSource();
+
+                            if (e.DataView.Contains(StandardDataFormats.WebLink))
+                            {
+                                var url = await e.DataView.GetWebLinkAsync();
+                                var ms = await RandomAccessStreamReference.CreateFromUri(url).OpenReadAsync();
+                                await bitmapImage.SetSourceAsync(ms);
+                                await ms.FlushAsync();
+
+                                var bytes = WindowsRuntimeStreamExtensions.AsStreamForRead(ms.GetInputStreamAt(0));
+                                imgQR.Tag = bytes;
+                            }
+                            else if (e.DataView.Contains(StandardDataFormats.Text))
+                            {
+                                //var content = await e.DataView.GetHtmlFormatAsync();
+                                var content = await e.DataView.GetTextAsync();
+                                if (content.Length > 0)
+                                {
+                                    var ms = await RandomAccessStreamReference.CreateFromUri(new Uri(content)).OpenReadAsync();
+                                    await bitmapImage.SetSourceAsync(ms);
+                                    await ms.FlushAsync();
+
+                                    var bytes = WindowsRuntimeStreamExtensions.AsStreamForRead(ms.GetInputStreamAt(0));
+                                    imgQR.Tag = bytes;
+                                }
+                            }
+                            else
+                            {
+                                await bitmapImage.SetSourceAsync(await storageFile.OpenReadAsync());
+                                byte[] bytes = WindowsRuntimeBufferExtensions.ToArray(await FileIO.ReadBufferAsync(storageFile));
+                                imgQR.Tag = bytes;
+                            }
+                            imgQR.Source = bitmapImage;
+                        }
+                        else
+                        {
                             var bitmapImage = new WriteableBitmap(1, 1);
 
                             if (e.DataView.Contains(StandardDataFormats.WebLink))
                             {
                                 var url = await e.DataView.GetWebLinkAsync();
-                                await bitmapImage.SetSourceAsync(await RandomAccessStreamReference.CreateFromUri(url).OpenReadAsync());
+                                var src = await RandomAccessStreamReference.CreateFromUri(url).OpenReadAsync();
+                                await bitmapImage.SetSourceAsync(src);
                             }
                             else if (e.DataView.Contains(StandardDataFormats.Text))
                             {
@@ -395,39 +509,6 @@ namespace StringCodec.UWP.Pages
                             byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
                             imgQR.Source = bitmapImage;
                         }
-                    }
-                }
-                else if (e.DataView.Contains(StandardDataFormats.WebLink))
-                {
-                    var uri = await e.DataView.GetWebLinkAsync();
-
-                    StorageFile storageFile = await StorageFile.GetFileFromApplicationUriAsync(uri);
-                    if (Utils.image_ext.Contains(storageFile.FileType.ToLower()))
-                    {
-                        var bitmapImage = new WriteableBitmap(1, 1);
-
-                        if (e.DataView.Contains(StandardDataFormats.WebLink))
-                        {
-                            var url = await e.DataView.GetWebLinkAsync();
-                            var src = await RandomAccessStreamReference.CreateFromUri(url).OpenReadAsync();
-                            await bitmapImage.SetSourceAsync(src);
-                        }
-                        else if (e.DataView.Contains(StandardDataFormats.Text))
-                        {
-                            //var content = await e.DataView.GetHtmlFormatAsync();
-                            var content = await e.DataView.GetTextAsync();
-                            if (content.Length > 0)
-                            {
-                                await bitmapImage.SetSourceAsync(await RandomAccessStreamReference.CreateFromUri(new Uri(content)).OpenReadAsync());
-                            }
-                        }
-                        else
-                        {
-                            await bitmapImage.SetSourceAsync(await storageFile.OpenReadAsync());
-                        }
-
-                        byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
-                        imgQR.Source = bitmapImage;
                     }
                 }
             }

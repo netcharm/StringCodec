@@ -8,6 +8,7 @@ using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
+using Windows.Storage.Streams;
 using Windows.UI;
 using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
@@ -269,7 +270,7 @@ namespace StringCodec.UWP.Pages
                     await Utils.ShowSaveDialog(imgQR, CURRENT_SIZE, "QR");
                     break;
                 case "btnShare":
-                    await Utils.Share(imgQR.Source as WriteableBitmap, "QR");
+                    await Utils.Share(await imgQR.ToWriteableBitmap(), "QR");
                     break;
                 default:
                     break;
@@ -335,7 +336,161 @@ namespace StringCodec.UWP.Pages
         {
             // 记得获取Deferral对象
             //var def = e.GetDeferral();
-            if (sender == edQR)
+            if (sender == imgQR || sender == rectDrop)
+            {
+
+                if (e.DataView.Contains(StandardDataFormats.StorageItems))
+                {
+                    var items = await e.DataView.GetStorageItemsAsync();
+                    if (items.Count > 0)
+                    {
+                        var storageFile = items[0] as StorageFile;
+                        if (Utils.image_ext.Contains(storageFile.FileType.ToLower()))
+                        {
+                            if (storageFile.FileType.ToLower().Equals(".svg"))
+                            {
+                                var bitmapImage = new SvgImageSource();
+
+                                if (e.DataView.Contains(StandardDataFormats.WebLink))
+                                {
+                                    var url = await e.DataView.GetWebLinkAsync();
+                                    var ms = await RandomAccessStreamReference.CreateFromUri(url).OpenReadAsync();
+                                    await bitmapImage.SetSourceAsync(ms);
+                                    await ms.FlushAsync();
+
+                                    var bytes = WindowsRuntimeStreamExtensions.AsStreamForRead(ms.GetInputStreamAt(0));
+                                    imgQR.Tag = bytes;
+                                }
+                                else if (e.DataView.Contains(StandardDataFormats.Text))
+                                {
+                                    //var content = await e.DataView.GetHtmlFormatAsync();
+                                    var content = await e.DataView.GetTextAsync();
+                                    if (content.Length > 0)
+                                    {
+                                        var ms = await RandomAccessStreamReference.CreateFromUri(new Uri(content)).OpenReadAsync();
+                                        await bitmapImage.SetSourceAsync(ms);
+                                        await ms.FlushAsync();
+
+                                        var bytes = WindowsRuntimeStreamExtensions.AsStreamForRead(ms.GetInputStreamAt(0));
+                                        imgQR.Tag = bytes;
+                                    }
+                                }
+                                else
+                                {
+                                    await bitmapImage.SetSourceAsync(await storageFile.OpenReadAsync());
+                                    byte[] bytes = WindowsRuntimeBufferExtensions.ToArray(await FileIO.ReadBufferAsync(storageFile));
+                                    imgQR.Tag = bytes;
+                                }
+                                imgQR.Source = bitmapImage;
+                            }
+                            else
+                            {
+
+                                var bitmapImage = new WriteableBitmap(1, 1);
+
+                                if (e.DataView.Contains(StandardDataFormats.WebLink))
+                                {
+                                    var url = await e.DataView.GetWebLinkAsync();
+                                    await bitmapImage.SetSourceAsync(await RandomAccessStreamReference.CreateFromUri(url).OpenReadAsync());
+                                }
+                                else if (e.DataView.Contains(StandardDataFormats.Text))
+                                {
+                                    //var content = await e.DataView.GetHtmlFormatAsync();
+                                    var content = await e.DataView.GetTextAsync();
+                                    if (content.Length > 0)
+                                    {
+                                        await bitmapImage.SetSourceAsync(await RandomAccessStreamReference.CreateFromUri(new Uri(content)).OpenReadAsync());
+                                    }
+                                }
+                                else
+                                {
+                                    await bitmapImage.SetSourceAsync(await storageFile.OpenReadAsync());
+                                }
+
+                                byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
+                                imgQR.Source = bitmapImage;
+                            }
+                        }
+                    }
+                }
+                else if (e.DataView.Contains(StandardDataFormats.WebLink))
+                {
+                    var uri = await e.DataView.GetWebLinkAsync();
+
+                    StorageFile storageFile = await StorageFile.GetFileFromApplicationUriAsync(uri);
+                    if (Utils.image_ext.Contains(storageFile.FileType.ToLower()))
+                    {
+                        if (storageFile.FileType.ToLower().Equals(".svg"))
+                        {
+                            var bitmapImage = new SvgImageSource();
+
+                            if (e.DataView.Contains(StandardDataFormats.WebLink))
+                            {
+                                var url = await e.DataView.GetWebLinkAsync();
+                                var ms = await RandomAccessStreamReference.CreateFromUri(url).OpenReadAsync();
+                                await bitmapImage.SetSourceAsync(ms);
+                                await ms.FlushAsync();
+
+                                var bytes = WindowsRuntimeStreamExtensions.AsStreamForRead(ms.GetInputStreamAt(0));
+                                imgQR.Tag = bytes;
+                            }
+                            else if (e.DataView.Contains(StandardDataFormats.Text))
+                            {
+                                //var content = await e.DataView.GetHtmlFormatAsync();
+                                var content = await e.DataView.GetTextAsync();
+                                if (content.Length > 0)
+                                {
+                                    var ms = await RandomAccessStreamReference.CreateFromUri(new Uri(content)).OpenReadAsync();
+                                    await bitmapImage.SetSourceAsync(ms);
+                                    await ms.FlushAsync();
+
+                                    var bytes = WindowsRuntimeStreamExtensions.AsStreamForRead(ms.GetInputStreamAt(0));
+                                    imgQR.Tag = bytes;
+                                }
+                            }
+                            else
+                            {
+                                await bitmapImage.SetSourceAsync(await storageFile.OpenReadAsync());
+                                byte[] bytes = WindowsRuntimeBufferExtensions.ToArray(await FileIO.ReadBufferAsync(storageFile));
+                                imgQR.Tag = bytes;
+                            }
+                            imgQR.Source = bitmapImage;
+                        }
+                        else
+                        {
+                            var bitmapImage = new WriteableBitmap(1, 1);
+
+                            if (e.DataView.Contains(StandardDataFormats.WebLink))
+                            {
+                                var url = await e.DataView.GetWebLinkAsync();
+                                await bitmapImage.SetSourceAsync(await RandomAccessStreamReference.CreateFromUri(url).OpenReadAsync());
+                            }
+                            else if (e.DataView.Contains(StandardDataFormats.Text))
+                            {
+                                //var content = await e.DataView.GetHtmlFormatAsync();
+                                var content = await e.DataView.GetTextAsync();
+                                if (content.Length > 0)
+                                {
+                                    await bitmapImage.SetSourceAsync(await RandomAccessStreamReference.CreateFromUri(new Uri(content)).OpenReadAsync());
+                                }
+                            }
+                            else
+                            {
+                                await bitmapImage.SetSourceAsync(await storageFile.OpenReadAsync());
+                            }
+
+                            byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
+                            imgQR.Source = bitmapImage;
+                        }
+                    }
+                    //var bitmapImage = new WriteableBitmap(1, 1);
+                    //await bitmapImage.SetSourceAsync(await file.OpenAsync(FileAccessMode.Read));
+                    //// Set the image on the main page to the dropped image
+                    //byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
+                    //imgQR.Source = bitmapImage;
+                }
+            }
+            else if (sender == edQR)
             {
                 if (e.DataView.Contains(StandardDataFormats.StorageItems))
                 {

@@ -862,6 +862,14 @@
           <source>file(s)</source>
           <target state="translated">ファイル</target>
         </trans-unit>
+        <trans-unit id="Can't save to SVG file, will be saved as PNG file like" translate="yes" xml:space="preserve">
+          <source>Can't save to SVG file, will be saved as PNG file like</source>
+          <target state="translated">現在のイメージをSVGファイルとして保存することはできず、PNGファイルとして保存されます。</target>
+        </trans-unit>
+        <trans-unit id="optFmtSvg.Text" translate="yes" xml:space="preserve">
+          <source>SVG Image File</source>
+          <target state="translated">SVG 画像ファイル</target>
+        </trans-unit>
       </group>
     </body>
   </file>

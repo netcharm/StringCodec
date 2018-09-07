@@ -1,4 +1,5 @@
 ﻿using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.Svg;
 using Microsoft.Graphics.Canvas.Text;
 using System;
 using System.Collections.Generic;
@@ -332,7 +333,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        public static async Task<WriteableBitmap> ToWriteableBitmmap(this BitmapImage image)
+        public static async Task<WriteableBitmap> ToWriteableBitmap(this BitmapImage image)
         {
             WriteableBitmap result = null;
             if (image.UriSource != null)
@@ -346,7 +347,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        public static async Task<WriteableBitmap> ToWriteableBitmmap(this Image image)
+        public static async Task<WriteableBitmap> ToWriteableBitmap(this Image image)
         {
             WriteableBitmap result = null;
 
@@ -396,6 +397,64 @@ namespace StringCodec.UWP.Common
             else if (image.Source is WriteableBitmap)
             {
                 return (image.Source as WriteableBitmap);
+            }
+            else if (image.Source is SvgImageSource)
+            {
+                var svg = image.Source as SvgImageSource;
+                var width = (int)svg.RasterizePixelWidth;
+                var height = (int)svg.RasterizePixelHeight;
+                var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
+
+                if(width <=0 || height <= 0)
+                {
+                    width = (int)image.ActualWidth;
+                    height = (int)image.ActualHeight;
+                }
+
+                if (svg.UriSource != null)
+                {
+                    result = new WriteableBitmap(width, height);
+                    var imgRef = RandomAccessStreamReference.CreateFromUri(svg.UriSource);
+                    var ms = await imgRef.OpenReadAsync();
+                    await ms.FlushAsync();
+                    await result.SetSourceAsync(ms.AsStream().AsRandomAccessStream());
+                    return (result);
+                }
+                else
+                {
+                    //把控件变成图像
+                    RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap();
+                    //传入参数Image控件
+                    await renderTargetBitmap.RenderAsync(image, width, height);
+                    var pixelBuffer = await renderTargetBitmap.GetPixelsAsync();
+
+                    using (var fileStream = new InMemoryRandomAccessStream())
+                    {
+                        var encId = BitmapEncoder.PngEncoderId;
+                        var encoder = await BitmapEncoder.CreateAsync(encId, fileStream);
+                        encoder.SetPixelData(
+                            BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,
+                            (uint)width, (uint)height, dpi, dpi,
+                            pixelBuffer.ToArray()
+                        );
+                        //刷新图像
+                        await encoder.FlushAsync();
+
+                        result = new WriteableBitmap(width, height);
+                        await result.SetSourceAsync(fileStream);
+                    }
+                    return (result);
+                }
+
+                //var sharedDevice = CanvasDevice.GetSharedDevice();
+                //var svgDocument = new CanvasSvgDocument(sharedDevice);
+                //if (image.Tag is byte[])
+                //    svgDocument = CanvasSvgDocument.LoadFromXml(sharedDevice, (image.Tag as byte[]).ToString());
+
+                //using (var offscreen = new CanvasRenderTarget(sharedDevice, (float)svg.RasterizePixelWidth, (float)svg.RasterizePixelHeight, 96))
+                //{
+                //    //svg.
+                //}
             }
             return (result);
         }
@@ -484,6 +543,77 @@ namespace StringCodec.UWP.Common
 
                     // Get pixels of the WriteableBitmap object 
                     Stream pixelStream = image.PixelBuffer.AsStream();
+                    byte[] pixels = new byte[pixelStream.Length];
+                    await pixelStream.ReadAsync(pixels, 0, pixels.Length);
+
+                    var encId = BitmapEncoder.PngEncoderId;
+                    var fext = Path.GetExtension(storageitem.Name).ToLower();
+                    switch (fext)
+                    {
+                        case ".bmp":
+                            encId = BitmapEncoder.BmpEncoderId;
+                            break;
+                        case ".gif":
+                            encId = BitmapEncoder.GifEncoderId;
+                            break;
+                        case ".png":
+                            encId = BitmapEncoder.PngEncoderId;
+                            break;
+                        case ".jpg":
+                            encId = BitmapEncoder.JpegEncoderId;
+                            break;
+                        case ".jpeg":
+                            encId = BitmapEncoder.JpegEncoderId;
+                            break;
+                        case ".tif":
+                            encId = BitmapEncoder.TiffEncoderId;
+                            break;
+                        case ".tiff":
+                            encId = BitmapEncoder.TiffEncoderId;
+                            break;
+                        default:
+                            encId = BitmapEncoder.PngEncoderId;
+                            break;
+                    }
+                    var encoder = await BitmapEncoder.CreateAsync(encId, fileStream);
+                    // Save the image file with jpg extension 
+                    encoder.SetPixelData(
+                        BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,
+                        (uint)w, (uint)h,
+                        dpi, dpi,
+                        pixels);
+                    await encoder.FlushAsync();
+                }
+                #endregion
+                FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(storageitem);
+            }
+        }
+
+        public static async void SaveAsync(this WriteableBitmap image, StorageFile storageitem, int width, int height)
+        {
+            if (storageitem != null)
+            {
+                StorageApplicationPermissions.MostRecentlyUsedList.Add(storageitem, storageitem.Name);
+                if (StorageApplicationPermissions.FutureAccessList.Entries.Count >= 1000)
+                    StorageApplicationPermissions.FutureAccessList.Remove(StorageApplicationPermissions.FutureAccessList.Entries.Last().Token);
+                StorageApplicationPermissions.FutureAccessList.Add(storageitem, storageitem.Name);
+
+                // 在用户完成更改并调用CompleteUpdatesAsync之前，阻止对文件的更新
+                CachedFileManager.DeferUpdates(storageitem);
+
+                #region Save Image Control source data
+                using (var fileStream = await storageitem.OpenAsync(FileAccessMode.ReadWrite))
+                {
+                    var wb = image;
+                    if (width > 0 && height > 0)
+                        wb = image.Resize(width, height, WriteableBitmapExtensions.Interpolation.Bilinear);
+
+                    var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
+                    var w = wb.PixelWidth;
+                    var h = wb.PixelHeight;
+
+                    // Get pixels of the WriteableBitmap object 
+                    Stream pixelStream = wb.PixelBuffer.AsStream();
                     byte[] pixels = new byte[pixelStream.Length];
                     await pixelStream.ReadAsync(pixels, 0, pixels.Length);
 
@@ -745,7 +875,7 @@ namespace StringCodec.UWP.Common
 
     class Utils
     {
-        public static string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif" };
+        public static string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif", ".svg" };
         public static string[] text_ext = new string[] { ".txt", ".text", ".base64", ".md", ".me", ".html", ".rst", ".url" };
         public static string[] url_ext = new string[] { ".url" };
 
@@ -910,8 +1040,9 @@ namespace StringCodec.UWP.Common
                 //把控件变成图像
                 RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap();
                 //传入参数Image控件
-                var bw = (image.Source as WriteableBitmap).PixelWidth;
-                var bh = (image.Source as WriteableBitmap).PixelHeight;
+                var wb = await image.ToWriteableBitmap();
+                var bw = wb.PixelWidth;
+                var bh = wb.PixelHeight;
                 var factor = (float)bh / (float)bw;
 
                 var r_width = width;
@@ -946,7 +1077,7 @@ namespace StringCodec.UWP.Common
                 #endregion
 
                 #region Create in memory image data Copy to Clipboard
-                var cistream = await (image.Source as WriteableBitmap).StoreMemoryStream(pixelBuffer, r_width, r_height);
+                var cistream = await wb.StoreMemoryStream(pixelBuffer, r_width, r_height);
                 if(cistream != null || cistream.Size>0 )
                 {
                     if (cistream.Position > 0) cistream.Seek(0); 
@@ -1279,10 +1410,22 @@ namespace StringCodec.UWP.Common
 
         public static async Task<string> ShowSaveDialog(Image image, string prefix = "")
         {
-            var bmp = await image.ToWriteableBitmmap();
-            var width = bmp.PixelWidth;
-            var height = bmp.PixelHeight;
-            return (await ShowSaveDialog(image, width, height, prefix));
+            if(image.Source is SvgImageSource)
+            {
+                var svg = image.Source as SvgImageSource;
+                return (await ShowSaveDialog(image, (int)svg.RasterizePixelWidth, (int)svg.RasterizePixelHeight, prefix));
+            }
+            else
+            {
+                var bmp = await image.ToWriteableBitmap();
+                if (bmp != null)
+                {
+                    var width = bmp.PixelWidth;
+                    var height = bmp.PixelHeight;
+                    return (await ShowSaveDialog(image, width, height, prefix));
+                }
+                else return (string.Empty);
+            }               
         }
 
         public static async Task<string> ShowSaveDialog(Image image, int size, string prefix = "")
@@ -1298,7 +1441,8 @@ namespace StringCodec.UWP.Common
             var now = DateTime.Now;
             FileSavePicker fp = new FileSavePicker();
             fp.SuggestedStartLocation = PickerLocationId.Desktop;
-            fp.FileTypeChoices.Add("Image File", new List<string>() { ".png", ".jpg", ".jpeg", ".tif", ".tiff", ".gif", ".bmp" });
+            //fp.FileTypeChoices.Add("Image File", new List<string>() { ".png", ".jpg", ".jpeg", ".tif", ".tiff", ".gif", ".bmp" });
+            fp.FileTypeChoices.Add("Image File", image_ext);
             if (!string.IsNullOrEmpty(prefix)) prefix = $"{prefix}_";
             fp.SuggestedFileName = $"{prefix}{now.ToString("yyyyMMddHHmmssff")}.png";
             StorageFile TargetFile = await fp.PickSaveFileAsync();
@@ -1312,125 +1456,171 @@ namespace StringCodec.UWP.Common
                 // 在用户完成更改并调用CompleteUpdatesAsync之前，阻止对文件的更新
                 CachedFileManager.DeferUpdates(TargetFile);
 
-                #region Save Image Control source data
-                //using (var fileStream = await TargetFile.OpenAsync(FileAccessMode.ReadWrite))
-                //{
-                //    var bmp = imgQR.Source as WriteableBitmap;
-                //    var w = bmp.PixelWidth;
-                //    var h = bmp.PixelHeight;
-
-                //    // set the source for WriteableBitmap  
-                //    //await bmp.SetSourceAsync(fileStream);
-
-                //    // Get pixels of the WriteableBitmap object 
-                //    Stream pixelStream = bmp.PixelBuffer.AsStream();
-                //    byte[] pixels = new byte[pixelStream.Length];
-                //    await pixelStream.ReadAsync(pixels, 0, pixels.Length);
-
-                //    var encId = BitmapEncoder.PngEncoderId;
-                //    var fext = Path.GetExtension(TargetFile.Name).ToLower();
-                //    switch (fext)
-                //    {
-                //        case ".bmp":
-                //            encId = BitmapEncoder.BmpEncoderId;
-                //            break;
-                //        case ".gif":
-                //            encId = BitmapEncoder.GifEncoderId;
-                //            break;
-                //        case ".png":
-                //            encId = BitmapEncoder.PngEncoderId;
-                //            break;
-                //        case ".jpg":
-                //            encId = BitmapEncoder.JpegEncoderId;
-                //            break;
-                //        case ".jpeg":
-                //            encId = BitmapEncoder.JpegEncoderId;
-                //            break;
-                //        case ".tif":
-                //            encId = BitmapEncoder.TiffEncoderId;
-                //            break;
-                //        case ".tiff":
-                //            encId = BitmapEncoder.TiffEncoderId;
-                //            break;
-                //        default:
-                //            encId = BitmapEncoder.PngEncoderId;
-                //            break;
-                //    }
-                //    var encoder = await BitmapEncoder.CreateAsync(encId, fileStream);
-                //    // Save the image file with jpg extension 
-                //    encoder.SetPixelData(
-                //        BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,
-                //        //(uint)bmp.PixelWidth, (uint)bmp.PixelHeight, 
-                //        (uint)size, (uint)size,
-                //        96.0, 96.0, 
-                //        pixels);
-                //    await encoder.FlushAsync();
-                //}
-                //result = TargetFile.Name;
-                #endregion
-
-                #region Save Image control display with specified size
-                //把控件变成图像
-                RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap();
-                //传入参数Image控件
-                var wb = await image.ToWriteableBitmmap();
-                var bw = wb.PixelWidth;
-                var bh = wb.PixelHeight;
-                double factor = (double)bh / (double)bw;
-                await renderTargetBitmap.RenderAsync(image, width, (int)(width * factor));
-                var pixelBuffer = await renderTargetBitmap.GetPixelsAsync();
-
-                using (var fileStream = await TargetFile.OpenAsync(FileAccessMode.ReadWrite))
+                if (TargetFile.FileType.Equals(".svg", StringComparison.CurrentCultureIgnoreCase) && image.Source is SvgImageSource)
                 {
-                    var r_width = renderTargetBitmap.PixelWidth;
-                    var r_height = renderTargetBitmap.PixelHeight;
-                    var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
-                    if (width > 0 && height > 0)
+                    SvgImageSource svg = image.Source as SvgImageSource;
+                    if (image.Tag is byte[])
                     {
-                        r_width = width;
-                        r_height = (int)(width * factor);
+                        await FileIO.WriteBytesAsync(TargetFile, image.Tag as byte[]);
                     }
-                    var encId = BitmapEncoder.PngEncoderId;
-                    var fext = Path.GetExtension(TargetFile.Name).ToLower();
-                    switch (fext)
+                    else if (svg.UriSource != null)// && !string.IsNullOrEmpty(svg.UriSource.AbsoluteUri))
                     {
-                        case ".bmp":
-                            encId = BitmapEncoder.BmpEncoderId;
-                            break;
-                        case ".gif":
-                            encId = BitmapEncoder.GifEncoderId;
-                            break;
-                        case ".png":
-                            encId = BitmapEncoder.PngEncoderId;
-                            break;
-                        case ".jpg":
-                            encId = BitmapEncoder.JpegEncoderId;
-                            break;
-                        case ".jpeg":
-                            encId = BitmapEncoder.JpegEncoderId;
-                            break;
-                        case ".tif":
-                            encId = BitmapEncoder.TiffEncoderId;
-                            break;
-                        case ".tiff":
-                            encId = BitmapEncoder.TiffEncoderId;
-                            break;
-                        default:
-                            encId = BitmapEncoder.PngEncoderId;
-                            break;
-                    }
-                    var encoder = await BitmapEncoder.CreateAsync(encId, fileStream);
-                    encoder.SetPixelData(
-                        BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,
-                        (uint)r_width, (uint)r_height, dpi, dpi,
-                        pixelBuffer.ToArray()
-                    );
-                    //刷新图像
-                    await encoder.FlushAsync();
-                }
-                result = TargetFile.Name;
-                #endregion
+                        var svgRef = RandomAccessStreamReference.CreateFromUri(svg.UriSource);
+                        var rms = await svgRef.OpenReadAsync();
+                        await rms.FlushAsync();
 
+                        MemoryStream ms = new MemoryStream();
+                        rms.Seek(0);
+                        await rms.AsStreamForRead().CopyToAsync(ms);
+                        byte[] bytes = ms.ToArray();
+                        await ms.FlushAsync();
+
+                        await FileIO.WriteBytesAsync(TargetFile, bytes);
+                    }
+                    else
+                    {
+                        var wb = await image.ToWriteableBitmap();
+                        if (wb != null)
+                        {
+                            var targetName = $"{ TargetFile.Name }.png";
+                            await new MessageDialog($"{"Can't save to SVG file, will be saved as PNG file like".T()} :\n  {targetName}", "INFO".T()).ShowAsync();
+                            await TargetFile.RenameAsync($"{targetName}", NameCollisionOption.GenerateUniqueName);
+                            wb.SaveAsync(TargetFile, width, height);
+                        }
+                    }
+                }
+                else if(TargetFile.FileType.Equals(".svg", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    var wb = await image.ToWriteableBitmap();
+                    if (wb != null)
+                    {
+                        var targetName = $"{ TargetFile.Name }.png";
+                        await new MessageDialog($"{"Can't save to SVG file, will be saved as PNG file like".T()} :\n  {targetName}", "INFO".T()).ShowAsync();
+                        await TargetFile.RenameAsync($"{targetName}", NameCollisionOption.GenerateUniqueName);
+                        wb.SaveAsync(TargetFile, width, height);
+                    }
+                }
+                else
+                {
+                    #region Save Image Control source data
+                    //using (var fileStream = await TargetFile.OpenAsync(FileAccessMode.ReadWrite))
+                    //{
+                    //    var bmp = imgQR.Source as WriteableBitmap;
+                    //    var w = bmp.PixelWidth;
+                    //    var h = bmp.PixelHeight;
+
+                    //    // set the source for WriteableBitmap  
+                    //    //await bmp.SetSourceAsync(fileStream);
+
+                    //    // Get pixels of the WriteableBitmap object 
+                    //    Stream pixelStream = bmp.PixelBuffer.AsStream();
+                    //    byte[] pixels = new byte[pixelStream.Length];
+                    //    await pixelStream.ReadAsync(pixels, 0, pixels.Length);
+
+                    //    var encId = BitmapEncoder.PngEncoderId;
+                    //    var fext = Path.GetExtension(TargetFile.Name).ToLower();
+                    //    switch (fext)
+                    //    {
+                    //        case ".bmp":
+                    //            encId = BitmapEncoder.BmpEncoderId;
+                    //            break;
+                    //        case ".gif":
+                    //            encId = BitmapEncoder.GifEncoderId;
+                    //            break;
+                    //        case ".png":
+                    //            encId = BitmapEncoder.PngEncoderId;
+                    //            break;
+                    //        case ".jpg":
+                    //            encId = BitmapEncoder.JpegEncoderId;
+                    //            break;
+                    //        case ".jpeg":
+                    //            encId = BitmapEncoder.JpegEncoderId;
+                    //            break;
+                    //        case ".tif":
+                    //            encId = BitmapEncoder.TiffEncoderId;
+                    //            break;
+                    //        case ".tiff":
+                    //            encId = BitmapEncoder.TiffEncoderId;
+                    //            break;
+                    //        default:
+                    //            encId = BitmapEncoder.PngEncoderId;
+                    //            break;
+                    //    }
+                    //    var encoder = await BitmapEncoder.CreateAsync(encId, fileStream);
+                    //    // Save the image file with jpg extension 
+                    //    encoder.SetPixelData(
+                    //        BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,
+                    //        //(uint)bmp.PixelWidth, (uint)bmp.PixelHeight, 
+                    //        (uint)size, (uint)size,
+                    //        96.0, 96.0, 
+                    //        pixels);
+                    //    await encoder.FlushAsync();
+                    //}
+                    //result = TargetFile.Name;
+                    #endregion
+
+                    #region Save Image control display with specified size
+                    //把控件变成图像
+                    RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap();
+                    //传入参数Image控件
+                    var wb = await image.ToWriteableBitmap();
+                    var bw = wb.PixelWidth;
+                    var bh = wb.PixelHeight;
+                    double factor = (double)bh / (double)bw;
+                    await renderTargetBitmap.RenderAsync(image, width, (int)(width * factor));
+                    var pixelBuffer = await renderTargetBitmap.GetPixelsAsync();
+
+                    using (var fileStream = await TargetFile.OpenAsync(FileAccessMode.ReadWrite))
+                    {
+                        var r_width = renderTargetBitmap.PixelWidth;
+                        var r_height = renderTargetBitmap.PixelHeight;
+                        var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
+                        if (width > 0 && height > 0)
+                        {
+                            r_width = width;
+                            r_height = (int)(width * factor);
+                        }
+                        var encId = BitmapEncoder.PngEncoderId;
+                        var fext = Path.GetExtension(TargetFile.Name).ToLower();
+                        switch (fext)
+                        {
+                            case ".bmp":
+                                encId = BitmapEncoder.BmpEncoderId;
+                                break;
+                            case ".gif":
+                                encId = BitmapEncoder.GifEncoderId;
+                                break;
+                            case ".png":
+                                encId = BitmapEncoder.PngEncoderId;
+                                break;
+                            case ".jpg":
+                                encId = BitmapEncoder.JpegEncoderId;
+                                break;
+                            case ".jpeg":
+                                encId = BitmapEncoder.JpegEncoderId;
+                                break;
+                            case ".tif":
+                                encId = BitmapEncoder.TiffEncoderId;
+                                break;
+                            case ".tiff":
+                                encId = BitmapEncoder.TiffEncoderId;
+                                break;
+                            default:
+                                encId = BitmapEncoder.PngEncoderId;
+                                break;
+                        }
+                        var encoder = await BitmapEncoder.CreateAsync(encId, fileStream);
+                        encoder.SetPixelData(
+                            BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,
+                            (uint)r_width, (uint)r_height, dpi, dpi,
+                            pixelBuffer.ToArray()
+                        );
+                        //刷新图像
+                        await encoder.FlushAsync();
+                    }
+                    result = TargetFile.Name;
+                    #endregion
+                }
                 FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(TargetFile);
             }
             return (result);

@@ -31,6 +31,7 @@
                         <ToggleMenuFlyoutItem x:Name="optFmtBmp" x:Uid="optFmtBmp" Text="BMP Image File" Click="OptFmt_Click"/>
                         <ToggleMenuFlyoutItem x:Name="optFmtGif" x:Uid="optFmtGif" Text="GIF Image File" Click="OptFmt_Click"/>
                         <ToggleMenuFlyoutItem x:Name="optFmtTif" x:Uid="optFmtTif" Text="TIF Image File" Click="OptFmt_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optFmtSvg" x:Uid="optFmtSvg" Text="SVG Image File" Visibility="Collapsed" Click="OptFmt_Click"/>
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>

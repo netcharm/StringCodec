@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Windows.Graphics.Imaging;
 using Windows.Storage.Streams;
 using Windows.UI.Popups;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace StringCodec.UWP.Common
@@ -484,6 +485,37 @@ namespace StringCodec.UWP.Common
             return (Decode(content, Codec, enc));
         }
 
+        static public async Task<SvgImageSource> DecodeSvg(this string content)
+        {
+            SvgImageSource result = new SvgImageSource();
+            if (content.Length <= 0) return (result);
+
+            try
+            {
+                string bs = Regex.Replace(content, @"data:image/.*?;base64,", "", RegexOptions.IgnoreCase);
+                byte[] arr = Convert.FromBase64String(bs.Trim());
+                using (MemoryStream ms = new MemoryStream(arr))
+                {
+                    byte[] buf = ms.ToArray();
+                    using (InMemoryRandomAccessStream fileStream = new InMemoryRandomAccessStream())
+                    {
+                        using (DataWriter writer = new DataWriter(fileStream.GetOutputStreamAt(0)))
+                        {
+                            writer.WriteBytes(buf);
+                            writer.StoreAsync().GetResults();
+                            await fileStream.FlushAsync();
+                        }
+                        await result.SetSourceAsync(fileStream);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
+            }
+            return (result);
+        }
+
         static public async Task<WriteableBitmap> Decode(string content)
         {
             WriteableBitmap result = new WriteableBitmap(1, 1);
@@ -500,7 +532,7 @@ namespace StringCodec.UWP.Common
                     {
                         using (DataWriter writer = new DataWriter(fileStream.GetOutputStreamAt(0)))
                         {
-                            writer.WriteBytes((byte[])buf);
+                            writer.WriteBytes(buf);
                             writer.StoreAsync().GetResults();
                             await fileStream.FlushAsync();
                         }

@@ -759,4 +759,10 @@
   <data name="has been deleted" xml:space="preserve">
     <value>has been deleted</value>
   </data>
+  <data name="Can't save to SVG file, will be saved as PNG file like" xml:space="preserve">
+    <value>Can't save to SVG file, will be saved as PNG file like</value>
+  </data>
+  <data name="optFmtSvg.Text" xml:space="preserve">
+    <value>SVG Image File</value>
+  </data>
 </root>
