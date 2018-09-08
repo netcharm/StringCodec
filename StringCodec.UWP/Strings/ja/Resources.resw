@@ -660,4 +660,25 @@
   <data name="optFmtSvg.Text" xml:space="preserve">
     <value>SVG 画像ファイル</value>
   </data>
+  <data name="btnImageSvg.Label" xml:space="preserve">
+    <value>SVGラスタライズ</value>
+  </data>
+  <data name="btnSvgToBase64.Label" xml:space="preserve">
+    <value>SVGエンコーディングはBASE64です</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>確認しますか？</value>
+  </data>
+  <data name="Image is big, it's maybe too slower to encoding &amp; filling textbox. \n Continued?" xml:space="preserve">
+    <value>画像を拡大し、テキストボックスをエンコードして埋め込むのが非常に遅くなる可能性があります。 \ n続行しますか？</value>
+  </data>
+  <data name="nvItemSvg.Content" xml:space="preserve">
+    <value>SVGをイメージに変換する</value>
+  </data>
+  <data name="optIconUwp.Text" xml:space="preserve">
+    <value>Windowsユニバーサルアプリアイコン</value>
+  </data>
+  <data name="optIconWin.Text" xml:space="preserve">
+    <value>Windowsネイティブアプリアイコン</value>
+  </data>
 </root>

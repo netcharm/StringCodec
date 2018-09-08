@@ -61,7 +61,11 @@
                         <FontIcon Glyph="&#xF02A;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
                     </AppBarButton.Icon>
                 </AppBarButton>
-                <AppBarButton x:Name="btnImageSvg" x:Uid="btnImageSvg" Content="Image to SVG" Icon="Pictures" Click="QRCode_Click"/>
+                <AppBarButton x:Name="btnImageSvg" x:Uid="btnImageSvg" Label="SVG Rasterization" Visibility="Collapsed" Click="QRCode_Click">
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xF1C9;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
             </CommandBar.SecondaryCommands>
 
             <CommandBar.Content>

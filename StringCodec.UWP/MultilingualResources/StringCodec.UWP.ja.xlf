@@ -870,6 +870,34 @@
           <source>SVG Image File</source>
           <target state="translated">SVG 画像ファイル</target>
         </trans-unit>
+        <trans-unit id="btnImageSvg.Label" translate="yes" xml:space="preserve">
+          <source>SVG Rasterization</source>
+          <target state="translated">SVGラスタライズ</target>
+        </trans-unit>
+        <trans-unit id="btnSvgToBase64.Label" translate="yes" xml:space="preserve">
+          <source>SVG To BASE64</source>
+          <target state="translated">SVGエンコーディングはBASE64です</target>
+        </trans-unit>
+        <trans-unit id="Confirm" translate="yes" xml:space="preserve">
+          <source>Confirm</source>
+          <target state="translated">確認しますか？</target>
+        </trans-unit>
+        <trans-unit id="Image is big, it's maybe too slower to encoding &amp;amp; filling textbox. \n Continued?" translate="yes" xml:space="preserve">
+          <source>Image is big, it's maybe too slower to encoding &amp; filling textbox. \n Continued?</source>
+          <target state="translated">画像を拡大し、テキストボックスをエンコードして埋め込むのが非常に遅くなる可能性があります。 \ n続行しますか？</target>
+        </trans-unit>
+        <trans-unit id="nvItemSvg.Content" translate="yes" xml:space="preserve">
+          <source>SVG To Image</source>
+          <target state="translated">SVGをイメージに変換する</target>
+        </trans-unit>
+        <trans-unit id="optIconUwp.Text" translate="yes" xml:space="preserve">
+          <source>UWP Logo Assets</source>
+          <target state="translated">Windowsユニバーサルアプリアイコン</target>
+        </trans-unit>
+        <trans-unit id="optIconWin.Text" translate="yes" xml:space="preserve">
+          <source>Windows Icons</source>
+          <target state="translated">Windowsネイティブアプリアイコン</target>
+        </trans-unit>
       </group>
     </body>
   </file>

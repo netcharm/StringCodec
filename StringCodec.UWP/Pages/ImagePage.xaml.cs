@@ -42,6 +42,33 @@ namespace StringCodec.UWP.Pages
             set { text_src = value; }
         }
 
+        private bool IsSVG(Image image)
+        {
+            bool result = false;
+
+            if(image.Source is SvgImageSource)
+            {
+                btnImageSvg.Visibility = Visibility.Visible;
+                optFmtSvg.Visibility = Visibility.Visible;
+
+                result = true;
+            }
+            else
+            {
+                btnImageSvg.Visibility = Visibility.Collapsed;
+                optFmtSvg.Visibility = Visibility.Collapsed;
+                if (optFmtSvg.IsChecked)
+                {
+                    optFmtSvg.IsChecked = false;
+                    optFmtPng.IsChecked = true;
+                }
+
+                result = false;
+            }
+
+            return (result);
+        }
+
         public ImagePage()
         {
             this.InitializeComponent();
@@ -74,13 +101,18 @@ namespace StringCodec.UWP.Pages
                     else edBase64.TextWrapping = TextWrapping.Wrap;
                     var wb = await imgBase64.ToWriteableBitmap();
                     edBase64.Text = await wb.ToBase64(CURRENT_FORMAT, CURRENT_PREFIX, CURRENT_LINEBREAK);
-                    optFmtSvg.Visibility = Visibility.Collapsed;
-                    if (optFmtSvg.IsChecked)
-                    {
-                        optFmtSvg.IsChecked = false;
-                        optFmtPng.IsChecked = true;
-                    }
                 }
+                else if(data is SVG)
+                {
+                    var svg = data as SVG;
+                    imgBase64.Source = svg.Source;
+                    imgBase64.Tag = svg.Bytes;
+
+                    if (CURRENT_LINEBREAK) edBase64.TextWrapping = TextWrapping.NoWrap;
+                    else edBase64.TextWrapping = TextWrapping.Wrap;
+                    edBase64.Text = await svg.ToBase64(CURRENT_LINEBREAK);
+                }
+                IsSVG(imgBase64);
             }
         }
 
@@ -163,29 +195,19 @@ namespace StringCodec.UWP.Pages
                     edBase64.TextWrapping = TextWrapping.NoWrap;
                     if(imgBase64.Source is SvgImageSource && CURRENT_FORMAT.Equals(".svg"))
                     {
-                        var lb = CURRENT_LINEBREAK ? Base64FormattingOptions.InsertLineBreaks : Base64FormattingOptions.None;
-                        var svgPrefix = $"data:image/svg+xml;base64,";
-                        if (!CURRENT_PREFIX) svgPrefix = string.Empty;
-
-                        SvgImageSource svg = imgBase64.Source as SvgImageSource;
-                        if (imgBase64.Tag is byte[])
+                        try
                         {
-                            b64 = $"{svgPrefix}{Convert.ToBase64String(imgBase64.Tag as byte[], lb)}";
+                            var svg = new SVG();
+                            if (imgBase64.Tag is byte[])
+                                svg.Bytes = imgBase64.Tag as byte[];
+                            svg.Source = imgBase64.Source as SvgImageSource;
+                            b64 = await svg.ToBase64(CURRENT_LINEBREAK);
                         }
-                        else if (svg.UriSource != null)// && !string.IsNullOrEmpty(svg.UriSource.AbsoluteUri))
+                        catch (Exception ex)
                         {
-                            var svgRef = RandomAccessStreamReference.CreateFromUri(svg.UriSource);
-                            var rms = await svgRef.OpenReadAsync();
-                            await rms.FlushAsync();
-
-                            MemoryStream ms = new MemoryStream();
-                            rms.Seek(0);
-                            await rms.AsStreamForRead().CopyToAsync(ms);
-                            byte[] bytes = ms.ToArray();
-                            await ms.FlushAsync();
-                            b64 = $"{svgPrefix}{Convert.ToBase64String(bytes, lb)}";
+                            await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
                         }
-                        else
+                        if(string.IsNullOrEmpty(b64))
                         {
                             var wb = await imgBase64.ToWriteableBitmap();
                             if (wb != null)
@@ -197,7 +219,6 @@ namespace StringCodec.UWP.Pages
                     else
                     {
                         var wb = await imgBase64.ToWriteableBitmap();
-                        //edBase64.Text = await wb.ToBase64(CURRENT_FORMAT, CURRENT_PREFIX, CURRENT_LINEBREAK);
                         b64 = await wb.ToBase64(CURRENT_FORMAT, CURRENT_PREFIX, CURRENT_LINEBREAK);
                     }
                     edBase64.Text = b64;
@@ -210,16 +231,17 @@ namespace StringCodec.UWP.Pages
                     // 
                     break;
                 case "btnDecode":
-                    //imgBase64.Source = await TextCodecs.Decode(edBase64.Text);
-                    if(edBase64.Text.StartsWith("data:image/svg", StringComparison.CurrentCultureIgnoreCase))
+                    if(edBase64.Text.StartsWith("data:image/svg", StringComparison.CurrentCultureIgnoreCase) ||
+                       Regex.IsMatch(edBase64.Text, @"<svg.*?>", RegexOptions.IgnoreCase | RegexOptions.Multiline))
                     {
-                        imgBase64.Source = await edBase64.Text.DecodeSvg();
-                        string bs = Regex.Replace(edBase64.Text, @"data:image/.*?;base64,", "", RegexOptions.IgnoreCase);
-                        byte[] arr = Convert.FromBase64String(bs.Trim());
-                        imgBase64.Tag = arr;
+                        var svg = await edBase64.Text.DecodeSvg();
+                        imgBase64.Source = svg.Source;
+                        imgBase64.Tag = svg.Bytes;
                     }
                     else
+                    {
                         imgBase64.Source = await edBase64.Text.Decoder();
+                    }
                     break;
                 case "btnCopy":
                     //Utils.SetClipboard(edBase64.Text);
@@ -227,12 +249,6 @@ namespace StringCodec.UWP.Pages
                     break;
                 case "btnPaste":
                     edBase64.Text = await Utils.GetClipboard(edBase64.Text, imgBase64);
-                    optFmtSvg.Visibility = Visibility.Collapsed;
-                    if (optFmtSvg.IsChecked)
-                    {
-                        optFmtSvg.IsChecked = false;
-                        optFmtPng.IsChecked = true;
-                    }
                     break;
                 case "btnSave":
                     await Utils.ShowSaveDialog(imgBase64);
@@ -243,6 +259,7 @@ namespace StringCodec.UWP.Pages
                 default:
                     break;
             }
+            IsSVG(imgBase64);
         }
 
         #region Drag/Drop routines
@@ -351,57 +368,32 @@ namespace StringCodec.UWP.Pages
                             if (storageFile.FileType.ToLower().Equals(".svg"))
                             {
                                 var bitmapImage = new SvgImageSource();
-
                                 if (e.DataView.Contains(StandardDataFormats.WebLink))
                                 {
                                     var url = await e.DataView.GetWebLinkAsync();
                                     var rms = await RandomAccessStreamReference.CreateFromUri(url).OpenReadAsync();
-
-                                    var svg = await SVG.Load(rms);
+                                    var svg = await SVG.CreateFromStream(rms);
                                     bitmapImage = svg.Source;
                                     imgBase64.Tag = svg.Bytes;
-
-                                    //await bitmapImage.SetSourceAsync(rms);
-                                    //await rms.FlushAsync();
-
-                                    //var byteStream = WindowsRuntimeStreamExtensions.AsStreamForRead(rms.GetInputStreamAt(0));
-                                    //MemoryStream ms = new MemoryStream();
-                                    //await byteStream.CopyToAsync(ms);                                    
-                                    //imgBase64.Tag = ms.ToArray();
                                 }
                                 else if (e.DataView.Contains(StandardDataFormats.Text))
                                 {
-                                    //var content = await e.DataView.GetHtmlFormatAsync();
                                     var content = await e.DataView.GetTextAsync();
                                     if (content.Length > 0)
                                     {
                                         var rms = await RandomAccessStreamReference.CreateFromUri(new Uri(content)).OpenReadAsync();
-
-                                        var svg = await SVG.Load(rms);
+                                        var svg = await SVG.CreateFromStream(rms);
                                         bitmapImage = svg.Source;
                                         imgBase64.Tag = svg.Bytes;
-
-                                        //await bitmapImage.SetSourceAsync(rms);
-                                        //await rms.FlushAsync();
-
-                                        //var byteStream = WindowsRuntimeStreamExtensions.AsStreamForRead(rms.GetInputStreamAt(0));
-                                        //MemoryStream ms = new MemoryStream();
-                                        //await byteStream.CopyToAsync(ms);
-                                        //imgBase64.Tag = ms.ToArray();
                                     }
                                 }
                                 else
                                 {
-                                    var svg = await SVG.Load(storageFile);
+                                    var svg = await SVG.CreateFromStorageFile(storageFile);
                                     bitmapImage = svg.Source;
                                     imgBase64.Tag = svg.Bytes;
-
-                                    //await bitmapImage.SetSourceAsync(await storageFile.OpenReadAsync());
-                                    //byte[] bytes = WindowsRuntimeBufferExtensions.ToArray(await FileIO.ReadBufferAsync(storageFile));
-                                    //imgBase64.Tag = bytes;
                                 }
                                 imgBase64.Source = bitmapImage;
-                                optFmtSvg.Visibility = Visibility.Visible;
                             }
                             else
                             {
@@ -429,12 +421,6 @@ namespace StringCodec.UWP.Pages
 
                                 byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
                                 imgBase64.Source = bitmapImage;
-                                optFmtSvg.Visibility = Visibility.Collapsed;
-                                if (optFmtSvg.IsChecked)
-                                {
-                                    optFmtSvg.IsChecked = false;
-                                    optFmtPng.IsChecked = true;
-                                }
                             }
                         }
                     }
@@ -455,18 +441,9 @@ namespace StringCodec.UWP.Pages
                             {
                                 var url = await e.DataView.GetWebLinkAsync();
                                 var rms = await RandomAccessStreamReference.CreateFromUri(url).OpenReadAsync();
-
-                                var svg = await SVG.Load(rms);
+                                var svg = await SVG.CreateFromStream(rms);
                                 bitmapImage = svg.Source;
                                 imgBase64.Tag = svg.Bytes;
-
-                                //await bitmapImage.SetSourceAsync(rms);
-                                //await rms.FlushAsync();
-
-                                //var byteStream = WindowsRuntimeStreamExtensions.AsStreamForRead(rms.GetInputStreamAt(0));
-                                //MemoryStream ms = new MemoryStream();
-                                //await byteStream.CopyToAsync(ms);
-                                //imgBase64.Tag = ms.ToArray();
                             }
                             else if (e.DataView.Contains(StandardDataFormats.Text))
                             {
@@ -475,18 +452,9 @@ namespace StringCodec.UWP.Pages
                                 if (content.Length > 0)
                                 {
                                     var rms = await RandomAccessStreamReference.CreateFromUri(new Uri(content)).OpenReadAsync();
-
-                                    var svg = await SVG.Load(rms);
+                                    var svg = await SVG.CreateFromStream(rms);
                                     bitmapImage = svg.Source;
                                     imgBase64.Tag = svg.Bytes;
-
-                                    //await bitmapImage.SetSourceAsync(rms);
-                                    //await rms.FlushAsync();
-
-                                    //var byteStream = WindowsRuntimeStreamExtensions.AsStreamForRead(rms.GetInputStreamAt(0));
-                                    //MemoryStream ms = new MemoryStream();
-                                    //await byteStream.CopyToAsync(ms);
-                                    //imgBase64.Tag = ms.ToArray();
                                 }
                             }
                             else
@@ -496,7 +464,6 @@ namespace StringCodec.UWP.Pages
                                 imgBase64.Tag = bytes;
                             }
                             imgBase64.Source = bitmapImage;
-                            optFmtSvg.Visibility = Visibility.Visible;
                         }
                         else
                         {
@@ -509,7 +476,6 @@ namespace StringCodec.UWP.Pages
                             }
                             else if (e.DataView.Contains(StandardDataFormats.Text))
                             {
-                                //var content = await e.DataView.GetHtmlFormatAsync();
                                 var content = await e.DataView.GetTextAsync();
                                 if (content.Length > 0)
                                 {
@@ -523,20 +489,10 @@ namespace StringCodec.UWP.Pages
 
                             byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
                             imgBase64.Source = bitmapImage;
-                            optFmtSvg.Visibility = Visibility.Collapsed;
-                            if (optFmtSvg.IsChecked)
-                            {
-                                optFmtSvg.IsChecked = false;
-                                optFmtPng.IsChecked = true;
-                            }
                         }
                     }
-
-                    //var bitmapImage = new WriteableBitmap(1, 1);
-                    //await bitmapImage.SetSourceAsync(await storageFile.OpenAsync(FileAccessMode.Read));
-                    //byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
-                    //imgBase64.Source = bitmapImage;
                 }
+                IsSVG(imgBase64);
             }
             else if (sender == edBase64)
             {

@@ -660,4 +660,25 @@
   <data name="optFmtSvg.Text" xml:space="preserve">
     <value>SVG 图像文件</value>
   </data>
+  <data name="btnImageSvg.Label" xml:space="preserve">
+    <value>SVG 光栅化</value>
+  </data>
+  <data name="btnSvgToBase64.Label" xml:space="preserve">
+    <value>SVG 编码为BASE64</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>确认?</value>
+  </data>
+  <data name="Image is big, it's maybe too slower to encoding &amp; filling textbox. \n Continued?" xml:space="preserve">
+    <value>图像较大，编码和填充文本框可能会非常慢。\n继续？</value>
+  </data>
+  <data name="nvItemSvg.Content" xml:space="preserve">
+    <value>SVG 转换为图像</value>
+  </data>
+  <data name="optIconUwp.Text" xml:space="preserve">
+    <value>Windows通用应用图标</value>
+  </data>
+  <data name="optIconWin.Text" xml:space="preserve">
+    <value>Windows原生应用图标</value>
+  </data>
 </root>

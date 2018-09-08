@@ -765,4 +765,25 @@
   <data name="optFmtSvg.Text" xml:space="preserve">
     <value>SVG Image File</value>
   </data>
+  <data name="btnImageSvg.Label" xml:space="preserve">
+    <value>SVG Rasterization</value>
+  </data>
+  <data name="btnSvgToBase64.Label" xml:space="preserve">
+    <value>SVG To BASE64</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="Image is big, it's maybe too slower to encoding &amp; filling textbox. \n Continued?" xml:space="preserve">
+    <value>Image is big, it's maybe too slower to encoding &amp; filling textbox. \n Continued?</value>
+  </data>
+  <data name="nvItemSvg.Content" xml:space="preserve">
+    <value>SVG To Image</value>
+  </data>
+  <data name="optIconUwp.Text" xml:space="preserve">
+    <value>UWP Logo Assets</value>
+  </data>
+  <data name="optIconWin.Text" xml:space="preserve">
+    <value>Windows Icons</value>
+  </data>
 </root>

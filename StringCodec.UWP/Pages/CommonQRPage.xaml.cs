@@ -356,7 +356,7 @@ namespace StringCodec.UWP.Pages
                                     var url = await e.DataView.GetWebLinkAsync();
                                     var rms = await RandomAccessStreamReference.CreateFromUri(url).OpenReadAsync();
 
-                                    var svg = await SVG.Load(rms);
+                                    var svg = await SVG.CreateFromStream(rms);
                                     bitmapImage = svg.Source;
                                     imgQR.Tag = svg.Bytes;
 
@@ -374,7 +374,7 @@ namespace StringCodec.UWP.Pages
                                     {
                                         var rms = await RandomAccessStreamReference.CreateFromUri(new Uri(content)).OpenReadAsync();
 
-                                        var svg = await SVG.Load(rms);
+                                        var svg = await SVG.CreateFromStream(rms);
                                         bitmapImage = svg.Source;
                                         imgQR.Tag = svg.Bytes;
 
@@ -387,7 +387,7 @@ namespace StringCodec.UWP.Pages
                                 }
                                 else
                                 {
-                                    var svg = await SVG.Load(storageFile);
+                                    var svg = await SVG.CreateFromStorageFile(storageFile);
                                     bitmapImage = svg.Source;
                                     imgQR.Tag = svg.Bytes;
 
@@ -443,7 +443,7 @@ namespace StringCodec.UWP.Pages
                                 var url = await e.DataView.GetWebLinkAsync();
                                 var rms = await RandomAccessStreamReference.CreateFromUri(url).OpenReadAsync();
 
-                                var svg = await SVG.Load(rms);
+                                var svg = await SVG.CreateFromStream(rms);
                                 bitmapImage = svg.Source;
                                 imgQR.Tag = svg.Bytes;
 
@@ -461,7 +461,7 @@ namespace StringCodec.UWP.Pages
                                 {
                                     var rms = await RandomAccessStreamReference.CreateFromUri(new Uri(content)).OpenReadAsync();
 
-                                    var svg = await SVG.Load(rms);
+                                    var svg = await SVG.CreateFromStream(rms);
                                     bitmapImage = svg.Source;
                                     imgQR.Tag = svg.Bytes;
 
@@ -474,7 +474,7 @@ namespace StringCodec.UWP.Pages
                             }
                             else
                             {
-                                var svg = await SVG.Load(storageFile);
+                                var svg = await SVG.CreateFromStorageFile(storageFile);
                                 bitmapImage = svg.Source;
                                 imgQR.Tag = svg.Bytes;
 

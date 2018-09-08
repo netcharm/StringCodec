@@ -36,10 +36,23 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace StringCodec.UWP.Common
 {
+    #region SVG File Extensions
     public class SVG
     {
-        public byte[] Bytes = null;
-        public SvgImageSource Source = null;
+        private byte[] bytes = null;
+        public byte[] Bytes
+        {
+            get { return (bytes); }
+            set { bytes = value; }
+        }
+
+        private SvgImageSource source = null;
+        public SvgImageSource Source
+        {
+            get { return (source); }
+            set { source = value; }
+        }
+
         public KeyValuePair<byte[], SvgImageSource> Data
         {
             get
@@ -53,15 +66,19 @@ namespace StringCodec.UWP.Common
             }
         }
 
-        static private byte[] FixStyle(byte[] bytes)
+        private static string FixStyle(string content)
         {
-            var svgDoc = Encoding.ASCII.GetString(bytes);
+            string xmlsrc = content;
+
+            string xmlHeader = "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
+            if (!xmlsrc.StartsWith(xmlHeader, StringComparison.CurrentCultureIgnoreCase))
+                xmlsrc = $"{xmlHeader}{xmlsrc}";
             XmlDocument xml = new XmlDocument();
-            xml.LoadXml(svgDoc);
+            xml.LoadXml(xmlsrc);
 
             Dictionary<string, Dictionary<string, string>> attrs = new Dictionary<string, Dictionary<string, string>>();
             var styles = xml.GetElementsByTagName("style");
-            foreach(XmlNode style in styles)
+            foreach (XmlNode style in styles)
             {
                 if (style.HasChildNodes)
                 {
@@ -70,7 +87,7 @@ namespace StringCodec.UWP.Common
                     //var s = values.Replace("\n", "").Replace("\r", "").Replace("\t", "");
                     var s = Regex.Replace(values, @"[\n\r\t]", "", RegexOptions.IgnoreCase | RegexOptions.Multiline);
                     s = Regex.Replace(s, @"(\ *)([:;\{\}])(\ *)", "$2", RegexOptions.IgnoreCase);
-                    var mo = Regex.Matches(s, @"\.(\w+)\{(.*?)\}", RegexOptions.IgnoreCase);
+                    var mo = Regex.Matches(s, @"\.([\w_-]+)\{(.*?)\}", RegexOptions.IgnoreCase);
                     foreach (Match m in mo)
                     {
                         var k = m.Groups[1].Value.Trim();
@@ -84,21 +101,20 @@ namespace StringCodec.UWP.Common
                     }
                 }
             }
-            for(int i = 0; i < styles.Count; i++)
-                styles[i].ParentNode.RemoveChild(styles[i]);
-
+            //for(int i = 0; i < styles.Count; i++)
+            //    styles[i].ParentNode.RemoveChild(styles[i]);
 
             var childs = xml.GetElementsByTagName("*");
-            foreach(XmlNode child in childs)
+            foreach (XmlNode child in childs)
             {
-                foreach(XmlAttribute attr in child.Attributes)
+                foreach (XmlAttribute attr in child.Attributes)
                 {
                     if (attr.Name.Equals("class", StringComparison.CurrentCultureIgnoreCase))
                     {
                         var v = attr.Value.Trim();
                         if (attrs.ContainsKey(v))
                         {
-                            foreach(var kv in attrs[v])
+                            foreach (var kv in attrs[v])
                             {
                                 var a = xml.CreateAttribute(kv.Key);
                                 a.Value = kv.Value;
@@ -112,7 +128,6 @@ namespace StringCodec.UWP.Common
                 }
             }
 
-            string xmlsrc = string.Empty;
             using (var stringWriter = new StringWriter())
             {
                 using (var xmlTextWriter = XmlWriter.Create(stringWriter))
@@ -122,21 +137,92 @@ namespace StringCodec.UWP.Common
                     xmlsrc = stringWriter.GetStringBuilder().ToString();
                 }
             }
-            var arr = Encoding.ASCII.GetBytes(xmlsrc);
+            return (xmlsrc);
+        }
+
+        private static byte[] FixStyle(byte[] bytes)
+        {
+            var svgDoc = Encoding.UTF8.GetString(bytes);
+            var xmlsrc = FixStyle(svgDoc);
+            var arr = Encoding.UTF8.GetBytes(xmlsrc);
             return (arr);
         }
 
-        static public async Task<SVG> Load(IRandomAccessStream svgStream)
+        public async Task<string> ToBase64(bool LineBreak)
         {
-            SVG result = new SVG();
+            string b64 = string.Empty;
 
-            using (var byteStream = WindowsRuntimeStreamExtensions.AsStreamForRead(svgStream.GetInputStreamAt(0)))
+            var lb = LineBreak ? Base64FormattingOptions.InsertLineBreaks : Base64FormattingOptions.None;
+            var svgPrefix = $"data:image/svg+xml;base64,";
+
+            if (bytes is byte[])
             {
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    await byteStream.CopyToAsync(ms);
-                    result.Bytes = FixStyle(ms.ToArray());
+                b64 = $"{svgPrefix}{Convert.ToBase64String(bytes, lb)}";
+            }
+            else if (source.UriSource != null)// && !string.IsNullOrEmpty(svg.UriSource.AbsoluteUri))
+            {
+                var svgRef = RandomAccessStreamReference.CreateFromUri(source.UriSource);
+                var rms = await svgRef.OpenReadAsync();
+                await rms.FlushAsync();
 
+                MemoryStream ms = new MemoryStream();
+                rms.Seek(0);
+                await rms.AsStreamForRead().CopyToAsync(ms);
+                byte[] bytes = ms.ToArray();
+                await ms.FlushAsync();
+                b64 = $"{svgPrefix}{Convert.ToBase64String(bytes, lb)}";
+            }
+            return (b64);
+        }
+
+        public async Task<SVG> Load(string svgXml)
+        {
+            var arr = Encoding.UTF8.GetBytes(svgXml);
+            return(await Load(arr));
+        }
+
+        public async Task<SVG> Load(byte[] svgBytes)
+        {
+            var result = await CreateFromBytes(svgBytes);
+            bytes = result.Bytes;
+            source = result.Source;
+            //if(source != null) { source.RasterizePixelWidth = 512; source.RasterizePixelHeight = 512; }
+            return (result);
+        }
+
+        public async Task<SVG> Load(IRandomAccessStream svgStream)
+        {
+            var result = await CreateFromStream(svgStream);
+            bytes = result.Bytes;
+            source = result.Source;
+            return (result);
+        }
+
+        public async Task<SVG> Load(StorageFile svgFile)
+        {
+            var result = await CreateFromStorageFile(svgFile);
+            bytes = result.Bytes;
+            source = result.Source;
+            return (result);
+        }
+
+        public static async Task<SVG> CreateFromXml(string svgXml)
+        {
+            var arr = Encoding.UTF8.GetBytes(svgXml);
+            return (await CreateFromBytes(arr));
+        }
+
+        public static async Task<SVG> CreateFromBytes(byte[] svgBytes)
+        {
+            SVG result = new SVG
+            {
+                Bytes = FixStyle(svgBytes)
+            };
+
+            try
+            {
+                using (MemoryStream ms = new MemoryStream(result.Bytes))
+                {
                     using (var rms = new InMemoryRandomAccessStream())
                     {
                         await RandomAccessStream.CopyAsync(ms.AsInputStream(), rms.GetOutputStreamAt(0));
@@ -147,10 +233,28 @@ namespace StringCodec.UWP.Common
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
+            }
             return (result);
         }
 
-        static public async Task<SVG> Load(StorageFile svgFile)
+        public static async Task<SVG> CreateFromStream(IRandomAccessStream svgStream)
+        {
+            SVG result = new SVG();
+            using (var byteStream = WindowsRuntimeStreamExtensions.AsStreamForRead(svgStream.GetInputStreamAt(0)))
+            {
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    await byteStream.CopyToAsync(ms);
+                    result = await CreateFromBytes(ms.ToArray());
+                }
+            }
+            return (result);
+        }
+
+        public static async Task<SVG> CreateFromStorageFile(StorageFile svgFile)
         {
             SVG result = new SVG();
             if (Utils.image_ext.Contains(svgFile.FileType.ToLower()))
@@ -158,24 +262,67 @@ namespace StringCodec.UWP.Common
                 if (svgFile.FileType.ToLower().Equals(".svg"))
                 {
                     byte[] bytes = WindowsRuntimeBufferExtensions.ToArray(await FileIO.ReadBufferAsync(svgFile));
-                    result.Bytes = FixStyle(bytes);
-
-                    using (var ms = new MemoryStream(result.Bytes))
-                    {
-                        using (var rms = new InMemoryRandomAccessStream())
-                        {
-                            await RandomAccessStream.CopyAsync(ms.AsInputStream(), rms.GetOutputStreamAt(0));
-                            var bitmapImage = new SvgImageSource();
-                            await bitmapImage.SetSourceAsync(rms);
-                            await rms.FlushAsync();
-                            result.Source = bitmapImage;
-                        }
-                    }
+                    result = await CreateFromBytes(bytes);
                 }
             }
             return (result);
         }
     }
+
+    public static class SvgExts
+    {
+        public static async Task<string> ToBase64(this SvgImageSource svg, byte[] bytes, bool LineBreak=false)
+        {
+            var lb = LineBreak ? Base64FormattingOptions.InsertLineBreaks : Base64FormattingOptions.None;
+            var svgPrefix = $"data:image/svg+xml;base64,";
+            string b64 = string.Empty;
+            if (bytes is byte[])
+            {
+                b64 = $"{svgPrefix}{Convert.ToBase64String(bytes, lb)}";
+            }
+            else if (svg.UriSource != null)
+            {
+                var svgRef = RandomAccessStreamReference.CreateFromUri(svg.UriSource);
+                var rms = await svgRef.OpenReadAsync();
+                await rms.FlushAsync();
+
+                MemoryStream ms = new MemoryStream();
+                rms.Seek(0);
+                await rms.AsStreamForRead().CopyToAsync(ms);
+                byte[] arr = ms.ToArray();
+                await ms.FlushAsync();
+                b64 = $"{svgPrefix}{Convert.ToBase64String(arr, lb)}";
+            }
+            else
+            {
+                //var parent = VisualTreeHelper.GetParent(svg);
+                //if(parent is Image)
+                //{
+                //    var wb = await (parent as Image).ToWriteableBitmap();
+                //    if (wb != null)
+                //    {
+                //        b64 = await wb.ToBase64(".png", true, true);
+                //    }
+                //}
+            }
+            return (b64);
+        }
+
+        public static SVG ToSVG(this Image image)
+        {
+            SVG result = new SVG();
+            if (image.Source is SvgImageSource)
+            {
+                if (image.Tag is byte[])
+                {
+                    result.Bytes = image.Tag as byte[];
+                }
+                result.Source = image.Source as SvgImageSource;
+            }
+            return (result);
+        }
+    }
+    #endregion
 
     public static class WriteableBitmapExtentions
     {
@@ -597,20 +744,6 @@ namespace StringCodec.UWP.Common
                 //{
                 //    //svg.
                 //}
-            }
-            return (result);
-        }
-
-        public static SVG ToSVG(this Image image)
-        {
-            SVG result = new SVG();
-            if (image.Source is SvgImageSource)
-            {
-                if (image.Tag is byte[])
-                {
-                    result.Bytes = image.Tag as byte[];
-                }
-                result.Source = image.Source as SvgImageSource;
             }
             return (result);
         }

@@ -485,28 +485,24 @@ namespace StringCodec.UWP.Common
             return (Decode(content, Codec, enc));
         }
 
-        static public async Task<SvgImageSource> DecodeSvg(this string content)
+        static public async Task<SVG> DecodeSvg(this string content)
         {
-            SvgImageSource result = new SvgImageSource();
+            SVG result = new SVG();
             if (content.Length <= 0) return (result);
 
             try
             {
-                string bs = Regex.Replace(content, @"data:image/.*?;base64,", "", RegexOptions.IgnoreCase);
-                byte[] arr = Convert.FromBase64String(bs.Trim());
-                using (MemoryStream ms = new MemoryStream(arr))
+                //var pattern = @"<svg.*?>";
+                var pattern = @"<svg.*?\n*\r*.*?>(\n*\r*.*?)*</svg>";
+                if (Regex.IsMatch(content, pattern, RegexOptions.IgnoreCase | RegexOptions.Multiline))
                 {
-                    byte[] buf = ms.ToArray();
-                    using (InMemoryRandomAccessStream fileStream = new InMemoryRandomAccessStream())
-                    {
-                        using (DataWriter writer = new DataWriter(fileStream.GetOutputStreamAt(0)))
-                        {
-                            writer.WriteBytes(buf);
-                            writer.StoreAsync().GetResults();
-                            await fileStream.FlushAsync();
-                        }
-                        await result.SetSourceAsync(fileStream);
-                    }
+                    await result.Load(content);
+                }
+                else
+                {
+                    string bs = Regex.Replace(content, @"data:image/.*?;base64,", "", RegexOptions.IgnoreCase);
+                    byte[] arr = Convert.FromBase64String(bs.Trim());
+                    await result.Load(arr);
                 }
             }
             catch (Exception ex)
@@ -558,9 +554,9 @@ namespace StringCodec.UWP.Common
             var size = wb.PixelWidth * wb.PixelHeight;
             if (size > 196608)
             {
-                var dlgMessage = new MessageDialog("Image is big, it's maybe too slower to encoding & filling textbox. \n Continued?", "Comfirm") { Options = MessageDialogOptions.AcceptUserInputAfterDelay };
-                dlgMessage.Commands.Add(new UICommand("OK") { Id = 0 });
-                dlgMessage.Commands.Add(new UICommand("Cancel") { Id = 1 });
+                var dlgMessage = new MessageDialog("Image is big, it's maybe too slower to encoding & filling textbox. \n Continued?".T(), "Confirm".T()) { Options = MessageDialogOptions.AcceptUserInputAfterDelay };
+                dlgMessage.Commands.Add(new UICommand("OK".T()) { Id = 0 });
+                dlgMessage.Commands.Add(new UICommand("Cancel".T()) { Id = 1 });
                 // Set the command that will be invoked by default
                 dlgMessage.DefaultCommandIndex = 0;
                 // Set the command to be invoked when escape is pressed

@@ -35,7 +35,6 @@ namespace StringCodec.UWP
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif" };
         //private ShareOperation operation;
         //private Utils utils = new Utils();
 
@@ -192,14 +191,11 @@ namespace StringCodec.UWP
                             if (storageFile.IsOfType(StorageItemTypes.File))
                             {
                                 var ext = storageFile.FileType.ToLower();
-                                if (image_ext.Contains(ext))
+                                if (Utils.image_ext.Contains(ext))
                                 {
                                     if (ext.Equals(".svg"))
                                     {
-                                        var bitmapImage = new SvgImageSource();
-                                        await bitmapImage.SetSourceAsync(await storageFile.OpenReadAsync());
-                                        byte[] bytes = WindowsRuntimeBufferExtensions.ToArray(await FileIO.ReadBufferAsync(storageFile));
-                                        var svg = new SVG() { Bytes = bytes, Source = bitmapImage };
+                                        var svg = await SVG.CreateFromStorageFile(storageFile);
                                         ContentFrame.Navigate(typeof(Pages.SvgPage), svg);
                                     }
                                     else
@@ -301,37 +297,12 @@ namespace StringCodec.UWP
                 {
                     nvMain.SelectedItem = nvItemCharset as NavigationViewItem;
                 }
+                else if (e.SourcePageType == typeof(Pages.SvgPage))
+                {
+                    nvMain.SelectedItem = nvItemSvg as NavigationViewItem;
+                }
             }
             nvMain.Header = (nvMain.SelectedItem as NavigationViewItem).Content;
-
-            //if (ContentFrame.SourcePageType == typeof(Pages.SettingsPage))
-            //{
-            //    nvMain.SelectedItem = nvMain.SettingsItem as NavigationViewItem;
-            //}
-            //else
-            //{
-            //    Dictionary<Type, string> lookup = new Dictionary<Type, string>()
-            //    {
-            //        {typeof(Pages.TextPage), "PageText"},
-            //        {typeof(Pages.QRCodePage), "PageQR"},
-            //        {typeof(Pages.ImagePage), "PageImage"},
-            //        {typeof(Pages.CharsetPage), "PageWifi"},
-            //        {typeof(Pages.CharsetPage), "PageBarcodet"},
-            //        {typeof(Pages.CharsetPage), "PageCharset"}
-            //    };
-
-            //    string stringTag = lookup[ContentFrame.SourcePageType];
-
-            //    // set the new SelectedItem  
-            //    foreach (NavigationViewItemBase item in nvMain.MenuItems)
-            //    {
-            //        if (item is NavigationViewItem && item.Tag.Equals(stringTag))
-            //        {
-            //            item.IsSelected = true;
-            //            break;
-            //        }
-            //    }
-            //}
         }
 
         private void NvMain_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
@@ -375,6 +346,9 @@ namespace StringCodec.UWP
                         break;
                     case "nvItemCharset":
                         ContentFrame.Navigate(typeof(Pages.CharsetPage), this);
+                        break;
+                    case "nvItemSvg":
+                        ContentFrame.Navigate(typeof(Pages.SvgPage), this);
                         break;
                     default:
                         ContentFrame.Navigate(typeof(Pages.TextPage), this);

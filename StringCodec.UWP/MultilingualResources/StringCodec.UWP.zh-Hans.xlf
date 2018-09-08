@@ -870,6 +870,34 @@
           <source>SVG Image File</source>
           <target state="translated">SVG 图像文件</target>
         </trans-unit>
+        <trans-unit id="btnImageSvg.Label" translate="yes" xml:space="preserve">
+          <source>SVG Rasterization</source>
+          <target state="translated">SVG 光栅化</target>
+        </trans-unit>
+        <trans-unit id="btnSvgToBase64.Label" translate="yes" xml:space="preserve">
+          <source>SVG To BASE64</source>
+          <target state="translated">SVG 编码为BASE64</target>
+        </trans-unit>
+        <trans-unit id="Confirm" translate="yes" xml:space="preserve">
+          <source>Confirm</source>
+          <target state="translated">确认?</target>
+        </trans-unit>
+        <trans-unit id="Image is big, it's maybe too slower to encoding &amp;amp; filling textbox. \n Continued?" translate="yes" xml:space="preserve">
+          <source>Image is big, it's maybe too slower to encoding &amp; filling textbox. \n Continued?</source>
+          <target state="translated">图像较大，编码和填充文本框可能会非常慢。\n继续？</target>
+        </trans-unit>
+        <trans-unit id="nvItemSvg.Content" translate="yes" xml:space="preserve">
+          <source>SVG To Image</source>
+          <target state="translated">SVG 转换为图像</target>
+        </trans-unit>
+        <trans-unit id="optIconUwp.Text" translate="yes" xml:space="preserve">
+          <source>UWP Logo Assets</source>
+          <target state="translated">Windows通用应用图标</target>
+        </trans-unit>
+        <trans-unit id="optIconWin.Text" translate="yes" xml:space="preserve">
+          <source>Windows Icons</source>
+          <target state="translated">Windows原生应用图标</target>
+        </trans-unit>
       </group>
     </body>
   </file>
