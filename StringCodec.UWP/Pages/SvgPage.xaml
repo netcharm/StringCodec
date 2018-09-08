@@ -72,43 +72,43 @@
         <Viewbox Grid.Row="1" Grid.Column="0" ScrollViewer.HorizontalScrollMode="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto">
             <StackPanel x:Name="ImageList" x:Uid="ImageList">
                 <!--<Viewbox StretchDirection="DownOnly" Margin="0, 8, 0, 0" Height="96">
-                    <Image x:Name="Image1024" x:Uid="Image1024" Stretch="None" />
+                    <Image x:Name="Image1024" x:Uid="Image1024" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 </Viewbox>
                 <TextBlock x:Name="Text1024" x:Uid="Text1024" Text="1024" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 <Viewbox StretchDirection="DownOnly" Margin="0, 8, 0, 0" Height="96">
-                    <Image x:Name="Image512" x:Uid="Image512" Stretch="None" />
+                    <Image x:Name="Image512" x:Uid="Image512" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 </Viewbox>
                 <TextBlock x:Name="Text512" x:Uid="Text512" Text="512" HorizontalAlignment="Right" VerticalAlignment="Center"/>-->
                 <Viewbox StretchDirection="DownOnly" Margin="0, 8, 0, 0" Height="96">
-                    <Image x:Name="Image256" x:Uid="Image256" Stretch="None" />
+                    <Image x:Name="Image256" x:Uid="Image256" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 </Viewbox>
                 <TextBlock x:Name="Text256" x:Uid="Text256" Text="256" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 <Viewbox StretchDirection="DownOnly" Margin="0, 8, 0, 0" Height="96">
-                    <Image x:Name="Image128" x:Uid="Image128" Stretch="None" />
+                    <Image x:Name="Image128" x:Uid="Image128" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 </Viewbox>
                 <TextBlock x:Name="Text128" x:Uid="Text128" Text="128" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 <Viewbox StretchDirection="DownOnly" Margin="0, 8, 0, 0" Height="96">
-                    <Image x:Name="Image96" x:Uid="Image96" Stretch="None" />
+                    <Image x:Name="Image96" x:Uid="Image96" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 </Viewbox>
                 <TextBlock x:Name="Text96" x:Uid="Text96" Text="96" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 <Viewbox StretchDirection="DownOnly" Margin="0, 8, 0, 0" Height="96">
-                    <Image x:Name="Image64" x:Uid="Image64" Stretch="None" />
+                    <Image x:Name="Image64" x:Uid="Image64" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 </Viewbox>
                 <TextBlock x:Name="Text64" x:Uid="Text64" Text="64" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 <Viewbox StretchDirection="DownOnly" Margin="0, 8, 0, 0" Height="96">
-                    <Image x:Name="Image48" x:Uid="Image48" Stretch="None" />
+                    <Image x:Name="Image48" x:Uid="Image48" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 </Viewbox>
                 <TextBlock x:Name="Text48" x:Uid="Text48" Text="48" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 <Viewbox StretchDirection="DownOnly" Margin="0, 8, 0, 0" Height="96">
-                    <Image x:Name="Image32" x:Uid="Image32" Stretch="None" />
+                    <Image x:Name="Image32" x:Uid="Image32" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 </Viewbox>
                 <TextBlock x:Name="Text32" x:Uid="Text32" Text="32" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 <Viewbox StretchDirection="DownOnly" Margin="0, 8, 0, 0" Height="96">
-                    <Image x:Name="Image24" x:Uid="Image24" Stretch="None" />
+                    <Image x:Name="Image24" x:Uid="Image24" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 </Viewbox>
                 <TextBlock x:Name="Text24" x:Uid="Text24" Text="24" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                <Viewbox StretchDirection="DownOnly" Margin="0, 8, 0, 0" Height="96">
-                    <Image x:Name="Image16" x:Uid="Image16" Stretch="None" />
+                <Viewbox StretchDirection="DownOnly" Margin="0, 8, 0, 0" Height="96" >
+                    <Image x:Name="Image16" x:Uid="Image16" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 </Viewbox>
                 <TextBlock x:Name="Text16" x:Uid="Text16" Text="16" HorizontalAlignment="Right" VerticalAlignment="Center"/>
             </StackPanel>

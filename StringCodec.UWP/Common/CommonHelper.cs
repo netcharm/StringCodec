@@ -91,7 +91,7 @@ namespace StringCodec.UWP.Common
                     foreach (Match m in mo)
                     {
                         var k = m.Groups[1].Value.Trim();
-                        var vmo = Regex.Matches(m.Groups[2].Value.Trim(), @"((\w+):([\w#]\w+)\;)+?", RegexOptions.IgnoreCase | RegexOptions.Singleline);
+                        var vmo = Regex.Matches(m.Groups[2].Value.Trim(), @"((\w+):([0-9a-zA-Z#]+)\;)+?", RegexOptions.IgnoreCase | RegexOptions.Singleline);
                         var vl = new Dictionary<string, string>();
                         foreach (Match vm in vmo)
                         {
@@ -104,29 +104,126 @@ namespace StringCodec.UWP.Common
             //for(int i = 0; i < styles.Count; i++)
             //    styles[i].ParentNode.RemoveChild(styles[i]);
 
+            int w = 1;
+            int h = 1;
             var childs = xml.GetElementsByTagName("*");
             foreach (XmlNode child in childs)
             {
-                foreach (XmlAttribute attr in child.Attributes)
+                if (child.LocalName.Equals("svg", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    if (attr.Name.Equals("class", StringComparison.CurrentCultureIgnoreCase))
+                    var vs = child.Attributes.GetNamedItem("style");
+                    var vv = child.Attributes.GetNamedItem("version");
+                    var vb = child.Attributes.GetNamedItem("viewBox");
+                    var vw = child.Attributes.GetNamedItem("width");
+                    var vh = child.Attributes.GetNamedItem("height");
+                    var va = child.Attributes.GetNamedItem("preserveAspectRatio");
+
+                    if (vv == null)
                     {
-                        var v = attr.Value.Trim();
-                        if (attrs.ContainsKey(v))
-                        {
-                            foreach (var kv in attrs[v])
-                            {
-                                var a = xml.CreateAttribute(kv.Key);
-                                a.Value = kv.Value;
-                                child.Attributes.InsertAfter(a, attr);
-                                //child.Attributes.Append(a);
-                            }
-                        }
-                        child.Attributes.Remove(attr);
-                        break;
+                        var a = xml.CreateAttribute("version");
+                        a.Value = $"1.1";
+                        child.Attributes.InsertBefore(a, child.Attributes[0]);// Append(a);
                     }
+
+                    if (vw != null)
+                    {
+                        var v = (XmlAttribute)vw;
+                        int.TryParse(v.Value.Trim(), out w);
+                        w = w == 0 ? 1 : w;
+                        //w = Convert.ToInt32(v.Value.Trim());
+                        if(vb == null) v.Value = "auto";
+                    }
+
+                    if (vh != null)
+                    {
+                        var v = (XmlAttribute)vh;
+                        int.TryParse(v.Value.Trim(), out h);
+                        h = h == 0 ? 1 : h;
+                        //h = Convert.ToInt32(v.Value.Trim());
+                        if (vb == null) v.Value = "auto";
+                    }
+
+                    if (vb == null)
+                    {
+                        var a = xml.CreateAttribute("viewBox");
+                        a.Value = $"0 0 {w} {h}";
+                        child.Attributes.Append(a);
+                    }
+
+                    if (va == null)
+                    {
+                        var a = xml.CreateAttribute("preserveAspectRatio");
+                        a.Value = $"xMinYMin meet";
+                        child.Attributes.Append(a);
+                    }
+
+                    //if(vs == null)
+                    //{
+                    //    var a = xml.CreateAttribute("style");
+                    //    a.Value = $"background: transparent;";
+                    //    child.Attributes.Append(a);
+                    //}
+                    continue;
                 }
+
+                var attrClass = (XmlAttribute)child.Attributes.GetNamedItem("class");
+                if (attrClass != null)
+                {
+                    var v = attrClass.Value.Trim();
+                    if (attrs.ContainsKey(v))
+                    {
+                        foreach (var kv in attrs[v])
+                        {
+                            var a = xml.CreateAttribute(kv.Key);
+                            a.Value = kv.Value;
+                            child.Attributes.InsertAfter(a, attrClass);
+                            //child.Attributes.Append(a);
+                        }
+                    }
+                    child.Attributes.Remove(attrClass);
+                }
+
+                //foreach (XmlAttribute attr in child.Attributes)
+                //{
+                //    if (attr.Name.Equals("class", StringComparison.CurrentCultureIgnoreCase))
+                //    {
+                //        var v = attr.Value.Trim();
+                //        if (attrs.ContainsKey(v))
+                //        {
+                //            foreach (var kv in attrs[v])
+                //            {
+                //                var a = xml.CreateAttribute(kv.Key);
+                //                a.Value = kv.Value;
+                //                child.Attributes.InsertAfter(a, attr);
+                //                //child.Attributes.Append(a);
+                //            }
+                //        }
+                //        child.Attributes.Remove(attr);
+                //        break;
+                //    }
+                //}
             }
+
+            //var svgTags = xml.GetElementsByTagName("svg");
+            //if (svgTags.Count > 0)
+            //{
+            //    var svgTag = svgTags[0];
+
+            //    var e = xml.CreateElement("rect");
+            //    var eaw = xml.CreateAttribute("width");
+            //    eaw.Value = $"{w}";
+            //    e.Attributes.Append(eaw);
+            //    var eah = xml.CreateAttribute("height");
+            //    eah.Value = $"{h}";
+            //    e.Attributes.Append(eah);
+            //    var eaf = xml.CreateAttribute("fill");
+            //    eaf.Value = $"transparent";
+            //    e.Attributes.Append(eaf);
+            //    if (svgTag.HasChildNodes)
+            //        svgTag.InsertBefore(e, svgTag.ChildNodes[0]);
+            //    else
+            //        svgTag.AppendChild(e);
+            //}
 
             using (var stringWriter = new StringWriter())
             {
