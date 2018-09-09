@@ -688,6 +688,15 @@
     <value>导出全部图像</value>
   </data>
   <data name="ImageFlyoutShare.Content" xml:space="preserve">
-    <value>共享</value>
+    <value>共享当前图像</value>
+  </data>
+  <data name="ImageFlyoutCopy.Content" xml:space="preserve">
+    <value>复制当前图像</value>
+  </data>
+  <data name="btnMake.Label" xml:space="preserve">
+    <value>生成</value>
+  </data>
+  <data name="btnMake.ToolTipService.ToolTip" xml:space="preserve">
+    <value>生成图标图像</value>
   </data>
 </root>

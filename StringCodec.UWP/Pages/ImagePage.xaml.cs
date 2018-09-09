@@ -51,6 +51,14 @@ namespace StringCodec.UWP.Pages
                 btnImageSvg.Visibility = Visibility.Visible;
                 optFmtSvg.Visibility = Visibility.Visible;
 
+                if (optFmtSvg.IsChecked)
+                {
+                    optFmtPng.IsChecked = false;
+                    optFmtBmp.IsChecked = false;
+                    optFmtGif.IsChecked = false;
+                    optFmtJpg.IsChecked = false;
+                    optFmtTif.IsChecked = false;
+                }
                 result = true;
             }
             else
@@ -61,6 +69,10 @@ namespace StringCodec.UWP.Pages
                 {
                     optFmtSvg.IsChecked = false;
                     optFmtPng.IsChecked = true;
+                    optFmtBmp.IsChecked = false;
+                    optFmtGif.IsChecked = false;
+                    optFmtJpg.IsChecked = false;
+                    optFmtTif.IsChecked = false;
                 }
 
                 result = false;
@@ -104,13 +116,25 @@ namespace StringCodec.UWP.Pages
                 }
                 else if(data is SVG)
                 {
-                    var svg = data as SVG;
-                    imgBase64.Source = svg.Source;
-                    imgBase64.Tag = svg.Bytes;
-
                     if (CURRENT_LINEBREAK) edBase64.TextWrapping = TextWrapping.NoWrap;
                     else edBase64.TextWrapping = TextWrapping.Wrap;
-                    edBase64.Text = await svg.ToBase64(CURRENT_LINEBREAK);
+
+                    var svg = data as SVG;
+                    if(svg.Source is SvgImageSource)
+                    {
+                        imgBase64.Source = svg.Source;
+                        edBase64.Text = await svg.ToBase64(CURRENT_LINEBREAK);
+                        optFmtSvg.IsChecked = true;
+                    }
+                    else if(svg.Image is WriteableBitmap)
+                    {
+                        imgBase64.Source = svg.Image;
+                        var wb = await imgBase64.ToWriteableBitmap();
+                        edBase64.Text = await wb.ToBase64(CURRENT_FORMAT, CURRENT_PREFIX, CURRENT_LINEBREAK);
+                    }
+                    imgBase64.Tag = svg.Bytes is byte[] ? svg.Bytes : null;
+
+                    IsSVG(imgBase64);
                 }
                 IsSVG(imgBase64);
             }

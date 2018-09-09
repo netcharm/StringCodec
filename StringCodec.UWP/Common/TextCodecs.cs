@@ -580,7 +580,7 @@ namespace StringCodec.UWP.Common
                 }
             }
             else
-                result = await TextCodecs.Encode(wb, format, prefix, linebreak);
+                result = await Encode(wb, format, prefix, linebreak);
 
             return (result);
         }

@@ -446,6 +446,52 @@ namespace StringCodec.UWP.Common
     }
     #endregion
 
+    public static class StreamExtentions
+    {
+        #region Stream / RandomAccessStream / byte[] Converter
+        public static async Task<byte[]> ToBytes(this IRandomAccessStream RandomStream)
+        {
+            Stream stream = WindowsRuntimeStreamExtensions.AsStreamForRead(RandomStream.GetInputStreamAt(0));
+            MemoryStream ms = new MemoryStream();
+            await stream.CopyToAsync(ms);
+            //await ms.FlushAsync();
+            byte[] bytes = ms.ToArray();
+            return (bytes);
+        }
+
+        public static Stream ToStream(this byte[] bytes)
+        {
+            Stream stream = new MemoryStream(bytes);
+            return stream;
+        }
+
+        public static byte[] ToBytes(this Stream input)
+        {
+            byte[] buffer = new byte[16 * 1024];
+            using (MemoryStream ms = new MemoryStream())
+            {
+                int read;
+                while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    ms.Write(buffer, 0, read);
+                }
+                return ms.ToArray();
+            }
+        }
+
+        public static MemoryStream ToMemoryStream(this Stream stream)
+        {
+            MemoryStream result = null;
+            if (stream != null)
+            {
+                byte[] buffer = stream.ToBytes();
+                result = new MemoryStream(buffer);
+            }
+            return (result);
+        }
+        #endregion
+    }
+
     public static class WriteableBitmapExtentions
     {
         #region FrameworkElement UIElement to WriteableBitmap
@@ -744,18 +790,113 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        public static WriteableBitmap ToWriteableBitmap(this byte[] bytes)
+        public static async Task<byte[]> ToBytes(this WriteableBitmap image, string fmt)
         {
-            WriteableBitmap result = null;
-            if (bytes is byte[] && bytes.Length>0)
-            {
-                result = new WriteableBitmap(1, 1);
-                using (var ms = new MemoryStream(bytes))
-                {
+            byte[] result = null;
 
-                }               
+            //InMemoryRandomAccessStream imras = new InMemoryRandomAccessStream();
+
+            var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
+            using (var imras = new InMemoryRandomAccessStream())
+            {
+                var encId = BitmapEncoder.PngEncoderId;
+                var fext = fmt.ToLower();
+                switch (fext)
+                {
+                    case ".bmp":
+                        encId = BitmapEncoder.BmpEncoderId;
+                        break;
+                    case ".gif":
+                        encId = BitmapEncoder.GifEncoderId;
+                        break;
+                    case ".png":
+                        encId = BitmapEncoder.PngEncoderId;
+                        break;
+                    case ".jpg":
+                        encId = BitmapEncoder.JpegEncoderId;
+                        break;
+                    case ".jpeg":
+                        encId = BitmapEncoder.JpegEncoderId;
+                        break;
+                    case ".tif":
+                        encId = BitmapEncoder.TiffEncoderId;
+                        break;
+                    case ".tiff":
+                        encId = BitmapEncoder.TiffEncoderId;
+                        break;
+                    default:
+                        encId = BitmapEncoder.PngEncoderId;
+                        break;
+                }
+
+                var encoder = await BitmapEncoder.CreateAsync(encId, imras);
+                encoder.SetPixelData(
+                    BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,
+                    (uint)image.PixelWidth, (uint)image.PixelHeight,
+                    dpi, dpi,
+                    image.PixelBuffer.ToArray());
+                await encoder.FlushAsync();
+                imras.Seek(0);
+
+                Stream stream = WindowsRuntimeStreamExtensions.AsStreamForRead(imras.GetInputStreamAt(0));
+                MemoryStream ms = new MemoryStream();
+                await stream.CopyToAsync(ms);
+                //await ms.FlushAsync();
+                byte[] bytes = ms.ToArray();
+
+                result = await imras.ToBytes();
             }
             return (result);
+        }
+
+        public static async Task<string> ToBase64String(this WriteableBitmap image, string fmt, bool prefix, bool linebreak)
+        {
+            string result = string.Empty;
+
+            var opt = Base64FormattingOptions.None;
+            if (linebreak) opt = Base64FormattingOptions.InsertLineBreaks;
+
+            var mime = "image/png";
+            switch (fmt.ToLower())
+            {
+                case ".bmp":
+                    mime = "image/bmp";
+                    break;
+                case ".gif":
+                    mime = "image/gif";
+                    break;
+                case ".png":
+                    mime = "image/png";
+                    break;
+                case ".jpg":
+                    mime = "image/jpeg";
+                    break;
+                case ".jpeg":
+                    mime = "image/jpeg";
+                    break;
+                case ".tif":
+                    mime = "image/tiff";
+                    break;
+                case ".tiff":
+                    mime = "image/tiff";
+                    break;
+                default:
+                    mime = "image/png";
+                    break;
+            }
+            if (prefix) mime = $"data:{mime};base64,";
+            else        mime = string.Empty;
+
+            byte[] arr = await image.ToBytes(fmt);
+            var base64 = Convert.ToBase64String(arr, opt);
+            result = $"{mime}{base64}";
+
+            return (result);
+        }
+
+        public static async Task<string> ToBase64String(this Image image, string fmt, bool prefix, bool linebreak)
+        {
+            return(await (await image.ToWriteableBitmap()).ToBase64(fmt, prefix, linebreak));
         }
 
         public static async Task<WriteableBitmap> ToWriteableBitmap(this StorageFile file)
@@ -1093,17 +1234,17 @@ namespace StringCodec.UWP.Common
             }
         }
 
-        public static async Task<InMemoryRandomAccessStream> StoreMemoryStream(this WriteableBitmap image, string prefix = "")
+        public static async Task<InMemoryRandomAccessStream> ToMemoryStream(this WriteableBitmap image, string prefix = "")
         {
-            return (await image.StoreMemoryStream(image.PixelBuffer, image.PixelWidth, image.PixelHeight, prefix));
+            return (await image.ToMemoryStream(image.PixelBuffer, image.PixelWidth, image.PixelHeight, prefix));
         }
 
-        public static async Task<InMemoryRandomAccessStream> StoreMemoryStream(this WriteableBitmap image, int width, int height, string prefix = "")
+        public static async Task<InMemoryRandomAccessStream> ToMemoryStream(this WriteableBitmap image, int width, int height, string prefix = "")
         {
-            return (await image.StoreMemoryStream(image.PixelBuffer, width, height, prefix));
+            return (await image.ToMemoryStream(image.PixelBuffer, width, height, prefix));
         }
 
-        public static async Task<InMemoryRandomAccessStream> StoreMemoryStream(this WriteableBitmap image, IBuffer pixelBuffer, int width, int height, string prefix = "")
+        public static async Task<InMemoryRandomAccessStream> ToMemoryStream(this WriteableBitmap image, IBuffer pixelBuffer, int width, int height, string prefix = "")
         {
             InMemoryRandomAccessStream result = new InMemoryRandomAccessStream();
 
@@ -1119,7 +1260,6 @@ namespace StringCodec.UWP.Common
                     pixelBuffer.ToArray());
                 await encoder.FlushAsync();
 
-                //Stream stream = WindowsRuntimeStreamExtensions.AsStreamForRead(fileStream.GetInputStreamAt(0));
                 var ms = WindowsRuntimeStreamExtensions.AsStreamForRead(fileStream.GetInputStreamAt(0));
                 await RandomAccessStream.CopyAsync(ms.AsInputStream(), result);
                 await result.FlushAsync();
@@ -1510,12 +1650,14 @@ namespace StringCodec.UWP.Common
                 #endregion
 
                 #region Create in memory image data Copy to Clipboard
-                var cistream = await wb.StoreMemoryStream(pixelBuffer, r_width, r_height);
-                if(cistream != null || cistream.Size>0 )
+                using (var cistream = await wb.ToMemoryStream(pixelBuffer, r_width, r_height))
                 {
-                    if (cistream.Position > 0) cistream.Seek(0); 
-                    dataPackage.SetBitmap(RandomAccessStreamReference.CreateFromStream(cistream));
-                    cistream.CloneStream();
+                    if (cistream != null || cistream.Size > 0)
+                    {
+                        if (cistream.Position > 0) cistream.Seek(0);
+                        dataPackage.SetBitmap(RandomAccessStreamReference.CreateFromStream(cistream));
+                        cistream.CloneStream();
+                    }
                 }
                 #endregion
 

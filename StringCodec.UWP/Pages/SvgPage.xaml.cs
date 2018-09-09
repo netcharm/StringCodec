@@ -197,7 +197,7 @@ namespace StringCodec.UWP.Pages
             }
             else if (imgSvg.Source is WriteableBitmap)
             {
-                Frame.Navigate(typeof(CommonOneDPage), await imgSvg.ToWriteableBitmap());
+                Frame.Navigate(typeof(ImagePage), await imgSvg.ToWriteableBitmap());
             }
         }
 
@@ -211,7 +211,14 @@ namespace StringCodec.UWP.Pages
 
         private async void ImageFlyout_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            if (sender == ImageFlyoutShare)
+            if (sender == ImageFlyoutCopy)
+            {
+                if (target is Image && target.Source != null)
+                {
+                    Utils.SetClipboard(target, -1);
+                }
+            }
+            else if (sender == ImageFlyoutShare)
             {
                 if (target is Image && target.Source != null)
                 {

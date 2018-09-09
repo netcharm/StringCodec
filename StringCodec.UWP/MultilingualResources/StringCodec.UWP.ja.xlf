@@ -908,7 +908,19 @@
         </trans-unit>
         <trans-unit id="ImageFlyoutShare.Content" translate="yes" xml:space="preserve">
           <source>Share</source>
-          <target state="translated">シェア</target>
+          <target state="translated">現在の画像を共有する</target>
+        </trans-unit>
+        <trans-unit id="ImageFlyoutCopy.Content" translate="yes" xml:space="preserve">
+          <source>Copy</source>
+          <target state="translated">現在の画像をコピーする</target>
+        </trans-unit>
+        <trans-unit id="btnMake.Label" translate="yes" xml:space="preserve">
+          <source>Make</source>
+          <target state="translated">生成する</target>
+        </trans-unit>
+        <trans-unit id="btnMake.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Generating Icon Images</source>
+          <target state="translated">アイコン画像を生成する</target>
         </trans-unit>
       </group>
     </body>

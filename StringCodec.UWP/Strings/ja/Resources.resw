@@ -688,6 +688,15 @@
     <value>すべての画像をエクスポートする</value>
   </data>
   <data name="ImageFlyoutShare.Content" xml:space="preserve">
-    <value>シェア</value>
+    <value>現在の画像を共有する</value>
+  </data>
+  <data name="ImageFlyoutCopy.Content" xml:space="preserve">
+    <value>現在の画像をコピーする</value>
+  </data>
+  <data name="btnMake.Label" xml:space="preserve">
+    <value>生成する</value>
+  </data>
+  <data name="btnMake.ToolTipService.ToolTip" xml:space="preserve">
+    <value>アイコン画像を生成する</value>
   </data>
 </root>

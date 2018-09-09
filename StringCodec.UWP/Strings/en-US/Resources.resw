@@ -795,4 +795,13 @@
   <data name="ImageFlyoutShare.Content" xml:space="preserve">
     <value>Share</value>
   </data>
+  <data name="btnMake.Label" xml:space="preserve">
+    <value>Make</value>
+  </data>
+  <data name="btnMake.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Generating Icon Images</value>
+  </data>
+  <data name="ImageFlyoutCopy.Content" xml:space="preserve">
+    <value>Copy</value>
+  </data>
 </root>
