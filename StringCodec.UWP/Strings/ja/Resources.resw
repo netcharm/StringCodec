@@ -681,4 +681,13 @@
   <data name="optIconWin.Text" xml:space="preserve">
     <value>Windowsネイティブアプリアイコン</value>
   </data>
+  <data name="ImageFlyoutExport.Content" xml:space="preserve">
+    <value>現在のイメージをエクスポートする</value>
+  </data>
+  <data name="ImageFlyoutExportAll.Content" xml:space="preserve">
+    <value>すべての画像をエクスポートする</value>
+  </data>
+  <data name="ImageFlyoutShare.Content" xml:space="preserve">
+    <value>シェア</value>
+  </data>
 </root>

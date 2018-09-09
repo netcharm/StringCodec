@@ -37,6 +37,23 @@ using Windows.UI.Xaml.Media.Imaging;
 namespace StringCodec.UWP.Common
 {
     #region SVG File Extensions
+    public class IMAGE
+    {
+        private byte[] bytes = null;
+        public byte[] Bytes
+        {
+            get { return (bytes); }
+            set { bytes = value; }
+        }
+
+        private ImageSource source = null;
+        public ImageSource Source
+        {
+            get { return (source); }
+            set { source = value; }
+        }
+    }
+
     public class SVG
     {
         private byte[] bytes = null;
@@ -51,6 +68,13 @@ namespace StringCodec.UWP.Common
         {
             get { return (source); }
             set { source = value; }
+        }
+
+        private ImageSource imagesource = null;
+        public ImageSource Image
+        {
+            get { return (imagesource); }
+            set { imagesource = value; }
         }
 
         public KeyValuePair<byte[], SvgImageSource> Data
@@ -327,6 +351,7 @@ namespace StringCodec.UWP.Common
                         await bitmapImage.SetSourceAsync(rms);
                         await rms.FlushAsync();
                         result.Source = bitmapImage;
+                        result.Image = bitmapImage;
                     }
                 }
             }
@@ -424,7 +449,7 @@ namespace StringCodec.UWP.Common
     public static class WriteableBitmapExtentions
     {
         #region FrameworkElement UIElement to WriteableBitmap
-        public static async Task<WriteableBitmap> ToBitmap(this FrameworkElement element)
+        public static async Task<WriteableBitmap> ToWriteableBitmap(this FrameworkElement element)
         {
             WriteableBitmap result = null;
             using (var fileStream = new InMemoryRandomAccessStream())
@@ -453,7 +478,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        public static async Task<WriteableBitmap> ToBitmap(this FrameworkElement element, Color bgcolor)
+        public static async Task<WriteableBitmap> ToWriteableBitmap(this FrameworkElement element, Color bgcolor)
         {
             WriteableBitmap result = null;
             using (var fileStream = new InMemoryRandomAccessStream())
@@ -489,7 +514,7 @@ namespace StringCodec.UWP.Common
         #endregion
 
         #region Text with family size style color to WriteableBitmap
-        public static async Task<WriteableBitmap> ToBitmap(this string text, Panel root, string fontfamily, int fontsize, Color fgcolor, Color bgcolor)
+        public static async Task<WriteableBitmap> ToWriteableBitmap(this string text, Panel root, string fontfamily, int fontsize, Color fgcolor, Color bgcolor)
         {
             WriteableBitmap result = null;
 
@@ -512,7 +537,7 @@ namespace StringCodec.UWP.Common
                 Background = new SolidColorBrush(bgcolor)
             };
             root.Children.Add(border);
-            var wb = await border.ToBitmap();
+            var wb = await border.ToWriteableBitmap();
             root.Children.Remove(border);
             #endregion
 
@@ -549,7 +574,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        public static async Task<WriteableBitmap> ToBitmap(this string text, string fontfamily, FontStyle fontstyle, int fontsize, Color fgcolor, Color bgcolor)
+        public static async Task<WriteableBitmap> ToWriteableBitmap(this string text, string fontfamily, FontStyle fontstyle, int fontsize, Color fgcolor, Color bgcolor)
         {
             WriteableBitmap result = null;
             using (var fileStream = new InMemoryRandomAccessStream())
@@ -595,7 +620,7 @@ namespace StringCodec.UWP.Common
         #endregion
 
         #region Create WriteableBitmap wiht Color 
-        public static WriteableBitmap ToBitmap(this Color bgcolor, int width, int height)
+        public static WriteableBitmap ToWriteableBitmap(this Color bgcolor, int width, int height)
         {
             if (width <= 0 || height <= 0) return (null);
             WriteableBitmap result = new WriteableBitmap(width, height);
@@ -609,7 +634,7 @@ namespace StringCodec.UWP.Common
         {
             var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
 
-            var twb = await text.ToBitmap(fontfamily, fontstyle, fontsize, fgcolor, bgcolor);
+            var twb = await text.ToWriteableBitmap(fontfamily, fontstyle, fontsize, fgcolor, bgcolor);
             image.Blit(new Rect(x, y, twb.PixelWidth, twb.PixelHeight), twb, new Rect(0, 0, twb.PixelWidth, twb.PixelHeight));
             //image.BlitRender(twb, false);
             return;
@@ -717,6 +742,28 @@ namespace StringCodec.UWP.Common
 
             byte[] result = image.PixelBuffer.ToArray();
             return (result);
+        }
+
+        public static WriteableBitmap ToWriteableBitmap(this byte[] bytes)
+        {
+            WriteableBitmap result = null;
+            if (bytes is byte[] && bytes.Length>0)
+            {
+                result = new WriteableBitmap(1, 1);
+                using (var ms = new MemoryStream(bytes))
+                {
+
+                }               
+            }
+            return (result);
+        }
+
+        public static async Task<WriteableBitmap> ToWriteableBitmap(this StorageFile file)
+        {
+            var bitmapImage = new WriteableBitmap(1, 1);
+            await bitmapImage.SetSourceAsync(await file.OpenReadAsync());
+            byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
+            return (bitmapImage);
         }
 
         public static async Task<WriteableBitmap> ToWriteableBitmap(this BitmapImage image)
@@ -1079,7 +1126,7 @@ namespace StringCodec.UWP.Common
                 result.Seek(0);
             }
             return (result);
-        }
+        }        
         #endregion
     }
 

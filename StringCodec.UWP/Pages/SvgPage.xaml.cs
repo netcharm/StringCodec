@@ -1,5 +1,7 @@
 ﻿using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
+using Microsoft.Graphics.Canvas.UI;
+using Microsoft.Graphics.Canvas.UI.Xaml;
 using StringCodec.UWP.Common;
 using System;
 using System.Collections.Generic;
@@ -11,6 +13,7 @@ using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
+using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
@@ -33,11 +36,16 @@ namespace StringCodec.UWP.Pages
     {
         private CanvasBitmap backgroundImage32;
         private CanvasImageBrush backgroundBrush32;
-        private bool resourcesLoaded32 = false;
+        //private bool resourcesLoaded32 = false;
 
         private CanvasBitmap backgroundImage16;
         private CanvasImageBrush backgroundBrush16;
-        private bool resourcesLoaded16 = false;
+        //private bool resourcesLoaded16 = false;
+
+        private Image target = null;
+
+        List<int> sizelist = new List<int>() { 1024, 512, 256, 128, 96, 64, 48, 32, 24, 16 };
+        Dictionary<int, Image> images = null;
 
         private string CURRENT_FORMAT = ".png";
         private string CURRENT_ICONS = "win";
@@ -57,6 +65,13 @@ namespace StringCodec.UWP.Pages
 
             optFmtPng.IsChecked = true;
 
+            images = new Dictionary<int, Image>()
+            {
+                //{1024, Image1024}, {512,Image512},
+                {256, Image256}, {128, Image128}, {96, Image96},
+                {64, Image64}, {48,Image48}, {32, Image32}, {24, Image24}, {16, Image16}
+            };
+
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -74,6 +89,52 @@ namespace StringCodec.UWP.Pages
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
         }
+
+        #region Draw Canvas Background Checkboard
+        private void BackgroundCanvas16_CreateResources(CanvasControl sender, CanvasCreateResourcesEventArgs args)
+        {
+            args.TrackAsyncAction(Task.Run(async () =>
+            {
+                // Load the background image and create an image brush from it
+                this.backgroundImage16 = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/CheckboardPattern_1664.png"));
+                this.backgroundBrush16 = new CanvasImageBrush(sender, this.backgroundImage16) { Opacity = 0.3f };
+
+                // Set the brush's edge behaviour to wrap, so the image repeats if the drawn region is too big
+                this.backgroundBrush16.ExtendX = this.backgroundBrush16.ExtendY = CanvasEdgeBehavior.Wrap;
+
+                //this.resourcesLoaded16 = true;
+            }).AsAsyncAction());
+        }
+
+        private void BackgroundCanvas16_Draw(CanvasControl sender, CanvasDrawEventArgs args)
+        {
+            // Just fill a rectangle with our tiling image brush, covering the entire bounds of the canvas control
+            var session = args.DrawingSession;
+            session.FillRectangle(new Rect(new Point(), sender.RenderSize), this.backgroundBrush16);
+        }
+
+        private void BackgroundCanvas32_CreateResources(CanvasControl sender, CanvasCreateResourcesEventArgs args)
+        {
+            args.TrackAsyncAction(Task.Run(async () =>
+            {
+                // Load the background image and create an image brush from it
+                this.backgroundImage32 = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/CheckboardPattern_3264.png"));
+                this.backgroundBrush32 = new CanvasImageBrush(sender, this.backgroundImage32) { Opacity = 0.3f };
+
+                // Set the brush's edge behaviour to wrap, so the image repeats if the drawn region is too big
+                this.backgroundBrush32.ExtendX = this.backgroundBrush32.ExtendY = CanvasEdgeBehavior.Wrap;
+
+                //this.resourcesLoaded32 = true;
+            }).AsAsyncAction());
+        }
+
+        private void BackgroundCanvas32_Draw(CanvasControl sender, CanvasDrawEventArgs args)
+        {
+            // Just fill a rectangle with our tiling image brush, covering the entire bounds of the canvas control
+            var session = args.DrawingSession;
+            session.FillRectangle(new Rect(new Point(), sender.RenderSize), this.backgroundBrush32);
+        }
+        #endregion
 
         private void OptFmt_Click(object sender, RoutedEventArgs e)
         {
@@ -112,23 +173,20 @@ namespace StringCodec.UWP.Pages
 
         private async void QRCode_Click(object sender, RoutedEventArgs e)
         {
+            if (imgSvg.Source == null) return;
             if (sender == btnImageQRCode)
             {
-                if (imgSvg.Source == null) return;
-                //Frame.Navigate(typeof(QRCodePage), imgBase64.Source as WriteableBitmap);
                 Frame.Navigate(typeof(QRCodePage), await imgSvg.ToWriteableBitmap());
             }
             else if (sender == btnImageOneD)
             {
-                if (imgSvg.Source == null) return;
-                //Frame.Navigate(typeof(CommonOneDPage), imgBase64.Source as WriteableBitmap);
                 Frame.Navigate(typeof(CommonOneDPage), await imgSvg.ToWriteableBitmap());
             }
         }
 
-        private void BASE64_Click(object sender, RoutedEventArgs e)
+        private async void BASE64_Click(object sender, RoutedEventArgs e)
         {
-            if(imgSvg.Source is SvgImageSource)
+            if (imgSvg.Source is SvgImageSource)
             {
                 var svg = new SVG
                 {
@@ -137,40 +195,135 @@ namespace StringCodec.UWP.Pages
                 };
                 Frame.Navigate(typeof(ImagePage), svg);
             }
+            else if (imgSvg.Source is WriteableBitmap)
+            {
+                Frame.Navigate(typeof(CommonOneDPage), await imgSvg.ToWriteableBitmap());
+            }
         }
+
+        #region Image List ContextFlyout
+        private void Image_RightTapped(object sender, RightTappedRoutedEventArgs e)
+        {
+            var uiSender = sender as UIElement;
+            var flyout = (FlyoutBase)uiSender.GetValue(FlyoutBase.AttachedFlyoutProperty);
+            flyout.ShowAt(uiSender as FrameworkElement);
+        }
+
+        private async void ImageFlyout_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (sender == ImageFlyoutShare)
+            {
+                if (target is Image && target.Source != null)
+                {
+                    await Utils.Share(await target.ToWriteableBitmap());
+                }
+            }
+            else if (sender == ImageFlyoutExport)
+            {
+                if (target is Image && target.Source != null)
+                {
+                    await Utils.ShowSaveDialog(target);
+                }
+            }
+            else if (sender == ImageFlyoutExportAll)
+            {
+                FolderPicker fdp = new FolderPicker();
+                fdp.SuggestedStartLocation = PickerLocationId.Desktop;
+                fdp.FileTypeFilter.Add("*");
+                var folder = await fdp.PickSingleFolderAsync();
+                if (folder != null)
+                {
+                    foreach (var kv in images)
+                    {
+                        var wb = await kv.Value.ToWriteableBitmap();
+                        if (wb is WriteableBitmap)
+                        {
+                            var fn = $"{DateTime.Now.ToString("yyyyMMddHHmmssff")}_{kv.Key}{CURRENT_FORMAT}";
+                            var file = await folder.CreateFileAsync(fn, CreationCollisionOption.GenerateUniqueName);
+                            wb.SaveAsync(file);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void ImageContextFlyout_Opened(object sender, object e)
+        {
+            if (sender is Flyout)
+            {
+                var ft = (sender as Flyout).Target;
+                if (ft is Viewbox)
+                {
+                    var ftc = (ft as Viewbox).Child;
+                    if (ftc is Image)
+                    {
+                        target = ftc as Image;
+                    }
+                }
+                else if (ft is CanvasControl)
+                {
+                    var ftc = ft as CanvasControl;
+                    var parent = VisualTreeHelper.GetParent(ft);
+                    if (parent is Grid)
+                    {
+                        int index = (parent as Grid).Children.IndexOf(ftc);
+                        var ftv = VisualTreeHelper.GetChild(parent as Grid, index + 1);
+                        if (ftv is Viewbox)
+                        {
+                            var fti = (ftv as Viewbox).Child;
+                            if (fti is Image)
+                            {
+                                target = fti as Image;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void ImageContextFlyout_Closed(object sender, object e)
+        {
+            target = null;
+        }
+        #endregion
 
         private async void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
             var btn = sender as AppBarButton;
             switch (btn.Name)
             {
-                case "btnMake":
-                    if(imgSvg.Source is SvgImageSource)
+                case "btnOpenFile":
+                    FileOpenPicker fop = new FileOpenPicker();
+                    fop.SuggestedStartLocation = PickerLocationId.Desktop;
+                    foreach (var ext in Utils.image_ext)
                     {
-                        var svgImage = imgSvg.Source as SvgImageSource;
-                        var w = (int)svgImage.RasterizePixelWidth;
-                        var h = (int)svgImage.RasterizePixelHeight;
-                        //if (double.IsInfinity(w) || double.IsInfinity(h))
-                        if (w <= 0 || h <= 0)
+                        fop.FileTypeFilter.Add(ext);
+                    }
+                    var file = await fop.PickSingleFileAsync();
+                    if (file != null)
+                    {
+                        if (file.FileType.ToLower().Equals(".svg"))
                         {
-                            w = (int)imgSvg.ActualWidth;
-                            h = (int)imgSvg.ActualHeight;
+                            var svgData = await SVG.CreateFromStorageFile(file);
+                            imgSvg.Source = svgData.Source;
+                            imgSvg.Tag = svgData.Bytes;
                         }
-                        var factor = (double)h / (double)w;
-                        var wb = await imgSvg.ToWriteableBitmap();
-                        if(CURRENT_ICONS.Equals("win", StringComparison.CurrentCultureIgnoreCase))
+                        else
                         {
-                            List<int> sizelist = new List<int>() { 1024, 512, 256, 128, 96, 64, 48, 32, 24, 16 };
-                            Dictionary<int, Image> images = new Dictionary<int, Image>()
-                            {
-                                //{1024, Image1024}, {512,Image512},
-                                {256, Image256}, {128, Image128}, {96, Image96},
-                                {64, Image64}, {48,Image48}, {32, Image32}, {24, Image24}, {16, Image16}
-                            };
-                            foreach (var kv in images)
-                            {
-                                kv.Value.Source = wb.Resize((int)kv.Key, (int)(kv.Key * factor), WriteableBitmapExtensions.Interpolation.Bilinear);                                
-                            }
+                            imgSvg.Source = await file.ToWriteableBitmap();
+                        }
+                    }
+                    break;
+                case "btnMake":
+                    var w = (int)imgSvg.ActualWidth;
+                    var h = (int)imgSvg.ActualHeight;
+                    var factor = (double)h / (double)w;
+                    var wb = await imgSvg.ToWriteableBitmap();
+                    if (CURRENT_ICONS.Equals("win", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        foreach (var kv in images)
+                        {
+                            kv.Value.Source = wb.Resize((int)kv.Key, (int)(kv.Key * factor), WriteableBitmapExtensions.Interpolation.Bilinear);
                         }
                     }
                     break;
@@ -180,8 +333,11 @@ namespace StringCodec.UWP.Pages
                 case "btnPaste":
                     var svgdoc = await Utils.GetClipboard("");
                     var svg = await svgdoc.DecodeSvg();
-                    imgSvg.Source = svg.Source;
-                    imgSvg.Tag = svg.Bytes.Clone();
+                    if (svg.Source is SvgImageSource)
+                        imgSvg.Source = svg.Source;
+                    else if (svg.Image is BitmapSource || svg.Image is WriteableBitmap)
+                        imgSvg.Source = svg.Image;
+                    imgSvg.Tag = svg.Bytes is byte[] ? svg.Bytes.Clone() : null;
                     break;
                 case "btnSave":
                     await Utils.ShowSaveDialog(imgSvg);
@@ -219,11 +375,11 @@ namespace StringCodec.UWP.Pages
 #endif
                         if (sender == imgSvg || sender == rectDrop)
                         {
-                            if (Utils.image_ext.Contains(extension) && extension.Equals(".svg"))
+                            if (Utils.image_ext.Contains(extension))
                             {
                                 canDrop = true;
 #if DEBUG
-                                System.Diagnostics.Debug.WriteLine("Drag Svg to Image Control");
+                                System.Diagnostics.Debug.WriteLine("Drag picture to Image Control");
 #endif
                             }
                         }
@@ -364,48 +520,5 @@ namespace StringCodec.UWP.Pages
         }
         #endregion
 
-        private void BackgroundCanvas16_CreateResources(Microsoft.Graphics.Canvas.UI.Xaml.CanvasControl sender, Microsoft.Graphics.Canvas.UI.CanvasCreateResourcesEventArgs args)
-        {
-            args.TrackAsyncAction(Task.Run(async () =>
-            {
-                // Load the background image and create an image brush from it
-                this.backgroundImage16 = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/CheckboardPattern_1664.png"));
-                this.backgroundBrush16 = new CanvasImageBrush(sender, this.backgroundImage16) { Opacity = 0.3f };
-
-                // Set the brush's edge behaviour to wrap, so the image repeats if the drawn region is too big
-                this.backgroundBrush16.ExtendX = this.backgroundBrush16.ExtendY = CanvasEdgeBehavior.Wrap;
-
-                this.resourcesLoaded16 = true;
-            }).AsAsyncAction());
-        }
-
-        private void BackgroundCanvas16_Draw(Microsoft.Graphics.Canvas.UI.Xaml.CanvasControl sender, Microsoft.Graphics.Canvas.UI.Xaml.CanvasDrawEventArgs args)
-        {
-            // Just fill a rectangle with our tiling image brush, covering the entire bounds of the canvas control
-            var session = args.DrawingSession;
-            session.FillRectangle(new Rect(new Point(), sender.RenderSize), this.backgroundBrush16);
-        }
-
-        private void BackgroundCanvas32_CreateResources(Microsoft.Graphics.Canvas.UI.Xaml.CanvasControl sender, Microsoft.Graphics.Canvas.UI.CanvasCreateResourcesEventArgs args)
-        {
-            args.TrackAsyncAction(Task.Run(async () =>
-            {
-                // Load the background image and create an image brush from it
-                this.backgroundImage32 = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/CheckboardPattern_3264.png"));
-                this.backgroundBrush32 = new CanvasImageBrush(sender, this.backgroundImage32) { Opacity = 0.3f };
-
-                // Set the brush's edge behaviour to wrap, so the image repeats if the drawn region is too big
-                this.backgroundBrush32.ExtendX = this.backgroundBrush32.ExtendY = CanvasEdgeBehavior.Wrap;
-
-                this.resourcesLoaded32 = true;
-            }).AsAsyncAction());
-        }
-
-        private void BackgroundCanvas32_Draw(Microsoft.Graphics.Canvas.UI.Xaml.CanvasControl sender, Microsoft.Graphics.Canvas.UI.Xaml.CanvasDrawEventArgs args)
-        {
-            // Just fill a rectangle with our tiling image brush, covering the entire bounds of the canvas control
-            var session = args.DrawingSession;
-            session.FillRectangle(new Rect(new Point(), sender.RenderSize), this.backgroundBrush32);
-        }
     }
 }

@@ -493,16 +493,27 @@ namespace StringCodec.UWP.Common
             try
             {
                 //var pattern = @"<svg.*?>";
-                var pattern = @"<svg.*?\n*\r*.*?>(\n*\r*.*?)*</svg>";
-                if (Regex.IsMatch(content, pattern, RegexOptions.IgnoreCase | RegexOptions.Multiline))
+                var patternSvg = @"<svg.*?\n*\r*.*?>(\n*\r*.*?)*</svg>";
+                var patternBase64Svg = @"^data:image/svg.*?;base64,";
+                var patternBase64 = @"^data:image/.*?;base64,";
+                if (Regex.IsMatch(content, patternSvg, RegexOptions.IgnoreCase | RegexOptions.Multiline))
                 {
                     await result.Load(content);
                 }
-                else
+                else if(Regex.IsMatch(content, patternBase64Svg, RegexOptions.IgnoreCase | RegexOptions.Multiline))
                 {
-                    string bs = Regex.Replace(content, @"data:image/.*?;base64,", "", RegexOptions.IgnoreCase);
+                    string bs = Regex.Replace(content, patternBase64Svg, "", RegexOptions.IgnoreCase);
                     byte[] arr = Convert.FromBase64String(bs.Trim());
                     await result.Load(arr);
+                }
+                else if (Regex.IsMatch(content, patternBase64, RegexOptions.IgnoreCase | RegexOptions.Multiline))
+                {
+                    string bs = Regex.Replace(content, patternBase64, "", RegexOptions.IgnoreCase);
+                    byte[] arr = Convert.FromBase64String(bs.Trim());
+                    result.Source = null;
+                    result.Image = await Decode(content);
+                    result.Bytes = arr;
+                    result.Source = null;
                 }
             }
             catch (Exception ex)

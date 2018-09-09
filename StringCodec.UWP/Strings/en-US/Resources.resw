@@ -786,4 +786,13 @@
   <data name="optIconWin.Text" xml:space="preserve">
     <value>Windows Icons</value>
   </data>
+  <data name="ImageFlyoutExport.Content" xml:space="preserve">
+    <value>Export Image</value>
+  </data>
+  <data name="ImageFlyoutExportAll.Content" xml:space="preserve">
+    <value>Export All Image</value>
+  </data>
+  <data name="ImageFlyoutShare.Content" xml:space="preserve">
+    <value>Share</value>
+  </data>
 </root>

@@ -856,7 +856,7 @@
         </trans-unit>
         <trans-unit id="has been deleted" translate="yes" xml:space="preserve">
           <source>has been deleted</source>
-          <target state="translated">已经被清理</target>
+          <target state="translated">已經被清理</target>
         </trans-unit>
         <trans-unit id="file(s)" translate="yes" xml:space="preserve">
           <source>file(s)</source>
@@ -897,6 +897,18 @@
         <trans-unit id="optIconWin.Text" translate="yes" xml:space="preserve">
           <source>Windows Icons</source>
           <target state="translated">Windows原生應用圖標</target>
+        </trans-unit>
+        <trans-unit id="ImageFlyoutExport.Content" translate="yes" xml:space="preserve">
+          <source>Export Image</source>
+          <target state="translated">導出當前圖像</target>
+        </trans-unit>
+        <trans-unit id="ImageFlyoutExportAll.Content" translate="yes" xml:space="preserve">
+          <source>Export All Image</source>
+          <target state="translated">導出全部圖像</target>
+        </trans-unit>
+        <trans-unit id="ImageFlyoutShare.Content" translate="yes" xml:space="preserve">
+          <source>Share</source>
+          <target state="translated">共享</target>
         </trans-unit>
       </group>
     </body>

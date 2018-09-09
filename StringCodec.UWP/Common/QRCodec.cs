@@ -335,7 +335,7 @@ namespace StringCodec.UWP.Common
                 #region if EAN-13 then set Mark Space to Barcode
                 if (fmt == BarcodeFormat.EAN_13)
                 {
-                    var mark = bgcolor.ToBitmap(380, 40);
+                    var mark = bgcolor.ToWriteableBitmap(380, 40);
                     var markRect = new Rect(0, 0, mark.PixelWidth, mark.PixelHeight);
                     var rectMarkL = new Rect(result.PixelWidth / 2 - 15 - mark.PixelWidth, result.PixelHeight - mark.PixelHeight, mark.PixelWidth, mark.PixelHeight);
                     var rectMarkR = new Rect(result.PixelWidth / 2 + 15, result.PixelHeight - mark.PixelHeight, mark.PixelWidth, mark.PixelHeight);
@@ -344,7 +344,7 @@ namespace StringCodec.UWP.Common
                 }
                 else if (fmt == BarcodeFormat.UPC_A)
                 {
-                    var mark = bgcolor.ToBitmap(315, 40);
+                    var mark = bgcolor.ToWriteableBitmap(315, 40);
                     var markRect = new Rect(0, 0, mark.PixelWidth, mark.PixelHeight);
                     var rectMarkL = new Rect(result.PixelWidth / 2 - 15 - mark.PixelWidth, result.PixelHeight - mark.PixelHeight, mark.PixelWidth, mark.PixelHeight);
                     var rectMarkR = new Rect(result.PixelWidth / 2 + 15, result.PixelHeight - mark.PixelHeight, mark.PixelWidth, mark.PixelHeight);
@@ -353,7 +353,7 @@ namespace StringCodec.UWP.Common
                 }
                 else if (fmt == BarcodeFormat.UPC_E)
                 {
-                    var mark = bgcolor.ToBitmap(600, 40);
+                    var mark = bgcolor.ToWriteableBitmap(600, 40);
                     var markRect = new Rect(0, 0, mark.PixelWidth, mark.PixelHeight);
                     var rectMark = new Rect((result.PixelWidth - mark.PixelWidth) / 2 - 15, result.PixelHeight - mark.PixelHeight, mark.PixelWidth, mark.PixelHeight);
                     result.Blit(rectMark, mark, markRect, WriteableBitmapExtensions.BlendMode.None);
@@ -368,7 +368,7 @@ namespace StringCodec.UWP.Common
                         var label = labels[0];
                         if (!string.IsNullOrEmpty(label))
                         {
-                            var labelimage = await label.ToBitmap(monofontname, FontStyle.Normal, textsize, fgcolor, bgcolor);
+                            var labelimage = await label.ToWriteableBitmap(monofontname, FontStyle.Normal, textsize, fgcolor, bgcolor);
                             result = result.Extend(l, t, r, b + labelimage.PixelHeight, bgcolor);
                             var dstRect = new Rect((result.PixelWidth - labelimage.PixelWidth) / 2, result.PixelHeight - labelimage.PixelHeight - b, labelimage.PixelWidth, labelimage.PixelHeight);
                             if (dstRect.Width > rectBarcode.Width)
@@ -385,8 +385,8 @@ namespace StringCodec.UWP.Common
                         var label_b = labels[1];
                         if (!string.IsNullOrEmpty(label_t) && !string.IsNullOrEmpty(label_b))
                         {
-                            var labelimage_t = await label_t.ToBitmap(monofontname, FontStyle.Normal, textsize, fgcolor, bgcolor);
-                            var labelimage_b = await label_b.ToBitmap(monofontname, FontStyle.Normal, textsize, fgcolor, bgcolor);
+                            var labelimage_t = await label_t.ToWriteableBitmap(monofontname, FontStyle.Normal, textsize, fgcolor, bgcolor);
+                            var labelimage_b = await label_b.ToWriteableBitmap(monofontname, FontStyle.Normal, textsize, fgcolor, bgcolor);
                             result = result.Extend(l, t + labelimage_t.PixelHeight, r, b + labelimage_b.PixelHeight, bgcolor);
 
                             var dstRect_t = new Rect((result.PixelWidth - labelimage_t.PixelWidth) / 2, t,
@@ -411,7 +411,7 @@ namespace StringCodec.UWP.Common
                         }
                         else if(!string.IsNullOrEmpty(label_t) && string.IsNullOrEmpty(label_b))
                         {
-                            var labelimage_t = await label_t.ToBitmap(monofontname, FontStyle.Normal, textsize, fgcolor, bgcolor);
+                            var labelimage_t = await label_t.ToWriteableBitmap(monofontname, FontStyle.Normal, textsize, fgcolor, bgcolor);
                             result = result.Extend(l, t + labelimage_t.PixelHeight, r, b, bgcolor);
 
                             var dstRect_t = new Rect((result.PixelWidth - labelimage_t.PixelWidth) / 2, t,
@@ -426,7 +426,7 @@ namespace StringCodec.UWP.Common
                         }
                         else if (string.IsNullOrEmpty(label_t) && !string.IsNullOrEmpty(label_b))
                         {
-                            var labelimage_b = await label_t.ToBitmap(monofontname, FontStyle.Normal, textsize, fgcolor, bgcolor);
+                            var labelimage_b = await label_t.ToWriteableBitmap(monofontname, FontStyle.Normal, textsize, fgcolor, bgcolor);
                             result = result.Extend(l, t, r, b + labelimage_b.PixelHeight, bgcolor);
 
                             var dstRect_b = new Rect((result.PixelWidth - labelimage_b.PixelWidth) / 2, result.PixelHeight - labelimage_b.PixelHeight - b,
