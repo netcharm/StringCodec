@@ -1,9 +1,12 @@
-﻿using StringCodec.UWP.Common;
+﻿using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.Brushes;
+using StringCodec.UWP.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -28,6 +31,14 @@ namespace StringCodec.UWP.Pages
     /// </summary>
     public sealed partial class SvgPage : Page
     {
+        private CanvasBitmap backgroundImage32;
+        private CanvasImageBrush backgroundBrush32;
+        private bool resourcesLoaded32 = false;
+
+        private CanvasBitmap backgroundImage16;
+        private CanvasImageBrush backgroundBrush16;
+        private bool resourcesLoaded16 = false;
+
         private string CURRENT_FORMAT = ".png";
         private string CURRENT_ICONS = "win";
 
@@ -353,5 +364,48 @@ namespace StringCodec.UWP.Pages
         }
         #endregion
 
+        private void BackgroundCanvas16_CreateResources(Microsoft.Graphics.Canvas.UI.Xaml.CanvasControl sender, Microsoft.Graphics.Canvas.UI.CanvasCreateResourcesEventArgs args)
+        {
+            args.TrackAsyncAction(Task.Run(async () =>
+            {
+                // Load the background image and create an image brush from it
+                this.backgroundImage16 = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/CheckboardPattern_1664.png"));
+                this.backgroundBrush16 = new CanvasImageBrush(sender, this.backgroundImage16) { Opacity = 0.3f };
+
+                // Set the brush's edge behaviour to wrap, so the image repeats if the drawn region is too big
+                this.backgroundBrush16.ExtendX = this.backgroundBrush16.ExtendY = CanvasEdgeBehavior.Wrap;
+
+                this.resourcesLoaded16 = true;
+            }).AsAsyncAction());
+        }
+
+        private void BackgroundCanvas16_Draw(Microsoft.Graphics.Canvas.UI.Xaml.CanvasControl sender, Microsoft.Graphics.Canvas.UI.Xaml.CanvasDrawEventArgs args)
+        {
+            // Just fill a rectangle with our tiling image brush, covering the entire bounds of the canvas control
+            var session = args.DrawingSession;
+            session.FillRectangle(new Rect(new Point(), sender.RenderSize), this.backgroundBrush16);
+        }
+
+        private void BackgroundCanvas32_CreateResources(Microsoft.Graphics.Canvas.UI.Xaml.CanvasControl sender, Microsoft.Graphics.Canvas.UI.CanvasCreateResourcesEventArgs args)
+        {
+            args.TrackAsyncAction(Task.Run(async () =>
+            {
+                // Load the background image and create an image brush from it
+                this.backgroundImage32 = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/CheckboardPattern_3264.png"));
+                this.backgroundBrush32 = new CanvasImageBrush(sender, this.backgroundImage32) { Opacity = 0.3f };
+
+                // Set the brush's edge behaviour to wrap, so the image repeats if the drawn region is too big
+                this.backgroundBrush32.ExtendX = this.backgroundBrush32.ExtendY = CanvasEdgeBehavior.Wrap;
+
+                this.resourcesLoaded32 = true;
+            }).AsAsyncAction());
+        }
+
+        private void BackgroundCanvas32_Draw(Microsoft.Graphics.Canvas.UI.Xaml.CanvasControl sender, Microsoft.Graphics.Canvas.UI.Xaml.CanvasDrawEventArgs args)
+        {
+            // Just fill a rectangle with our tiling image brush, covering the entire bounds of the canvas control
+            var session = args.DrawingSession;
+            session.FillRectangle(new Rect(new Point(), sender.RenderSize), this.backgroundBrush32);
+        }
     }
 }

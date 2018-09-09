@@ -5,6 +5,7 @@
     xmlns:local="using:StringCodec.UWP.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:win2d="using:Microsoft.Graphics.Canvas.UI.Xaml"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -69,8 +70,33 @@
             </CommandBar.Content>
         </CommandBar>
 
-        <Viewbox Grid.Row="1" Grid.Column="0" ScrollViewer.HorizontalScrollMode="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto">
-            <StackPanel x:Name="ImageList" x:Uid="ImageList">
+        <ScrollViewer Grid.Row="1" Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Visible">
+            <Grid x:Name="ImageList" x:Uid="ImageList" Margin="0, 28, 0, 0" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="96"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="96"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="96"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="96"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="96"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="96"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="96"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="96"/>
+                    <RowDefinition Height="Auto"/>
+                    <!--<RowDefinition Height="96"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="96"/>
+                    <RowDefinition Height="Auto"/>-->
+                </Grid.RowDefinitions>
                 <!--<Viewbox StretchDirection="DownOnly" Margin="0, 8, 0, 0" Height="96">
                     <Image x:Name="Image1024" x:Uid="Image1024" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 </Viewbox>
@@ -79,40 +105,57 @@
                     <Image x:Name="Image512" x:Uid="Image512" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 </Viewbox>
                 <TextBlock x:Name="Text512" x:Uid="Text512" Text="512" HorizontalAlignment="Right" VerticalAlignment="Center"/>-->
-                <Viewbox StretchDirection="DownOnly" Margin="0, 8, 0, 0" Height="96">
+                <win2d:CanvasControl Grid.Row="0" Margin="0, 0, 0, 0" CreateResources="BackgroundCanvas16_CreateResources" Draw="BackgroundCanvas16_Draw" />
+                <!--<Rectangle Grid.Row="0" Fill="Transparent" Stretch="Fill" Margin="0, 8, 0, 0"/>-->
+                <Viewbox Grid.Row="0" Margin="0, 0, 0, 0" StretchDirection="DownOnly">
                     <Image x:Name="Image256" x:Uid="Image256" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 </Viewbox>
-                <TextBlock x:Name="Text256" x:Uid="Text256" Text="256" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                <Viewbox StretchDirection="DownOnly" Margin="0, 8, 0, 0" Height="96">
+                <TextBlock Grid.Row="1" x:Name="Text256" x:Uid="Text256" Text="256" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <win2d:CanvasControl Grid.Row="2" Margin="0, 8, 0, 0" CreateResources="BackgroundCanvas16_CreateResources" Draw="BackgroundCanvas16_Draw" />
+                <Rectangle Grid.Row="2" Fill="Transparent" Stretch="Fill" Margin="0, 8, 0, 0"/>
+                <Viewbox Grid.Row="2" StretchDirection="DownOnly" Margin="0, 8, 0, 0" Height="96">
                     <Image x:Name="Image128" x:Uid="Image128" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 </Viewbox>
-                <TextBlock x:Name="Text128" x:Uid="Text128" Text="128" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                <Viewbox StretchDirection="DownOnly" Margin="0, 8, 0, 0" Height="96">
+                <TextBlock Grid.Row="3" x:Name="Text128" x:Uid="Text128" Text="128" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <win2d:CanvasControl Grid.Row="4" Margin="0, 8, 0, 0" CreateResources="BackgroundCanvas16_CreateResources" Draw="BackgroundCanvas16_Draw" />
+                <Rectangle Grid.Row="4" Fill="Transparent" Stretch="Fill" Margin="0, 8, 0, 0"/>
+                <Viewbox Grid.Row="4" StretchDirection="DownOnly" Margin="0, 8, 0, 0" Height="96">
                     <Image x:Name="Image96" x:Uid="Image96" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 </Viewbox>
-                <TextBlock x:Name="Text96" x:Uid="Text96" Text="96" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                <Viewbox StretchDirection="DownOnly" Margin="0, 8, 0, 0" Height="96">
+                <TextBlock Grid.Row="5" x:Name="Text96" x:Uid="Text96" Text="96" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <win2d:CanvasControl Grid.Row="6" Margin="0, 8, 0, 0" CreateResources="BackgroundCanvas16_CreateResources" Draw="BackgroundCanvas16_Draw" />
+                <Rectangle Grid.Row="6" Fill="Transparent" Stretch="Fill" Margin="0, 8, 0, 0"/>
+                <Viewbox Grid.Row="6" StretchDirection="DownOnly" Margin="0, 8, 0, 0" Height="96">
                     <Image x:Name="Image64" x:Uid="Image64" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 </Viewbox>
-                <TextBlock x:Name="Text64" x:Uid="Text64" Text="64" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                <Viewbox StretchDirection="DownOnly" Margin="0, 8, 0, 0" Height="96">
+                <TextBlock Grid.Row="7" x:Name="Text64" x:Uid="Text64" Text="64" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <win2d:CanvasControl Grid.Row="8" Margin="0, 8, 0, 0" CreateResources="BackgroundCanvas16_CreateResources" Draw="BackgroundCanvas16_Draw" />
+                <Rectangle Grid.Row="8" Fill="Transparent" Stretch="Fill" Margin="0, 8, 0, 0"/>
+                <Viewbox Grid.Row="8" StretchDirection="DownOnly" Margin="0, 8, 0, 0" Height="96">
                     <Image x:Name="Image48" x:Uid="Image48" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 </Viewbox>
-                <TextBlock x:Name="Text48" x:Uid="Text48" Text="48" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                <Viewbox StretchDirection="DownOnly" Margin="0, 8, 0, 0" Height="96">
+                <TextBlock Grid.Row="9" x:Name="Text48" x:Uid="Text48" Text="48" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <win2d:CanvasControl Grid.Row="10" Margin="0, 8, 0, 0" CreateResources="BackgroundCanvas16_CreateResources" Draw="BackgroundCanvas16_Draw" />
+                <Rectangle Grid.Row="10" Fill="Transparent" Stretch="Fill" Margin="0, 8, 0, 0"/>
+                <Viewbox Grid.Row="10" StretchDirection="DownOnly" Margin="0, 8, 0, 0" Height="96">
                     <Image x:Name="Image32" x:Uid="Image32" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 </Viewbox>
-                <TextBlock x:Name="Text32" x:Uid="Text32" Text="32" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                <Viewbox StretchDirection="DownOnly" Margin="0, 8, 0, 0" Height="96">
+                <TextBlock Grid.Row="11" x:Name="Text32" x:Uid="Text32" Text="32" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <win2d:CanvasControl Grid.Row="12" Margin="0, 8, 0, 0" CreateResources="BackgroundCanvas16_CreateResources" Draw="BackgroundCanvas16_Draw" />
+                <Rectangle Grid.Row="12" Fill="Transparent" Stretch="Fill" Margin="0, 8, 0, 0"/>
+                <Viewbox Grid.Row="12" StretchDirection="DownOnly" Margin="0, 8, 0, 0" Height="96">
                     <Image x:Name="Image24" x:Uid="Image24" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 </Viewbox>
-                <TextBlock x:Name="Text24" x:Uid="Text24" Text="24" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                <Viewbox StretchDirection="DownOnly" Margin="0, 8, 0, 0" Height="96" >
+                <TextBlock Grid.Row="13" x:Name="Text24" x:Uid="Text24" Text="24" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <win2d:CanvasControl Grid.Row="14" Margin="0, 8, 0, 0" CreateResources="BackgroundCanvas16_CreateResources" Draw="BackgroundCanvas16_Draw" />
+                <Rectangle Grid.Row="14" Fill="Transparent" Stretch="Fill" Margin="0, 8, 0, 0"/>
+                <Viewbox Grid.Row="14" StretchDirection="DownOnly" Margin="0, 8, 0, 0" Height="96" >
                     <Image x:Name="Image16" x:Uid="Image16" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 </Viewbox>
-                <TextBlock x:Name="Text16" x:Uid="Text16" Text="16" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-            </StackPanel>
-        </Viewbox>
+                <TextBlock Grid.Row="15" x:Name="Text16" x:Uid="Text16" Text="16" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+            </Grid>
+        </ScrollViewer>
+        <win2d:CanvasControl Grid.Row="1" Grid.Column="1" x:Name="BackgroundCanvas" Margin="12, 28, 0, 0" CreateResources="BackgroundCanvas32_CreateResources" Draw="BackgroundCanvas32_Draw" />
         <Rectangle Grid.Row="1" Grid.Column="1" x:Name="rectDrop" Fill="Transparent" Stretch="Fill" Margin="12, 28, 0, 0"
             AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" >
         </Rectangle>

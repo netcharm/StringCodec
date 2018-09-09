@@ -183,6 +183,10 @@
     <Content Include="Assets\CharacterMap_20180816204122.png" />
     <Content Include="Assets\CharacterMap_20180816204139.png" />
     <Content Include="Assets\CharacterSet_White.png" />
+    <Content Include="Assets\CheckboardPattern_16.png" />
+    <Content Include="Assets\CheckboardPattern_1664.png" />
+    <Content Include="Assets\CheckboardPattern_32.png" />
+    <Content Include="Assets\CheckboardPattern_3264.png" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-125.png" />
     <Content Include="Assets\LargeTile.scale-150.png" />
