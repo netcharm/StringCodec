@@ -818,63 +818,6 @@ namespace StringCodec.UWP.Common
             var ms = await image.ToRandomAccessStream(fmt);
             result = await ms.ToBytes();
 
-            //var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
-            //using (var imras = new InMemoryRandomAccessStream())
-            //{
-            //    var encId = BitmapEncoder.PngEncoderId;
-            //    var fext = fmt.ToLower();
-            //    switch (fext)
-            //    {
-            //        case "image/bmp":
-            //        case "image/bitmap":
-            //        case ".bmp":
-            //            encId = BitmapEncoder.BmpEncoderId;
-            //            break;
-            //        case "image/gif":
-            //        case ".gif":
-            //            encId = BitmapEncoder.GifEncoderId;
-            //            break;
-            //        case "image/png":
-            //        case ".png":
-            //            encId = BitmapEncoder.PngEncoderId;
-            //            break;
-            //        case "image/jpg":
-            //        case ".jpg":
-            //            encId = BitmapEncoder.JpegEncoderId;
-            //            break;
-            //        case "image/jpeg":
-            //        case ".jpeg":
-            //            encId = BitmapEncoder.JpegEncoderId;
-            //            break;
-            //        case "image/tif":
-            //        case ".tif":
-            //            encId = BitmapEncoder.TiffEncoderId;
-            //            break;
-            //        case "image/tiff":
-            //        case ".tiff":
-            //            encId = BitmapEncoder.TiffEncoderId;
-            //            break;
-            //        default:
-            //            encId = BitmapEncoder.PngEncoderId;
-            //            break;
-            //    }
-
-            //    var encoder = await BitmapEncoder.CreateAsync(encId, imras);
-            //    encoder.SetPixelData(
-            //        BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,
-            //        (uint)image.PixelWidth, (uint)image.PixelHeight,
-            //        dpi, dpi,
-            //        image.PixelBuffer.ToArray());
-            //    await encoder.FlushAsync();
-
-            //    Stream stream = WindowsRuntimeStreamExtensions.AsStreamForRead(imras.GetInputStreamAt(0));
-            //    MemoryStream ms = new MemoryStream();
-            //    await stream.CopyToAsync(ms);
-            //    //await ms.FlushAsync();
-            //    byte[] bytes = ms.ToArray();
-
-            //    result = await imras.ToBytes();
-            //}
             return (result);
         }
 
