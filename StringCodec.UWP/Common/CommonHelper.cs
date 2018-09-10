@@ -449,6 +449,20 @@ namespace StringCodec.UWP.Common
     public static class StreamExtentions
     {
         #region Stream / RandomAccessStream / byte[] Converter
+        public static byte[] ToBytes(this Stream input)
+        {
+            byte[] buffer = new byte[16 * 1024];
+            using (MemoryStream ms = new MemoryStream())
+            {
+                int read;
+                while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    ms.Write(buffer, 0, read);
+                }
+                return ms.ToArray();
+            }
+        }
+
         public static async Task<byte[]> ToBytes(this IRandomAccessStream RandomStream)
         {
             Stream stream = WindowsRuntimeStreamExtensions.AsStreamForRead(RandomStream.GetInputStreamAt(0));
@@ -465,18 +479,25 @@ namespace StringCodec.UWP.Common
             return stream;
         }
 
-        public static byte[] ToBytes(this Stream input)
+        public static IBuffer ToBuffer(this byte[] bytes)
         {
-            byte[] buffer = new byte[16 * 1024];
-            using (MemoryStream ms = new MemoryStream())
+            return (WindowsRuntimeBufferExtensions.AsBuffer(bytes, 0, bytes.Length));
+        }
+
+        public static async Task<IRandomAccessStream> ToRandomAccessStream(this IBuffer buffer)
+        {
+            InMemoryRandomAccessStream inStream = new InMemoryRandomAccessStream();
+            using (DataWriter datawriter = new DataWriter(inStream.GetOutputStreamAt(0)))
             {
-                int read;
-                while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
-                {
-                    ms.Write(buffer, 0, read);
-                }
-                return ms.ToArray();
+                datawriter.WriteBuffer(buffer, 0, buffer.Length);
+                await datawriter.StoreAsync();
             }
+            return (inStream);
+        }
+
+        public static async Task<IRandomAccessStream> ToRandomAccessStream(this byte[] bytes)
+        {
+            return (await bytes.ToBuffer().ToRandomAccessStream());
         }
 
         public static MemoryStream ToMemoryStream(this Stream stream)
@@ -794,58 +815,66 @@ namespace StringCodec.UWP.Common
         {
             byte[] result = null;
 
-            //InMemoryRandomAccessStream imras = new InMemoryRandomAccessStream();
+            var ms = await image.ToRandomAccessStream(fmt);
+            result = await ms.ToBytes();
 
-            var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
-            using (var imras = new InMemoryRandomAccessStream())
-            {
-                var encId = BitmapEncoder.PngEncoderId;
-                var fext = fmt.ToLower();
-                switch (fext)
-                {
-                    case ".bmp":
-                        encId = BitmapEncoder.BmpEncoderId;
-                        break;
-                    case ".gif":
-                        encId = BitmapEncoder.GifEncoderId;
-                        break;
-                    case ".png":
-                        encId = BitmapEncoder.PngEncoderId;
-                        break;
-                    case ".jpg":
-                        encId = BitmapEncoder.JpegEncoderId;
-                        break;
-                    case ".jpeg":
-                        encId = BitmapEncoder.JpegEncoderId;
-                        break;
-                    case ".tif":
-                        encId = BitmapEncoder.TiffEncoderId;
-                        break;
-                    case ".tiff":
-                        encId = BitmapEncoder.TiffEncoderId;
-                        break;
-                    default:
-                        encId = BitmapEncoder.PngEncoderId;
-                        break;
-                }
+            //var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
+            //using (var imras = new InMemoryRandomAccessStream())
+            //{
+            //    var encId = BitmapEncoder.PngEncoderId;
+            //    var fext = fmt.ToLower();
+            //    switch (fext)
+            //    {
+            //        case "image/bmp":
+            //        case "image/bitmap":
+            //        case ".bmp":
+            //            encId = BitmapEncoder.BmpEncoderId;
+            //            break;
+            //        case "image/gif":
+            //        case ".gif":
+            //            encId = BitmapEncoder.GifEncoderId;
+            //            break;
+            //        case "image/png":
+            //        case ".png":
+            //            encId = BitmapEncoder.PngEncoderId;
+            //            break;
+            //        case "image/jpg":
+            //        case ".jpg":
+            //            encId = BitmapEncoder.JpegEncoderId;
+            //            break;
+            //        case "image/jpeg":
+            //        case ".jpeg":
+            //            encId = BitmapEncoder.JpegEncoderId;
+            //            break;
+            //        case "image/tif":
+            //        case ".tif":
+            //            encId = BitmapEncoder.TiffEncoderId;
+            //            break;
+            //        case "image/tiff":
+            //        case ".tiff":
+            //            encId = BitmapEncoder.TiffEncoderId;
+            //            break;
+            //        default:
+            //            encId = BitmapEncoder.PngEncoderId;
+            //            break;
+            //    }
 
-                var encoder = await BitmapEncoder.CreateAsync(encId, imras);
-                encoder.SetPixelData(
-                    BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,
-                    (uint)image.PixelWidth, (uint)image.PixelHeight,
-                    dpi, dpi,
-                    image.PixelBuffer.ToArray());
-                await encoder.FlushAsync();
-                imras.Seek(0);
+            //    var encoder = await BitmapEncoder.CreateAsync(encId, imras);
+            //    encoder.SetPixelData(
+            //        BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,
+            //        (uint)image.PixelWidth, (uint)image.PixelHeight,
+            //        dpi, dpi,
+            //        image.PixelBuffer.ToArray());
+            //    await encoder.FlushAsync();
 
-                Stream stream = WindowsRuntimeStreamExtensions.AsStreamForRead(imras.GetInputStreamAt(0));
-                MemoryStream ms = new MemoryStream();
-                await stream.CopyToAsync(ms);
-                //await ms.FlushAsync();
-                byte[] bytes = ms.ToArray();
+            //    Stream stream = WindowsRuntimeStreamExtensions.AsStreamForRead(imras.GetInputStreamAt(0));
+            //    MemoryStream ms = new MemoryStream();
+            //    await stream.CopyToAsync(ms);
+            //    //await ms.FlushAsync();
+            //    byte[] bytes = ms.ToArray();
 
-                result = await imras.ToBytes();
-            }
+            //    result = await imras.ToBytes();
+            //}
             return (result);
         }
 
@@ -1234,39 +1263,75 @@ namespace StringCodec.UWP.Common
             }
         }
 
-        public static async Task<InMemoryRandomAccessStream> ToMemoryStream(this WriteableBitmap image, string prefix = "")
+        public static async Task<IRandomAccessStream> ToRandomAccessStream(this WriteableBitmap image, string fmt = "")
         {
-            return (await image.ToMemoryStream(image.PixelBuffer, image.PixelWidth, image.PixelHeight, prefix));
+            if (string.IsNullOrEmpty(fmt))
+            {
+                var bytes = image.PixelBuffer.ToArray();
+                var imras = await bytes.ToRandomAccessStream();
+                return (imras);
+            }
+            else
+            {
+                return (await image.ToRandomAccessStream(image.PixelWidth, image.PixelHeight, fmt));
+            }
         }
 
-        public static async Task<InMemoryRandomAccessStream> ToMemoryStream(this WriteableBitmap image, int width, int height, string prefix = "")
-        {
-            return (await image.ToMemoryStream(image.PixelBuffer, width, height, prefix));
-        }
-
-        public static async Task<InMemoryRandomAccessStream> ToMemoryStream(this WriteableBitmap image, IBuffer pixelBuffer, int width, int height, string prefix = "")
+        public static async Task<IRandomAccessStream> ToRandomAccessStream(this WriteableBitmap image, int width, int height, string fmt = "")
         {
             InMemoryRandomAccessStream result = new InMemoryRandomAccessStream();
 
             var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
-            using (var fileStream = new InMemoryRandomAccessStream())
+            var encId = BitmapEncoder.PngEncoderId;
+            switch (fmt)
             {
-                fileStream.Seek(0);
-                var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, fileStream);
-                encoder.SetPixelData(
-                    BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,
-                    (uint)width, (uint)height,
-                    dpi, dpi,
-                    pixelBuffer.ToArray());
-                await encoder.FlushAsync();
-
-                var ms = WindowsRuntimeStreamExtensions.AsStreamForRead(fileStream.GetInputStreamAt(0));
-                await RandomAccessStream.CopyAsync(ms.AsInputStream(), result);
-                await result.FlushAsync();
-                result.Seek(0);
+                case "image/bmp":
+                case "image/bitmap":
+                case "CF_BITMAP":
+                case "CF_DIB":
+                case ".bmp":
+                    encId = BitmapEncoder.BmpEncoderId;
+                    break;
+                case "image/gif":
+                case "gif":
+                case ".gif":
+                    encId = BitmapEncoder.GifEncoderId;
+                    break;
+                case "image/png":
+                case "png":
+                case ".png":
+                    encId = BitmapEncoder.PngEncoderId;
+                    break;
+                case "image/jpg":
+                case ".jpg":
+                    encId = BitmapEncoder.JpegEncoderId;
+                    break;
+                case "image/jpeg":
+                case ".jpeg":
+                    encId = BitmapEncoder.JpegEncoderId;
+                    break;
+                case "image/tif":
+                case ".tif":
+                    encId = BitmapEncoder.TiffEncoderId;
+                    break;
+                case "image/tiff":
+                case ".tiff":
+                    encId = BitmapEncoder.TiffEncoderId;
+                    break;
+                default:
+                    encId = BitmapEncoder.PngEncoderId;
+                    break;
             }
+            var encoder = await BitmapEncoder.CreateAsync(encId, result);
+            encoder.SetPixelData(
+                BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,
+                (uint)width, (uint)height,
+                dpi, dpi,
+                image.PixelBuffer.ToArray());
+            await encoder.FlushAsync();
+
             return (result);
-        }        
+        }
         #endregion
     }
 
@@ -1650,101 +1715,54 @@ namespace StringCodec.UWP.Common
                 #endregion
 
                 #region Create in memory image data Copy to Clipboard
-                using (var cistream = await wb.ToMemoryStream(pixelBuffer, r_width, r_height))
+                try
                 {
-                    if (cistream != null || cistream.Size > 0)
+                    var cistream = await wb.ToRandomAccessStream(".png");
+                    if (cistream != null)
                     {
-                        if (cistream.Position > 0) cistream.Seek(0);
                         dataPackage.SetBitmap(RandomAccessStreamReference.CreateFromStream(cistream));
-                        cistream.CloneStream();
                     }
+                }
+                catch (Exception ex)
+                {
+                    await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
                 }
                 #endregion
 
                 #region Create other MIME format data Copy to Clipboard
-                ////string[] fmts = new string[] { "CF_DIB", "CF_BITMAP", "BITMAP", "DeviceIndependentBitmap", "image/png", "image/bmp", "image/jpg", "image/jpeg" };
-                //string[] fmts = new string[] { "image/png", "image/bmp", "image/jpg", "image/jpeg" };
-
-                //foreach (var fmt in fmts)
-                //{
-                //    using (var fileStream = new InMemoryRandomAccessStream())
-                //    {
-                //        fileStream.Seek(0);
-
-                //        var encId = BitmapEncoder.PngEncoderId;
-                //        switch (fmt)
-                //        {
-                //            case "image/png":
-                //                encId = BitmapEncoder.PngEncoderId;
-                //                break;
-                //            case "image/jpg":
-                //                encId = BitmapEncoder.JpegEncoderId;
-                //                break;
-                //            case "image/jpeg":
-                //                encId = BitmapEncoder.JpegEncoderId;
-                //                break;
-                //            case "image/bmp":
-                //                encId = BitmapEncoder.BmpEncoderId;
-                //                break;
-                //            case "Bitmap":
-                //                encId = BitmapEncoder.BmpEncoderId;
-                //                break;
-                //            case "CF_DIB":
-                //                encId = BitmapEncoder.BmpEncoderId;
-                //                break;
-                //            case "CF_BITMAP":
-                //                encId = BitmapEncoder.BmpEncoderId;
-                //                break;
-                //            case "DeviceIndependentBitmap":
-                //                encId = BitmapEncoder.BmpEncoderId;
-                //                break;
-                //            default:
-                //                break;
-                //        }
-                //        var encoder = await BitmapEncoder.CreateAsync(encId, fileStream);
-                //        encoder.SetPixelData(
-                //            BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,
-                //            (uint)r_width, (uint)r_height,
-                //            dpi, dpi,
-                //            pixelBuffer.ToArray());
-                //        await encoder.FlushAsync();
-
-                //        //Stream stream = WindowsRuntimeStreamExtensions.AsStreamForRead(fileStream.GetInputStreamAt(0));
-                //        using (Stream stream = WindowsRuntimeStreamExtensions.AsStreamForRead(fileStream.GetInputStreamAt(0)))
-                //        {
-                //            using (MemoryStream ms = new MemoryStream())
-                //            {
-                //                await stream.CopyToAsync(ms);
-                //                byte[] arr = ms.ToArray();
-                //                if (fmt.Equals("CF_DIB", StringComparison.CurrentCultureIgnoreCase))
-                //                {
-                //                    //
-                //                    // here has bug when add bytes to clipboard, system will 
-                //                    // insert 8 bytes before my data bytes automatic
-                //                    //
-                //                    byte[] dib = arr.Skip(14).ToArray();
-                //                    dataPackage.SetData(fmt, dib);
-
-                //                    //using (var mrs = new InMemoryRandomAccessStream())
-                //                    //{
-                //                    //    await RandomAccessStream.CopyAsync(dib.AsBuffer().AsStream().AsInputStream(), mrs.AsStream().AsOutputStream());
-                //                    //    dataPackage.SetData(fmt, RandomAccessStreamReference.CreateFromStream(mrs));
-                //                    //}
-
-                //                    //var buffer = WindowsRuntimeBufferExtensions.AsBuffer(dib, 0, dib.Length);
-                //                    //InMemoryRandomAccessStream inStream = new InMemoryRandomAccessStream();
-                //                    //DataWriter datawriter = new DataWriter(inStream.GetOutputStreamAt(0));
-                //                    //datawriter.WriteBuffer(buffer, 0, buffer.Length);
-                //                    //await datawriter.StoreAsync();
-                //                    //dataPackage.SetBitmap(RandomAccessStreamReference.CreateFromStream(inStream));
-                //                }
-                //                else dataPackage.SetData(fmt, arr);
-                //            }
-                //        }
-                //    }
-                //}
+                //string[] fmts = new string[] { "CF_DIB", "CF_BITMAP", "BITMAP", "DeviceIndependentBitmap", "image/png", "image/bmp", "image/jpg", "image/jpeg" };
+                string[] fmts = new string[] { "image/png", "image/bmp", "image/jpg", "image/jpeg", "PNG" };
+                foreach (var fmt in fmts)
+                {
+                    if (fmt.Equals("CF_DIBV5", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        try
+                        {
+                            byte[] arr = wb.ToBytes();
+                            byte[] dib = arr.Skip(14).ToArray();
+                            var rms = await dib.ToRandomAccessStream();
+                            dataPackage.SetData(fmt, rms);
+                        }
+                        catch (Exception ex)
+                        {
+                            await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
+                        }
+                    }
+                    else
+                    {
+                        try
+                        {
+                            byte[] arr = await wb.ToBytes(fmt);
+                            var rms = await arr.ToRandomAccessStream();
+                            dataPackage.SetData(fmt, rms);
+                        }
+                        catch (Exception ex)
+                        {
+                            await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
+                        }
+                    }
+                }            
                 #endregion
-
 
                 Clipboard.SetContent(dataPackage);
             }
@@ -2261,8 +2279,8 @@ namespace StringCodec.UWP.Common
         #endregion
 
         #region Suggestion Routines
-        private static ObservableCollection<String> suggestions = new ObservableCollection<string>();
-        public static ObservableCollection<String> LinkSuggestion(string content)
+        private static ObservableCollection<string> suggestions = new ObservableCollection<string>();
+        public static ObservableCollection<string> LinkSuggestion(string content)
         {
             content = content.Trim();
             ///

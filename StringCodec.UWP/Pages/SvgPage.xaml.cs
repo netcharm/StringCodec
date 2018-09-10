@@ -322,15 +322,19 @@ namespace StringCodec.UWP.Pages
                     }
                     break;
                 case "btnMake":
-                    var w = (int)imgSvg.ActualWidth;
-                    var h = (int)imgSvg.ActualHeight;
-                    var factor = (double)h / (double)w;
                     var wb = await imgSvg.ToWriteableBitmap();
-                    if (CURRENT_ICONS.Equals("win", StringComparison.CurrentCultureIgnoreCase))
+                    if(wb is WriteableBitmap)
                     {
-                        foreach (var kv in images)
+                        var w = (int)imgSvg.ActualWidth;
+                        var h = (int)imgSvg.ActualHeight;
+                        var factor = (double)h / (double)w;
+
+                        if (CURRENT_ICONS.Equals("win", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            kv.Value.Source = wb.Resize((int)kv.Key, (int)(kv.Key * factor), WriteableBitmapExtensions.Interpolation.Bilinear);
+                            foreach (var kv in images)
+                            {
+                                kv.Value.Source = wb.Resize((int)kv.Key, (int)(kv.Key * factor), WriteableBitmapExtensions.Interpolation.Bilinear);
+                            }
                         }
                     }
                     break;
