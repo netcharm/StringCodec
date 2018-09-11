@@ -767,7 +767,7 @@
           <target state="translated">系统默认</target>
         </trans-unit>
         <trans-unit id="UIThemeSwitch.Header" translate="yes" xml:space="preserve">
-          <source>Theme Select</source>
+          <source>Theme Toggle</source>
           <target state="translated">界面主题选择</target>
         </trans-unit>
         <trans-unit id="UILanguageSwitch.Header" translate="yes" xml:space="preserve">
@@ -921,6 +921,66 @@
         <trans-unit id="btnMake.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Generating Icon Images</source>
           <target state="translated">生成图标图像</target>
+        </trans-unit>
+        <trans-unit id="Toggle to Dark" translate="yes" xml:space="preserve">
+          <source>Toggle to Dark</source>
+          <target state="translated">切换为深色主题</target>
+        </trans-unit>
+        <trans-unit id="Toggle to Light" translate="yes" xml:space="preserve">
+          <source>Toggle to Light</source>
+          <target state="translated">切换为浅色主题</target>
+        </trans-unit>
+        <trans-unit id="nvTheme.Content" translate="yes" xml:space="preserve">
+          <source>Theme Toggle</source>
+          <target state="translated">界面主题切换</target>
+        </trans-unit>
+        <trans-unit id="nvItemSvg.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Converting SVG to Image</source>
+          <target state="translated">转换SVG文件为光栅化的位图文件</target>
+        </trans-unit>
+        <trans-unit id="AboutDialog.Title" translate="yes" xml:space="preserve">
+          <source>About</source>
+          <target state="translated">关于此应用</target>
+        </trans-unit>
+        <trans-unit id="AboutAuthor.Text" translate="yes" xml:space="preserve">
+          <source>Author</source>
+          <target state="translated">作者</target>
+        </trans-unit>
+        <trans-unit id="AboutContact.Text" translate="yes" xml:space="preserve">
+          <source>Contact</source>
+          <target state="translated">联系</target>
+        </trans-unit>
+        <trans-unit id="AboutContactValue.Content" translate="yes" xml:space="preserve">
+          <source>netcharm@gmail.com</source>
+          <target state="translated">netcharm@163.com</target>
+        </trans-unit>
+        <trans-unit id="AboutCopyright.Text" translate="yes" xml:space="preserve">
+          <source>Copyright</source>
+          <target state="translated">版权</target>
+        </trans-unit>
+        <trans-unit id="AboutDescription.Text" translate="yes" xml:space="preserve">
+          <source>Description</source>
+          <target state="translated">描述</target>
+        </trans-unit>
+        <trans-unit id="AboutSite.Text" translate="yes" xml:space="preserve">
+          <source>Site</source>
+          <target state="translated">站点</target>
+        </trans-unit>
+        <trans-unit id="AboutSiteValue.Content" translate="yes" xml:space="preserve">
+          <source>My Github Repositories</source>
+          <target state="translated">我的Github仓库</target>
+        </trans-unit>
+        <trans-unit id="AboutVersion.Text" translate="yes" xml:space="preserve">
+          <source>Version</source>
+          <target state="translated">版本</target>
+        </trans-unit>
+        <trans-unit id="AboutCopyrightValue.Text" translate="yes" xml:space="preserve">
+          <source>All rights reserved by netcharm @ 2018</source>
+          <target state="translated">netcharm @ 2018, 保留所有权利</target>
+        </trans-unit>
+        <trans-unit id="AboutDialog.PrimaryButtonText" translate="yes" xml:space="preserve">
+          <source>OK</source>
+          <target state="translated">确定</target>
         </trans-unit>
       </group>
     </body>

@@ -1,0 +1,56 @@
+﻿<ContentDialog
+    x:Class="StringCodec.UWP.Common.AboutDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:StringCodec.UWP.Common"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:win2d="using:Microsoft.Graphics.Canvas.UI.Xaml"
+    mc:Ignorable="d"
+    x:Name="AboutMeDialog"
+    x:Uid="AboutDialog"
+    Title="About"
+    PrimaryButtonText="OK"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="128"/>
+            <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <win2d:CanvasControl  Grid.Row="0" Grid.Column="0" Grid.RowSpan="6" x:Name="AboutLogo"
+                              Width="128" Height="128" Margin="0, 0, 0, 0" VerticalAlignment="Top" HorizontalAlignment="Center"
+                              CreateResources="Logo_CreateResources" Draw="Logo_Draw"/>
+        
+        <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" x:Name="AboutTitle" x:Uid="AboutTitle" Text="" FontSize="24" HorizontalAlignment="Left" HorizontalTextAlignment="Center"/>
+
+        <TextBlock Grid.Row="1" Grid.Column="1" x:Name="AboutAuthor" x:Uid="AboutAuthor" Text="Author" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="1" Grid.Column="2" x:Name="AboutAuthorValue" x:Uid="AboutAuthorValue" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+        <TextBlock Grid.Row="2" Grid.Column="1" x:Name="AboutVersion" x:Uid="AboutVersion" Text="Version" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="2" Grid.Column="2" x:Name="AboutVersionValue" x:Uid="AboutVersionValue" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+        <TextBlock Grid.Row="3" Grid.Column="1" x:Name="AboutDescription" x:Uid="AboutDescription" Text="Description" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="3" Grid.Column="2" x:Name="AboutDescriptionValue" x:Uid="AboutDescriptionValue" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+        <TextBlock Grid.Row="4" Grid.Column="1" x:Name="AboutContact" x:Uid="AboutContact" Text="Contact" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <HyperlinkButton Grid.Row="4" Grid.Column="2" x:Name="AboutContactValue" x:Uid="AboutContactValue" Content="netcharm@163.com" Click="Contact_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+        <TextBlock Grid.Row="5" Grid.Column="1" x:Name="AboutCopyright" x:Uid="AboutCopyright" Text="Copyright" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="5" Grid.Column="2" x:Name="AboutCopyrightValue" x:Uid="AboutCopyrightValue" Text="netcharm @ 2018"/>
+
+        <TextBlock Grid.Row="6" Grid.Column="1" x:Name="AboutSite" x:Uid="AboutSite" Text="Site" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <HyperlinkButton Grid.Row="6" Grid.Column="2" x:Name="AboutSiteValue" x:Uid="AboutSiteValue" Content="My Github Repositories" Click="Site_Click" HorizontalAlignment="Left" VerticalAlignment="Center" />
+
+    </Grid>
+</ContentDialog>

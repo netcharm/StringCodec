@@ -38,6 +38,8 @@ namespace StringCodec.UWP
         //private ShareOperation operation;
         //private Utils utils = new Utils();
 
+        private FontFamily FontMDL2 = new FontFamily("Segoe MDL2 Assets");
+
         internal Frame Container
         {
             get { return (ContentFrame); }
@@ -67,13 +69,16 @@ namespace StringCodec.UWP
             if (this.RequestedTheme == ElementTheme.Dark)
             {
                 titleBar.ButtonForegroundColor = Colors.White;
+                nvTheme.Icon = new FontIcon() { Glyph = "\uE708", FontFamily = FontMDL2 };
+                ToolTipService.SetToolTip(nvTheme, new ToolTip() { Content = "Toggle to Light".T() });
             }
             else if (this.RequestedTheme == ElementTheme.Light)
             {
                 titleBar.ButtonForegroundColor = Colors.Black;
+                nvTheme.Icon = new FontIcon() { Glyph = "\uE706", FontFamily = FontMDL2 };
+                ToolTipService.SetToolTip(nvTheme, new ToolTip() { Content = "Toggle to Dark".T() });
             }
             if (save) Settings.Set("AppTheme", (int)RequestedTheme);
-            //ApplicationData.Current.LocalSettings.Values["AppTheme"] = (int)RequestedTheme;
             #endregion
         }
 
@@ -120,14 +125,12 @@ namespace StringCodec.UWP
             //draw into the title bar
             CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
+            //CustomTitleBar.Height = CoreApplication.GetCurrentView().TitleBar.Height;
+            //Window.Current.SetTitleBar(GridTitleBar);
 
             //var theme = ElementTheme.Default;
             var theme = (ElementTheme)Settings.Get("AppTheme", (int)ElementTheme.Default);
-            //if (ApplicationData.Current.LocalSettings.Values.ContainsKey("AppTheme"))
-            //    theme = (ElementTheme)ApplicationData.Current.LocalSettings.Values["AppTheme"];
-            //nvSwitchTheme.IsTapEnabled = false;
             SetTheme(theme, false);
-            //nvSwitchTheme.IsTapEnabled = true;
             #endregion
 
             ContentFrame.Navigated += NvMain_Navigated;
@@ -389,15 +392,19 @@ namespace StringCodec.UWP
 
         private void NvMore_Click(object sender, RoutedEventArgs e)
         {
-            if (this.RequestedTheme == ElementTheme.Dark)
-                SetTheme(ElementTheme.Light);
-            else if (this.RequestedTheme == ElementTheme.Light)
-                SetTheme(ElementTheme.Dark);
-            else
-                SetTheme(ElementTheme.Default);
-
+            Utils.ShowAboutDialog();
         }
 
-
+        private void NvTheme_Click(object sender, TappedRoutedEventArgs e)
+        {
+            if (this.RequestedTheme == ElementTheme.Dark)
+            {
+                SetTheme(ElementTheme.Light);
+            }
+            else if (this.RequestedTheme == ElementTheme.Light)
+            {
+                SetTheme(ElementTheme.Dark);
+            }
+        }
     }
 }

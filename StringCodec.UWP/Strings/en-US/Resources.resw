@@ -625,7 +625,7 @@
     <value>Cancel</value>
   </data>
   <data name="UIThemeSwitch.Header" xml:space="preserve">
-    <value>Theme Select</value>
+    <value>Theme Toggle</value>
   </data>
   <data name="optURL.Text" xml:space="preserve">
     <value>URL</value>
@@ -803,5 +803,50 @@
   </data>
   <data name="ImageFlyoutCopy.Content" xml:space="preserve">
     <value>Copy</value>
+  </data>
+  <data name="Toggle to Dark" xml:space="preserve">
+    <value>Toggle to Dark</value>
+  </data>
+  <data name="Toggle to Light" xml:space="preserve">
+    <value>Toggle to Light</value>
+  </data>
+  <data name="nvTheme.Content" xml:space="preserve">
+    <value>Theme Toggle</value>
+  </data>
+  <data name="AboutAuthor.Text" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="AboutContact.Text" xml:space="preserve">
+    <value>Contact</value>
+  </data>
+  <data name="AboutContactValue.Content" xml:space="preserve">
+    <value>netcharm@gmail.com</value>
+  </data>
+  <data name="AboutCopyright.Text" xml:space="preserve">
+    <value>Copyright</value>
+  </data>
+  <data name="AboutDescription.Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="AboutDialog.Title" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="AboutSite.Text" xml:space="preserve">
+    <value>Site</value>
+  </data>
+  <data name="AboutSiteValue.Content" xml:space="preserve">
+    <value>My Github Repositories</value>
+  </data>
+  <data name="AboutVersion.Text" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="nvItemSvg.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Converting SVG to Image</value>
+  </data>
+  <data name="AboutCopyrightValue.Text" xml:space="preserve">
+    <value>All rights reserved by netcharm @ 2018</value>
+  </data>
+  <data name="AboutDialog.PrimaryButtonText" xml:space="preserve">
+    <value>OK</value>
   </data>
 </root>

@@ -84,7 +84,7 @@
         </CommandBar>
 
 
-        <TextBox Grid.Row="1" x:Name="edSrc" x:Uid="edSrc" 
+        <TextBox Grid.Row="1" Margin="0 12 0 0" x:Name="edSrc" x:Uid="edSrc" 
                  Header="Input:" PlaceholderText="Input at here" 
                  AcceptsReturn="True" CanDrag="True" 
                  FontFamily="Consolas" FontSize="16" 
@@ -92,7 +92,7 @@
                  ScrollViewer.HorizontalScrollBarVisibility="Auto" 
                  TextChanged="edSrc_TextChanged"
                  AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" />
-        <TextBox Grid.Row="2" x:Name="edDst" x:Uid="edDst" 
+        <TextBox Grid.Row="2" Margin="0 12 0 0" x:Name="edDst" x:Uid="edDst" 
                  Header="Output:" PlaceholderText="Here is output" 
                  AcceptsReturn="True" IsReadOnly="True" 
                  FontFamily="Consolas" FontSize="16" 

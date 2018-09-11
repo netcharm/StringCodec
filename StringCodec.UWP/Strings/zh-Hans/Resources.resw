@@ -699,4 +699,49 @@
   <data name="btnMake.ToolTipService.ToolTip" xml:space="preserve">
     <value>生成图标图像</value>
   </data>
+  <data name="Toggle to Dark" xml:space="preserve">
+    <value>切换为深色主题</value>
+  </data>
+  <data name="Toggle to Light" xml:space="preserve">
+    <value>切换为浅色主题</value>
+  </data>
+  <data name="nvTheme.Content" xml:space="preserve">
+    <value>界面主题切换</value>
+  </data>
+  <data name="nvItemSvg.ToolTipService.ToolTip" xml:space="preserve">
+    <value>转换SVG文件为光栅化的位图文件</value>
+  </data>
+  <data name="AboutDialog.Title" xml:space="preserve">
+    <value>关于此应用</value>
+  </data>
+  <data name="AboutAuthor.Text" xml:space="preserve">
+    <value>作者</value>
+  </data>
+  <data name="AboutContact.Text" xml:space="preserve">
+    <value>联系</value>
+  </data>
+  <data name="AboutContactValue.Content" xml:space="preserve">
+    <value>netcharm@163.com</value>
+  </data>
+  <data name="AboutCopyright.Text" xml:space="preserve">
+    <value>版权</value>
+  </data>
+  <data name="AboutDescription.Text" xml:space="preserve">
+    <value>描述</value>
+  </data>
+  <data name="AboutSite.Text" xml:space="preserve">
+    <value>站点</value>
+  </data>
+  <data name="AboutSiteValue.Content" xml:space="preserve">
+    <value>我的Github仓库</value>
+  </data>
+  <data name="AboutVersion.Text" xml:space="preserve">
+    <value>版本</value>
+  </data>
+  <data name="AboutCopyrightValue.Text" xml:space="preserve">
+    <value>netcharm @ 2018, 保留所有权利</value>
+  </data>
+  <data name="AboutDialog.PrimaryButtonText" xml:space="preserve">
+    <value>确定</value>
+  </data>
 </root>

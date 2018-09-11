@@ -12,7 +12,6 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
-        
     </Page.Resources>
 
     <NavigationView x:Name="nvMain" x:Uid="NvMain"
@@ -27,7 +26,7 @@
                     Margin="0,0,0,0"
                     IsSettingsVisible="{Binding ElementName=settingsCheck,Path=IsChecked}"
                     IsTabStop="False">
-        
+
         <!--<NavigationView.AutoSuggestBox>
             <AutoSuggestBox x:Name="nvAutoSuggestBox" QueryIcon="Find"/>
         </NavigationView.AutoSuggestBox>-->
@@ -64,7 +63,7 @@
                     <FontIcon Glyph="&#xEC50;" FontFamily="Segoe MDL2 Assets"/>
                 </NavigationViewItem.Icon>
             </NavigationViewItem>
-            <NavigationViewItem x:Name="nvItemSvg" x:Uid="nvItemSvg" Content="SVG To Image" Tag="PageSvg" ToolTipService.ToolTip="Converting SVG to image" Tapped="NvMain_Click">
+            <NavigationViewItem x:Name="nvItemSvg" x:Uid="nvItemSvg" Content="SVG To Image" Tag="PageSvg" ToolTipService.ToolTip="Converting SVG to Image" Tapped="NvMain_Click">
                 <NavigationViewItem.Icon>
                     <FontIcon Glyph="&#xF1C9;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
                 </NavigationViewItem.Icon>
@@ -80,6 +79,11 @@
                 <NavigationViewItemSeparator/>-->
                 <NavigationViewItem x:Name="nvAbout" x:Uid="nvAbout" Icon="Emoji2" Content="More info" Tapped="NvMore_Click" ToolTipService.ToolTip="About Me..." />
                 <NavigationViewItemSeparator/>
+                <NavigationViewItem x:Name="nvTheme" x:Uid="nvTheme" Content="Theme Toggle" Tapped="NvTheme_Click" >
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE708;" FontFamily="Segoe MDL2 Assets"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
             </StackPanel>
         </RS4Api:NavigationView.PaneFooter>
        
@@ -89,6 +93,18 @@
                     <NavigationThemeTransition/>
                 </TransitionCollection>
             </Frame.ContentTransitions>
+        
+            <!--<Grid x:Name="CustomTitleBar" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="48"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="138"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="1" x:Name="GridTitleBar" Background="Transparent">
+                    <TextBlock VerticalAlignment="Center" FontSize="12" FontFamily="Segoe UI" FontWeight="Normal" Margin="10,0"/>
+                </Grid>
+            </Grid>-->
+
         </Frame>
     </NavigationView>
 </Page>

@@ -652,7 +652,7 @@
         </trans-unit>
         <trans-unit id="btnOk.Content" translate="yes" xml:space="preserve">
           <source>OK</source>
-          <target state="translated" state-qualifier="mt-suggestion">わかりました</target>
+          <target state="translated" state-qualifier="mt-suggestion">決定する</target>
         </trans-unit>
         <trans-unit id="btnCancel.Content" translate="yes" xml:space="preserve">
           <source>Cancel</source>
@@ -767,7 +767,7 @@
           <target state="translated" state-qualifier="mt-suggestion">デフォルト</target>
         </trans-unit>
         <trans-unit id="UIThemeSwitch.Header" translate="yes" xml:space="preserve">
-          <source>Theme Select</source>
+          <source>Theme Toggle</source>
           <target state="translated" state-qualifier="mt-suggestion">テーマを選択</target>
         </trans-unit>
         <trans-unit id="UILanguageSwitch.Header" translate="yes" xml:space="preserve">
@@ -921,6 +921,66 @@
         <trans-unit id="btnMake.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Generating Icon Images</source>
           <target state="translated">アイコン画像を生成する</target>
+        </trans-unit>
+        <trans-unit id="Toggle to Dark" translate="yes" xml:space="preserve">
+          <source>Toggle to Dark</source>
+          <target state="translated">暗いテーマに切り替える</target>
+        </trans-unit>
+        <trans-unit id="Toggle to Light" translate="yes" xml:space="preserve">
+          <source>Toggle to Light</source>
+          <target state="translated">軽いテーマに切り替える</target>
+        </trans-unit>
+        <trans-unit id="nvTheme.Content" translate="yes" xml:space="preserve">
+          <source>Theme Toggle</source>
+          <target state="translated">テーマの変更</target>
+        </trans-unit>
+        <trans-unit id="nvItemSvg.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Converting SVG to Image</source>
+          <target state="translated">SVGファイルをラスタライズされたビットマップファイルに変換する</target>
+        </trans-unit>
+        <trans-unit id="AboutDialog.Title" translate="yes" xml:space="preserve">
+          <source>About</source>
+          <target state="translated">このアプリケーションについて</target>
+        </trans-unit>
+        <trans-unit id="AboutAuthor.Text" translate="yes" xml:space="preserve">
+          <source>Author</source>
+          <target state="translated">著者</target>
+        </trans-unit>
+        <trans-unit id="AboutContact.Text" translate="yes" xml:space="preserve">
+          <source>Contact</source>
+          <target state="translated">連絡先</target>
+        </trans-unit>
+        <trans-unit id="AboutContactValue.Content" translate="yes" xml:space="preserve">
+          <source>netcharm@gmail.com</source>
+          <target state="translated">netcharm@gmail.com</target>
+        </trans-unit>
+        <trans-unit id="AboutCopyright.Text" translate="yes" xml:space="preserve">
+          <source>Copyright</source>
+          <target state="translated">著作権</target>
+        </trans-unit>
+        <trans-unit id="AboutDescription.Text" translate="yes" xml:space="preserve">
+          <source>Description</source>
+          <target state="translated">説明</target>
+        </trans-unit>
+        <trans-unit id="AboutSite.Text" translate="yes" xml:space="preserve">
+          <source>Site</source>
+          <target state="translated">サイト</target>
+        </trans-unit>
+        <trans-unit id="AboutSiteValue.Content" translate="yes" xml:space="preserve">
+          <source>My Github Repositories</source>
+          <target state="translated">私のGithub倉庫</target>
+        </trans-unit>
+        <trans-unit id="AboutVersion.Text" translate="yes" xml:space="preserve">
+          <source>Version</source>
+          <target state="translated">バージョン</target>
+        </trans-unit>
+        <trans-unit id="AboutCopyrightValue.Text" translate="yes" xml:space="preserve">
+          <source>All rights reserved by netcharm @ 2018</source>
+          <target state="translated">netcharm @ 2018, すべての権利はによって予約済みです</target>
+        </trans-unit>
+        <trans-unit id="AboutDialog.PrimaryButtonText" translate="yes" xml:space="preserve">
+          <source>OK</source>
+          <target state="translated">決定する</target>
         </trans-unit>
       </group>
     </body>

@@ -496,7 +496,7 @@
     <value>ここにテキストを入力</value>
   </data>
   <data name="btnOk.Content" xml:space="preserve">
-    <value>わかりました</value>
+    <value>決定する</value>
   </data>
   <data name="btnCancel.Content" xml:space="preserve">
     <value>キャンセル</value>
@@ -698,5 +698,50 @@
   </data>
   <data name="btnMake.ToolTipService.ToolTip" xml:space="preserve">
     <value>アイコン画像を生成する</value>
+  </data>
+  <data name="Toggle to Dark" xml:space="preserve">
+    <value>暗いテーマに切り替える</value>
+  </data>
+  <data name="Toggle to Light" xml:space="preserve">
+    <value>軽いテーマに切り替える</value>
+  </data>
+  <data name="nvTheme.Content" xml:space="preserve">
+    <value>テーマの変更</value>
+  </data>
+  <data name="nvItemSvg.ToolTipService.ToolTip" xml:space="preserve">
+    <value>SVGファイルをラスタライズされたビットマップファイルに変換する</value>
+  </data>
+  <data name="AboutDialog.Title" xml:space="preserve">
+    <value>このアプリケーションについて</value>
+  </data>
+  <data name="AboutAuthor.Text" xml:space="preserve">
+    <value>著者</value>
+  </data>
+  <data name="AboutContact.Text" xml:space="preserve">
+    <value>連絡先</value>
+  </data>
+  <data name="AboutContactValue.Content" xml:space="preserve">
+    <value>netcharm@gmail.com</value>
+  </data>
+  <data name="AboutCopyright.Text" xml:space="preserve">
+    <value>著作権</value>
+  </data>
+  <data name="AboutDescription.Text" xml:space="preserve">
+    <value>説明</value>
+  </data>
+  <data name="AboutSite.Text" xml:space="preserve">
+    <value>サイト</value>
+  </data>
+  <data name="AboutSiteValue.Content" xml:space="preserve">
+    <value>私のGithub倉庫</value>
+  </data>
+  <data name="AboutVersion.Text" xml:space="preserve">
+    <value>バージョン</value>
+  </data>
+  <data name="AboutCopyrightValue.Text" xml:space="preserve">
+    <value>netcharm @ 2018, すべての権利はによって予約済みです</value>
+  </data>
+  <data name="AboutDialog.PrimaryButtonText" xml:space="preserve">
+    <value>決定する</value>
   </data>
 </root>

@@ -1888,6 +1888,15 @@ namespace StringCodec.UWP.Common
         #endregion
 
         #region ContentDialog Extentions
+        public static async void ShowAboutDialog()
+        {
+            AboutDialog dlgAbout = new AboutDialog();
+            ContentDialogResult ret = await dlgAbout.ShowAsync();
+            if (ret == ContentDialogResult.Primary)
+            {
+            }
+        }
+
         public static async Task<Color> ShowColorDialog()
         {
             return (await ShowColorDialog(Colors.White));

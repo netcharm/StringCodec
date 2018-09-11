@@ -118,11 +118,11 @@ namespace StringCodec.UWP.Pages
             args.TrackAsyncAction(Task.Run(async () =>
             {
                 // Load the background image and create an image brush from it
-                this.backgroundImage32 = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/CheckboardPattern_3264.png"));
-                this.backgroundBrush32 = new CanvasImageBrush(sender, this.backgroundImage32) { Opacity = 0.3f };
+                backgroundImage32 = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/CheckboardPattern_3264.png"));
+                backgroundBrush32 = new CanvasImageBrush(sender, backgroundImage32) { Opacity = 0.3f };
 
                 // Set the brush's edge behaviour to wrap, so the image repeats if the drawn region is too big
-                this.backgroundBrush32.ExtendX = this.backgroundBrush32.ExtendY = CanvasEdgeBehavior.Wrap;
+                backgroundBrush32.ExtendX = backgroundBrush32.ExtendY = CanvasEdgeBehavior.Wrap;
 
                 //this.resourcesLoaded32 = true;
             }).AsAsyncAction());
@@ -132,7 +132,7 @@ namespace StringCodec.UWP.Pages
         {
             // Just fill a rectangle with our tiling image brush, covering the entire bounds of the canvas control
             var session = args.DrawingSession;
-            session.FillRectangle(new Rect(new Point(), sender.RenderSize), this.backgroundBrush32);
+            session.FillRectangle(new Rect(new Point(), sender.RenderSize), backgroundBrush32);
         }
         #endregion
 
@@ -234,20 +234,32 @@ namespace StringCodec.UWP.Pages
             }
             else if (sender == ImageFlyoutExportAll)
             {
-                FolderPicker fdp = new FolderPicker();
-                fdp.SuggestedStartLocation = PickerLocationId.Desktop;
-                fdp.FileTypeFilter.Add("*");
-                var folder = await fdp.PickSingleFolderAsync();
-                if (folder != null)
+                bool icon_valid = false;
+                foreach (var kv in images)
                 {
-                    foreach (var kv in images)
+                    if (kv.Value.Source != null)
                     {
-                        var wb = await kv.Value.ToWriteableBitmap();
-                        if (wb is WriteableBitmap)
+                        icon_valid = true;
+                        break;
+                    }
+                }
+                if (icon_valid)
+                {
+                    FolderPicker fdp = new FolderPicker();
+                    fdp.SuggestedStartLocation = PickerLocationId.Desktop;
+                    fdp.FileTypeFilter.Add("*");
+                    var folder = await fdp.PickSingleFolderAsync();
+                    if (folder != null)
+                    {
+                        foreach (var kv in images)
                         {
-                            var fn = $"{DateTime.Now.ToString("yyyyMMddHHmmssff")}_{kv.Key}{CURRENT_FORMAT}";
-                            var file = await folder.CreateFileAsync(fn, CreationCollisionOption.GenerateUniqueName);
-                            wb.SaveAsync(file);
+                            var wb = await kv.Value.ToWriteableBitmap();
+                            if (wb is WriteableBitmap)
+                            {
+                                var fn = $"{DateTime.Now.ToString("yyyyMMddHHmmssff")}_{kv.Key}{CURRENT_FORMAT}";
+                                var file = await folder.CreateFileAsync(fn, CreationCollisionOption.GenerateUniqueName);
+                                wb.SaveAsync(file);
+                            }
                         }
                     }
                 }
