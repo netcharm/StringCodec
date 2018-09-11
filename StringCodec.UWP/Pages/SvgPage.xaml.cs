@@ -1,5 +1,6 @@
 ﻿using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
+using Microsoft.Graphics.Canvas.Svg;
 using Microsoft.Graphics.Canvas.UI;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using StringCodec.UWP.Common;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
@@ -15,6 +17,7 @@ using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
+using Windows.UI;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -45,8 +48,6 @@ namespace StringCodec.UWP.Pages
         private Image target = null;
 
         List<int> sizelist = new List<int>() { 1024, 512, 256, 128, 96, 64, 48, 32, 24, 16 };
-        Dictionary<int, Image> images = null;
-        //Dictionary<int, ImageItem> imagelist = new Dictionary<int, ImageItem>();
         List<ImageItem> imagelist = new List<ImageItem>();
 
         private string CURRENT_FORMAT = ".png";
@@ -67,12 +68,26 @@ namespace StringCodec.UWP.Pages
 
             optFmtPng.IsChecked = true;
 
-            //images = new Dictionary<int, Image>()
-            //{
-            //    //{1024, Image1024}, {512,Image512},
-            //    {256, Image256}, {128, Image128}, {96, Image96},
-            //    {64, Image64}, {48,Image48}, {32, Image32}, {24, Image24}, {16, Image16}
-            //};
+            if (CURRENT_ICONS.Equals("win", StringComparison.CurrentCultureIgnoreCase))
+            {
+                List<int> sizes = new List<int>() { 256, 128, 96 };
+                imagelist.Clear();
+                foreach (var s in sizes)
+                {
+                    var item = new ImageItem()
+                    {
+                        Size = s,
+                        Text = $"{s}x{s}",
+                        Margin = new Thickness(-12, 0, 0, 0),
+                        MinHeight = 96,
+                        Width = 256,
+                        Source = new WriteableBitmap(1, 1)
+                    };
+                    if (s > MinHeight) item.Height = s;
+                    imagelist.Add(item);
+                }
+                ImageList.ItemsSource = imagelist;
+            }
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -236,9 +251,9 @@ namespace StringCodec.UWP.Pages
             else if (sender == ImageFlyoutExportAll)
             {
                 bool icon_valid = false;
-                foreach (var kv in images)
+                foreach (var item in imagelist)
                 {
-                    if (kv.Value.Source != null)
+                    if (item.Source != null)
                     {
                         icon_valid = true;
                         break;
@@ -252,12 +267,12 @@ namespace StringCodec.UWP.Pages
                     var folder = await fdp.PickSingleFolderAsync();
                     if (folder != null)
                     {
-                        foreach (var kv in images)
+                        foreach (var item in imagelist)
                         {
-                            var wb = await kv.Value.ToWriteableBitmap();
+                            var wb = await item.ToWriteableBitmap();
                             if (wb is WriteableBitmap)
                             {
-                                var fn = $"{DateTime.Now.ToString("yyyyMMddHHmmssff")}_{kv.Key}{CURRENT_FORMAT}";
+                                var fn = $"{DateTime.Now.ToString("yyyyMMddHHmmssff")}_{item.Size}{CURRENT_FORMAT}";
                                 var file = await folder.CreateFileAsync(fn, CreationCollisionOption.GenerateUniqueName);
                                 wb.SaveAsync(file);
                             }
@@ -288,6 +303,24 @@ namespace StringCodec.UWP.Pages
                     {
                         int index = (parent as Grid).Children.IndexOf(ftc);
                         var ftv = VisualTreeHelper.GetChild(parent as Grid, index + 1);
+                        if (ftv is Viewbox)
+                        {
+                            var fti = (ftv as Viewbox).Child;
+                            if (fti is Image)
+                            {
+                                target = fti as Image;
+                            }
+                        }
+                    }
+                }
+                else if (ft is TextBlock)
+                {
+                    var ftt = ft as TextBlock;
+                    var parent = VisualTreeHelper.GetParent(ft);
+                    if (parent is Grid)
+                    {
+                        int index = (parent as Grid).Children.IndexOf(ftt);
+                        var ftv = VisualTreeHelper.GetChild(parent as Grid, index - 1);
                         if (ftv is Viewbox)
                         {
                             var fti = (ftv as Viewbox).Child;
@@ -344,31 +377,25 @@ namespace StringCodec.UWP.Pages
 
                         if (CURRENT_ICONS.Equals("win", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            //foreach (var kv in images)
-                            //{
-                            //    kv.Value.Source = wb.Resize((int)kv.Key, (int)(kv.Key * factor), WriteableBitmapExtensions.Interpolation.Bilinear);
-                            //}
-
-                            if (CURRENT_ICONS.Equals("win", StringComparison.CurrentCultureIgnoreCase))
+                            ImageList.ItemsSource = null;
+                            List<int> sizes = new List<int>() { 256, 128, 96, 72, 64, 48, 32, 24, 16 };
+                            imagelist.Clear();
+                            foreach (var s in sizes)
                             {
-                                List<int> sizes = new List<int>() { 256, 128, 96, 64, 48, 32, 24, 16 };
-                                imagelist.Clear();
-                                foreach (var s in sizes)
+                                var item = new ImageItem()
                                 {
-                                    var item = new ImageItem()
-                                    {
-                                        Size = s,
-                                        Text = $"{s}x{s}",
-                                        Margin = new Thickness(-12, 0, 0, 0),
-                                        MinHeight = 96,
-                                        Width = 256,
-                                        Source = wb.Resize((int)s, (int)(s * factor), WriteableBitmapExtensions.Interpolation.Bilinear)
-                                    };
-                                    if (s > MinHeight) item.Height = s;
-                                    imagelist.Add(item);
-                                }
-                                ImageList.ItemsSource = imagelist;
+                                    Size = s,
+                                    Text = $"{s}x{s}",
+                                    Margin = new Thickness(-12, 0, 0, 0),
+                                    MinHeight = 96,
+                                    Width = 256,
+                                    Source = wb.Resize((int)s, (int)(s * factor), WriteableBitmapExtensions.Interpolation.Bilinear)
+                                };
+                                if (imgSvg.Tag is byte[]) item.Bytes = imgSvg.Tag as byte[];
+                                if (s > MinHeight) item.Height = s;
+                                imagelist.Add(item);
                             }
+                            ImageList.ItemsSource = imagelist;
                         }
                     }
                     break;
@@ -572,11 +599,49 @@ namespace StringCodec.UWP.Pages
         public ImageSource Source { get; set; }
         public string Text { get; set; }
         public int Size { get; set; }
+        public byte[] Bytes { get; set; }
 
         public ImageItem()
         {
             Size = 0;
             Text = string.Empty;
+        }
+
+        public async Task<WriteableBitmap> ToWriteableBitmap()
+        {
+            WriteableBitmap result = null;
+            if (Source is WriteableBitmap)
+            {
+                result = Source as WriteableBitmap;
+            }
+            else if (Source is BitmapSource)
+            {
+                var bmp = Source as BitmapImage;
+                result = await bmp.ToWriteableBitmap();
+            }
+            else if(Source is SvgImageSource)
+            {
+                var svg = Source as SvgImageSource;
+
+                if (Bytes is byte[])
+                {
+                    CanvasDevice device = CanvasDevice.GetSharedDevice();
+                    var svgDocument = new CanvasSvgDocument(device);
+                    svgDocument = CanvasSvgDocument.LoadFromXml(device, Encoding.UTF8.GetString(Bytes));
+
+                    using (var offscreen = new CanvasRenderTarget(device, (float)svg.RasterizePixelWidth, (float)svg.RasterizePixelHeight, 96))
+                    {
+                        var session = offscreen.CreateDrawingSession();
+                        session.DrawSvg(svgDocument, new Size(Size, Size), 0, 0);
+                        using(var imras = new InMemoryRandomAccessStream())
+                        {
+                            await offscreen.SaveAsync(imras, CanvasBitmapFileFormat.Png);
+                            result = await imras.ToWriteableBitmap();
+                        }
+                    }
+                }
+            }
+            return (result);
         }
     }
 }

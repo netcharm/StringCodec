@@ -206,48 +206,7 @@ namespace StringCodec.UWP.Common
                     }
                     child.Attributes.Remove(attrClass);
                 }
-
-                //foreach (XmlAttribute attr in child.Attributes)
-                //{
-                //    if (attr.Name.Equals("class", StringComparison.CurrentCultureIgnoreCase))
-                //    {
-                //        var v = attr.Value.Trim();
-                //        if (attrs.ContainsKey(v))
-                //        {
-                //            foreach (var kv in attrs[v])
-                //            {
-                //                var a = xml.CreateAttribute(kv.Key);
-                //                a.Value = kv.Value;
-                //                child.Attributes.InsertAfter(a, attr);
-                //                //child.Attributes.Append(a);
-                //            }
-                //        }
-                //        child.Attributes.Remove(attr);
-                //        break;
-                //    }
-                //}
             }
-
-            //var svgTags = xml.GetElementsByTagName("svg");
-            //if (svgTags.Count > 0)
-            //{
-            //    var svgTag = svgTags[0];
-
-            //    var e = xml.CreateElement("rect");
-            //    var eaw = xml.CreateAttribute("width");
-            //    eaw.Value = $"{w}";
-            //    e.Attributes.Append(eaw);
-            //    var eah = xml.CreateAttribute("height");
-            //    eah.Value = $"{h}";
-            //    e.Attributes.Append(eah);
-            //    var eaf = xml.CreateAttribute("fill");
-            //    eaf.Value = $"transparent";
-            //    e.Attributes.Append(eaf);
-            //    if (svgTag.HasChildNodes)
-            //        svgTag.InsertBefore(e, svgTag.ChildNodes[0]);
-            //    else
-            //        svgTag.AppendChild(e);
-            //}
 
             using (var stringWriter = new StringWriter())
             {
@@ -871,12 +830,57 @@ namespace StringCodec.UWP.Common
             return(await (await image.ToWriteableBitmap()).ToBase64(fmt, prefix, linebreak));
         }
 
+        public static async Task<WriteableBitmap> ToWriteableBitmap(this ImageSource Source, byte[] Bytes=null)
+        {
+            WriteableBitmap result = null;
+            if (Source is WriteableBitmap)
+            {
+                result = Source as WriteableBitmap;
+            }
+            else if (Source is BitmapSource)
+            {
+                var bmp = Source as BitmapImage;
+                result = await bmp.ToWriteableBitmap();
+            }
+            else if (Source is SvgImageSource)
+            {
+                var svg = Source as SvgImageSource;
+
+                if (Bytes is byte[])
+                {
+                    CanvasDevice device = CanvasDevice.GetSharedDevice();
+                    var svgDocument = new CanvasSvgDocument(device);
+                    svgDocument = CanvasSvgDocument.LoadFromXml(device, Encoding.UTF8.GetString(Bytes));
+
+                    using (var offscreen = new CanvasRenderTarget(device, (float)svg.RasterizePixelWidth, (float)svg.RasterizePixelHeight, 96))
+                    {
+                        var session = offscreen.CreateDrawingSession();
+                        session.DrawSvg(svgDocument, new Size(svg.RasterizePixelWidth, svg.RasterizePixelHeight), 0, 0);
+                        using (var imras = new InMemoryRandomAccessStream())
+                        {
+                            await offscreen.SaveAsync(imras, CanvasBitmapFileFormat.Png);
+                            result = await imras.ToWriteableBitmap();
+                        }
+                    }
+                }
+            }
+            return (result);
+        }
+
         public static async Task<WriteableBitmap> ToWriteableBitmap(this StorageFile file)
         {
-            var bitmapImage = new WriteableBitmap(1, 1);
-            await bitmapImage.SetSourceAsync(await file.OpenReadAsync());
-            byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmapImage.PixelBuffer, 0, (int)bitmapImage.PixelBuffer.Length);
-            return (bitmapImage);
+            var image = new WriteableBitmap(1, 1);
+            await image.SetSourceAsync(await file.OpenReadAsync());
+            byte[] arr = WindowsRuntimeBufferExtensions.ToArray(image.PixelBuffer, 0, (int)image.PixelBuffer.Length);
+            return (image);
+        }
+
+        public static async Task<WriteableBitmap> ToWriteableBitmap(this IRandomAccessStream stream)
+        {
+            var image = new WriteableBitmap(1, 1);
+            await image.SetSourceAsync(stream);
+            byte[] arr = WindowsRuntimeBufferExtensions.ToArray(image.PixelBuffer, 0, (int)image.PixelBuffer.Length);
+            return (image);
         }
 
         public static async Task<WriteableBitmap> ToWriteableBitmap(this BitmapImage image)
@@ -889,6 +893,43 @@ namespace StringCodec.UWP.Common
                 var ms = await imgRef.OpenReadAsync();
                 await ms.FlushAsync();
                 await result.SetSourceAsync(ms.AsStream().AsRandomAccessStream());
+            }
+            else
+            {
+                //var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
+                //CanvasDevice device = CanvasDevice.GetSharedDevice();
+
+                //using (var offscreen = new CanvasRenderTarget(device, (float)image.PixelWidth, (float)image.PixelHeight, dpi))
+                //{
+                //    using (CanvasDrawingSession ds = offscreen.CreateDrawingSession())
+                //    {
+                //        //ds.Clear(Colors.Black);
+                //        //ds.DrawRectangle(100, 200, 5, 6, Colors.Red);
+                //        ds.Clear(Colors.Transparent);
+                //        //ds.DrawImage(CanvasBitmap.)
+                //    }
+
+                //    var session = offscreen.CreateDrawingSession();
+                //    //session.DrawSvg(svgDocument, new Size(image.PixelWidth, image.PixelHeight));
+
+                //    InMemoryRandomAccessStream stream = new InMemoryRandomAccessStream();
+                //    var encId = BitmapEncoder.PngEncoderId;
+                //    var encoder = await BitmapEncoder.CreateAsync(encId, stream);
+                //    encoder.SetPixelData(
+                //        BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,
+                //        (uint)image.PixelWidth, (uint)image.PixelHeight,
+                //        dpi, dpi,
+                //        image.PixelBuffer.ToArray());
+                //    await encoder.FlushAsync();
+
+                //    await image.SetSourceAsync(stream);
+                //    byte[] arr = await stream.ToBytes();
+
+
+                //    CanvasBitmap bitmap = await CanvasBitmap.LoadAsync(device, stream);
+                //    session.DrawImage(bitmap, 0, 0);                    
+                //    //bitmap.sav
+                //}
             }
             return (result);
         }

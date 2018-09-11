@@ -36,7 +36,7 @@
                 <Viewbox Grid.Row="0" Margin="{x:Bind Margin}" Width="{x:Bind Width}" Height="{x:Bind Height}" MinHeight="{x:Bind MinHeight}" StretchDirection="DownOnly" ContextFlyout="{StaticResource ImageContextFlyout}">
                     <Image Source="{x:Bind Source}" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 </Viewbox>
-                <TextBlock Grid.Row="1" Text="{x:Bind Text}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <TextBlock Grid.Row="1" Text="{x:Bind Text}" HorizontalAlignment="Right" VerticalAlignment="Center" ContextFlyout="{StaticResource ImageContextFlyout}"/>
             </Grid>
         </DataTemplate>
     </Page.Resources>
