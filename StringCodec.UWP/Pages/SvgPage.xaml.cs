@@ -46,6 +46,8 @@ namespace StringCodec.UWP.Pages
 
         List<int> sizelist = new List<int>() { 1024, 512, 256, 128, 96, 64, 48, 32, 24, 16 };
         Dictionary<int, Image> images = null;
+        //Dictionary<int, ImageItem> imagelist = new Dictionary<int, ImageItem>();
+        List<ImageItem> imagelist = new List<ImageItem>();
 
         private string CURRENT_FORMAT = ".png";
         private string CURRENT_ICONS = "win";
@@ -65,13 +67,12 @@ namespace StringCodec.UWP.Pages
 
             optFmtPng.IsChecked = true;
 
-            images = new Dictionary<int, Image>()
-            {
-                //{1024, Image1024}, {512,Image512},
-                {256, Image256}, {128, Image128}, {96, Image96},
-                {64, Image64}, {48,Image48}, {32, Image32}, {24, Image24}, {16, Image16}
-            };
-
+            //images = new Dictionary<int, Image>()
+            //{
+            //    //{1024, Image1024}, {512,Image512},
+            //    {256, Image256}, {128, Image128}, {96, Image96},
+            //    {64, Image64}, {48,Image48}, {32, Image32}, {24, Image24}, {16, Image16}
+            //};
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -343,9 +344,30 @@ namespace StringCodec.UWP.Pages
 
                         if (CURRENT_ICONS.Equals("win", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            foreach (var kv in images)
+                            //foreach (var kv in images)
+                            //{
+                            //    kv.Value.Source = wb.Resize((int)kv.Key, (int)(kv.Key * factor), WriteableBitmapExtensions.Interpolation.Bilinear);
+                            //}
+
+                            if (CURRENT_ICONS.Equals("win", StringComparison.CurrentCultureIgnoreCase))
                             {
-                                kv.Value.Source = wb.Resize((int)kv.Key, (int)(kv.Key * factor), WriteableBitmapExtensions.Interpolation.Bilinear);
+                                List<int> sizes = new List<int>() { 256, 128, 96, 64, 48, 32, 24, 16 };
+                                imagelist.Clear();
+                                foreach (var s in sizes)
+                                {
+                                    var item = new ImageItem()
+                                    {
+                                        Size = s,
+                                        Text = $"{s}x{s}",
+                                        Margin = new Thickness(-12, 0, 0, 0),
+                                        MinHeight = 96,
+                                        Width = 256,
+                                        Source = wb.Resize((int)s, (int)(s * factor), WriteableBitmapExtensions.Interpolation.Bilinear)
+                                    };
+                                    if (s > MinHeight) item.Height = s;
+                                    imagelist.Add(item);
+                                }
+                                ImageList.ItemsSource = imagelist;
                             }
                         }
                     }
@@ -543,5 +565,18 @@ namespace StringCodec.UWP.Pages
         }
         #endregion
 
+    }
+
+    public sealed class ImageItem:FrameworkElement
+    {
+        public ImageSource Source { get; set; }
+        public string Text { get; set; }
+        public int Size { get; set; }
+
+        public ImageItem()
+        {
+            Size = 0;
+            Text = string.Empty;
+        }
     }
 }
