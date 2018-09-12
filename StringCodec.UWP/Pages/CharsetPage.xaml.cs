@@ -38,8 +38,17 @@ namespace StringCodec.UWP.Pages
         private bool CURRENT_RENAME_REPLACE = false;
         private bool CURRENT_CONVERT_ORIGINAL = true;
         private bool IsDropped = false;
+        private bool NODE_FILLING = false;
+
+        //private FontFamily FontMDL2 = new FontFamily("Segoe MDL2 Assets");
+        private FontIcon IconFolder = new FontIcon() { Glyph = "\uED43", FontFamily = new FontFamily("Segoe MDL2 Assets") };
+        private FontIcon IconFile = new FontIcon() { Glyph = "\uF000", FontFamily = new FontFamily("Segoe MDL2 Assets") };
+
+        private TreeViewNode target = null;
 
         private Dictionary<TreeViewNode, IStorageItem> flist = new Dictionary<TreeViewNode, IStorageItem>();
+        private Dictionary<string, MyTreeViewNode> filenode = new Dictionary<string, MyTreeViewNode>();
+
         private byte[] fcontent = null;
 
         private void ConvertFrom(TreeViewNode node, Encoding enc)
@@ -70,29 +79,31 @@ namespace StringCodec.UWP.Pages
             bool result = false;
             if (flist.ContainsKey(node))
             {
-                node.Children.Clear();
+                await FillNode(node);
 
-                var item = flist[node];
-                var folder = item as StorageFolder;
+                //node.Children.Clear();
 
-                var queryOptions = new QueryOptions();
-                queryOptions.FolderDepth = FolderDepth.Shallow;
+                //var item = flist[node];
+                //var folder = item as StorageFolder;
 
-                var queryFolders = folder.CreateFolderQueryWithOptions(queryOptions);
-                var sfolders = await queryFolders.GetFoldersAsync();
-                foreach (var sfolder in sfolders)
-                {
-                    var ret = await AddTo(node, sfolder, node.Depth);
-                }
+                //var queryOptions = new QueryOptions();
+                //queryOptions.FolderDepth = FolderDepth.Shallow;
 
-                var queryFiles = folder.CreateFileQueryWithOptions(queryOptions);
-                var sfiles = await queryFiles.GetFilesAsync();
-                foreach (var file in sfiles)
-                {
-                    var fnode = new TreeViewNode() { Content = file.Name.ConvertFrom(CURRENT_SRCENC, true) };
-                    node.Children.Add(fnode);
-                    flist.Add(fnode, file);
-                }
+                //var queryFolders = folder.CreateFolderQueryWithOptions(queryOptions);
+                //var sfolders = await queryFolders.GetFoldersAsync();
+                //foreach (var sfolder in sfolders)
+                //{
+                //    var ret = await AddTo(node, sfolder, node.Depth);
+                //}
+
+                //var queryFiles = folder.CreateFileQueryWithOptions(queryOptions);
+                //var sfiles = await queryFiles.GetFilesAsync();
+                //foreach (var file in sfiles)
+                //{
+                //    var fnode = new TreeViewNode() { Content = file.Name.ConvertFrom(CURRENT_SRCENC, true) };
+                //    node.Children.Add(fnode);
+                //    flist.Add(fnode, file);
+                //}
                 result = true;
             }
             return (result);
@@ -100,7 +111,7 @@ namespace StringCodec.UWP.Pages
 
         private async Task<bool> AddTo(TreeViewNode node, IStorageItem item, int deeper = -1)
         {
-            if (deeper > CURRENT_TREEDEEP) return(true);
+            if (deeper > CURRENT_TREEDEEP) return (true);
 
             var queryOptions = new QueryOptions();
             queryOptions.FolderDepth = FolderDepth.Shallow;
@@ -108,13 +119,11 @@ namespace StringCodec.UWP.Pages
             if (item is StorageFolder)
             {
                 var folder = item as StorageFolder;
-                //StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace($"FolderToken_{folder.FolderRelativeId.Replace("\\", "_")}_{folder.Name}", folder);
-                //StorageApplicationPermissions.FutureAccessList.AddOrReplace($"FolderToken_{folder.FolderRelativeId.Replace("\\", "_")}_{folder.Name}", folder);
-                var root = new TreeViewNode() { Content = folder.Name.ConvertFrom(CURRENT_SRCENC, true) };
+                var root = new MyTreeViewNode() { Content = folder.Name.ConvertFrom(CURRENT_SRCENC, true) };
+                root.Icon = IconFolder;
                 root.HasUnrealizedChildren = true;
                 flist.Add(root, folder);
 
-                //var sfolders = await folder.GetFoldersAsync();
                 var queryFolders = folder.CreateFolderQueryWithOptions(queryOptions);
                 var sfolders = await queryFolders.GetFoldersAsync();
                 foreach (var sfolder in sfolders)
@@ -126,9 +135,8 @@ namespace StringCodec.UWP.Pages
                 var sfiles = await queryFiles.GetFilesAsync();
                 foreach (var file in sfiles)
                 {
-                    //StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace($"FileToken_{file.FolderRelativeId.Replace("\\", "_")}_{file.Name}", file);
-                    //StorageApplicationPermissions.FutureAccessList.AddOrReplace($"FileToken_{file.FolderRelativeId.Replace("\\", "_")}_{file.Name}", file);
-                    var fnode = new TreeViewNode() { Content = file.Name.ConvertFrom(CURRENT_SRCENC, true) };
+                    var fnode = new MyTreeViewNode() { Content = file.Name.ConvertFrom(CURRENT_SRCENC, true) };
+                    fnode.Icon = IconFile;
                     root.Children.Add(fnode);
                     flist.Add(fnode, file);
                 }
@@ -138,9 +146,8 @@ namespace StringCodec.UWP.Pages
             else if (item is StorageFile)
             {
                 var file = item as StorageFile;
-                //StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace($"FileToken_{file.FolderRelativeId.Replace("\\", "_")}_{file.Name}", file);
-                //StorageApplicationPermissions.FutureAccessList.AddOrReplace($"FileToken_{file.FolderRelativeId.Replace("\\", "_")}_{file.Name}", file);
-                var fnode = new TreeViewNode() { Content = file.Name.ConvertFrom(CURRENT_SRCENC, true) };
+                var fnode = new MyTreeViewNode() { Content = file.Name.ConvertFrom(CURRENT_SRCENC, true) };
+                fnode.Icon = IconFile;
                 node.Children.Add(fnode);
                 flist.Add(fnode, file);
             }
@@ -156,14 +163,12 @@ namespace StringCodec.UWP.Pages
             if (item is StorageFolder)
             {
                 var folder = item as StorageFolder;
-                //StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace($"FolderToken_{folder.FolderRelativeId.Replace("\\", "_")}_{folder.Name}", folder);
-                //StorageApplicationPermissions.FutureAccessList.AddOrReplace($"FolderToken_{folder.FolderRelativeId.Replace("\\", "_")}_{folder.Name}", folder);
-                var root = new TreeViewNode() { Content = folder.Name.ConvertFrom(CURRENT_SRCENC, true) };
+                var root = new MyTreeViewNode() { Content = folder.Name.ConvertFrom(CURRENT_SRCENC, true) };
+                root.Icon = IconFolder;
                 root.HasUnrealizedChildren = true;
                 root.IsExpanded = true;
                 flist.Add(root, folder);
 
-                //var sfolders = await folder.GetFoldersAsync();
                 var queryFolders = folder.CreateFolderQueryWithOptions(queryOptions);
                 var sfolders = await queryFolders.GetFoldersAsync();
                 foreach (var sfolder in sfolders)
@@ -175,9 +180,8 @@ namespace StringCodec.UWP.Pages
                 var sfiles = await queryFiles.GetFilesAsync();
                 foreach (var file in sfiles)
                 {
-                    //StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace($"FileToken_{file.FolderRelativeId.Replace("\\", "_")}_{file.Name}", file);
-                    //StorageApplicationPermissions.FutureAccessList.AddOrReplace($"FileToken_{file.FolderRelativeId.Replace("\\", "_")}_{file.Name}", file);
-                    var fnode = new TreeViewNode() { Content = file.Name.ConvertFrom(CURRENT_SRCENC, true) };
+                    var fnode = new MyTreeViewNode() { Content = file.Name.ConvertFrom(CURRENT_SRCENC, true) };
+                    fnode.Icon = IconFile;
                     root.Children.Add(fnode);
                     flist.Add(fnode, file);
                 }
@@ -187,10 +191,8 @@ namespace StringCodec.UWP.Pages
             else if (item is StorageFile)
             {
                 var file = item as StorageFile;
-                //StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace($"FileToken_{file.FolderRelativeId.Replace("\\", "_")}_{file.Name}", file);
-                //StorageApplicationPermissions.FutureAccessList.AddOrReplace($"FileToken_{file.FolderRelativeId.Replace("\\", "_")}_{file.Name}", file);
-                //CachedFileManager.DeferUpdates(file);
-                var fnode = new TreeViewNode() { Content = file.Name.ConvertFrom(CURRENT_SRCENC, true) };
+                var fnode = new MyTreeViewNode() { Content = file.Name.ConvertFrom(CURRENT_SRCENC, true) };
+                fnode.Icon = IconFile;
                 tree.RootNodes.Add(fnode);
                 flist.Add(fnode, file);
             }
@@ -200,7 +202,7 @@ namespace StringCodec.UWP.Pages
 
         private async Task<bool> AddTo(TreeView tree, List<IStorageItem> items)
         {
-            if (items == null) return(false);
+            if (items == null) return (false);
 
             foreach (var item in items)
             {
@@ -209,15 +211,127 @@ namespace StringCodec.UWP.Pages
             return (true);
         }
 
+        private async Task<bool> FillNode(TreeViewNode node)
+        {
+            bool result = false;
+            NODE_FILLING = true;
+            if (flist.ContainsKey(node))
+            {
+                var item = flist[node];
+
+                var queryOptions = new QueryOptions(CommonFolderQuery.DefaultQuery)
+                {
+                    FolderDepth = FolderDepth.Shallow,
+                };
+
+                if (item is StorageFolder)
+                {
+                    var folder = item as StorageFolder;
+
+                    var queryItems = folder.CreateItemQueryWithOptions(queryOptions);
+                    var sItems = await queryItems.GetItemsAsync();
+
+                    if (node.HasChildren) node.Children.Clear();
+                    foreach (var sItem in sItems)
+                    {
+                        MyTreeViewNode fNode = filenode.ContainsKey(sItem.Path) ? filenode[sItem.Path] : new MyTreeViewNode() { Content = sItem.Name.ConvertFrom(CURRENT_SRCENC, true) };
+
+                        if (sItem is StorageFolder)
+                        {
+                            fNode.Icon = IconFolder;
+                            fNode.HasUnrealizedChildren = true;
+                            fNode.IsExpanded = false;
+                        }
+                        else if (sItem is StorageFile)
+                        {
+                            fNode.Icon = IconFile;
+                        }
+                        fNode.StorageItem = sItem;
+                        if (!node.Children.Contains(fNode))
+                        {
+                            node.Children.Add(fNode);
+                            flist.TryAdd(fNode, sItem);
+                            filenode.TryAdd(sItem.Path, fNode);
+                        }
+                    }
+                }
+                node.HasUnrealizedChildren = false;
+                result = true;
+            }
+            return (result);
+        }
+
+        private void FillTree(TreeView tree, IStorageItem item)
+        {
+            //var fNode = new MyTreeViewNode() { Content = item.Name.ConvertFrom(CURRENT_SRCENC, true) };
+            MyTreeViewNode fNode = filenode.ContainsKey(item.Path) ? filenode[item.Path] : new MyTreeViewNode() { Content = item.Name.ConvertFrom(CURRENT_SRCENC, true) };
+            if (item is StorageFolder)
+            {
+                fNode.Icon = IconFolder;
+                fNode.HasUnrealizedChildren = true;
+                fNode.IsExpanded = false;
+            }
+            else if (item is StorageFile)
+            {
+                fNode.Icon = IconFile;
+            }
+            fNode.StorageItem = item;
+            if (!tree.RootNodes.Contains(fNode))
+            {
+                tree.RootNodes.Add(fNode);
+                flist.TryAdd(fNode, item);
+                filenode.TryAdd(item.Path, fNode);
+                fNode.IsExpanded = true;
+            }
+        }
+
+        private void FillTree(TreeView tree, List<IStorageItem> items)
+        {
+            if (items == null) return;
+
+            foreach (var item in items)
+            {
+                FillTree(tree, item);
+            }
+        }
+
+        private void FillTree(TreeView tree, IReadOnlyList<IStorageItem> items)
+        {
+            if (items == null) return;
+
+            foreach (var item in items)
+            {
+                FillTree(tree, item);
+            }
+        }
+
+        private void ClearTree(TreeView tree)
+        {
+            flist.Clear();
+            filenode.Clear();
+            TreeFiles.RootNodes.Clear();
+            edSrc.Text = string.Empty;
+        }
+
         private async Task<bool> RenameFile()
         {
             bool result = false;
             try
             {
-                if (IsDropped) return(result);
-                if (tvFiles.SelectedNodes.Count <= 0) return (result);
+                if (IsDropped) return (result);
 
-                var cnode = tvFiles.SelectedNodes[0];
+                var cnode = target;
+                if (cnode is TreeViewNode)
+                {
+
+                }
+                else if (TreeFiles.SelectedNodes.Count > 0)
+                {
+                    cnode = TreeFiles.SelectedNodes[0];
+                }
+                else return (result);
+
+                //cnode = tvFiles.SelectedNodes[0];
                 if (!flist.ContainsKey(cnode)) return (result);
 
                 var f = flist[cnode];
@@ -245,10 +359,18 @@ namespace StringCodec.UWP.Pages
         {
             bool result = false;
 
-            if (IsDropped) return(result);
-            if (tvFiles.SelectedNodes.Count <= 0) return (result);
+            if (IsDropped) return (result);
+            var cnode = target;
+            if (cnode is TreeViewNode)
+            {
 
-            var cnode = tvFiles.SelectedNodes[0];
+            }
+            else if (TreeFiles.SelectedNodes.Count > 0)
+            {
+                cnode = TreeFiles.SelectedNodes[0];
+            }
+            else return (result);
+
             if (!flist.ContainsKey(cnode)) return (result);
 
             var f = flist[cnode];
@@ -329,7 +451,7 @@ namespace StringCodec.UWP.Pages
         private void OptSrc_Click(object sender, RoutedEventArgs e)
         {
             ToggleMenuFlyoutItem[] btns = new ToggleMenuFlyoutItem[] { optSrcAuto, optSrcAscii, optSrcBIG5, optSrcGBK, optSrcJIS, optSrcUnicode, optSrcUTF8 };
-            foreach(var btn in btns)
+            foreach (var btn in btns)
             {
                 if (sender == btn) btn.IsChecked = true;
                 else btn.IsChecked = false;
@@ -351,8 +473,8 @@ namespace StringCodec.UWP.Pages
             else
                 CURRENT_SRCENC = Encoding.Default;
 
-            ConvertFrom(tvFiles, CURRENT_SRCENC);
-            if(fcontent != null && fcontent is byte[])
+            ConvertFrom(TreeFiles, CURRENT_SRCENC);
+            if (fcontent != null && fcontent is byte[])
                 edSrc.Text = fcontent.ToString(CURRENT_SRCENC);
         }
 
@@ -389,9 +511,9 @@ namespace StringCodec.UWP.Pages
 
         private void Opt_Click(object sender, RoutedEventArgs e)
         {
-            if(sender == optWrapText)
+            if (sender == optWrapText)
             {
-                if((sender as AppBarToggleButton).IsChecked == true)
+                if ((sender as AppBarToggleButton).IsChecked == true)
                     edSrc.TextWrapping = TextWrapping.Wrap;
                 else edSrc.TextWrapping = TextWrapping.NoWrap;
             }
@@ -407,7 +529,7 @@ namespace StringCodec.UWP.Pages
             }
             var deep = sender as ToggleMenuFlyoutItem;
             var DEEP = deep.Name.Substring(13).ToUpper();
-            if(DEEP.Equals("F", StringComparison.CurrentCultureIgnoreCase))
+            if (DEEP.Equals("F", StringComparison.CurrentCultureIgnoreCase))
             {
                 CURRENT_TREEDEEP = 255;
             }
@@ -420,7 +542,7 @@ namespace StringCodec.UWP.Pages
 
         private async void TreeViewAction_Click(object sender, RoutedEventArgs e)
         {
-            if (sender == ActionRename || sender == TreeActionRename)
+            if (sender == ActionRename || sender == TreeNodeActionRename)
             {
                 await RenameFile();
             }
@@ -428,11 +550,11 @@ namespace StringCodec.UWP.Pages
             {
 
             }
-            else if( sender == optActionRename)
+            else if (sender == optActionRename)
             {
                 CURRENT_RENAME_REPLACE = optActionRename.IsChecked;
             }
-            else if (sender == ActionConvert || sender == TeeeActionConvert)
+            else if (sender == ActionConvert || sender == TreeNodeActionConvert)
             {
                 await ConvertFileContent();
             }
@@ -449,14 +571,14 @@ namespace StringCodec.UWP.Pages
         private async void TreeView_ItemInvoked(TreeView sender, TreeViewItemInvokedEventArgs args)
         {
             TreeViewNode item = args.InvokedItem as TreeViewNode;
-            tvFiles.SelectedNodes.Clear();
-            tvFiles.SelectedNodes.Add(item);
+            TreeFiles.SelectedNodes.Clear();
+            TreeFiles.SelectedNodes.Add(item);
             if (flist.ContainsKey(item))
             {
                 var file = flist[item];
                 if (file != null)
                 {
-                    if(file is StorageFile)                        
+                    if (file is StorageFile)
                     {
                         try
                         {
@@ -490,6 +612,97 @@ namespace StringCodec.UWP.Pages
             }
         }
 
+        #region TreeView Node Routines
+        private async void TreeFiles_Expanding(TreeView sender, TreeViewExpandingEventArgs args)
+        {
+            if (NODE_FILLING) return;
+            if (args.Node.HasUnrealizedChildren)
+            {
+                NODE_FILLING = !await FillNode(args.Node);
+            }
+        }
+
+        private void TreeFiles_Collapsed(TreeView sender, TreeViewCollapsedEventArgs args)
+        {
+            args.Node.HasUnrealizedChildren = true;
+        }
+
+        private async void TreeFiles_ItemInvoked(object sender, TappedRoutedEventArgs e)
+        {
+            NavigationViewItem item = sender as NavigationViewItem;
+            if (item.Tag is TreeViewNode)
+            {
+                TreeViewNode node = item.Tag as TreeViewNode;
+                if (flist.ContainsKey(node))
+                {
+                    var file = flist[node];
+                    if (file != null)
+                    {
+                        if (file is StorageFile)
+                        {
+                            try
+                            {
+                                var f = file as StorageFile;
+                                if (Utils.text_ext.Contains(f.FileType))
+                                {
+                                    IBuffer buffer = await FileIO.ReadBufferAsync(f);
+                                    DataReader reader = DataReader.FromBuffer(buffer);
+                                    byte[] fileContent = new byte[reader.UnconsumedBufferLength];
+                                    reader.ReadBytes(fileContent);
+                                    fcontent = (byte[])fileContent.Clone();
+                                    if (fcontent != null && fcontent is byte[])
+                                        edSrc.Text = fcontent.ToString(CURRENT_SRCENC);
+                                }
+                                else
+                                {
+                                    edSrc.Text = string.Empty;
+                                    fcontent = null;
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void TreeFilesNodeContextFlyout_Opened(object sender, object e)
+        {
+            if (sender is MenuFlyout)
+            {
+                var ft = (sender as MenuFlyout).Target;
+                if (ft.Tag is TreeViewNode) target = ft.Tag as TreeViewNode;
+            }
+        }
+
+        private void TreeFilesNodeContextFlyout_Closed(object sender, object e)
+        {
+            target = null;
+        }
+
+        private async void TreeFilesNodeFlyout_Click(object sender, RoutedEventArgs e)
+        {
+            if (target is TreeViewNode)
+            {
+                if (sender == ActionRename || sender == TreeNodeActionRename)
+                {
+                    await RenameFile();
+                }
+                else if (sender == ActionConvert || sender == TreeNodeActionConvert)
+                {
+                    await ConvertFileContent();
+                }
+                else if (sender == TreeNodeActionClearAll)
+                {
+                    ClearTree(TreeFiles);
+                }
+            }
+        }
+        #endregion
+
         private async void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
             var btn = sender as AppBarButton;
@@ -502,9 +715,10 @@ namespace StringCodec.UWP.Pages
                     var folder = await fdp.PickSingleFolderAsync();
                     if (folder != null)
                     {
-                        flist.Clear();
-                        tvFiles.RootNodes.Clear();
-                        var ret = await AddTo(tvFiles, folder);
+                        //flist.Clear();
+                        //TreeFiles.RootNodes.Clear();
+                        //var ret = await AddTo(tvFiles, folder);
+                        FillTree(TreeFiles, folder);
                         IsDropped = false;
 
                     }
@@ -519,15 +733,19 @@ namespace StringCodec.UWP.Pages
                     var files = await fop.PickMultipleFilesAsync();
                     if (files != null)
                     {
-                        flist.Clear();
-                        tvFiles.RootNodes.Clear();
+                        //flist.Clear();
+                        //TreeFiles.RootNodes.Clear();
+                        FillTree(TreeFiles, files);
 
-                        foreach (var file in files)
-                        {
-                            var ret = await AddTo(tvFiles, file);
-                            IsDropped = false;
-                        }
+                        //foreach (var file in files)
+                        //{
+                        //    var ret = await AddTo(tvFiles, file);
+                        //}
+                        IsDropped = false;
                     }
+                    break;
+                case "btnClearAll":
+                    ClearTree(TreeFiles);
                     break;
                 case "btnRename":
                     await RenameFile();
@@ -536,12 +754,12 @@ namespace StringCodec.UWP.Pages
                     await ConvertFileContent();
                     break;
                 case "btnShare":
-                    if (tvFiles.SelectedNodes.Count > 0)
+                    if (TreeFiles.SelectedNodes.Count > 0)
                     {
-                        var f = tvFiles.SelectedNodes[0];
+                        var f = TreeFiles.SelectedNodes[0];
                         if (flist.ContainsKey(f))
                         {
-                            if(flist[f] is StorageFile)
+                            if (flist[f] is StorageFile)
                                 Utils.Share(flist[f] as StorageFile);
                         }
                         //Utils.Share(edSrc.Text);
@@ -608,11 +826,11 @@ namespace StringCodec.UWP.Pages
                 if (items.Count > 0)
                 {
                     var sItems = new List<IStorageItem>();
-                    foreach(var item in items)
+                    foreach (var item in items)
                     {
                         sItems.Add(item);
                     }
-                    var ret = await AddTo(tvFiles, sItems);
+                    var ret = await AddTo(TreeFiles, sItems);
                     IsDropped = true;
                 }
             }
@@ -621,13 +839,20 @@ namespace StringCodec.UWP.Pages
         }
         #endregion
 
-        private void TreeNode_RightTapped(object sender, RightTappedRoutedEventArgs e)
+    }
+
+    public sealed class MyTreeViewNode : TreeViewNode
+    {
+        public FontIcon Icon { get; set; }
+        public ImageSource Source { get; set; }
+        public IStorageItem StorageItem { get; set; }
+        public MyTreeViewNode Node { get { return (this); } }
+
+        public MyTreeViewNode()
         {
-#if DEBUG
-            System.Diagnostics.Debug.WriteLine($"Right Tapped Sender:{sender}");
-            System.Diagnostics.Debug.WriteLine($"Right Tapped Name  :{e.OriginalSource}");
-#endif
+
         }
 
     }
+
 }

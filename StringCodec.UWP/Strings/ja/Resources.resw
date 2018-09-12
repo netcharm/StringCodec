@@ -681,16 +681,16 @@
   <data name="optIconWin.Text" xml:space="preserve">
     <value>Windowsネイティブアプリアイコン</value>
   </data>
-  <data name="ImageFlyoutExport.Content" xml:space="preserve">
+  <data name="ImageFlyoutExport.Text" xml:space="preserve">
     <value>現在のイメージをエクスポートする</value>
   </data>
-  <data name="ImageFlyoutExportAll.Content" xml:space="preserve">
+  <data name="ImageFlyoutExportAll.Text" xml:space="preserve">
     <value>すべての画像をエクスポートする</value>
   </data>
-  <data name="ImageFlyoutShare.Content" xml:space="preserve">
+  <data name="ImageFlyoutShare.Text" xml:space="preserve">
     <value>現在の画像を共有する</value>
   </data>
-  <data name="ImageFlyoutCopy.Content" xml:space="preserve">
+  <data name="ImageFlyoutCopy.Text" xml:space="preserve">
     <value>現在の画像をコピーする</value>
   </data>
   <data name="btnMake.Label" xml:space="preserve">
@@ -743,5 +743,17 @@
   </data>
   <data name="AboutDialog.PrimaryButtonText" xml:space="preserve">
     <value>決定する</value>
+  </data>
+  <data name="ActionClearAll.Text" xml:space="preserve">
+    <value>すべてのエントリをクリアする</value>
+  </data>
+  <data name="btnClearAll.Label" xml:space="preserve">
+    <value>クリア</value>
+  </data>
+  <data name="btnClearAll.ToolTipService.ToolTip" xml:space="preserve">
+    <value>すべてのエントリをクリアする</value>
+  </data>
+  <data name="AboutTwitterValue.Content" xml:space="preserve">
+    <value>私のTwitter</value>
   </data>
 </root>

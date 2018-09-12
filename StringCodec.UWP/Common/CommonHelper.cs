@@ -2425,4 +2425,38 @@ namespace StringCodec.UWP.Common
         }
         #endregion
     }
+
+    class UWPLogos
+    {
+        public class Logo
+        {
+            public string Name;
+            public int Width;
+            public int Height;
+            public Size Size;
+            public double Scale;
+            public string File;
+        }
+
+        private List<Logo> logolist = new List<Logo>();
+        public List<Logo> Items
+        {
+            get { return (logolist); }
+        }
+
+        public UWPLogos()
+        {
+
+        }
+
+        public static UWPLogos Create()
+        {
+            UWPLogos result = new UWPLogos();
+
+            var item = new Logo();
+            result.Items.Add(item);
+
+            return (result);
+        }
+    }
 }

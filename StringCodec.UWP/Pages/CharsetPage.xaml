@@ -2,6 +2,7 @@
     x:Class="StringCodec.UWP.Pages.CharsetPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:RS4Api="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 6)"
     xmlns:local="using:StringCodec.UWP.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -10,74 +11,73 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
-        <!--<DataTemplate x:Key="TreeViewItemDataTemplate" x:DataType="TreeViewNode">
-            <Grid Height="36" IsRightTapEnabled="True" RightTapped="TreeNode_RightTapped">
-                <Rectangle x:Name="rectDrop" Fill="Transparent" Stretch="Fill" IsRightTapEnabled="True" RightTapped="TreeNode_RightTapped">
-                    <Rectangle.ContextFlyout>
-                        <MenuFlyout>
-                            <MenuFlyoutItem x:Name="ActionRename" x:Uid="ActionRename" Text="Rename To Current Charset" Click="TreeViewAction_Click" />
-                            <MenuFlyoutItem x:Name="ActionConvert" x:Uid="ActionConvert" Text="Convert Content To Target Charset" Click="TreeViewAction_Click" />
-                        </MenuFlyout>
-                    </Rectangle.ContextFlyout>
-                </Rectangle>
-                <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding Content}" HorizontalAlignment="Left" VerticalAlignment="Center" IsRightTapEnabled="True" RightTapped="TreeNode_RightTapped">
-                </TextBlock>
-            </Grid>
-        </DataTemplate>-->
-        
-        <!--<DataTemplate x:Key="TreeViewItemDataTemplate">
-            <Grid Height="44" IsRightTapEnabled="True" RightTapped="TreeNode_RightTapped">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="44" />
-                </Grid.RowDefinitions>
+        <MenuFlyout x:Name="TreeNodeContextFlyout" x:Key="TreeNodeContextFlyout" Opened="TreeFilesNodeContextFlyout_Opened" Closed="TreeFilesNodeContextFlyout_Closed">
+            <MenuFlyoutItem x:Name="TreeNodeActionRename" x:Uid="ActionRename" Text="Rename To Current Charset" Icon="Rename" Click="TreeFilesNodeFlyout_Click" />
+            <MenuFlyoutItem x:Name="TreeNodeActionConvert" x:Uid="ActionConvert" Text="Convert Content To Target Charset" Icon="Save" Click="TreeFilesNodeFlyout_Click" />
+            <MenuFlyoutSeparator/>
+            <MenuFlyoutItem x:Name="TreeNodeActionClearAll" x:Uid="ActionClearAll" Text="Clear All Items" Icon="Clear" Click="TreeFilesNodeFlyout_Click" />
+        </MenuFlyout>
+
+        <DataTemplate x:Key="TreeViewNodeTemplate" x:DataType="local:MyTreeViewNode">
+            <Grid Margin="0, 0, 0, 0"
+                  HorizontalAlignment="Stretch"
+                  Tag="{x:Bind Node, Mode=OneWay}" 
+                  ContextFlyout="{StaticResource TreeNodeContextFlyout}">
                 <Grid.ColumnDefinitions>
-                    --><!--<ColumnDefinition Width="24"/>--><!--
+                    <ColumnDefinition Width="22"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.Background>
+                    <ImageBrush Stretch="Fill" Opacity="0.0" />
+                </Grid.Background>
+
+                <!--<Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                --><!--<Grid.ContextFlyout>
-                    <MenuFlyout>
-                        <MenuFlyoutItem x:Name="ActionRename" x:Uid="ActionRename" Text="Rename To Current Charset" Click="TreeViewAction_Click" />
-                        <MenuFlyoutItem x:Name="ActionConvert" x:Uid="ActionConvert" Text="Convert Content To Target Charset" Click="TreeViewAction_Click" />
-                    </MenuFlyout>
-                </Grid.ContextFlyout>--><!--
-                <Rectangle Grid.Row="0" Grid.Column="0" x:Name="rectDrop" Fill="Transparent" Stretch="Fill"/>
-                <TextBlock Grid.Row="0" Grid.Column="0"
-                    Text="{Binding Content}"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    Style="{ThemeResource BodyTextBlockStyle}"/>
+                <NavigationViewItem Grid.Column="0"  Width="Auto"
+                                Icon="{x:Bind Icon}" Content="{x:Bind Content, Mode=OneWay}"
+                                Tag="{x:Bind Node, Mode=OneWay}"
+                                Tapped="TreeNode_ItemInvoked"
+                                ContextFlyout="{StaticResource TreeNodeContextFlyout}"/>-->
+
+                <TextBlock Grid.Column="0" 
+                           ContextFlyout="{StaticResource TreeNodeContextFlyout}"
+                           Text="{x:Bind Icon.Glyph}" FontFamily="{x:Bind Icon.FontFamily}"
+                           Tag="{x:Bind Node, Mode=OneWay}"
+                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                <TextBlock Grid.Column="1"
+                           ContextFlyout="{StaticResource TreeNodeContextFlyout}"
+                           Text="{x:Bind Content, Mode=OneWay}" 
+                           Tag="{x:Bind Node, Mode=OneWay}"
+                           HorizontalAlignment="Left" VerticalAlignment="Center"/>
             </Grid>
         </DataTemplate>
-        
+
         <Style TargetType="TreeView">
             <Setter Property="IsTabStop" Value="False" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TreeView">
                         <TreeViewList x:Name="ListControl"
-                                      ItemTemplate="{StaticResource TreeViewItemDataTemplate}"
-                                      ItemContainerStyle="{StaticResource TreeViewItemStyle}"
+                                      ItemTemplate="{StaticResource TreeViewNodeTemplate}"
+                                      ItemContainerStyle="{StaticResource TreeViewItemStyle}"                                      
                                       CanDragItems="False"
                                       AllowDrop="False"
                                       CanReorderItems="False">
-                            <TreeViewList.ContextFlyout>
-                                <MenuFlyout>
-                                    <MenuFlyoutItem x:Name="ActionRename" x:Uid="ActionRename" Text="Rename To Current Charset" Click="TreeViewAction_Click" />
-                                    <MenuFlyoutItem x:Name="ActionConvert" x:Uid="ActionConvert" Text="Convert Content To Target Charset" Click="TreeViewAction_Click" />
-                                </MenuFlyout>
-                            </TreeViewList.ContextFlyout>
-                            --><!--<TreeViewList.ItemContainerTransitions>
+                            <TreeViewList.ItemContainerTransitions>
                                 <TransitionCollection>
                                     <ContentThemeTransition />
                                     <ReorderThemeTransition />
                                     <EntranceThemeTransition IsStaggeringEnabled="False" />
                                 </TransitionCollection>
-                            </TreeViewList.ItemContainerTransitions>--><!--
+                            </TreeViewList.ItemContainerTransitions>
                         </TreeViewList>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>-->
+        </Style>
+
     </Page.Resources>
     
     <Grid>
@@ -93,6 +93,7 @@
         <CommandBar Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="cmdBar" x:Uid="cmdBar">
             <AppBarButton x:Name="btnOpenFolder" x:Uid="btnOpenFolder" Label="Folder" Icon="OpenLocal" ToolTipService.ToolTip="Open Folder" VerticalAlignment="Center" Click="AppBarButton_Click"  />
             <AppBarButton x:Name="btnOpenFile" x:Uid="btnOpenFile" Label="File" Icon="OpenFile" ToolTipService.ToolTip="Open File" VerticalAlignment="Center" Click="AppBarButton_Click"  />
+            <AppBarButton x:Name="btnClearAll" x:Uid="btnClearAll" Label="Clear" Icon="Clear" ToolTipService.ToolTip="Clear All Items" VerticalAlignment="Center" Click="AppBarButton_Click"  />
             <AppBarSeparator />
             <AppBarButton Grid.Column="0" x:Name="btnOptSrc" x:Uid="btnOptSrc" Icon="Bullets" Label="Source" VerticalAlignment="Center">
                 <AppBarButton.Flyout>
@@ -222,26 +223,13 @@
         </CommandBar>
 
 
-        <!--<TreeViewList Grid.Row="1" Grid.Column="0" x:Name="tvFiles" x:Uid="tvFiles" 
-                      Header="Folder/File List" Margin="8,8,0,8" BorderBrush="{ThemeResource SystemControlAcrylicWindowBrush}" BorderThickness="2"
-                      AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop"/>-->
-
-        <TreeView Grid.Row="1" Grid.Column="0" x:Name="tvFiles" x:Uid="tvFiles" 
+        <TreeView Grid.Row="1" Grid.Column="0" x:Name="TreeFiles" x:Uid="tvFiles" 
                   Margin="8,8,0,8" CanDrag="False" SelectionMode="Single"
                   ScrollViewer.VerticalScrollBarVisibility="Auto" 
                   ScrollViewer.HorizontalScrollBarVisibility="Auto" 
                   ItemInvoked="TreeView_ItemInvoked" IsRightTapEnabled="True"
-                  AllowDrop="False" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" RightTapped="TreeNode_RightTapped">
-            <TreeView.ContextFlyout>
-                <MenuFlyout>
-                    <MenuFlyoutItem x:Name="TreeActionRename" x:Uid="ActionRename" Text="Rename Selected Item" Click="TreeViewAction_Click"  />
-                    <!--<MenuFlyoutItem x:Name="ActionRenameAll" x:Uid="ActionRenameAll" Text="Rename All To Current Charset" Click="TreeViewAction_Click" />-->
-                    <!--<MenuFlyoutSeparator/>-->
-                    <MenuFlyoutItem x:Name="TeeeActionConvert" x:Uid="ActionConvert" Text="Convert Selected File" Click="TreeViewAction_Click" />
-                    <!--<MenuFlyoutItem x:Name="ActionConvertAll" x:Uid="ActionConvertAll" Text="Convert All Content To Target Charset" Click="TreeViewAction_Click" />-->
-                </MenuFlyout>
-            </TreeView.ContextFlyout>
-        </TreeView>
+                  Expanding="TreeFiles_Expanding"
+                  AllowDrop="False" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" Collapsed="TreeFiles_Collapsed"/>
 
         <TextBox Grid.Row="1" Grid.Column="1" x:Name="edSrc" x:Uid="edSrcContent" 
                  Header="Contents:" PlaceholderText="Here is text file contents" Margin="8,8,8,8"

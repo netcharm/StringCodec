@@ -11,32 +11,40 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
-        <Flyout x:Name="ImageContextFlyout" x:Key="ImageContextFlyout" Opened="ImageContextFlyout_Opened" Closed="ImageContextFlyout_Closed">
-            <StackPanel>
-                <NavigationViewItem x:Name="ImageFlyoutCopy" x:Uid="ImageFlyoutCopy" Content="Copy" Icon="Copy" Tapped="ImageFlyout_Tapped" />
-                <MenuFlyoutSeparator/>
-                <NavigationViewItem x:Name="ImageFlyoutShare" x:Uid="ImageFlyoutShare" Content="Share" Icon="Share" Tapped="ImageFlyout_Tapped" />
-                <MenuFlyoutSeparator/>
-                <NavigationViewItem x:Name="ImageFlyoutExport" x:Uid="ImageFlyoutExport" Content="Export Image" Icon="Save" Tapped="ImageFlyout_Tapped" />
-                <NavigationViewItem x:Name="ImageFlyoutExportAll" x:Uid="ImageFlyoutExportAll" Content="Export All Image" Tapped="ImageFlyout_Tapped">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xEA35;" FontFamily="Segoe MDL2 Assets"/>
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-            </StackPanel>
-        </Flyout>
-
+        <MenuFlyout x:Name="ImageContextFlyout" x:Key="ImageContextFlyout" Opened="ImageContextFlyout_Opened" Closed="ImageContextFlyout_Closed">
+            <MenuFlyoutItem x:Name="ImageFlyoutCopy" x:Uid="ImageFlyoutCopy" Text="Copy" Icon="Copy" Click="ImageFlyout_Click" />
+            <MenuFlyoutSeparator/>
+            <MenuFlyoutItem x:Name="ImageFlyoutShare" x:Uid="ImageFlyoutShare" Text="Share" Icon="Share" Click="ImageFlyout_Click" />
+            <MenuFlyoutSeparator/>
+            <MenuFlyoutItem x:Name="ImageFlyoutExport" x:Uid="ImageFlyoutExport" Text="Export Image" Icon="Save" Click="ImageFlyout_Click" />
+            <MenuFlyoutItem x:Name="ImageFlyoutExportAll" x:Uid="ImageFlyoutExportAll" Text="Export All Image" Click="ImageFlyout_Click">
+                <MenuFlyoutItem.Icon>
+                    <FontIcon Glyph="&#xEA35;" FontFamily="Segoe MDL2 Assets"/>
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+        
         <DataTemplate x:Key="ImageListItem" x:DataType="local:ImageItem">
             <Grid Margin="0, 0, 0, 0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <win2d:CanvasControl Grid.Row="0" Margin="{x:Bind Margin}" Width="{x:Bind Width}" Height="{x:Bind Height}" MinHeight="{x:Bind MinHeight}" CreateResources="BackgroundCanvas16_CreateResources" Draw="BackgroundCanvas16_Draw" ContextFlyout="{StaticResource ImageContextFlyout}" />
-                <Viewbox Grid.Row="0" Margin="{x:Bind Margin}" Width="{x:Bind Width}" Height="{x:Bind Height}" MinHeight="{x:Bind MinHeight}" StretchDirection="DownOnly" ContextFlyout="{StaticResource ImageContextFlyout}">
-                    <Image Source="{x:Bind Source}" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                <win2d:CanvasControl Grid.Row="0" Margin="{x:Bind Margin}" 
+                                     Width="{x:Bind Width}" Height="{x:Bind Height}" 
+                                     MinHeight="{x:Bind MinHeight}" MaxHeight="{x:Bind MaxHeight}" 
+                                     CreateResources="BackgroundCanvas16_CreateResources" Draw="BackgroundCanvas16_Draw" 
+                                     ContextFlyout="{StaticResource ImageContextFlyout}"/>
+                <Viewbox Grid.Row="0" Margin="{x:Bind Margin}" 
+                         Width="{x:Bind Width}" Height="{x:Bind Height}" 
+                         MinHeight="{x:Bind MinHeight}" MaxHeight="{x:Bind MaxHeight}" 
+                         StretchDirection="DownOnly" 
+                         ContextFlyout="{StaticResource ImageContextFlyout}">
+                    <Image Source="{x:Bind Source}" Tag="{x:Bind IsValid}" Stretch="None" 
+                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Viewbox>
-                <TextBlock Grid.Row="1" Text="{x:Bind Text}" HorizontalAlignment="Right" VerticalAlignment="Center" ContextFlyout="{StaticResource ImageContextFlyout}"/>
+                <TextBlock Grid.Row="1" Text="{x:Bind Text}" FontFamily="Consolas"
+                           HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalTextAlignment="Right"/>
             </Grid>
         </DataTemplate>
     </Page.Resources>
@@ -104,97 +112,16 @@
         </CommandBar>
 
         <ListView Grid.Row="1" Grid.Column="0" x:Name="ImageList" 
-                  Width="272"
-                  Margin="0, 28, 0, 0" Padding="0, 0, 4, 0" 
+                  Width="272" Margin="0, 28, 0, 0" Padding="0, 0, 4, 0" 
+                  SelectionMode="None"                  
+                  ItemsSource="{x:Bind Images, Mode=OneWay}" 
                   ItemTemplate="{StaticResource ImageListItem}" HorizontalContentAlignment="Left">
         </ListView>
    
-        <!--<ScrollViewer Grid.Row="1" Grid.Column="0" Margin="0, 28, 0, 0" Padding="0, 0, 4, 0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Visible">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    --><!--<RowDefinition Height="96"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="96"/>
-                    <RowDefinition Height="Auto"/>--><!--
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="256"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="136"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="104"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="96"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="96"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="96"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="96"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="96"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-
-                --><!--<Viewbox StretchDirection="DownOnly" Margin="0, 8, 0, 0" Height="96">
-                    <Image x:Name="Image1024" x:Uid="Image1024" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                </Viewbox>
-                <TextBlock x:Name="Text1024" x:Uid="Text1024" Text="1024" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                <Viewbox StretchDirection="DownOnly" Margin="0, 8, 0, 0" Height="96">
-                    <Image x:Name="Image512" x:Uid="Image512" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                </Viewbox>
-                <TextBlock x:Name="Text512" x:Uid="Text512" Text="512" HorizontalAlignment="Right" VerticalAlignment="Center"/>--><!--
-
-                <win2d:CanvasControl Grid.Row="0" Margin="0, 0, 0, 0" CreateResources="BackgroundCanvas16_CreateResources" Draw="BackgroundCanvas16_Draw" ContextFlyout="{StaticResource ImageContextFlyout}" />
-                <Viewbox Grid.Row="0" Margin="0, 0, 0, 0" StretchDirection="DownOnly"  ContextFlyout="{StaticResource ImageContextFlyout}">
-                    <Image x:Name="Image256" x:Uid="Image256" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                </Viewbox>
-                <TextBlock Grid.Row="1" x:Name="Text256" x:Uid="Text256" Text="256" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                <win2d:CanvasControl Grid.Row="2" Margin="0, 8, 0, 0" CreateResources="BackgroundCanvas16_CreateResources" Draw="BackgroundCanvas16_Draw" ContextFlyout="{StaticResource ImageContextFlyout}" />
-                <Viewbox Grid.Row="2" StretchDirection="DownOnly" Margin="0, 8, 0, 0" ContextFlyout="{StaticResource ImageContextFlyout}">
-                    <Image x:Name="Image128" x:Uid="Image128" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                </Viewbox>
-                <TextBlock Grid.Row="3" x:Name="Text128" x:Uid="Text128" Text="128" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                <win2d:CanvasControl Grid.Row="4" Margin="0, 8, 0, 0" CreateResources="BackgroundCanvas16_CreateResources" Draw="BackgroundCanvas16_Draw" ContextFlyout="{StaticResource ImageContextFlyout}" />
-                <Viewbox Grid.Row="4" StretchDirection="DownOnly" Margin="0, 8, 0, 0" ContextFlyout="{StaticResource ImageContextFlyout}">
-                    <Image x:Name="Image96" x:Uid="Image96" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                </Viewbox>
-                <TextBlock Grid.Row="5" x:Name="Text96" x:Uid="Text96" Text="96" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                <win2d:CanvasControl Grid.Row="6" Margin="0, 8, 0, 0" CreateResources="BackgroundCanvas16_CreateResources" Draw="BackgroundCanvas16_Draw" ContextFlyout="{StaticResource ImageContextFlyout}" />
-                <Viewbox Grid.Row="6" StretchDirection="DownOnly" Margin="0, 8, 0, 0" ContextFlyout="{StaticResource ImageContextFlyout}">
-                    <Image x:Name="Image64" x:Uid="Image64" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                </Viewbox>
-                <TextBlock Grid.Row="7" x:Name="Text64" x:Uid="Text64" Text="64" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                <win2d:CanvasControl Grid.Row="8" Margin="0, 8, 0, 0" CreateResources="BackgroundCanvas16_CreateResources" Draw="BackgroundCanvas16_Draw" ContextFlyout="{StaticResource ImageContextFlyout}" />
-                <Viewbox Grid.Row="8" StretchDirection="DownOnly" Margin="0, 8, 0, 0" ContextFlyout="{StaticResource ImageContextFlyout}">
-                    <Image x:Name="Image48" x:Uid="Image48" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                </Viewbox>
-                <TextBlock Grid.Row="9" x:Name="Text48" x:Uid="Text48" Text="48" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                <win2d:CanvasControl Grid.Row="10" Margin="0, 8, 0, 0" CreateResources="BackgroundCanvas16_CreateResources" Draw="BackgroundCanvas16_Draw" ContextFlyout="{StaticResource ImageContextFlyout}" />
-                <Viewbox Grid.Row="10" StretchDirection="DownOnly" Margin="0, 8, 0, 0" ContextFlyout="{StaticResource ImageContextFlyout}">
-                    <Image x:Name="Image32" x:Uid="Image32" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                </Viewbox>
-                <TextBlock Grid.Row="11" x:Name="Text32" x:Uid="Text32" Text="32" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                <win2d:CanvasControl Grid.Row="12" Margin="0, 8, 0, 0" CreateResources="BackgroundCanvas16_CreateResources" Draw="BackgroundCanvas16_Draw" ContextFlyout="{StaticResource ImageContextFlyout}" />
-                <Viewbox Grid.Row="12" StretchDirection="DownOnly" Margin="0, 8, 0, 0" ContextFlyout="{StaticResource ImageContextFlyout}">
-                    <Image x:Name="Image24" x:Uid="Image24" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                </Viewbox>
-                <TextBlock Grid.Row="13" x:Name="Text24" x:Uid="Text24" Text="24" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                <win2d:CanvasControl Grid.Row="14" Margin="0, 8, 0, 0" CreateResources="BackgroundCanvas16_CreateResources" Draw="BackgroundCanvas16_Draw" ContextFlyout="{StaticResource ImageContextFlyout}" />
-                <Viewbox Grid.Row="14" StretchDirection="DownOnly" Margin="0, 8, 0, 0" ContextFlyout="{StaticResource ImageContextFlyout}">
-                    <Image x:Name="Image16" x:Uid="Image16" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                </Viewbox>
-                <TextBlock Grid.Row="15" x:Name="Text16" x:Uid="Text16" Text="16" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                
-            </Grid>
-        </ScrollViewer>-->
-   
-        <win2d:CanvasControl Grid.Row="1" Grid.Column="1" x:Name="BackgroundCanvas" Margin="12, 28, 0, 0" CreateResources="BackgroundCanvas32_CreateResources" Draw="BackgroundCanvas32_Draw" />
-        <Rectangle Grid.Row="1" Grid.Column="1" x:Name="rectDrop" Fill="Transparent" Stretch="Fill" Margin="12, 28, 0, 0"
-            AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" >
-        </Rectangle>
+        <win2d:CanvasControl Grid.Row="1" Grid.Column="1" x:Name="BackgroundCanvas" 
+                             Margin="12, 28, 0, 0" 
+                             AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop"
+                             CreateResources="BackgroundCanvas32_CreateResources" Draw="BackgroundCanvas32_Draw" />
         <Viewbox Grid.Row="1" Grid.Column="1" StretchDirection="Both" Margin="12, 28, 0, 0" >
             <Image x:Name="imgSvg" x:Uid="imgBase64" Stretch="Uniform" VerticalAlignment="Center" HorizontalAlignment="Center"
                 AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" />

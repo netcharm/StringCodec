@@ -82,19 +82,27 @@ namespace StringCodec.UWP.Common
 
         private async void Contact_Click(object sender, RoutedEventArgs e)
         {
-            var uri = new Uri(@"mailto:netcharm@163.com");
-            var options = new Windows.System.LauncherOptions();
-            options.TreatAsUntrusted = true;
-            // Launch the URI
-            var success = await Windows.System.Launcher.LaunchUriAsync(uri, options);
+            Uri uri = null;
+            if (sender == AboutContactValue)
+                uri = new Uri($@"mailto:{(sender as HyperlinkButton).Content}");
+            else if(sender == AboutTwitterValue)
+                uri = new Uri(@"https://twitter.com/netcharm");
 
-            if (success)
+            if(uri is Uri)
             {
-                // URI launched
-            }
-            else
-            {
-                // URI launch failed
+                var options = new Windows.System.LauncherOptions();
+                options.TreatAsUntrusted = true;
+                // Launch the URI
+                var success = await Windows.System.Launcher.LaunchUriAsync(uri, options);
+
+                if (success)
+                {
+                    // URI launched
+                }
+                else
+                {
+                    // URI launch failed
+                }
             }
         }
 

@@ -77,7 +77,11 @@
                              Click="More_Click"
                              Margin="48,24"/>
                 <NavigationViewItemSeparator/>-->
-                <NavigationViewItem x:Name="nvAbout" x:Uid="nvAbout" Icon="Emoji2" Content="More info" Tapped="NvMore_Click" ToolTipService.ToolTip="About Me..." />
+                <NavigationViewItem x:Name="nvAbout" x:Uid="nvAbout" Content="More info" Tapped="NvMore_Click" ToolTipService.ToolTip="About Me...">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE946;" FontFamily="Segoe MDL2 Assets"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
                 <NavigationViewItemSeparator/>
                 <NavigationViewItem x:Name="nvTheme" x:Uid="nvTheme" Content="Theme Toggle" Tapped="NvTheme_Click" >
                     <NavigationViewItem.Icon>

@@ -44,7 +44,10 @@
         <TextBlock Grid.Row="3" Grid.Column="2" x:Name="AboutDescriptionValue" x:Uid="AboutDescriptionValue" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
         <TextBlock Grid.Row="4" Grid.Column="1" x:Name="AboutContact" x:Uid="AboutContact" Text="Contact" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <HyperlinkButton Grid.Row="4" Grid.Column="2" x:Name="AboutContactValue" x:Uid="AboutContactValue" Content="netcharm@163.com" Click="Contact_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <StackPanel Grid.Row="4" Grid.Column="2">
+            <HyperlinkButton x:Name="AboutContactValue" x:Uid="AboutContactValue" Content="netcharm@163.com" Click="Contact_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <HyperlinkButton x:Name="AboutTwitterValue" x:Uid="AboutTwitterValue" Content="My Twitter" Click="Contact_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        </StackPanel>
 
         <TextBlock Grid.Row="5" Grid.Column="1" x:Name="AboutCopyright" x:Uid="AboutCopyright" Text="Copyright" HorizontalAlignment="Left" VerticalAlignment="Center"/>
         <TextBlock Grid.Row="5" Grid.Column="2" x:Name="AboutCopyrightValue" x:Uid="AboutCopyrightValue" Text="netcharm @ 2018"/>
