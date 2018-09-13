@@ -48,8 +48,8 @@
             </Grid>
         </DataTemplate>
     </Page.Resources>
-    
-    <Grid Margin="12, 0, 12, 12">
+
+    <Grid  Margin="12, 0, 12, 12" x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -59,7 +59,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <CommandBar Grid.Row="0" Grid.ColumnSpan="2">
+        <CommandBar Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="CmdBar" x:Uid="CmdBar">
             <AppBarButton Grid.Column="0" x:Name="btnOpt" x:Uid="btnOpt" Icon="Bullets" Label="Options" VerticalAlignment="Center">
                 <AppBarButton.Flyout>
                     <MenuFlyout>

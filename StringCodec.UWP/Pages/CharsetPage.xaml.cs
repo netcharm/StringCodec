@@ -519,7 +519,7 @@ namespace StringCodec.UWP.Pages
             {
                 CURRENT_TREEDEEP = Convert.ToInt32(DEEP);
             }
-            cmdBar.IsOpen = false;
+            CmdBar.IsOpen = false;
         }
 
         private async void TreeViewAction_Click(object sender, RoutedEventArgs e)

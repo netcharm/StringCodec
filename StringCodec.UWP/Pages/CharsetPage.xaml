@@ -79,8 +79,8 @@
         </Style>
 
     </Page.Resources>
-    
-    <Grid>
+
+    <Grid Margin="12, 0, 12, 12" x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -90,7 +90,7 @@
             <ColumnDefinition Width=".62*"/>
         </Grid.ColumnDefinitions>
 
-        <CommandBar Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="cmdBar" x:Uid="cmdBar">
+        <CommandBar Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="CmdBar" x:Uid="CmdBar">
             <AppBarButton x:Name="btnOpenFolder" x:Uid="btnOpenFolder" Label="Folder" Icon="OpenLocal" ToolTipService.ToolTip="Open Folder" VerticalAlignment="Center" Click="AppBarButton_Click"  />
             <AppBarButton x:Name="btnOpenFile" x:Uid="btnOpenFile" Label="File" Icon="OpenFile" ToolTipService.ToolTip="Open File" VerticalAlignment="Center" Click="AppBarButton_Click"  />
             <AppBarButton x:Name="btnClearAll" x:Uid="btnClearAll" Label="Clear" Icon="Clear" ToolTipService.ToolTip="Clear All Items" VerticalAlignment="Center" Click="AppBarButton_Click"  />
@@ -225,7 +225,7 @@
 
             <CommandBar.SecondaryCommands>
                 <!-- More Button Dropdown menu -->
-                <AppBarButton x:Name="optFolderDeep" x:Uid="optFolderDeep" Label="Folder Deep">
+                <AppBarButton x:Name="optFolderDeep" x:Uid="optFolderDeep" Label="Folder Deep" IsEnabled="False">
                     <AppBarButton.Flyout>
                         <MenuFlyout Placement="Left">
                             <ToggleMenuFlyoutItem x:Name="optFolderDeepF" x:Uid="optFolderDeepF" Text="All Sub-Tree" Click="OptFolderDeep_Click"/>
@@ -237,7 +237,7 @@
                         </MenuFlyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>
-                <AppBarSeparator />
+                <AppBarSeparator/>
                 <AppBarToggleButton x:Name="optWrapText" x:Uid="optWrapText" Label="Wrap Text" Click="Opt_Click">
                     <AppBarToggleButton.Icon>
                         <FontIcon Glyph="&#xE751;" FontFamily="Segoe MDL2 Assets"/>
@@ -260,7 +260,7 @@
 
 
         <TreeView Grid.Row="1" Grid.Column="0" x:Name="TreeFiles" x:Uid="tvFiles" 
-                  Margin="8,8,0,8" CanDrag="False" SelectionMode="Single"
+                  Margin="8,16,0,8" CanDrag="False" SelectionMode="Single"
                   ScrollViewer.VerticalScrollBarVisibility="Auto" 
                   ScrollViewer.HorizontalScrollBarVisibility="Auto" 
                   ItemInvoked="TreeView_ItemInvoked" IsRightTapEnabled="True"
@@ -268,7 +268,7 @@
                   AllowDrop="False" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" Collapsed="TreeFiles_Collapsed"/>
 
         <TextBox Grid.Row="1" Grid.Column="1" x:Name="edSrc" x:Uid="edSrcContent" 
-                 Header="Contents:" PlaceholderText="Here is text file contents" Margin="8,8,8,8"
+                 Header="Contents:" PlaceholderText="Here is text file contents" Margin="8,16,8,8"
                  AcceptsReturn="True" CanDrag="False"
                  FontSize="16"
                  ScrollViewer.VerticalScrollBarVisibility="Auto" 

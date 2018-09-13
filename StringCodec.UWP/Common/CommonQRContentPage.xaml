@@ -12,7 +12,7 @@
     <Grid>
         <Pivot x:Name="pivot">
             <PivotItem x:Name="piLink" x:Uid="piLink" Header="Web Link">
-                <Grid Padding="8, 8, 8, 8">
+                <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="64"/>
                         <RowDefinition Height="*"/>
@@ -21,7 +21,10 @@
                                     TextChanged="edLinkUrl_TextChanged"
                                     QuerySubmitted="edLinkUrl_QuerySubmitted"
                                     SuggestionChosen="edLinkUrl_SuggestionChosen" />
-                    <TextBox Grid.Row="1" Grid.ColumnSpan="2" x:Name="edLinkContent" x:Uid="edLinkContent" Header="Centent" PlaceholderText="Url Parameters" VerticalAlignment="Stretch" MinHeight="120"/>
+                    <TextBox Grid.Row="1" Grid.ColumnSpan="2" x:Name="edLinkContent" x:Uid="edLinkContent" 
+                             Header="Centent" PlaceholderText="Url Parameters" 
+                             AcceptsReturn="True" VerticalAlignment="Stretch" MinHeight="100" 
+                             ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
                 </Grid>
             </PivotItem>
             <PivotItem x:Name="piWifi" x:Uid="piWifi" Header="WIFI Infomation">
@@ -61,23 +64,23 @@
                     </Grid.RowDefinitions>
                     <TextBox Grid.Row="0" Grid.Column="0" x:Name="edMailTo" x:Uid="edMailTo" Header="Sent To" PlaceholderText="Mail Address"/>
                     <TextBox Grid.Row="1" Grid.Column="0" x:Name="edMailSubject" x:Uid="edMailSubject" Header="Subjetc" PlaceholderText="Mail Subject"/>
-                    <TextBox Grid.Row="2" Grid.Column="0" x:Name="edMailContent" x:Uid="edMailContent" Header="Content" PlaceholderText="Mail Content" AcceptsReturn="True"/>
+                    <TextBox Grid.Row="2" Grid.Column="0" x:Name="edMailContent" x:Uid="edMailContent" Header="Content" PlaceholderText="Mail Content" AcceptsReturn="True" TextWrapping="Wrap"/>
                 </Grid>
             </PivotItem>
             <PivotItem x:Name="piGeo" x:Uid="piGeo" Header="Geo Query">
-                <Grid Padding="8, 8, 8, 8">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width=".5*" />
                         <ColumnDefinition Width=".5*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="64"/>
-                        <RowDefinition Height="96"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*" MinHeight="120"/>
                     </Grid.RowDefinitions>
                     <TextBox Grid.Row="0" Grid.Column="0" x:Name="edGeoLat" x:Uid="edGeoLat" Header="Latitude" PlaceholderText="Latitude" Margin="0, 0, 8, 0" VerticalAlignment="Bottom"/>
                     <TextBox Grid.Row="0" Grid.Column="1" x:Name="edGeoLon" x:Uid="edGeoLon" Header="Longitude" PlaceholderText="Longitude" Margin="8, 0, 0, 0" VerticalAlignment="Bottom"/>
-                    <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="edGeoQuery" x:Uid="edGeoQuery" Header="Query Content" PlaceholderText="Url Parameters"/>
+                    <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="edGeoQuery" x:Uid="edGeoQuery" Header="Query Content" PlaceholderText="Url Parameters" MinHeight="100" AcceptsReturn="True" TextWrapping="Wrap"/>
                     <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" >
 
                     </Grid>
@@ -128,7 +131,7 @@
 
                         <TextBlock Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edContactMisc" x:Uid="edContactMisc" Text="Misc" FontWeight="Bold" Margin="0, 0, 0, 0" VerticalAlignment="Bottom"/>
                         <Line Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" Stroke="{ThemeResource SystemControlAcrylicWindowBrush}" StrokeThickness="2" X2="10" Stretch="Fill" VerticalAlignment="Bottom"/>
-                        <TextBox Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edContactNote" x:Uid="edContactNote" Header="Note" Margin="0, 0, 0, 0" />
+                        <TextBox Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edContactNote" x:Uid="edContactNote" Header="Note" Margin="0, 0, 0, 0" MinHeight="100" AcceptsReturn="True" TextWrapping="Wrap" />
                     </Grid>
                 </ScrollViewer>
             </PivotItem>
@@ -159,7 +162,7 @@
                         <TextBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edEventAddress" x:Uid="edEventAddress" Header="Address" Margin="0, 0, 0, 0" />
                         <TextBox Grid.Row="5" Grid.Column="0" x:Name="edEventLink" x:Uid="edEventLink" Header="URL Link" Margin="0, 0, 0, 0" />
                         <TextBox Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" x:Name="edEventUid" x:Uid="edEventUid" Header="User" Margin="8, 0, 0, 0" />
-                        <TextBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edEventDesc" x:Uid="edEventDesc" Header="Description" Margin="0, 0, 0, 0" />
+                        <TextBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" x:Name="edEventDesc" x:Uid="edEventDesc" Header="Description" Margin="0, 0, 0, 0" MinHeight="100" AcceptsReturn="True" TextWrapping="Wrap"/>
                     </Grid>
                 </ScrollViewer>
             </PivotItem>

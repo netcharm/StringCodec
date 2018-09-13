@@ -234,7 +234,7 @@ namespace StringCodec.UWP.Pages
                     CURRENT_TEXT_FONTSIZE = 48;
                     break;
             }
-            cmdBar.IsOpen = false;
+            CmdBar.IsOpen = false;
         }
 
         private async void Base64_Click(object sender, RoutedEventArgs e)

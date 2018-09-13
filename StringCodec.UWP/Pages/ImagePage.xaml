@@ -9,7 +9,7 @@
     Loaded="Page_Loaded"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Margin="12, 0, 12, 12">
+    <Grid Margin="12, 0, 12, 12" x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -19,7 +19,7 @@
             <ColumnDefinition Width=".62*"/>
         </Grid.ColumnDefinitions>
 
-        <CommandBar Grid.Row="0" Grid.ColumnSpan="2">
+        <CommandBar Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="CmdBar" x:Uid="CmdBar">
             <AppBarButton Grid.Column="0" x:Name="btnOpt" x:Uid="btnOpt" Icon="Bullets" Label="Options" VerticalAlignment="Center">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
@@ -80,7 +80,7 @@
             </CommandBar.Content>
         </CommandBar>
 
-        <TextBox Grid.Row="1" Grid.Column="0" x:Name="edBase64" x:Uid="edBase64" 
+        <TextBox Grid.Row="1" Grid.Column="0" x:Name="edBase64" x:Uid="edBase64" Margin="0 16 0 0"
                  Header="BASE64" PlaceholderText="Input text at here"
                  AcceptsReturn="True" TextWrapping="Wrap" CanDrag="True" 
                  FontFamily="Consolas" FontSize="16" 

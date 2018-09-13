@@ -8,15 +8,15 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Loaded="Page_Loaded">
 
-   
-    <Grid Margin="12, 0, 12, 12">
+
+    <Grid  Margin="12, 0, 12, 12" x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height=".5*" />
             <RowDefinition Height=".5*" />
         </Grid.RowDefinitions>
 
-        <CommandBar Grid.Row="0">
+        <CommandBar Grid.Row="0" x:Name="CmdBar" x:Uid="CmdBar">
             <AppBarButton x:Name="btnOpt" x:Uid="btnOpt" Icon="Bullets" Label="Options" VerticalAlignment="Center">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
@@ -127,7 +127,7 @@
         </CommandBar>
 
 
-        <TextBox Grid.Row="1" Margin="0 12 0 0" x:Name="edSrc" x:Uid="edSrc" 
+        <TextBox Grid.Row="1" Margin="0 16 0 0" x:Name="edSrc" x:Uid="edSrc" 
                  Header="Input:" PlaceholderText="Input at here" 
                  AcceptsReturn="True" CanDrag="True" 
                  FontFamily="Consolas" FontSize="16" 

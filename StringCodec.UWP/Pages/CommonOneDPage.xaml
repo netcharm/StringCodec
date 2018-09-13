@@ -19,7 +19,7 @@
             <ColumnDefinition Width=".62*"/>
         </Grid.ColumnDefinitions>
 
-        <CommandBar Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="cmdBar" x:Uid="cmdBar">
+        <CommandBar Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="CmdBar" x:Uid="CmdBar">
             <AppBarButton Grid.Column="0" x:Name="btnOpt" x:Uid="btnOpt" Icon="Bullets" Label="Options" VerticalAlignment="Center">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
@@ -129,7 +129,7 @@
             </CommandBar.Content>
         </CommandBar>
 
-        <TextBox Grid.Row="1" Grid.Column="0" x:Name="edBarcode" x:Uid="edBarcode" 
+        <TextBox Grid.Row="1" Grid.Column="0" x:Name="edBarcode" x:Uid="edBarcode" Margin="0 16 0 0"
                  Header="Text:" PlaceholderText="Input text at here" 
                  AcceptsReturn="True" TextWrapping="Wrap" CanDrag="True" 
                  FontFamily="Consolas" FontSize="16" 
