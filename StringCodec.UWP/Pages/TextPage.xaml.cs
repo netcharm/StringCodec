@@ -48,7 +48,7 @@ namespace StringCodec.UWP.Pages
             NavigationCacheMode = NavigationCacheMode.Enabled;
 
             optURL.IsChecked = true;
-            optUTF8.IsChecked = true;
+            optLangUTF8.IsChecked = true;
             optWrapText.IsChecked = false;
 
             optUUE.Visibility = Visibility.Collapsed;
@@ -81,23 +81,6 @@ namespace StringCodec.UWP.Pages
 
         private void Codec_Click(object sender, RoutedEventArgs e)
         {
-            ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] { optBase64, optUUE, optXXE, optURL, optThunder, optRaw, optQuoted, optFlashGet };
-
-            var btn = sender as ToggleMenuFlyoutItem;
-
-            foreach (ToggleMenuFlyoutItem opt in opts)
-            {
-                if (string.Equals(opt.Name, btn.Name, StringComparison.CurrentCultureIgnoreCase))
-                {
-                    opt.IsChecked = true;
-                }
-                else opt.IsChecked = false;
-            }
-            CURRENT_CODEC = (TextCodecs.CODEC)Enum.Parse(typeof(TextCodecs.CODEC), btn.Name.ToUpper().Substring(3));
-        }
-
-        private void Opt_Click(object sender, RoutedEventArgs e)
-        {
             if (sender == optLineBreak)
             {
                 CURRENT_LINEBREAK = (sender as ToggleMenuFlyoutItem).IsChecked;
@@ -118,10 +101,9 @@ namespace StringCodec.UWP.Pages
                 return;
             }
 
-            ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] { optUTF8, optUnicode, optGBK, optBIG5, optJIS, optAscii };
+            ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] { optBase64, optUUE, optXXE, optURL, optThunder, optRaw, optQuoted, optFlashGet };
 
             var btn = sender as ToggleMenuFlyoutItem;
-            var ENC_NAME = btn.Name.Substring(3);
 
             foreach (ToggleMenuFlyoutItem opt in opts)
             {
@@ -131,7 +113,30 @@ namespace StringCodec.UWP.Pages
                 }
                 else opt.IsChecked = false;
             }
+            CURRENT_CODEC = (TextCodecs.CODEC)Enum.Parse(typeof(TextCodecs.CODEC), btn.Name.ToUpper().Substring(3));
+        }
 
+        private void OptLang_Click(object sender, RoutedEventArgs e)
+        {
+            ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] {
+                optLangAscii,
+                optLang1250, optLang1251, optLang1253, optLang1254, optLang1255, optLang1256, optLang1257, optLang1258,
+                optLangThai, optLangRussian,
+                optLangGBK, optLangBIG5, optLangJIS, optLangKorean,
+                optLangUnicode, optLangUTF8
+            };
+
+            var btn = sender as ToggleMenuFlyoutItem;
+            foreach (ToggleMenuFlyoutItem opt in opts)
+            {
+                if (string.Equals(opt.Name, btn.Name, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    opt.IsChecked = true;
+                }
+                else opt.IsChecked = false;
+            }
+
+            var ENC_NAME = btn.Name.Substring(7);
             if (string.Equals(ENC_NAME, "UTF8", StringComparison.CurrentCultureIgnoreCase))
                 CURRENT_ENC = Encoding.UTF8;
             else if (string.Equals(ENC_NAME, "Unicode", StringComparison.CurrentCultureIgnoreCase))
@@ -142,8 +147,33 @@ namespace StringCodec.UWP.Pages
                 CURRENT_ENC = Encoding.GetEncoding("BIG5");
             else if (string.Equals(ENC_NAME, "JIS", StringComparison.CurrentCultureIgnoreCase))
                 CURRENT_ENC = Encoding.GetEncoding("Shift-JIS");
+            else if (string.Equals(ENC_NAME, "Korean", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_ENC = Encoding.GetEncoding("Korean");
+            else if (string.Equals(ENC_NAME, "1250", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_ENC = Encoding.GetEncoding("Windows-1250");
+            else if (string.Equals(ENC_NAME, "1251", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_ENC = Encoding.GetEncoding("Windows-1251");
+            else if (string.Equals(ENC_NAME, "1253", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_ENC = Encoding.GetEncoding("Windows-1253");
+            else if (string.Equals(ENC_NAME, "1254", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_ENC = Encoding.GetEncoding("Windows-1254");
+            else if (string.Equals(ENC_NAME, "1255", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_ENC = Encoding.GetEncoding("Windows-1255");
+            else if (string.Equals(ENC_NAME, "1256", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_ENC = Encoding.GetEncoding("Windows-1256");
+            else if (string.Equals(ENC_NAME, "1257", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_ENC = Encoding.GetEncoding("Windows-1257");
+            else if (string.Equals(ENC_NAME, "1258", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_ENC = Encoding.GetEncoding("Windows-1258");
+            else if (string.Equals(ENC_NAME, "Thai", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_ENC = Encoding.GetEncoding("Thai");
+            else if (string.Equals(ENC_NAME, "Russian", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_ENC = Encoding.GetEncoding("Russian");
             else if (string.Equals(ENC_NAME, "ASCII", StringComparison.CurrentCultureIgnoreCase))
                 CURRENT_ENC = Encoding.ASCII;
+            else
+                CURRENT_ENC = Encoding.Default;
+
         }
 
         private void QRCode_Click(object sender, RoutedEventArgs e)

@@ -98,30 +98,50 @@
             <AppBarButton Grid.Column="0" x:Name="btnOptSrc" x:Uid="btnOptSrc" Icon="Bullets" Label="Source" VerticalAlignment="Center">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
-                        <ToggleMenuFlyoutItem x:Name="optSrcUTF8" x:Uid="optUTF8" Text="UTF-8" Click="OptSrc_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optSrcGBK" x:Uid="optGBK" Text="GBK" Click="OptSrc_Click">
+                        <ToggleMenuFlyoutItem x:Name="optSrcGBK" x:Uid="optLangGBK" Text="GBK" Click="OptSrc_Click">
                             <ToggleMenuFlyoutItem.Icon>
                                 <FontIcon Glyph="&#xE98A;" FontFamily="Segoe MDL2 Assets"/>
                             </ToggleMenuFlyoutItem.Icon>
                         </ToggleMenuFlyoutItem>
-                        <ToggleMenuFlyoutItem x:Name="optSrcBIG5" x:Uid="optBIG5" Text="BIG-5" Click="OptSrc_Click">
+                        <ToggleMenuFlyoutItem x:Name="optSrcBIG5" x:Uid="optLangBIG5" Text="BIG-5" Click="OptSrc_Click">
                             <ToggleMenuFlyoutItem.Icon>
                                 <FontIcon Glyph="&#xE88C;" FontFamily="Segoe MDL2 Assets"/>
                             </ToggleMenuFlyoutItem.Icon>
                         </ToggleMenuFlyoutItem>
-                        <ToggleMenuFlyoutItem x:Name="optSrcJIS" x:Uid="optJIS" Text="Shift-JIS" Click="OptSrc_Click">
+                        <ToggleMenuFlyoutItem x:Name="optSrcJIS" x:Uid="optLangJIS" Text="Shift-JIS" Click="OptSrc_Click">
                             <ToggleMenuFlyoutItem.Icon>
                                 <FontIcon Glyph="&#xE986;" FontFamily="Segoe MDL2 Assets"/>
                             </ToggleMenuFlyoutItem.Icon>
                         </ToggleMenuFlyoutItem>
-                        <ToggleMenuFlyoutItem x:Name="optSrcUnicode" x:Uid="optUnicode" Text="Unicode" Click="OptSrc_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optSrcAscii" x:Uid="optAscii" Text="ASCII" Click="OptSrc_Click">
+                        <ToggleMenuFlyoutItem x:Name="optSrcKorean" x:Uid="optLangKorean" Text="Korean" Click="OptSrc_Click">
+                            <ToggleMenuFlyoutItem.Icon>
+                                <FontIcon Glyph="&#xE97D;" FontFamily="Segoe MDL2 Assets"/>
+                            </ToggleMenuFlyoutItem.Icon>
+                        </ToggleMenuFlyoutItem>
+                        <ToggleMenuFlyoutItem x:Name="optSrcAscii" x:Uid="optLangAscii" Text="ASCII" Click="OptSrc_Click">
                             <ToggleMenuFlyoutItem.Icon>
                                 <FontIcon Glyph="&#xE97E;" FontFamily="Segoe MDL2 Assets"/>
                             </ToggleMenuFlyoutItem.Icon>
                         </ToggleMenuFlyoutItem>
                         <MenuFlyoutSeparator/>
-                        <ToggleMenuFlyoutItem x:Name="optSrcAuto" x:Uid="optDefault" Text="Default" Click="OptSrc_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optSrcUTF8" x:Uid="optLangUTF8" Text="UTF-8" Click="OptSrc_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optSrcUnicode" x:Uid="optLangUnicode" Text="Unicode" Click="OptSrc_Click"/>
+                        <MenuFlyoutSeparator/>
+                        <ToggleMenuFlyoutItem x:Name="optSrcRussian" x:Uid="optLangRussian" Text="Russian" Click="OptSrc_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optSrc1250" x:Uid="optLang1250" Text="Central European" Click="OptSrc_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optSrc1257" x:Uid="optLang1257" Text="Baltic" Click="OptSrc_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optSrc1254" x:Uid="optLang1254" Text="Turkish" Click="OptSrc_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optSrc1258" x:Uid="optLang1258" Text="Vietnamese" Click="OptSrc_Click"/>
+                        <MenuFlyoutSeparator/>
+                        <ToggleMenuFlyoutItem x:Name="optSrc1251" x:Uid="optLang1251" Text="Cyrillic" Click="OptSrc_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optSrc1253" x:Uid="optLang1253" Text="Greek" Click="OptSrc_Click"/>
+                        <MenuFlyoutSeparator/>
+                        <ToggleMenuFlyoutItem x:Name="optSrc1256" x:Uid="optLang1256" Text="Arabic" Click="OptSrc_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optSrc1255" x:Uid="optLang1255" Text="Hebrew" Click="OptSrc_Click"/>
+                        <MenuFlyoutSeparator/>
+                        <ToggleMenuFlyoutItem x:Name="optSrcThai" x:Uid="optLangThai" Text="Thai" Click="OptSrc_Click"/>
+                        <MenuFlyoutSeparator/>
+                        <ToggleMenuFlyoutItem x:Name="optSrcAuto" x:Uid="optLangDefault" Text="Default" Click="OptSrc_Click"/>
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
@@ -139,30 +159,50 @@
             <AppBarButton Grid.Column="0" x:Name="btnOptDst" x:Uid="btnOptDst" Icon="Bullets" Label="Target" VerticalAlignment="Center">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
-                        <ToggleMenuFlyoutItem x:Name="optDstUTF8" x:Uid="optUTF8" Text="UTF-8" Click="OptDst_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optDstGBK" x:Uid="optGBK" Text="GBK" Click="OptDst_Click">
+                        <ToggleMenuFlyoutItem x:Name="optDstGBK" x:Uid="optLangGBK" Text="GBK" Click="OptDst_Click">
                             <ToggleMenuFlyoutItem.Icon>
                                 <FontIcon Glyph="&#xE98A;" FontFamily="Segoe MDL2 Assets"/>
                             </ToggleMenuFlyoutItem.Icon>
                         </ToggleMenuFlyoutItem>
-                        <ToggleMenuFlyoutItem x:Name="optDstBIG5" x:Uid="optBIG5" Text="BIG-5" Click="OptDst_Click">
+                        <ToggleMenuFlyoutItem x:Name="optDstBIG5" x:Uid="optLangBIG5" Text="BIG-5" Click="OptDst_Click">
                             <ToggleMenuFlyoutItem.Icon>
                                 <FontIcon Glyph="&#xE88C;" FontFamily="Segoe MDL2 Assets"/>
                             </ToggleMenuFlyoutItem.Icon>
                         </ToggleMenuFlyoutItem>
-                        <ToggleMenuFlyoutItem x:Name="optDstJIS" x:Uid="optJIS" Text="Shift-JIS" Click="OptDst_Click">
+                        <ToggleMenuFlyoutItem x:Name="optDstJIS" x:Uid="optLangJIS" Text="Shift-JIS" Click="OptDst_Click">
                             <ToggleMenuFlyoutItem.Icon>
                                 <FontIcon Glyph="&#xE986;" FontFamily="Segoe MDL2 Assets"/>
                             </ToggleMenuFlyoutItem.Icon>
                         </ToggleMenuFlyoutItem>
-                        <ToggleMenuFlyoutItem x:Name="optDstUnicode" x:Uid="optUnicode" Text="Unicode" Click="OptDst_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optDstAscii" x:Uid="optAscii" Text="ASCII" Click="OptDst_Click">
+                        <ToggleMenuFlyoutItem x:Name="optDstKorean" x:Uid="optLangKorean" Text="Korean" Click="OptDst_Click">
+                            <ToggleMenuFlyoutItem.Icon>
+                                <FontIcon Glyph="&#xE97D;" FontFamily="Segoe MDL2 Assets"/>
+                            </ToggleMenuFlyoutItem.Icon>
+                        </ToggleMenuFlyoutItem>
+                        <ToggleMenuFlyoutItem x:Name="optDstAscii" x:Uid="optLangAscii" Text="ASCII" Click="OptDst_Click">
                             <ToggleMenuFlyoutItem.Icon>
                                 <FontIcon Glyph="&#xE97E;" FontFamily="Segoe MDL2 Assets"/>
                             </ToggleMenuFlyoutItem.Icon>
                         </ToggleMenuFlyoutItem>
                         <MenuFlyoutSeparator/>
-                        <ToggleMenuFlyoutItem x:Name="optDstAuto" x:Uid="optDefault" Text="Default" Click="OptDst_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optDstUTF8" x:Uid="optLangUTF8" Text="UTF-8" Click="OptDst_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optDstUnicode" x:Uid="optLangUnicode" Text="Unicode" Click="OptDst_Click"/>
+                        <MenuFlyoutSeparator/>
+                        <ToggleMenuFlyoutItem x:Name="optDstRussian" x:Uid="optLangRussian" Text="Russian" Click="OptDst_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optDst1250" x:Uid="optLang1250" Text="Central European" Click="OptDst_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optDst1257" x:Uid="optLang1257" Text="Baltic" Click="OptDst_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optDst1254" x:Uid="optLang1254" Text="Turkish" Click="OptDst_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optDst1258" x:Uid="optLang1258" Text="Vietnamese" Click="OptDst_Click"/>
+                        <MenuFlyoutSeparator/>
+                        <ToggleMenuFlyoutItem x:Name="optDst1251" x:Uid="optLang1251" Text="Cyrillic" Click="OptDst_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optDst1253" x:Uid="optLang1253" Text="Greek" Click="OptDst_Click"/>
+                        <MenuFlyoutSeparator/>
+                        <ToggleMenuFlyoutItem x:Name="optDst1256" x:Uid="optLang1256" Text="Arabic" Click="OptDst_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optDst1255" x:Uid="optLang1255" Text="Hebrew" Click="OptDst_Click"/>
+                        <MenuFlyoutSeparator/>
+                        <ToggleMenuFlyoutItem x:Name="optDstThai" x:Uid="optLangThai" Text="Thai" Click="OptDst_Click"/>
+                        <MenuFlyoutSeparator/>
+                        <ToggleMenuFlyoutItem x:Name="optDstAuto" x:Uid="optLangDefault" Text="Default" Click="OptDst_Click"/>
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>

@@ -17,7 +17,7 @@
         </Grid.RowDefinitions>
 
         <CommandBar Grid.Row="0">
-            <AppBarButton Grid.Column="0" x:Name="btnOpt" x:Uid="btnOpt" Icon="Bullets" Label="Options" VerticalAlignment="Center">
+            <AppBarButton x:Name="btnOpt" x:Uid="btnOpt" Icon="Bullets" Label="Options" VerticalAlignment="Center">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
                         <ToggleMenuFlyoutItem x:Name="optURL" x:Uid="optURL" Text="URL" Click="Codec_Click"/>
@@ -29,14 +29,55 @@
                         <ToggleMenuFlyoutItem x:Name="optThunder" x:Uid="optThunder" Text="Thunder" Click="Codec_Click"/>
                         <ToggleMenuFlyoutItem x:Name="optFlashGet" x:Uid="optFlashGet" Text="FlashGet" Click="Codec_Click"/>
                         <MenuFlyoutSeparator />
-                        <ToggleMenuFlyoutItem x:Name="optUTF8" x:Uid="optUTF8" Text="UTF-8" Click="Opt_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optGBK" x:Uid="optGBK" Text="GBK" Click="Opt_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optBIG5" x:Uid="optBIG5" Text="BIG-5" Click="Opt_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optJIS" x:Uid="optJIS" Text="Shift-JIS" Click="Opt_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optUnicode" x:Uid="optUnicode" Text="Unicode" Click="Opt_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optAscii" x:Uid="optAscii" Text="ASCII" Click="Opt_Click"/>
-                        <MenuFlyoutSeparator />
-                        <ToggleMenuFlyoutItem x:Name="optLineBreak" x:Uid="optLineBreak" Text="Line Break" Click="Opt_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optLineBreak" x:Uid="optLineBreak" Text="Line Break" Click="OptLang_Click"/>
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+            <AppBarButton  x:Name="btnOptLang" x:Uid="btnOptLang" Icon="Character" Label="Language" VerticalAlignment="Center">
+                <AppBarButton.Flyout>
+                    <MenuFlyout>
+                        <ToggleMenuFlyoutItem x:Name="optLangGBK" x:Uid="optLangGBK" Text="GBK" Click="OptLang_Click">
+                            <ToggleMenuFlyoutItem.Icon>
+                                <FontIcon Glyph="&#xE98A;" FontFamily="Segoe MDL2 Assets"/>
+                            </ToggleMenuFlyoutItem.Icon>
+                        </ToggleMenuFlyoutItem>
+                        <ToggleMenuFlyoutItem x:Name="optLangBIG5" x:Uid="optLangBIG5" Text="BIG-5" Click="OptLang_Click">
+                            <ToggleMenuFlyoutItem.Icon>
+                                <FontIcon Glyph="&#xE88C;" FontFamily="Segoe MDL2 Assets"/>
+                            </ToggleMenuFlyoutItem.Icon>
+                        </ToggleMenuFlyoutItem>
+                        <ToggleMenuFlyoutItem x:Name="optLangJIS" x:Uid="optLangJIS" Text="Shift-JIS" Click="OptLang_Click">
+                            <ToggleMenuFlyoutItem.Icon>
+                                <FontIcon Glyph="&#xE986;" FontFamily="Segoe MDL2 Assets"/>
+                            </ToggleMenuFlyoutItem.Icon>
+                        </ToggleMenuFlyoutItem>
+                        <ToggleMenuFlyoutItem x:Name="optLangKorean" x:Uid="optLangKorean" Text="Korean" Click="OptLang_Click">
+                            <ToggleMenuFlyoutItem.Icon>
+                                <FontIcon Glyph="&#xE97D;" FontFamily="Segoe MDL2 Assets"/>
+                            </ToggleMenuFlyoutItem.Icon>
+                        </ToggleMenuFlyoutItem>
+                        <ToggleMenuFlyoutItem x:Name="optLangAscii" x:Uid="optLangAscii" Text="ASCII" Click="OptLang_Click">
+                            <ToggleMenuFlyoutItem.Icon>
+                                <FontIcon Glyph="&#xE97E;" FontFamily="Segoe MDL2 Assets"/>
+                            </ToggleMenuFlyoutItem.Icon>
+                        </ToggleMenuFlyoutItem>
+                        <MenuFlyoutSeparator/>
+                        <ToggleMenuFlyoutItem x:Name="optLangUTF8" x:Uid="optLangUTF8" Text="UTF-8" Click="OptLang_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optLangUnicode" x:Uid="optLangUnicode" Text="Unicode" Click="OptLang_Click"/>
+                        <MenuFlyoutSeparator/>
+                        <ToggleMenuFlyoutItem x:Name="optLangRussian" x:Uid="optLangRussian" Text="Russian" Click="OptLang_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optLang1250" x:Uid="optLang1250" Text="Central European" Click="OptLang_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optLang1257" x:Uid="optLang1257" Text="Baltic" Click="OptLang_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optLang1254" x:Uid="optLang1254" Text="Turkish" Click="OptLang_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optLang1258" x:Uid="optLang1258" Text="Vietnamese" Click="OptLang_Click"/>
+                        <MenuFlyoutSeparator/>
+                        <ToggleMenuFlyoutItem x:Name="optLang1251" x:Uid="optLang1251" Text="Cyrillic" Click="OptLang_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optLang1253" x:Uid="optLang1253" Text="Greek" Click="OptLang_Click"/>
+                        <MenuFlyoutSeparator/>
+                        <ToggleMenuFlyoutItem x:Name="optLang1256" x:Uid="optLang1256" Text="Arabic" Click="OptLang_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optLang1255" x:Uid="optLang1255" Text="Hebrew" Click="OptLang_Click"/>
+                        <MenuFlyoutSeparator/>
+                        <ToggleMenuFlyoutItem x:Name="optLangThai" x:Uid="optLangThai" Text="Thai" Click="OptLang_Click"/>
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
@@ -63,7 +104,7 @@
                     </AppBarButton.Icon>
                 </AppBarButton>
                 <AppBarSeparator />
-                <AppBarToggleButton x:Name="optWrapText" x:Uid="optWrapText" Label="Wrap Text" Click="Opt_Click">
+                <AppBarToggleButton x:Name="optWrapText" x:Uid="optWrapText" Label="Wrap Text" Click="OptLang_Click">
                     <AppBarToggleButton.Icon>
                         <FontIcon Glyph="&#xE751;" FontFamily="Segoe MDL2 Assets"/>
                     </AppBarToggleButton.Icon>

@@ -525,22 +525,22 @@
   <data name="optFlashGet.Text" xml:space="preserve">
     <value>FlashGet 链接</value>
   </data>
-  <data name="optUTF8.Text" xml:space="preserve">
+  <data name="optLangUTF8.Text" xml:space="preserve">
     <value>UTF-8</value>
   </data>
-  <data name="optGBK.Text" xml:space="preserve">
-    <value>GBK</value>
+  <data name="optLangGBK.Text" xml:space="preserve">
+    <value>简体中文</value>
   </data>
-  <data name="optBIG5.Text" xml:space="preserve">
-    <value>BIG-5</value>
+  <data name="optLangBIG5.Text" xml:space="preserve">
+    <value>繁体中文</value>
   </data>
-  <data name="optJIS.Text" xml:space="preserve">
-    <value>Shift-JIS</value>
+  <data name="optLangJIS.Text" xml:space="preserve">
+    <value>日本语</value>
   </data>
-  <data name="optUnicode.Text" xml:space="preserve">
+  <data name="optLangUnicode.Text" xml:space="preserve">
     <value>Unicode</value>
   </data>
-  <data name="optAscii.Text" xml:space="preserve">
+  <data name="optLangAscii.Text" xml:space="preserve">
     <value>ASCII</value>
   </data>
   <data name="btnSrcQRCode.Label" xml:space="preserve">
@@ -579,7 +579,7 @@
   <data name="edContactAdrPostal.Header" xml:space="preserve">
     <value>邮政编码</value>
   </data>
-  <data name="optDefault.Text" xml:space="preserve">
+  <data name="optLangDefault.Text" xml:space="preserve">
     <value>系统默认</value>
   </data>
   <data name="UIThemeSwitch.Header" xml:space="preserve">
@@ -755,5 +755,41 @@
   </data>
   <data name="AboutTwitterValue.Content" xml:space="preserve">
     <value>我的Twitter</value>
+  </data>
+  <data name="optLang1250.Text" xml:space="preserve">
+    <value>中欧语系</value>
+  </data>
+  <data name="optLang1251.Text" xml:space="preserve">
+    <value>西里尔语系</value>
+  </data>
+  <data name="optLang1253.Text" xml:space="preserve">
+    <value>希腊语</value>
+  </data>
+  <data name="optLang1254.Text" xml:space="preserve">
+    <value>土耳其语</value>
+  </data>
+  <data name="optLang1255.Text" xml:space="preserve">
+    <value>希伯来语</value>
+  </data>
+  <data name="optLang1256.Text" xml:space="preserve">
+    <value>阿拉伯语</value>
+  </data>
+  <data name="optLang1257.Text" xml:space="preserve">
+    <value>波罗的海语系</value>
+  </data>
+  <data name="optLang1258.Text" xml:space="preserve">
+    <value>越南语</value>
+  </data>
+  <data name="optLangKorean.Text" xml:space="preserve">
+    <value>朝鲜语</value>
+  </data>
+  <data name="optLangRussian.Text" xml:space="preserve">
+    <value>俄语</value>
+  </data>
+  <data name="optLangThai.Text" xml:space="preserve">
+    <value>泰语</value>
+  </data>
+  <data name="btnOptLang.Label" xml:space="preserve">
+    <value>代码页</value>
   </data>
 </root>

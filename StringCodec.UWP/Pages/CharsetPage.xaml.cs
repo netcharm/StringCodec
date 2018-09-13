@@ -446,7 +446,13 @@ namespace StringCodec.UWP.Pages
 
         private void OptSrc_Click(object sender, RoutedEventArgs e)
         {
-            ToggleMenuFlyoutItem[] btns = new ToggleMenuFlyoutItem[] { optSrcAuto, optSrcAscii, optSrcBIG5, optSrcGBK, optSrcJIS, optSrcUnicode, optSrcUTF8 };
+            ToggleMenuFlyoutItem[] btns = new ToggleMenuFlyoutItem[] { optSrcAuto,
+                optSrcAscii,
+                optSrc1250, optSrc1251, optSrc1253, optSrc1254, optSrc1255, optSrc1256, optSrc1257, optSrc1258,
+                optSrcThai, optSrcRussian,
+                optSrcGBK, optSrcBIG5, optSrcJIS, optSrcKorean,
+                optSrcUnicode, optSrcUTF8
+            };
             foreach (var btn in btns)
             {
                 if (sender == btn) btn.IsChecked = true;
@@ -464,6 +470,28 @@ namespace StringCodec.UWP.Pages
                 CURRENT_SRCENC = Encoding.GetEncoding("BIG5");
             else if (string.Equals(ENC_NAME, "JIS", StringComparison.CurrentCultureIgnoreCase))
                 CURRENT_SRCENC = Encoding.GetEncoding("Shift-JIS");
+            else if (string.Equals(ENC_NAME, "Korean", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_SRCENC = Encoding.GetEncoding("Korean");
+            else if (string.Equals(ENC_NAME, "1250", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_SRCENC = Encoding.GetEncoding("Windows-1250");
+            else if (string.Equals(ENC_NAME, "1251", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_SRCENC = Encoding.GetEncoding("Windows-1251");
+            else if (string.Equals(ENC_NAME, "1253", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_SRCENC = Encoding.GetEncoding("Windows-1253");
+            else if (string.Equals(ENC_NAME, "1254", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_SRCENC = Encoding.GetEncoding("Windows-1254");
+            else if (string.Equals(ENC_NAME, "1255", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_SRCENC = Encoding.GetEncoding("Windows-1255");
+            else if (string.Equals(ENC_NAME, "1256", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_SRCENC = Encoding.GetEncoding("Windows-1256");
+            else if (string.Equals(ENC_NAME, "1257", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_SRCENC = Encoding.GetEncoding("Windows-1257");
+            else if (string.Equals(ENC_NAME, "1258", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_SRCENC = Encoding.GetEncoding("Windows-1258");
+            else if (string.Equals(ENC_NAME, "Thai", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_SRCENC = Encoding.GetEncoding("Thai");
+            else if (string.Equals(ENC_NAME, "Russian", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_SRCENC = Encoding.GetEncoding("Russian");
             else if (string.Equals(ENC_NAME, "ASCII", StringComparison.CurrentCultureIgnoreCase))
                 CURRENT_SRCENC = Encoding.ASCII;
             else
@@ -476,7 +504,13 @@ namespace StringCodec.UWP.Pages
 
         private void OptDst_Click(object sender, RoutedEventArgs e)
         {
-            ToggleMenuFlyoutItem[] btns = new ToggleMenuFlyoutItem[] { optDstAuto, optDstAscii, optDstBIG5, optDstGBK, optDstJIS, optDstUnicode, optDstUTF8 };
+            ToggleMenuFlyoutItem[] btns = new ToggleMenuFlyoutItem[] { optDstAuto,
+                optDstAscii,
+                optDst1250, optDst1251, optDst1253, optDst1254, optDst1255, optDst1256, optDst1257, optDst1258,
+                optDstThai, optDstRussian,
+                optDstGBK, optDstBIG5, optDstJIS, optDstKorean,
+                optDstUnicode, optDstUTF8
+            };
             foreach (var btn in btns)
             {
                 if (sender == btn) btn.IsChecked = true;
@@ -494,6 +528,28 @@ namespace StringCodec.UWP.Pages
                 CURRENT_DSTENC = Encoding.GetEncoding("BIG5");
             else if (string.Equals(ENC_NAME, "JIS", StringComparison.CurrentCultureIgnoreCase))
                 CURRENT_DSTENC = Encoding.GetEncoding("Shift-JIS");
+            else if (string.Equals(ENC_NAME, "Korean", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_DSTENC = Encoding.GetEncoding("Korean");
+            else if (string.Equals(ENC_NAME, "1250", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_DSTENC = Encoding.GetEncoding("Windows-1250");
+            else if (string.Equals(ENC_NAME, "1251", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_DSTENC = Encoding.GetEncoding("Windows-1251");
+            else if (string.Equals(ENC_NAME, "1253", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_DSTENC = Encoding.GetEncoding("Windows-1253");
+            else if (string.Equals(ENC_NAME, "1254", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_DSTENC = Encoding.GetEncoding("Windows-1254");
+            else if (string.Equals(ENC_NAME, "1255", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_DSTENC = Encoding.GetEncoding("Windows-1255");
+            else if (string.Equals(ENC_NAME, "1256", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_DSTENC = Encoding.GetEncoding("Windows-1256");
+            else if (string.Equals(ENC_NAME, "1257", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_DSTENC = Encoding.GetEncoding("Windows-1257");
+            else if (string.Equals(ENC_NAME, "1258", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_DSTENC = Encoding.GetEncoding("Windows-1258");
+            else if (string.Equals(ENC_NAME, "Thai", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_DSTENC = Encoding.GetEncoding("Thai");
+            else if (string.Equals(ENC_NAME, "Russian", StringComparison.CurrentCultureIgnoreCase))
+                CURRENT_DSTENC = Encoding.GetEncoding("Russian");
             else if (string.Equals(ENC_NAME, "ASCII", StringComparison.CurrentCultureIgnoreCase))
                 CURRENT_DSTENC = Encoding.ASCII;
             else

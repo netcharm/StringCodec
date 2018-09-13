@@ -690,27 +690,27 @@
           <source>FlashGet</source>
           <target state="translated" state-qualifier="mt-suggestion">FlashGet</target>
         </trans-unit>
-        <trans-unit id="optUTF8.Text" translate="yes" xml:space="preserve">
+        <trans-unit id="optLangUTF8.Text" translate="yes" xml:space="preserve">
           <source>UTF-8</source>
           <target state="translated">UTF-8</target>
         </trans-unit>
-        <trans-unit id="optGBK.Text" translate="yes" xml:space="preserve">
+        <trans-unit id="optLangGBK.Text" translate="yes" xml:space="preserve">
           <source>GBK</source>
-          <target state="translated">GBK</target>
+          <target state="translated">簡体字中国語</target>
         </trans-unit>
-        <trans-unit id="optBIG5.Text" translate="yes" xml:space="preserve">
+        <trans-unit id="optLangBIG5.Text" translate="yes" xml:space="preserve">
           <source>BIG-5</source>
-          <target state="translated">BIG-5</target>
+          <target state="translated">繁体字中国語</target>
         </trans-unit>
-        <trans-unit id="optJIS.Text" translate="yes" xml:space="preserve">
+        <trans-unit id="optLangJIS.Text" translate="yes" xml:space="preserve">
           <source>Shift-JIS</source>
-          <target state="translated">Shift-JIS</target>
+          <target state="translated"> 日本語</target>
         </trans-unit>
-        <trans-unit id="optUnicode.Text" translate="yes" xml:space="preserve">
+        <trans-unit id="optLangUnicode.Text" translate="yes" xml:space="preserve">
           <source>Unicode</source>
           <target state="translated">Unicode</target>
         </trans-unit>
-        <trans-unit id="optAscii.Text" translate="yes" xml:space="preserve">
+        <trans-unit id="optLangAscii.Text" translate="yes" xml:space="preserve">
           <source>ASCII</source>
           <target state="translated">ASCII</target>
         </trans-unit>
@@ -762,7 +762,7 @@
           <source>Postal</source>
           <target state="translated" state-qualifier="mt-suggestion">郵便</target>
         </trans-unit>
-        <trans-unit id="optDefault.Text" translate="yes" xml:space="preserve">
+        <trans-unit id="optLangDefault.Text" translate="yes" xml:space="preserve">
           <source>Default</source>
           <target state="translated" state-qualifier="mt-suggestion">デフォルト</target>
         </trans-unit>
@@ -997,6 +997,54 @@
         <trans-unit id="AboutTwitterValue.Content" translate="yes" xml:space="preserve">
           <source>My Twitter</source>
           <target state="translated">私のTwitter</target>
+        </trans-unit>
+        <trans-unit id="optLang1250.Text" translate="yes" xml:space="preserve">
+          <source>Central European</source>
+          <target state="translated">中央ヨーロッパ</target>
+        </trans-unit>
+        <trans-unit id="optLang1251.Text" translate="yes" xml:space="preserve">
+          <source>Cyrillic</source>
+          <target state="translated">キリル</target>
+        </trans-unit>
+        <trans-unit id="optLang1253.Text" translate="yes" xml:space="preserve">
+          <source>Greek</source>
+          <target state="translated">ギリシャ語</target>
+        </trans-unit>
+        <trans-unit id="optLang1254.Text" translate="yes" xml:space="preserve">
+          <source>Turkish</source>
+          <target state="translated">トルコ語</target>
+        </trans-unit>
+        <trans-unit id="optLang1255.Text" translate="yes" xml:space="preserve">
+          <source>Hebrew</source>
+          <target state="translated">ヘブライ語</target>
+        </trans-unit>
+        <trans-unit id="optLang1256.Text" translate="yes" xml:space="preserve">
+          <source>Arabic</source>
+          <target state="translated">アラビア語</target>
+        </trans-unit>
+        <trans-unit id="optLang1257.Text" translate="yes" xml:space="preserve">
+          <source>Baltic</source>
+          <target state="translated">バルト</target>
+        </trans-unit>
+        <trans-unit id="optLang1258.Text" translate="yes" xml:space="preserve">
+          <source>Vietnamese</source>
+          <target state="translated">ベトナム語</target>
+        </trans-unit>
+        <trans-unit id="optLangKorean.Text" translate="yes" xml:space="preserve">
+          <source>Korean</source>
+          <target state="translated">韓国語</target>
+        </trans-unit>
+        <trans-unit id="optLangRussian.Text" translate="yes" xml:space="preserve">
+          <source>Russian</source>
+          <target state="translated">ロシア</target>
+        </trans-unit>
+        <trans-unit id="optLangThai.Text" translate="yes" xml:space="preserve">
+          <source>Thai</source>
+          <target state="translated">タイ語</target>
+        </trans-unit>
+        <trans-unit id="btnOptLang.Label" translate="yes" xml:space="preserve">
+          <source>Language</source>
+          <target state="translated">translated</target>
         </trans-unit>
       </group>
     </body>

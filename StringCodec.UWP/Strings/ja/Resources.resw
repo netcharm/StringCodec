@@ -525,22 +525,22 @@
   <data name="optFlashGet.Text" xml:space="preserve">
     <value>FlashGet</value>
   </data>
-  <data name="optUTF8.Text" xml:space="preserve">
+  <data name="optLangUTF8.Text" xml:space="preserve">
     <value>UTF-8</value>
   </data>
-  <data name="optGBK.Text" xml:space="preserve">
-    <value>GBK</value>
+  <data name="optLangGBK.Text" xml:space="preserve">
+    <value>簡体字中国語</value>
   </data>
-  <data name="optBIG5.Text" xml:space="preserve">
-    <value>BIG-5</value>
+  <data name="optLangBIG5.Text" xml:space="preserve">
+    <value>繁体字中国語</value>
   </data>
-  <data name="optJIS.Text" xml:space="preserve">
-    <value>Shift-JIS</value>
+  <data name="optLangJIS.Text" xml:space="preserve">
+    <value> 日本語</value>
   </data>
-  <data name="optUnicode.Text" xml:space="preserve">
+  <data name="optLangUnicode.Text" xml:space="preserve">
     <value>Unicode</value>
   </data>
-  <data name="optAscii.Text" xml:space="preserve">
+  <data name="optLangAscii.Text" xml:space="preserve">
     <value>ASCII</value>
   </data>
   <data name="btnSrcQRCode.Label" xml:space="preserve">
@@ -579,7 +579,7 @@
   <data name="edContactAdrPostal.Header" xml:space="preserve">
     <value>郵便</value>
   </data>
-  <data name="optDefault.Text" xml:space="preserve">
+  <data name="optLangDefault.Text" xml:space="preserve">
     <value>デフォルト</value>
   </data>
   <data name="UIThemeSwitch.Header" xml:space="preserve">
@@ -755,5 +755,41 @@
   </data>
   <data name="AboutTwitterValue.Content" xml:space="preserve">
     <value>私のTwitter</value>
+  </data>
+  <data name="optLang1250.Text" xml:space="preserve">
+    <value>中央ヨーロッパ</value>
+  </data>
+  <data name="optLang1251.Text" xml:space="preserve">
+    <value>キリル</value>
+  </data>
+  <data name="optLang1253.Text" xml:space="preserve">
+    <value>ギリシャ語</value>
+  </data>
+  <data name="optLang1254.Text" xml:space="preserve">
+    <value>トルコ語</value>
+  </data>
+  <data name="optLang1255.Text" xml:space="preserve">
+    <value>ヘブライ語</value>
+  </data>
+  <data name="optLang1256.Text" xml:space="preserve">
+    <value>アラビア語</value>
+  </data>
+  <data name="optLang1257.Text" xml:space="preserve">
+    <value>バルト</value>
+  </data>
+  <data name="optLang1258.Text" xml:space="preserve">
+    <value>ベトナム語</value>
+  </data>
+  <data name="optLangKorean.Text" xml:space="preserve">
+    <value>韓国語</value>
+  </data>
+  <data name="optLangRussian.Text" xml:space="preserve">
+    <value>ロシア</value>
+  </data>
+  <data name="optLangThai.Text" xml:space="preserve">
+    <value>タイ語</value>
+  </data>
+  <data name="btnOptLang.Label" xml:space="preserve">
+    <value>translated</value>
   </data>
 </root>

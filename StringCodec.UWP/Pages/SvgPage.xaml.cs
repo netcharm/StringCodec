@@ -500,7 +500,7 @@ namespace StringCodec.UWP.Pages
                     Utils.SetClipboard(imgSvg, -1);
                     break;
                 case "btnPaste":
-                    var svgdoc = await Utils.GetClipboard("");
+                    var svgdoc = await Utils.GetClipboard("", imgSvg);
                     var svg = await svgdoc.DecodeSvg();
                     if (svg.Source is SvgImageSource)
                         imgSvg.Source = svg.Source;

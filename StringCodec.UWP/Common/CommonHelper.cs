@@ -1498,7 +1498,11 @@ namespace StringCodec.UWP.Common
     class Utils
     {
         public static string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif", ".svg" };
-        public static string[] text_ext = new string[] { ".txt", ".text", ".base64", ".md", ".me", ".html", ".rst", ".url" };
+        public static string[] text_ext = new string[] {
+            ".txt", ".text", ".base64", ".md", ".me", ".html", ".rst", ".xml",
+            ".cs", ".xaml",".js", ".ts", ".cpp", ".hpp", ".c", ".h", ".vb", ".vbs", ".py", ".pyw",".pas",
+            ".url"
+        };
         public static string[] url_ext = new string[] { ".url" };
 
         #region Share Extentions
@@ -1878,6 +1882,23 @@ namespace StringCodec.UWP.Common
                             //await RandomAccessStream.CopyAsync(stream, fileStream.GetOutputStreamAt(bh.Length));
                             //await fileStream.FlushAsync();
                             //fileStream
+
+                            WriteableBitmap bitmap = new WriteableBitmap(1, 1);
+                            await bitmap.SetSourceAsync(fileStream);
+                            byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmap.PixelBuffer, 0, (int)bitmap.PixelBuffer.Length);
+                            image.Source = bitmap;
+                        }
+                    }
+                    else if (dataPackageView.Contains("PNG"))
+                    {
+                        using (var fileStream = new InMemoryRandomAccessStream())
+                        {
+                            var data = await dataPackageView.GetDataAsync("PNG");
+                            var dataObj = data as IRandomAccessStream;
+                            var stream = dataObj.GetInputStreamAt(0);
+
+                            await RandomAccessStream.CopyAsync(stream, fileStream.GetOutputStreamAt(0));
+                            await fileStream.FlushAsync();
 
                             WriteableBitmap bitmap = new WriteableBitmap(1, 1);
                             await bitmap.SetSourceAsync(fileStream);
