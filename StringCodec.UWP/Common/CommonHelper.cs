@@ -2430,12 +2430,17 @@ namespace StringCodec.UWP.Common
     {
         public class Logo
         {
-            public string Name;
-            public int Width;
-            public int Height;
-            public Size Size;
-            public double Scale;
-            public string File;
+            public string Name { get; set; }
+            public int Width { get; set; }
+            public int Height { get; set; }
+            public Size Size { get; set; }
+            public double Scale { get; set; }
+            public string File { get; set; }
+
+            public Logo()
+            {
+                Name = string.Empty;
+            }
         }
 
         private List<Logo> logolist = new List<Logo>();

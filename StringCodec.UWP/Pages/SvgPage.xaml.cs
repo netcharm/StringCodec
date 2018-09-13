@@ -63,6 +63,51 @@ namespace StringCodec.UWP.Pages
             //set { imagelist = value; }
         }
 
+        private bool CheckFlyoutValid()
+        {
+            bool result = false;
+            bool IsImage = target is Image;
+            bool IsValid = false;
+            bool HasValid = false;
+
+            foreach (var item in Images)
+            {
+                if (IsImage && item.Source == target.Source && item.IsValid)
+                {
+                    IsValid = true;
+                }
+
+                if (item.IsValid)
+                {
+                    HasValid = true;
+                    //break;
+                }
+            }
+
+            if (IsImage && IsValid)
+            {
+                ImageFlyoutCopy.IsEnabled = true;
+                ImageFlyoutShare.IsEnabled = true;
+                ImageFlyoutExport.IsEnabled = true;
+            }
+            else
+            {
+                ImageFlyoutCopy.IsEnabled = false;
+                ImageFlyoutShare.IsEnabled = false;
+                ImageFlyoutExport.IsEnabled = false;
+            }
+
+            if (HasValid)
+            {
+                ImageFlyoutExportAll.IsEnabled = true;
+            }
+            else
+            {
+                ImageFlyoutExportAll.IsEnabled = false;
+            }
+            return (result);
+        }
+
         private async void MakeImages(List<int> sizelist)
         {
             var wb = await imgSvg.ToWriteableBitmap();
@@ -398,6 +443,7 @@ namespace StringCodec.UWP.Pages
                     }
                 }
             }
+            CheckFlyoutValid();
         }
 
         private void ImageContextFlyout_Closed(object sender, object e)

@@ -127,7 +127,7 @@
             </AppBarButton>
             <AppBarButton x:Name="btnRename" x:Uid="btnRename" Label="Rename" Icon="Rename" ToolTipService.ToolTip="Rename selected filename to current source charset" VerticalAlignment="Center" Click="AppBarButton_Click">
                 <AppBarButton.ContextFlyout>
-                    <MenuFlyout>
+                    <MenuFlyout Opened="TreeFilesNodeContextFlyout_Opened" Closed="TreeFilesNodeContextFlyout_Closed">
                         <MenuFlyoutItem x:Name="ActionRename" x:Uid="ActionRename" Text="Rename Selected Item" Click="TreeViewAction_Click"  />
                         <MenuFlyoutItem x:Name="ActionRenameAll" x:Uid="ActionRenameAll" Text="Rename All Items" IsEnabled="False" Visibility="Collapsed" Click="TreeViewAction_Click" />
                         <MenuFlyoutSeparator/>
@@ -168,21 +168,13 @@
             </AppBarButton>
             <AppBarButton x:Name="btnConvert" x:Uid="btnConvert" Label="Convert" Icon="Save" ToolTipService.ToolTip="Convert selected file content to selected target charset" VerticalAlignment="Center" Click="AppBarButton_Click">
                 <AppBarButton.ContextFlyout>
-                    <MenuFlyout>
+                    <MenuFlyout Opened="TreeFilesNodeContextFlyout_Opened" Closed="TreeFilesNodeContextFlyout_Closed">
                         <MenuFlyoutItem x:Name="ActionConvert" x:Uid="ActionConvert" Text="Convert Selected File" Click="TreeViewAction_Click" />
                         <MenuFlyoutItem x:Name="ActionConvertAll" x:Uid="ActionConvertAll" Text="Convert All Text File" IsEnabled="False" Visibility="Collapsed" Click="TreeViewAction_Click" />
                         <MenuFlyoutSeparator/>
                         <ToggleMenuFlyoutItem x:Name="optActionConvert" x:Uid="optActionConvert" Text="Overwrite Original File" Click="TreeViewAction_Click" />
                     </MenuFlyout>
                 </AppBarButton.ContextFlyout>
-                <!--<AppBarButton.Flyout>
-                    <MenuFlyout>
-                        <MenuFlyoutItem x:Name="ActionConvert" x:Uid="ActionConvert" Text="Convert Selected Text File" Click="TreeViewAction_Click" />
-                        <MenuFlyoutItem x:Name="ActionConvertAll" x:Uid="ActionConvertAll" Text="Convert All Text File" IsEnabled="False" Visibility="Collapsed" Click="TreeViewAction_Click" />
-                        <MenuFlyoutSeparator/>
-                        <ToggleMenuFlyoutItem x:Name="optActionConvert" x:Uid="optActionConvert" Text="Overwrite Original File" Click="TreeViewAction_Click" />
-                    </MenuFlyout>
-                </AppBarButton.Flyout>-->
             </AppBarButton>
             <AppBarSeparator />
             <AppBarButton x:Name="btnShare" x:Uid="btnShare" Label="Share" Icon="Share" VerticalAlignment="Center" Click="AppBarButton_Click" />

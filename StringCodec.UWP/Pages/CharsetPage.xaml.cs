@@ -51,6 +51,48 @@ namespace StringCodec.UWP.Pages
 
         private byte[] fcontent = null;
 
+        private bool CheckFlyoutValid()
+        {
+            bool result = false;
+            bool IsSelected = TreeFiles.SelectedNodes.Count > 0;
+            bool IsTextNode = target is MyTreeViewNode &&
+                              (target as MyTreeViewNode).StorageItem is StorageFile &&
+                              Utils.text_ext.Contains(((target as MyTreeViewNode).StorageItem as StorageFile).FileType);
+            bool IsTextNodeSelected = IsSelected && 
+                                      (TreeFiles.SelectedNodes[0] as MyTreeViewNode).StorageItem is StorageFile &&
+                                      Utils.text_ext.Contains(((TreeFiles.SelectedNodes[0] as MyTreeViewNode).StorageItem as StorageFile).FileType);
+
+            if (target is TreeViewNode || IsSelected)
+            {
+                TreeNodeActionRename.IsEnabled = true;
+                if (IsTextNode || IsTextNodeSelected)
+                    TreeNodeActionConvert.IsEnabled = true;
+                else
+                    TreeNodeActionConvert.IsEnabled = false;
+            }
+            else
+            {
+                TreeNodeActionRename.IsEnabled = false;
+                TreeNodeActionConvert.IsEnabled = false;
+            }
+
+            if (IsSelected)
+            {
+                ActionRename.IsEnabled = true;
+                if (IsTextNodeSelected)
+                    ActionConvert.IsEnabled = true;
+                else
+                    ActionConvert.IsEnabled = false;
+            }
+            else
+            {
+                ActionRename.IsEnabled = false;
+                ActionConvert.IsEnabled = false;
+            }
+
+            return (result);
+        }
+
         private void ConvertFrom(TreeViewNode node, Encoding enc)
         {
             if (node.HasChildren)
@@ -379,52 +421,6 @@ namespace StringCodec.UWP.Pages
             {
                 var file = f as StorageFile;
                 result = await Utils.ConvertFile(file, CURRENT_SRCENC, CURRENT_DSTENC, CURRENT_CONVERT_ORIGINAL);
-
-                #region old codes
-                //if (Utils.text_ext.Contains(file.FileType))
-                //{
-                //    IBuffer buffer = await FileIO.ReadBufferAsync(file);
-                //    DataReader reader = DataReader.FromBuffer(buffer);
-                //    byte[] fileContent = new byte[reader.UnconsumedBufferLength];
-                //    reader.ReadBytes(fileContent);
-                //    var fs = fileContent.ToString(CURRENT_SRCENC);
-
-                //    byte[] BOM = CURRENT_DSTENC.GetBOM();
-                //    byte[] fa = CURRENT_DSTENC.GetBytes(fs);
-                //    fa = BOM.Concat(fa).ToArray();
-
-                //    if (CURRENT_CONVERT_ORIGINAL)
-                //    {
-                //        await FileIO.WriteBytesAsync(file, fa);
-                //        //using (var ws = await file.OpenAsync(FileAccessMode.ReadWrite))
-                //        //{
-                //        //    DataWriter writer = new DataWriter(ws.GetOutputStreamAt(0));
-                //        //    writer.WriteBytes(BOM);
-                //        //    writer.WriteBytes(fa);
-                //        //    await ws.FlushAsync();
-                //        //}
-                //    }
-                //    else
-                //    {
-                //        FileSavePicker fsp = new FileSavePicker();
-                //        fsp.SuggestedStartLocation = PickerLocationId.Unspecified;
-                //        fsp.SuggestedFileName = file.Name;
-                //        fsp.SuggestedSaveFile = file;
-                //        StorageFile TargetFile = await fsp.PickSaveFileAsync();
-                //        if(TargetFile != null)
-                //        {
-                //            StorageApplicationPermissions.MostRecentlyUsedList.Add(TargetFile, TargetFile.Name);
-                //            if (StorageApplicationPermissions.FutureAccessList.Entries.Count >= 1000)
-                //                StorageApplicationPermissions.FutureAccessList.Remove(StorageApplicationPermissions.FutureAccessList.Entries.Last().Token);
-                //            StorageApplicationPermissions.FutureAccessList.Add(TargetFile, TargetFile.Name);
-
-                //            // 在用户完成更改并调用CompleteUpdatesAsync之前，阻止对文件的更新
-                //            CachedFileManager.DeferUpdates(TargetFile);
-                //            await FileIO.WriteBytesAsync(TargetFile, fa);
-                //        }
-                //    }
-                //}
-                #endregion
             }
             return (result);
         }
@@ -674,8 +670,9 @@ namespace StringCodec.UWP.Pages
             if (sender is MenuFlyout)
             {
                 var ft = (sender as MenuFlyout).Target;
-                if (ft.Tag is TreeViewNode) target = ft.Tag as TreeViewNode;
+                if (ft.Tag is MyTreeViewNode) target = ft.Tag as MyTreeViewNode;
             }
+            CheckFlyoutValid();
         }
 
         private void TreeFilesNodeContextFlyout_Closed(object sender, object e)
