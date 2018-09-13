@@ -95,7 +95,7 @@
             <AppBarButton x:Name="btnOpenFile" x:Uid="btnOpenFile" Label="File" Icon="OpenFile" ToolTipService.ToolTip="Open File" VerticalAlignment="Center" Click="AppBarButton_Click"  />
             <AppBarButton x:Name="btnClearAll" x:Uid="btnClearAll" Label="Clear" Icon="Clear" ToolTipService.ToolTip="Clear All Items" VerticalAlignment="Center" Click="AppBarButton_Click"  />
             <AppBarSeparator />
-            <AppBarButton Grid.Column="0" x:Name="btnOptSrc" x:Uid="btnOptSrc" Icon="Bullets" Label="Source" VerticalAlignment="Center">
+            <AppBarButton Grid.Column="0" x:Name="btnOptSrc" x:Uid="btnOptSrc" Icon="Character" Label="Source" VerticalAlignment="Center">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
                         <ToggleMenuFlyoutItem x:Name="optSrcGBK" x:Uid="optLangGBK" Text="GBK" Click="OptSrc_Click">
@@ -127,21 +127,23 @@
                         <ToggleMenuFlyoutItem x:Name="optSrcUTF8" x:Uid="optLangUTF8" Text="UTF-8" Click="OptSrc_Click"/>
                         <ToggleMenuFlyoutItem x:Name="optSrcUnicode" x:Uid="optLangUnicode" Text="Unicode" Click="OptSrc_Click"/>
                         <MenuFlyoutSeparator/>
-                        <ToggleMenuFlyoutItem x:Name="optSrcRussian" x:Uid="optLangRussian" Text="Russian" Click="OptSrc_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optSrc1250" x:Uid="optLang1250" Text="Central European" Click="OptSrc_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optSrc1257" x:Uid="optLang1257" Text="Baltic" Click="OptSrc_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optSrc1254" x:Uid="optLang1254" Text="Turkish" Click="OptSrc_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optSrc1258" x:Uid="optLang1258" Text="Vietnamese" Click="OptSrc_Click"/>
+                        <MenuFlyoutSubItem x:Name="optSrcOther" x:Uid="optLangOther" Text="Other Languages">
+                            <ToggleMenuFlyoutItem x:Name="optSrc1250" x:Uid="optLang1250" Text="Central European" Click="OptSrc_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optSrc1257" x:Uid="optLang1257" Text="Baltic" Click="OptSrc_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optSrc1254" x:Uid="optLang1254" Text="Turkish" Click="OptSrc_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optSrc1258" x:Uid="optLang1258" Text="Vietnamese" Click="OptSrc_Click"/>
+                            <MenuFlyoutSeparator/>
+                            <ToggleMenuFlyoutItem x:Name="optSrcRussian" x:Uid="optLangRussian" Text="Russian" Click="OptSrc_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optSrc1251" x:Uid="optLang1251" Text="Cyrillic" Click="OptSrc_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optSrc1253" x:Uid="optLang1253" Text="Greek" Click="OptSrc_Click"/>
+                            <MenuFlyoutSeparator/>
+                            <ToggleMenuFlyoutItem x:Name="optSrc1256" x:Uid="optLang1256" Text="Arabic" Click="OptSrc_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optSrc1255" x:Uid="optLang1255" Text="Hebrew" Click="OptSrc_Click"/>
+                            <MenuFlyoutSeparator/>
+                            <ToggleMenuFlyoutItem x:Name="optSrcThai" x:Uid="optLangThai" Text="Thai" Click="OptSrc_Click"/>
+                        </MenuFlyoutSubItem>
                         <MenuFlyoutSeparator/>
-                        <ToggleMenuFlyoutItem x:Name="optSrc1251" x:Uid="optLang1251" Text="Cyrillic" Click="OptSrc_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optSrc1253" x:Uid="optLang1253" Text="Greek" Click="OptSrc_Click"/>
-                        <MenuFlyoutSeparator/>
-                        <ToggleMenuFlyoutItem x:Name="optSrc1256" x:Uid="optLang1256" Text="Arabic" Click="OptSrc_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optSrc1255" x:Uid="optLang1255" Text="Hebrew" Click="OptSrc_Click"/>
-                        <MenuFlyoutSeparator/>
-                        <ToggleMenuFlyoutItem x:Name="optSrcThai" x:Uid="optLangThai" Text="Thai" Click="OptSrc_Click"/>
-                        <MenuFlyoutSeparator/>
-                        <ToggleMenuFlyoutItem x:Name="optSrcAuto" x:Uid="optLangDefault" Text="Default" Click="OptSrc_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optSrcAuto" x:Uid="optLangDefault" Text="Default" MinWidth="100" Click="OptSrc_Click"/>
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
@@ -156,7 +158,7 @@
                 </AppBarButton.ContextFlyout>
             </AppBarButton>
             <AppBarSeparator />
-            <AppBarButton Grid.Column="0" x:Name="btnOptDst" x:Uid="btnOptDst" Icon="Bullets" Label="Target" VerticalAlignment="Center">
+            <AppBarButton Grid.Column="0" x:Name="btnOptDst" x:Uid="btnOptDst" Icon="Character" Label="Target" VerticalAlignment="Center">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
                         <ToggleMenuFlyoutItem x:Name="optDstGBK" x:Uid="optLangGBK" Text="GBK" Click="OptDst_Click">
@@ -188,21 +190,23 @@
                         <ToggleMenuFlyoutItem x:Name="optDstUTF8" x:Uid="optLangUTF8" Text="UTF-8" Click="OptDst_Click"/>
                         <ToggleMenuFlyoutItem x:Name="optDstUnicode" x:Uid="optLangUnicode" Text="Unicode" Click="OptDst_Click"/>
                         <MenuFlyoutSeparator/>
-                        <ToggleMenuFlyoutItem x:Name="optDstRussian" x:Uid="optLangRussian" Text="Russian" Click="OptDst_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optDst1250" x:Uid="optLang1250" Text="Central European" Click="OptDst_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optDst1257" x:Uid="optLang1257" Text="Baltic" Click="OptDst_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optDst1254" x:Uid="optLang1254" Text="Turkish" Click="OptDst_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optDst1258" x:Uid="optLang1258" Text="Vietnamese" Click="OptDst_Click"/>
+                        <MenuFlyoutSubItem x:Name="optDstOther" x:Uid="optLangOther" Text="Other Languages">
+                            <ToggleMenuFlyoutItem x:Name="optDst1250" x:Uid="optLang1250" Text="Central European" Click="OptDst_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optDst1257" x:Uid="optLang1257" Text="Baltic" Click="OptDst_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optDst1254" x:Uid="optLang1254" Text="Turkish" Click="OptDst_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optDst1258" x:Uid="optLang1258" Text="Vietnamese" Click="OptDst_Click"/>
+                            <MenuFlyoutSeparator/>
+                            <ToggleMenuFlyoutItem x:Name="optDstRussian" x:Uid="optLangRussian" Text="Russian" Click="OptDst_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optDst1251" x:Uid="optLang1251" Text="Cyrillic" Click="OptDst_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optDst1253" x:Uid="optLang1253" Text="Greek" Click="OptDst_Click"/>
+                            <MenuFlyoutSeparator/>
+                            <ToggleMenuFlyoutItem x:Name="optDst1256" x:Uid="optLang1256" Text="Arabic" Click="OptDst_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optDst1255" x:Uid="optLang1255" Text="Hebrew" Click="OptDst_Click"/>
+                            <MenuFlyoutSeparator/>
+                            <ToggleMenuFlyoutItem x:Name="optDstThai" x:Uid="optLangThai" Text="Thai" Click="OptDst_Click"/>
+                        </MenuFlyoutSubItem>
                         <MenuFlyoutSeparator/>
-                        <ToggleMenuFlyoutItem x:Name="optDst1251" x:Uid="optLang1251" Text="Cyrillic" Click="OptDst_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optDst1253" x:Uid="optLang1253" Text="Greek" Click="OptDst_Click"/>
-                        <MenuFlyoutSeparator/>
-                        <ToggleMenuFlyoutItem x:Name="optDst1256" x:Uid="optLang1256" Text="Arabic" Click="OptDst_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optDst1255" x:Uid="optLang1255" Text="Hebrew" Click="OptDst_Click"/>
-                        <MenuFlyoutSeparator/>
-                        <ToggleMenuFlyoutItem x:Name="optDstThai" x:Uid="optLangThai" Text="Thai" Click="OptDst_Click"/>
-                        <MenuFlyoutSeparator/>
-                        <ToggleMenuFlyoutItem x:Name="optDstAuto" x:Uid="optLangDefault" Text="Default" Click="OptDst_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optDstAuto" x:Uid="optLangDefault" Text="Default" MinWidth="100" Click="OptDst_Click"/>
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>

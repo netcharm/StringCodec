@@ -760,7 +760,7 @@
     <value>中央ヨーロッパ</value>
   </data>
   <data name="optLang1251.Text" xml:space="preserve">
-    <value>キリル</value>
+    <value>キリル語</value>
   </data>
   <data name="optLang1253.Text" xml:space="preserve">
     <value>ギリシャ語</value>
@@ -775,7 +775,7 @@
     <value>アラビア語</value>
   </data>
   <data name="optLang1257.Text" xml:space="preserve">
-    <value>バルト</value>
+    <value>バルト語</value>
   </data>
   <data name="optLang1258.Text" xml:space="preserve">
     <value>ベトナム語</value>
@@ -784,12 +784,15 @@
     <value>韓国語</value>
   </data>
   <data name="optLangRussian.Text" xml:space="preserve">
-    <value>ロシア</value>
+    <value>ロシア語</value>
   </data>
   <data name="optLangThai.Text" xml:space="preserve">
     <value>タイ語</value>
   </data>
   <data name="btnOptLang.Label" xml:space="preserve">
-    <value>translated</value>
+    <value>言語</value>
+  </data>
+  <data name="optLangOther.Text" xml:space="preserve">
+    <value>他の言語</value>
   </data>
 </root>

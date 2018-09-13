@@ -897,4 +897,7 @@
   <data name="btnOptLang.Label" xml:space="preserve">
     <value>Language</value>
   </data>
+  <data name="optLangOther.Text" xml:space="preserve">
+    <value>Other Languages</value>
+  </data>
 </root>

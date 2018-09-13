@@ -1004,7 +1004,7 @@
         </trans-unit>
         <trans-unit id="optLang1251.Text" translate="yes" xml:space="preserve">
           <source>Cyrillic</source>
-          <target state="translated">西里尔语系</target>
+          <target state="translated">西里尔语</target>
         </trans-unit>
         <trans-unit id="optLang1253.Text" translate="yes" xml:space="preserve">
           <source>Greek</source>
@@ -1024,7 +1024,7 @@
         </trans-unit>
         <trans-unit id="optLang1257.Text" translate="yes" xml:space="preserve">
           <source>Baltic</source>
-          <target state="translated">波罗的海语系</target>
+          <target state="translated">波罗的海</target>
         </trans-unit>
         <trans-unit id="optLang1258.Text" translate="yes" xml:space="preserve">
           <source>Vietnamese</source>
@@ -1044,7 +1044,11 @@
         </trans-unit>
         <trans-unit id="btnOptLang.Label" translate="yes" xml:space="preserve">
           <source>Language</source>
-          <target state="translated">代码页</target>
+          <target state="translated">语种</target>
+        </trans-unit>
+        <trans-unit id="optLangOther.Text" translate="yes" xml:space="preserve">
+          <source>Other Languages</source>
+          <target state="translated">其他语种</target>
         </trans-unit>
       </group>
     </body>

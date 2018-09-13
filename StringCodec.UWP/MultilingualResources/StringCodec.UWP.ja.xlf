@@ -1004,7 +1004,7 @@
         </trans-unit>
         <trans-unit id="optLang1251.Text" translate="yes" xml:space="preserve">
           <source>Cyrillic</source>
-          <target state="translated">キリル</target>
+          <target state="translated">キリル語</target>
         </trans-unit>
         <trans-unit id="optLang1253.Text" translate="yes" xml:space="preserve">
           <source>Greek</source>
@@ -1024,7 +1024,7 @@
         </trans-unit>
         <trans-unit id="optLang1257.Text" translate="yes" xml:space="preserve">
           <source>Baltic</source>
-          <target state="translated">バルト</target>
+          <target state="translated">バルト語</target>
         </trans-unit>
         <trans-unit id="optLang1258.Text" translate="yes" xml:space="preserve">
           <source>Vietnamese</source>
@@ -1036,7 +1036,7 @@
         </trans-unit>
         <trans-unit id="optLangRussian.Text" translate="yes" xml:space="preserve">
           <source>Russian</source>
-          <target state="translated">ロシア</target>
+          <target state="translated">ロシア語</target>
         </trans-unit>
         <trans-unit id="optLangThai.Text" translate="yes" xml:space="preserve">
           <source>Thai</source>
@@ -1044,7 +1044,11 @@
         </trans-unit>
         <trans-unit id="btnOptLang.Label" translate="yes" xml:space="preserve">
           <source>Language</source>
-          <target state="translated">translated</target>
+          <target state="translated">言語</target>
+        </trans-unit>
+        <trans-unit id="optLangOther.Text" translate="yes" xml:space="preserve">
+          <source>Other Languages</source>
+          <target state="translated">他の言語</target>
         </trans-unit>
       </group>
     </body>

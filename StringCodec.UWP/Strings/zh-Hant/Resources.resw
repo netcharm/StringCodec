@@ -760,7 +760,7 @@
     <value>中歐語系</value>
   </data>
   <data name="optLang1251.Text" xml:space="preserve">
-    <value>西里爾語系</value>
+    <value>西里爾語</value>
   </data>
   <data name="optLang1253.Text" xml:space="preserve">
     <value>希臘語</value>
@@ -775,7 +775,7 @@
     <value>阿拉伯語</value>
   </data>
   <data name="optLang1257.Text" xml:space="preserve">
-    <value>波羅的海語系</value>
+    <value>波羅的海</value>
   </data>
   <data name="optLang1258.Text" xml:space="preserve">
     <value>越南語</value>
@@ -790,6 +790,9 @@
     <value>泰語</value>
   </data>
   <data name="btnOptLang.Label" xml:space="preserve">
-    <value>代碼頁</value>
+    <value>語種</value>
+  </data>
+  <data name="optLangOther.Text" xml:space="preserve">
+    <value>其他語種</value>
   </data>
 </root>

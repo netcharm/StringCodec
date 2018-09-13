@@ -761,5 +761,52 @@ namespace StringCodec.UWP.Common
 
             return (result);
         }
+
+        static public Encoding GetTextEncoder(string fmt)
+        {
+            var result = Encoding.Default;
+
+            var ENC_NAME = fmt.Trim();
+            if (string.Equals(ENC_NAME, "UTF8", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.UTF8;
+            else if (string.Equals(ENC_NAME, "Unicode", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.Unicode;
+            else if (string.Equals(ENC_NAME, "GBK", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.GetEncoding("GBK");
+            else if (string.Equals(ENC_NAME, "BIG5", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.GetEncoding("BIG5");
+            else if (string.Equals(ENC_NAME, "JIS", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.GetEncoding("Shift-JIS");
+            else if (string.Equals(ENC_NAME, "Korean", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.GetEncoding("Korean");
+            else if (string.Equals(ENC_NAME, "1250", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.GetEncoding("Windows-1250");
+            else if (string.Equals(ENC_NAME, "1251", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.GetEncoding("Windows-1251");
+            else if (string.Equals(ENC_NAME, "1252", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.GetEncoding("Windows-1252");
+            else if (string.Equals(ENC_NAME, "1253", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.GetEncoding("Windows-1253");
+            else if (string.Equals(ENC_NAME, "1254", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.GetEncoding("Windows-1254");
+            else if (string.Equals(ENC_NAME, "1255", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.GetEncoding("Windows-1255");
+            else if (string.Equals(ENC_NAME, "1256", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.GetEncoding("Windows-1256");
+            else if (string.Equals(ENC_NAME, "1257", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.GetEncoding("Windows-1257");
+            else if (string.Equals(ENC_NAME, "1258", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.GetEncoding("Windows-1258");
+            else if (string.Equals(ENC_NAME, "Thai", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.GetEncoding("Thai");
+            else if (string.Equals(ENC_NAME, "Russian", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.GetEncoding(855);
+            else if (string.Equals(ENC_NAME, "ASCII", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.ASCII;
+            else
+                result = Encoding.Default;
+
+            return (result);
+        }
     }
 }

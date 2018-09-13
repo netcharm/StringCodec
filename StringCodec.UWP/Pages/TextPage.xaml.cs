@@ -137,43 +137,7 @@ namespace StringCodec.UWP.Pages
             }
 
             var ENC_NAME = btn.Name.Substring(7);
-            if (string.Equals(ENC_NAME, "UTF8", StringComparison.CurrentCultureIgnoreCase))
-                CURRENT_ENC = Encoding.UTF8;
-            else if (string.Equals(ENC_NAME, "Unicode", StringComparison.CurrentCultureIgnoreCase))
-                CURRENT_ENC = Encoding.Unicode;
-            else if (string.Equals(ENC_NAME, "GBK", StringComparison.CurrentCultureIgnoreCase))
-                CURRENT_ENC = Encoding.GetEncoding("GBK");
-            else if (string.Equals(ENC_NAME, "BIG5", StringComparison.CurrentCultureIgnoreCase))
-                CURRENT_ENC = Encoding.GetEncoding("BIG5");
-            else if (string.Equals(ENC_NAME, "JIS", StringComparison.CurrentCultureIgnoreCase))
-                CURRENT_ENC = Encoding.GetEncoding("Shift-JIS");
-            else if (string.Equals(ENC_NAME, "Korean", StringComparison.CurrentCultureIgnoreCase))
-                CURRENT_ENC = Encoding.GetEncoding("Korean");
-            else if (string.Equals(ENC_NAME, "1250", StringComparison.CurrentCultureIgnoreCase))
-                CURRENT_ENC = Encoding.GetEncoding("Windows-1250");
-            else if (string.Equals(ENC_NAME, "1251", StringComparison.CurrentCultureIgnoreCase))
-                CURRENT_ENC = Encoding.GetEncoding("Windows-1251");
-            else if (string.Equals(ENC_NAME, "1253", StringComparison.CurrentCultureIgnoreCase))
-                CURRENT_ENC = Encoding.GetEncoding("Windows-1253");
-            else if (string.Equals(ENC_NAME, "1254", StringComparison.CurrentCultureIgnoreCase))
-                CURRENT_ENC = Encoding.GetEncoding("Windows-1254");
-            else if (string.Equals(ENC_NAME, "1255", StringComparison.CurrentCultureIgnoreCase))
-                CURRENT_ENC = Encoding.GetEncoding("Windows-1255");
-            else if (string.Equals(ENC_NAME, "1256", StringComparison.CurrentCultureIgnoreCase))
-                CURRENT_ENC = Encoding.GetEncoding("Windows-1256");
-            else if (string.Equals(ENC_NAME, "1257", StringComparison.CurrentCultureIgnoreCase))
-                CURRENT_ENC = Encoding.GetEncoding("Windows-1257");
-            else if (string.Equals(ENC_NAME, "1258", StringComparison.CurrentCultureIgnoreCase))
-                CURRENT_ENC = Encoding.GetEncoding("Windows-1258");
-            else if (string.Equals(ENC_NAME, "Thai", StringComparison.CurrentCultureIgnoreCase))
-                CURRENT_ENC = Encoding.GetEncoding("Thai");
-            else if (string.Equals(ENC_NAME, "Russian", StringComparison.CurrentCultureIgnoreCase))
-                CURRENT_ENC = Encoding.GetEncoding("Russian");
-            else if (string.Equals(ENC_NAME, "ASCII", StringComparison.CurrentCultureIgnoreCase))
-                CURRENT_ENC = Encoding.ASCII;
-            else
-                CURRENT_ENC = Encoding.Default;
-
+            CURRENT_ENC = TextCodecs.GetTextEncoder(ENC_NAME);
         }
 
         private void QRCode_Click(object sender, RoutedEventArgs e)
