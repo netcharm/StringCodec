@@ -535,7 +535,7 @@
     <value>繁体字中国語</value>
   </data>
   <data name="optLangJIS.Text" xml:space="preserve">
-    <value> 日本語</value>
+    <value>日本語</value>
   </data>
   <data name="optLangUnicode.Text" xml:space="preserve">
     <value>Unicode</value>
@@ -794,5 +794,14 @@
   </data>
   <data name="optLangOther.Text" xml:space="preserve">
     <value>他の言語</value>
+  </data>
+  <data name="CodePage" xml:space="preserve">
+    <value>コードページ</value>
+  </data>
+  <data name="WebName" xml:space="preserve">
+    <value>ウェブ名</value>
+  </data>
+  <data name="EncodingName" xml:space="preserve">
+    <value>エンコーディング名</value>
   </data>
 </root>

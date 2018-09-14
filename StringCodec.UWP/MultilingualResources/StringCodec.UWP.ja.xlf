@@ -704,7 +704,7 @@
         </trans-unit>
         <trans-unit id="optLangJIS.Text" translate="yes" xml:space="preserve">
           <source>Shift-JIS</source>
-          <target state="translated"> 日本語</target>
+          <target state="translated">日本語</target>
         </trans-unit>
         <trans-unit id="optLangUnicode.Text" translate="yes" xml:space="preserve">
           <source>Unicode</source>
@@ -1049,6 +1049,18 @@
         <trans-unit id="optLangOther.Text" translate="yes" xml:space="preserve">
           <source>Other Languages</source>
           <target state="translated">他の言語</target>
+        </trans-unit>
+        <trans-unit id="CodePage" translate="yes" xml:space="preserve">
+          <source>Code Page</source>
+          <target state="translated">コードページ</target>
+        </trans-unit>
+        <trans-unit id="WebName" translate="yes" xml:space="preserve">
+          <source>Web Name</source>
+          <target state="translated">ウェブ名</target>
+        </trans-unit>
+        <trans-unit id="EncodingName" translate="yes" xml:space="preserve">
+          <source>Encoding Name</source>
+          <target state="translated">エンコーディング名</target>
         </trans-unit>
       </group>
     </body>

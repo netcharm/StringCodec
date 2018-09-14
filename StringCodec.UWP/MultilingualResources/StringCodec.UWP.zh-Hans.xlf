@@ -1050,6 +1050,18 @@
           <source>Other Languages</source>
           <target state="translated">其他语种</target>
         </trans-unit>
+        <trans-unit id="CodePage" translate="yes" xml:space="preserve">
+          <source>Code Page</source>
+          <target state="translated">代码页</target>
+        </trans-unit>
+        <trans-unit id="WebName" translate="yes" xml:space="preserve">
+          <source>Web Name</source>
+          <target state="translated">网络名</target>
+        </trans-unit>
+        <trans-unit id="EncodingName" translate="yes" xml:space="preserve">
+          <source>Encoding Name</source>
+          <target state="translated">编码名</target>
+        </trans-unit>
       </group>
     </body>
   </file>

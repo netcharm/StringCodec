@@ -900,4 +900,13 @@
   <data name="optLangOther.Text" xml:space="preserve">
     <value>Other Languages</value>
   </data>
+  <data name="CodePage" xml:space="preserve">
+    <value>Code Page</value>
+  </data>
+  <data name="EncodingName" xml:space="preserve">
+    <value>Encoding Name</value>
+  </data>
+  <data name="WebName" xml:space="preserve">
+    <value>Web Name</value>
+  </data>
 </root>

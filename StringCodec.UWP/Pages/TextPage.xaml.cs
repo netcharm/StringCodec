@@ -58,7 +58,24 @@ namespace StringCodec.UWP.Pages
             optQuoted.Visibility = Visibility.Collapsed;
             optQuoted.IsEnabled = false;
 
-            //if (!string.IsNullOrEmpty(text_src)) edSrc.Text = text_src;
+            ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] {
+                optLangAscii,
+                optLang1250, optLang1251, optLang1253, optLang1254, optLang1255, optLang1256, optLang1257, optLang1258,
+                optLangThai, optLangRussian,
+                optLangGBK, optLangBIG5, optLangJIS, optLangKorean,
+                optLangUnicode, optLangUTF8
+            };
+            foreach(var lang in opts)
+            {
+                var ENC_NAME = lang.Name.Substring(7);
+                var enc = TextCodecs.GetTextEncoder(ENC_NAME);
+                ToolTipService.SetToolTip(lang, new ToolTip() {
+                    Content = 
+                    $"{"EncodingName".T():-16}: {enc.EncodingName}\n" +
+                    $"{"WebName".T():-16}: {enc.WebName}\n" +
+                    $"{"CodePage".T():-16}: {enc.CodePage}"
+                });
+            }
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)

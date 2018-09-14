@@ -795,4 +795,13 @@
   <data name="optLangOther.Text" xml:space="preserve">
     <value>其他語種</value>
   </data>
+  <data name="CodePage" xml:space="preserve">
+    <value>代碼頁</value>
+  </data>
+  <data name="WebName" xml:space="preserve">
+    <value>網路名</value>
+  </data>
+  <data name="EncodingName" xml:space="preserve">
+    <value>編碼名</value>
+  </data>
 </root>

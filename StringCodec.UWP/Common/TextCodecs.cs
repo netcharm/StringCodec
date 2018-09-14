@@ -16,7 +16,7 @@ namespace StringCodec.UWP.Common
 {
     static public class TextCodecs
     {
-        public enum CODEC {URL, BASE64, UUE, XXE, RAW, QUOTED, THUNDER, FLASHGET};
+        public enum CODEC { URL, BASE64, UUE, XXE, RAW, QUOTED, THUNDER, FLASHGET };
 
         static public class BASE64
         {
@@ -117,7 +117,7 @@ namespace StringCodec.UWP.Common
             {
                 string result = string.Empty;
 
-                result = Uri.EscapeDataString(text).Replace("%","\\x");
+                result = Uri.EscapeDataString(text).Replace("%", "\\x");
 
                 return (result);
             }
@@ -126,7 +126,7 @@ namespace StringCodec.UWP.Common
             {
                 string result = string.Empty;
 
-                result = Uri.UnescapeDataString(text.Replace("\\x","%"));
+                result = Uri.UnescapeDataString(text.Replace("\\x", "%"));
 
                 return (result);
             }
@@ -168,7 +168,7 @@ namespace StringCodec.UWP.Common
             {
                 string result = string.Empty;
                 var url = Regex.Replace(text, @"^thunder://(.*?)$", "$1", RegexOptions.IgnoreCase | RegexOptions.Multiline);
-                url = BASE64.Decode(url, enc);                
+                url = BASE64.Decode(url, enc);
                 result = Regex.Replace(url, @"^AA(.*?)ZZ$", "$1", RegexOptions.IgnoreCase | RegexOptions.Multiline);
                 return (result);
             }
@@ -422,7 +422,7 @@ namespace StringCodec.UWP.Common
                                 dlgProgress.Report(tempCount * 100 / totalCount);
                         }
                         if (LineBreak) base64 = string.Join("\n", sb);
-                        else           base64 = string.Join("", sb);
+                        else base64 = string.Join("", sb);
                         if (dlgProgress != null)
                             dlgProgress.Report(100);
 
@@ -437,7 +437,7 @@ namespace StringCodec.UWP.Common
             {
                 await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
             }
-            return(result);
+            return (result);
         }
 
         static public async Task<string> Encoder(this WriteableBitmap image, string format = ".png", bool prefix = true, bool LineBreak = false)
@@ -500,7 +500,7 @@ namespace StringCodec.UWP.Common
                 {
                     await result.Load(content);
                 }
-                else if(Regex.IsMatch(content, patternBase64Svg, RegexOptions.IgnoreCase | RegexOptions.Multiline))
+                else if (Regex.IsMatch(content, patternBase64Svg, RegexOptions.IgnoreCase | RegexOptions.Multiline))
                 {
                     string bs = Regex.Replace(content, patternBase64Svg, "", RegexOptions.IgnoreCase);
                     byte[] arr = Convert.FromBase64String(bs.Trim());
@@ -656,7 +656,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static public string ConvertFrom(this string text, Encoding enc, bool IsOEM=false)
+        static public string ConvertFrom(this string text, Encoding enc, bool IsOEM = false)
         {
             var result = string.Empty;
 
@@ -711,10 +711,10 @@ namespace StringCodec.UWP.Common
         {
             var result = string.Empty;
 
-            if(array != null && array.Length > 0)
+            if (array != null && array.Length > 0)
             {
                 // UTF-16
-                if      (array[0] == 0xFF && array[1] == 0xFE)
+                if (array[0] == 0xFF && array[1] == 0xFE)
                     result = Encoding.Unicode.GetString(array.Skip(2).ToArray());
                 // UTF-16 Big-Endian
                 else if (array[0] == 0xFE && array[1] == 0xFF)
@@ -748,7 +748,7 @@ namespace StringCodec.UWP.Common
         {
             byte[] result = new byte[] { };
 
-            if(enc == Encoding.UTF8 || enc.WebName.Equals("utf-8", StringComparison.CurrentCultureIgnoreCase))
+            if (enc == Encoding.UTF8 || enc.WebName.Equals("utf-8", StringComparison.CurrentCultureIgnoreCase))
                 result = new byte[3] { 0xEF, 0xBB, 0xBF };
             else if (enc == Encoding.Unicode || enc.WebName.Equals("utf-16", StringComparison.CurrentCultureIgnoreCase))
                 result = new byte[2] { 0xFF, 0xFE };
@@ -760,6 +760,54 @@ namespace StringCodec.UWP.Common
                 result = new byte[4] { 0x00, 0x00, 0xFE, 0xFF };
 
             return (result);
+        }
+
+        static private Dictionary<int, System.Globalization.CultureInfo> CodePageInfo = new Dictionary<int, System.Globalization.CultureInfo>();
+        static public System.Globalization.CultureInfo GetCodePageInfo(int codepage)
+        {
+            if (CodePageInfo.Count() <= 0)
+            {
+                var cultures = System.Globalization.CultureInfo.GetCultures(System.Globalization.CultureTypes.AllCultures);
+                foreach (var culture in cultures)
+                {
+                    try
+                    {
+                        CodePageInfo.TryAdd(culture.TextInfo.ANSICodePage, culture);
+                    }
+                    catch (Exception) { }
+                    try
+                    {
+                        CodePageInfo.TryAdd(culture.TextInfo.EBCDICCodePage, culture);
+                    }
+                    catch (Exception) { }
+                    //try
+                    //{
+                    //    CodePageInfo.TryAdd(culture.TextInfo.MacCodePage, culture);
+                    //}
+                    //catch (Exception) { }
+                    //try
+                    //{
+                    //    CodePageInfo.TryAdd(culture.TextInfo.OEMCodePage, culture);
+                    //}
+                    //catch (Exception) { }
+                }
+                foreach (var enc in Encoding.GetEncodings())
+                {
+                    try
+                    {
+                        CodePageInfo.TryAdd(enc.CodePage, new System.Globalization.CultureInfo(enc.CodePage));
+                    }
+                    catch (Exception) { }
+                }
+            }
+
+
+            if (CodePageInfo.ContainsKey(codepage))
+            {
+                return (CodePageInfo[codepage]);
+            }
+            else
+                return (null);
         }
 
         static public Encoding GetTextEncoder(string fmt)
@@ -798,7 +846,7 @@ namespace StringCodec.UWP.Common
             else if (string.Equals(ENC_NAME, "1258", StringComparison.CurrentCultureIgnoreCase))
                 result = Encoding.GetEncoding("Windows-1258");
             else if (string.Equals(ENC_NAME, "Thai", StringComparison.CurrentCultureIgnoreCase))
-                result = Encoding.GetEncoding("Thai");
+                result = Encoding.GetEncoding("IBM-Thai");
             else if (string.Equals(ENC_NAME, "Russian", StringComparison.CurrentCultureIgnoreCase))
                 result = Encoding.GetEncoding(855);
             else if (string.Equals(ENC_NAME, "ASCII", StringComparison.CurrentCultureIgnoreCase))

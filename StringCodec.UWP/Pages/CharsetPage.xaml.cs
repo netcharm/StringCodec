@@ -437,6 +437,47 @@ namespace StringCodec.UWP.Pages
             optActionConvert.IsChecked = CURRENT_CONVERT_ORIGINAL;
 
             optFolderDeep2.IsChecked = true;
+
+            ToggleMenuFlyoutItem[] optsSrc = new ToggleMenuFlyoutItem[] {optSrcAuto,
+                optSrcAscii,
+                optSrc1250, optSrc1251, optSrc1253, optSrc1254, optSrc1255, optSrc1256, optSrc1257, optSrc1258,
+                optSrcThai, optSrcRussian,
+                optSrcGBK, optSrcBIG5, optSrcJIS, optSrcKorean,
+                optSrcUnicode, optSrcUTF8
+            };
+            foreach (var lang in optsSrc)
+            {
+                var ENC_NAME = lang.Name.Substring(6);
+                var enc = TextCodecs.GetTextEncoder(ENC_NAME);
+                ToolTipService.SetToolTip(lang, new ToolTip()
+                {
+                    Content =
+                    $"{"EncodingName".T():-16}: {enc.EncodingName}\n" +
+                    $"{"WebName".T():-16}: {enc.WebName}\n" +
+                    $"{"CodePage".T():-16}: {enc.CodePage}"
+                });
+            }
+
+            ToggleMenuFlyoutItem[] optsDst = new ToggleMenuFlyoutItem[] {optDstAuto,
+                optDstAscii,
+                optDst1250, optDst1251, optDst1253, optDst1254, optDst1255, optDst1256, optDst1257, optDst1258,
+                optDstThai, optDstRussian,
+                optDstGBK, optDstBIG5, optDstJIS, optDstKorean,
+                optDstUnicode, optDstUTF8
+            };
+            foreach (var lang in optsDst)
+            {
+                var ENC_NAME = lang.Name.Substring(6);
+                var enc = TextCodecs.GetTextEncoder(ENC_NAME);
+                ToolTipService.SetToolTip(lang, new ToolTip()
+                {
+                    Content =
+                    $"{"EncodingName".T():-16}: {enc.EncodingName}\n" +
+                    $"{"WebName".T():-16}: {enc.WebName}\n" +
+                    $"{"CodePage".T():-16}: {enc.CodePage}"
+                });
+            }
+
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
