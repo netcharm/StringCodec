@@ -452,9 +452,10 @@ namespace StringCodec.UWP.Pages
                 ToolTipService.SetToolTip(lang, new ToolTip()
                 {
                     Content =
-                    $"{"EncodingName".T():-16}: {enc.EncodingName}\n" +
-                    $"{"WebName".T():-16}: {enc.WebName}\n" +
-                    $"{"CodePage".T():-16}: {enc.CodePage}"
+                        $"{"EncodingName".T():-16}: {enc.EncodingName}\n" +
+                        $"{"WebName".T():-16}: {enc.WebName}\n" +
+                        $"{"CodePage".T():-16}: {enc.CodePage}",
+                    Placement = PlacementMode.Right
                 });
             }
 
@@ -472,9 +473,10 @@ namespace StringCodec.UWP.Pages
                 ToolTipService.SetToolTip(lang, new ToolTip()
                 {
                     Content =
-                    $"{"EncodingName".T():-16}: {enc.EncodingName}\n" +
-                    $"{"WebName".T():-16}: {enc.WebName}\n" +
-                    $"{"CodePage".T():-16}: {enc.CodePage}"
+                        $"{"EncodingName".T():-16}: {enc.EncodingName}\n" +
+                        $"{"WebName".T():-16}: {enc.WebName}\n" +
+                        $"{"CodePage".T():-16}: {enc.CodePage}",
+                    Placement = PlacementMode.Right
                 });
             }
 
