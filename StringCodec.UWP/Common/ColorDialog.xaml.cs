@@ -46,7 +46,7 @@ namespace StringCodec.UWP.Common
         public ColorDialog()
         {
             this.InitializeComponent();
-            this.RequestedTheme = (ElementTheme)Settings.Get("AppTheme", ElementTheme.Default);
+            this.RequestedTheme = Settings.GetTheme();
         }
 
         private void ColorDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)

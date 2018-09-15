@@ -238,7 +238,7 @@
                     </AppBarButton.Flyout>
                 </AppBarButton>
                 <AppBarSeparator/>
-                <AppBarToggleButton x:Name="optWrapText" x:Uid="optWrapText" Label="Wrap Text" Click="Opt_Click">
+                <AppBarToggleButton x:Name="optWrapText" x:Uid="optWrapText" Label="Wrap Text" Click="OptWrap_Click">
                     <AppBarToggleButton.Icon>
                         <FontIcon Glyph="&#xE751;" FontFamily="Segoe MDL2 Assets"/>
                     </AppBarToggleButton.Icon>

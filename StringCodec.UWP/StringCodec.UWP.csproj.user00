@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Source>D:\Develop\MS\_projects\vs2017\UWP\StringCodec\StringCodec.UWP\Assets\CharacterSet_White.png</Source>
+    <SmallTileSource>D:\Develop\MS\_projects\vs2017\UWP\StringCodec\StringCodec.UWP\Assets\CharacterSet_White.png</SmallTileSource>
+    <MediumTileSource>D:\Develop\MS\_projects\vs2017\UWP\StringCodec\StringCodec.UWP\Assets\CharacterSet_White.png</MediumTileSource>
+    <WideTileSource>D:\Develop\MS\_projects\vs2017\UWP\StringCodec\StringCodec.UWP\Assets\CharacterSet_White.png</WideTileSource>
+    <LargeTileSource>D:\Develop\MS\_projects\vs2017\UWP\StringCodec\StringCodec.UWP\Assets\CharacterSet_White.png</LargeTileSource>
+    <AppIconSource>D:\Develop\MS\_projects\vs2017\UWP\StringCodec\StringCodec.UWP\Assets\CharacterSet_White.png</AppIconSource>
+    <SplashScreenSource>D:\Develop\MS\_projects\vs2017\UWP\StringCodec\StringCodec.UWP\Assets\CharacterSet_White.png</SplashScreenSource>
+    <PackageLogoSource>D:\Develop\MS\_projects\vs2017\UWP\StringCodec\StringCodec.UWP\Assets\CharacterSet_White.png</PackageLogoSource>
+    <AppxShowAllApps>True</AppxShowAllApps>
+    <AppxPackageIsForStore>True</AppxPackageIsForStore>
+    <AppxBuildConfigurationSelection>x86|x64|arm</AppxBuildConfigurationSelection>
+    <PackageOptionalProjectsInIdeBuilds>False</PackageOptionalProjectsInIdeBuilds>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <UseSimulator>false</UseSimulator>
+    <DeviceId>30F105C9-681E-420b-A277-7C086EAD8A4E</DeviceId>
+    <UseEmulator>false</UseEmulator>
+    <DeployOptionalPackages>true</DeployOptionalPackages>
+    <EnableUnmanagedDebugging>true</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <DeviceId>30F105C9-681E-420b-A277-7C086EAD8A4E</DeviceId>
+    <UseEmulator>true</UseEmulator>
+  </PropertyGroup>
+</Project>

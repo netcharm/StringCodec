@@ -479,7 +479,6 @@ namespace StringCodec.UWP.Pages
                     Placement = PlacementMode.Right
                 });
             }
-
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -534,7 +533,7 @@ namespace StringCodec.UWP.Pages
             edInfo.Text = $"{"Count".T()}: {edSrc.Text.Length}";
         }
 
-        private void Opt_Click(object sender, RoutedEventArgs e)
+        private void OptWrap_Click(object sender, RoutedEventArgs e)
         {
             if (sender == optWrapText)
             {

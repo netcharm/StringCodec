@@ -32,7 +32,7 @@ namespace StringCodec.UWP.Common
         public CommonQRDialog()
         {
             this.InitializeComponent();
-            this.RequestedTheme = (ElementTheme)Settings.Get("AppTheme", ElementTheme.Default);           
+            this.RequestedTheme = Settings.GetTheme();
         }
 
         private void Dialog_Loaded(object sender, RoutedEventArgs e)

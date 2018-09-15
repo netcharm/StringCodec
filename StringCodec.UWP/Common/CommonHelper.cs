@@ -1492,6 +1492,20 @@ namespace StringCodec.UWP.Common
             #endregion
         }
 
+        public static ElementTheme GetTheme()
+        {
+            var value = Get("AppTheme", null);
+
+            if (value == null)
+            {
+                var systemTheme = Application.Current.RequestedTheme;
+                if (systemTheme == ApplicationTheme.Light)
+                    value = ElementTheme.Light;
+                else if (systemTheme == ApplicationTheme.Dark)
+                    value = ElementTheme.Dark;
+            }
+            return ((ElementTheme)value);
+        }
         #endregion
     }
 

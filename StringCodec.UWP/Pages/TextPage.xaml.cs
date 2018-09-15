@@ -65,11 +65,12 @@ namespace StringCodec.UWP.Pages
                 optLangGBK, optLangBIG5, optLangJIS, optLangKorean,
                 optLangUnicode, optLangUTF8
             };
-            foreach(var lang in opts)
+            foreach (var lang in opts)
             {
                 var ENC_NAME = lang.Name.Substring(7);
                 var enc = TextCodecs.GetTextEncoder(ENC_NAME);
-                ToolTipService.SetToolTip(lang, new ToolTip() {
+                ToolTipService.SetToolTip(lang, new ToolTip()
+                {
                     Content =
                         $"{"EncodingName".T():-16}: {enc.EncodingName}\n" +
                         $"{"WebName".T():-16}: {enc.WebName}\n" +
@@ -88,7 +89,7 @@ namespace StringCodec.UWP.Pages
         {
             if (e.Parameter != null)
             {
-                if(e.Parameter is string)
+                if (e.Parameter is string)
                 {
                     var data = e.Parameter;
                     edSrc.Text = data.ToString();
@@ -102,20 +103,6 @@ namespace StringCodec.UWP.Pages
             if (sender == optLineBreak)
             {
                 CURRENT_LINEBREAK = (sender as ToggleMenuFlyoutItem).IsChecked;
-                return;
-            }
-            else if (sender == optWrapText)
-            {
-                if (optWrapText.IsChecked == true)
-                {
-                    edSrc.TextWrapping = TextWrapping.Wrap;
-                    edDst.TextWrapping = TextWrapping.Wrap;
-                }
-                else
-                {
-                    edSrc.TextWrapping = TextWrapping.NoWrap;
-                    edDst.TextWrapping = TextWrapping.NoWrap;
-                }
                 return;
             }
 
@@ -157,19 +144,36 @@ namespace StringCodec.UWP.Pages
             var ENC_NAME = btn.Name.Substring(7);
             CURRENT_ENC = TextCodecs.GetTextEncoder(ENC_NAME);
         }
+        
+        private void OptWrap_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender == optWrapText)
+            {
+                if (optWrapText.IsChecked == true)
+                {
+                    edSrc.TextWrapping = TextWrapping.Wrap;
+                    edDst.TextWrapping = TextWrapping.Wrap;
+                }
+                else
+                {
+                    edSrc.TextWrapping = TextWrapping.NoWrap;
+                    edDst.TextWrapping = TextWrapping.NoWrap;
+                }
+            }
+        }
 
         private void QRCode_Click(object sender, RoutedEventArgs e)
         {
-            if(sender == btnSrcQRCode)
+            if (sender == btnSrcQRCode)
             {
                 if (edSrc.Text.Length <= 0) return;
                 Frame.Navigate(typeof(QRCodePage), edSrc.Text);
             }
-            else if(sender == btnDstQRCode)
+            else if (sender == btnDstQRCode)
             {
                 if (edDst.Text.Length <= 0) return;
                 Frame.Navigate(typeof(QRCodePage), edDst.Text);
-            }            
+            }
         }
 
         private void edSrc_TextChanged(object sender, TextChangedEventArgs e)
@@ -251,7 +255,8 @@ namespace StringCodec.UWP.Pages
         {
             if (sender == edSrc)
             {
-                if (e.DataView.Contains(StandardDataFormats.StorageItems)){
+                if (e.DataView.Contains(StandardDataFormats.StorageItems))
+                {
                     if (canDrop) e.AcceptedOperation = DataPackageOperation.Copy;
                 }
                 else if (e.DataView.Contains(StandardDataFormats.Text) ||
@@ -319,5 +324,7 @@ namespace StringCodec.UWP.Pages
             //def.Complete();
         }
         #endregion
+
+
     }
 }

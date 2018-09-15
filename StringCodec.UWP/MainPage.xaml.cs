@@ -65,14 +65,14 @@ namespace StringCodec.UWP
             //}
 
             #region Set Theme & TitleBar button color
-            this.RequestedTheme = theme;
-            if (this.RequestedTheme == ElementTheme.Dark)
+            RequestedTheme = theme;
+            if (RequestedTheme == ElementTheme.Dark)
             {
                 titleBar.ButtonForegroundColor = Colors.White;
                 nvTheme.Icon = new FontIcon() { Glyph = "\uE708", FontFamily = FontMDL2 };
                 ToolTipService.SetToolTip(nvTheme, new ToolTip() { Content = "Toggle to Light".T() });
             }
-            else if (this.RequestedTheme == ElementTheme.Light)
+            else if (RequestedTheme == ElementTheme.Light)
             {
                 titleBar.ButtonForegroundColor = Colors.Black;
                 nvTheme.Icon = new FontIcon() { Glyph = "\uE706", FontFamily = FontMDL2 };
@@ -99,11 +99,6 @@ namespace StringCodec.UWP
             // 使用CodePagesEncodingProvider去注册扩展编码。
             //
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            //var enc_list = Encoding.GetEncodings();
-            //foreach (EncodingInfo ei in Encoding.GetEncodings())
-            //{
-            //    Encoding enc = ei.GetEncoding();
-            //}
             #endregion
 
             #region Add Back Shortcut Key to Alt+Back
@@ -128,9 +123,7 @@ namespace StringCodec.UWP
             //CustomTitleBar.Height = CoreApplication.GetCurrentView().TitleBar.Height;
             //Window.Current.SetTitleBar(GridTitleBar);
 
-            //var theme = ElementTheme.Default;
-            var theme = (ElementTheme)Settings.Get("AppTheme", (int)ElementTheme.Default);
-            SetTheme(theme, false);
+            SetTheme(Settings.GetTheme(), false);
             #endregion
 
             ContentFrame.Navigated += NvMain_Navigated;

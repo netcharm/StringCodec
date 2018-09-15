@@ -33,7 +33,7 @@ namespace StringCodec.UWP.Common
         public AboutDialog()
         {
             this.InitializeComponent();
-            this.RequestedTheme = (ElementTheme)Settings.Get("AppTheme", ElementTheme.Default);
+            this.RequestedTheme = Settings.GetTheme();
 
             Package package = Package.Current;
             PackageId packageId = package.Id;
