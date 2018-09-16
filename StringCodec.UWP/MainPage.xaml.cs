@@ -220,7 +220,7 @@ namespace StringCodec.UWP
             }
             catch (Exception ex)
             {
-                await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
+                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
             }
         }
 

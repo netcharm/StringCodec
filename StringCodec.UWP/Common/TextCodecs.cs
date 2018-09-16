@@ -20,25 +20,37 @@ namespace StringCodec.UWP.Common
 
         static public class BASE64
         {
-            static public string Encode(string text, bool LineBreak = false)
+            static public async Task<string> Encode(string text, bool LineBreak = false)
             {
                 string result = string.Empty;
-
-                byte[] arr = Encoding.Default.GetBytes(text);
-                var opt = Base64FormattingOptions.None;
-                if (LineBreak) opt = Base64FormattingOptions.InsertLineBreaks;
-                result = Convert.ToBase64String(arr, opt);
+                try
+                {
+                    byte[] arr = Encoding.Default.GetBytes(text);
+                    var opt = Base64FormattingOptions.None;
+                    if (LineBreak) opt = Base64FormattingOptions.InsertLineBreaks;
+                    result = Convert.ToBase64String(arr, opt);
+                }
+                catch(Exception ex)
+                {
+                    await new MessageDialog($"{"BASE64ERROR".T()}\n{ex.Message}", "ERROR".T()).ShowAsync();
+                }
 
                 return (result);
             }
 
-            static public string Decode(string text, Encoding enc)
+            static public async Task<string> Decode(string text, Encoding enc)
             {
                 string result = string.Empty;
-
-                byte[] arr = Convert.FromBase64String(text);
-                //result = Encoding.UTF8.GetString(arr);
-                result = enc.GetString(arr);
+                try
+                {
+                    byte[] arr = Convert.FromBase64String(text);
+                    //result = Encoding.UTF8.GetString(arr);
+                    result = enc.GetString(arr);
+                }
+                catch(Exception ex)
+                {
+                    await new MessageDialog($"{"BASE64ERROR".T()}\n{ex.Message}", "ERROR".T()).ShowAsync();
+                }
 
                 return (result);
             }
@@ -157,18 +169,18 @@ namespace StringCodec.UWP.Common
 
         static public class THUNDER
         {
-            static public string Encode(string text, bool LineBreak = false)
+            static public async Task<string> Encode(string text, bool LineBreak = false)
             {
                 string result = string.Empty;
-                result = $"thunder://{BASE64.Encode($"AA{text}ZZ", LineBreak)}";
+                result = $"thunder://{await BASE64.Encode($"AA{text}ZZ", LineBreak)}";
                 return (result);
             }
 
-            static public string Decode(string text, Encoding enc)
+            static public async Task<string> Decode(string text, Encoding enc)
             {
                 string result = string.Empty;
                 var url = Regex.Replace(text, @"^thunder://(.*?)$", "$1", RegexOptions.IgnoreCase | RegexOptions.Multiline);
-                url = BASE64.Decode(url, enc);
+                url = await BASE64.Decode(url, enc);
                 result = Regex.Replace(url, @"^AA(.*?)ZZ$", "$1", RegexOptions.IgnoreCase | RegexOptions.Multiline);
                 return (result);
             }
@@ -177,25 +189,25 @@ namespace StringCodec.UWP.Common
 
         static public class FLASHGET
         {
-            static public string Encode(string text, bool LineBreak = false)
+            static public async Task<string> Encode(string text, bool LineBreak = false)
             {
                 string result = string.Empty;
-                result = $"flashget://{BASE64.Encode($"[FLASHGET]{text}[FLASHGET]", LineBreak)}";
+                result = $"flashget://{await BASE64.Encode($"[FLASHGET]{text}[FLASHGET]", LineBreak)}";
                 return (result);
             }
 
-            static public string Decode(string text, Encoding enc)
+            static public async Task<string> Decode(string text, Encoding enc)
             {
                 string result = string.Empty;
                 var url = Regex.Replace(text, @"^flashget://(.*?)$", "$1", RegexOptions.IgnoreCase | RegexOptions.Multiline);
-                url = BASE64.Decode(url, enc);
+                url = await BASE64.Decode(url, enc);
                 result = Regex.Replace(url, @"^\[FLASHGET\](.*?)\[FLASHGET\]$", "$1", RegexOptions.IgnoreCase | RegexOptions.Multiline);
                 return (result);
             }
 
         }
 
-        static public string Encode(string content, CODEC Codec, bool LineBreak = false)
+        static public async Task<string> Encode(string content, CODEC Codec, bool LineBreak = false)
         {
             string result = string.Empty;
             switch (Codec)
@@ -204,7 +216,7 @@ namespace StringCodec.UWP.Common
                     result = URL.Encode(content);
                     break;
                 case CODEC.BASE64:
-                    result = BASE64.Encode(content, LineBreak);
+                    result = await BASE64.Encode(content, LineBreak);
                     break;
                 case CODEC.UUE:
                     result = UUE.Encode(content);
@@ -219,10 +231,10 @@ namespace StringCodec.UWP.Common
                     result = QUOTED.Encode(content);
                     break;
                 case CODEC.THUNDER:
-                    result = THUNDER.Encode(content);
+                    result = await THUNDER.Encode(content);
                     break;
                 case CODEC.FLASHGET:
-                    result = FLASHGET.Encode(content);
+                    result = await FLASHGET.Encode(content);
                     break;
                 default:
                     break;
@@ -230,9 +242,9 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static public string Encoder(this string content, CODEC Codec, bool LineBreak = false)
+        static public async Task<string> Encoder(this string content, CODEC Codec, bool LineBreak = false)
         {
-            return (Encode(content, Codec, LineBreak));
+            return (await Encode(content, Codec, LineBreak));
         }
 
         static public async Task<string> Encode(WriteableBitmap image, string format = ".png", bool prefix = true, bool LineBreak = false)
@@ -322,7 +334,7 @@ namespace StringCodec.UWP.Common
             }
             catch (Exception ex)
             {
-                await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
+                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
             }
             return (result);
         }
@@ -435,7 +447,7 @@ namespace StringCodec.UWP.Common
             }
             catch (Exception ex)
             {
-                await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
+                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
             }
             return (result);
         }
@@ -445,7 +457,7 @@ namespace StringCodec.UWP.Common
             return (await Encode(image, format, prefix, LineBreak));
         }
 
-        static public string Decode(string content, CODEC Codec, Encoding enc)
+        static public async Task<string> Decode(string content, CODEC Codec, Encoding enc)
         {
             string result = string.Empty;
             switch (Codec)
@@ -454,7 +466,7 @@ namespace StringCodec.UWP.Common
                     result = URL.Decode(content, enc);
                     break;
                 case CODEC.BASE64:
-                    result = BASE64.Decode(content, enc);
+                    result = await BASE64.Decode(content, enc);
                     break;
                 case CODEC.UUE:
                     result = UUE.Decode(content, enc);
@@ -469,10 +481,10 @@ namespace StringCodec.UWP.Common
                     result = QUOTED.Decode(content, enc);
                     break;
                 case CODEC.THUNDER:
-                    result = THUNDER.Decode(content, enc);
+                    result = await THUNDER.Decode(content, enc);
                     break;
                 case CODEC.FLASHGET:
-                    result = FLASHGET.Decode(content, enc);
+                    result = await FLASHGET.Decode(content, enc);
                     break;
                 default:
                     break;
@@ -480,9 +492,9 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static public string Decoder(this string content, CODEC Codec, Encoding enc)
+        static public async Task<string> Decoder(this string content, CODEC Codec, Encoding enc)
         {
-            return (Decode(content, Codec, enc));
+            return (await Decode(content, Codec, enc));
         }
 
         static public async Task<SVG> DecodeSvg(this string content)
@@ -518,7 +530,7 @@ namespace StringCodec.UWP.Common
             }
             catch (Exception ex)
             {
-                await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
+                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
             }
             return (result);
         }
@@ -549,7 +561,7 @@ namespace StringCodec.UWP.Common
             }
             catch (Exception ex)
             {
-                await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
+                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
             }
             return (result);
         }

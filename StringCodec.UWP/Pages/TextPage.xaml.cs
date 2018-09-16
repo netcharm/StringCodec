@@ -85,7 +85,7 @@ namespace StringCodec.UWP.Pages
             //if (!string.IsNullOrEmpty(text_src)) edSrc.Text = text_src;
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             if (e.Parameter != null)
             {
@@ -93,7 +93,7 @@ namespace StringCodec.UWP.Pages
                 {
                     var data = e.Parameter;
                     edSrc.Text = data.ToString();
-                    edDst.Text = TextCodecs.Encode(edSrc.Text, CURRENT_CODEC, CURRENT_LINEBREAK);
+                    edDst.Text = await TextCodecs.Encode(edSrc.Text, CURRENT_CODEC, CURRENT_LINEBREAK);
                 }
             }
         }
@@ -187,15 +187,15 @@ namespace StringCodec.UWP.Pages
             switch (btn.Name)
             {
                 case "btnEncode":
-                    edDst.Text = TextCodecs.Encode(edSrc.Text, CURRENT_CODEC, CURRENT_LINEBREAK);
+                    edDst.Text = await TextCodecs.Encode(edSrc.Text, CURRENT_CODEC, CURRENT_LINEBREAK);
                     text_src = edDst.Text;
                     break;
                 case "btnDecode":
-                    edDst.Text = TextCodecs.Decode(edSrc.Text, CURRENT_CODEC, CURRENT_ENC);
+                    edDst.Text = await TextCodecs.Decode(edSrc.Text, CURRENT_CODEC, CURRENT_ENC);
                     text_src = edDst.Text;
                     break;
                 case "btnCopy":
-                    Common.Utils.SetClipboard(edDst.Text);
+                    Utils.SetClipboard(edDst.Text);
                     break;
                 case "btnPaste":
                     edSrc.Text = await Utils.GetClipboard(edSrc.Text);

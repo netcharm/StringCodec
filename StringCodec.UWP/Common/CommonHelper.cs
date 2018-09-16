@@ -318,7 +318,7 @@ namespace StringCodec.UWP.Common
             }
             catch (Exception ex)
             {
-                await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
+                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
             }
             return (result);
         }
@@ -1567,7 +1567,7 @@ namespace StringCodec.UWP.Common
             }
             catch (Exception ex)
             {
-                await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
+                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
             }
         }
 
@@ -1729,7 +1729,7 @@ namespace StringCodec.UWP.Common
                 }
                 catch (Exception ex)
                 {
-                    await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
+                    await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
                 }
                 #endregion
 
@@ -1749,7 +1749,7 @@ namespace StringCodec.UWP.Common
                         }
                         catch (Exception ex)
                         {
-                            await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
+                            await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
                         }
                     }
                     else
@@ -1762,7 +1762,7 @@ namespace StringCodec.UWP.Common
                         }
                         catch (Exception ex)
                         {
-                            await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
+                            await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
                         }
                     }
                 }            
@@ -1772,7 +1772,7 @@ namespace StringCodec.UWP.Common
             }
             catch (Exception ex)
             {
-                await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
+                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
             }
         }
 
@@ -1958,7 +1958,7 @@ namespace StringCodec.UWP.Common
                 }
                 catch (Exception ex)
                 {
-                    await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
+                    await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
                 }
             }
             return (text);
@@ -2302,7 +2302,7 @@ namespace StringCodec.UWP.Common
             }
             catch (Exception ex)
             {
-                await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
+                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
             }
             return (result);
         }
@@ -2456,7 +2456,7 @@ namespace StringCodec.UWP.Common
             }
             catch (Exception ex)
             {
-                await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
+                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
             }
             return (result);
         }

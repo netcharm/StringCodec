@@ -392,7 +392,7 @@ namespace StringCodec.UWP.Pages
             }
             catch (Exception ex)
             {
-                await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
+                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
             }
             return (result);
         }
@@ -629,7 +629,7 @@ namespace StringCodec.UWP.Pages
                         }
                         catch (Exception ex)
                         {
-                            await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
+                            await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
                         }
                     }
                 }
@@ -685,7 +685,7 @@ namespace StringCodec.UWP.Pages
                             }
                             catch (Exception ex)
                             {
-                                await new MessageDialog(ex.Message, "ERROR".T()).ShowAsync();
+                                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
                             }
                         }
                     }

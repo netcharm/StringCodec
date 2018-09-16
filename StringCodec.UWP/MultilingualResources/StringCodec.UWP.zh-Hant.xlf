@@ -1066,6 +1066,10 @@
           <source>Make Square Icons</source>
           <target state="translated">正方形圖標圖像</target>
         </trans-unit>
+        <trans-unit id="BASE64ERROR" translate="yes" xml:space="preserve">
+          <source>The input is not a valid Base-64 string as it contains a non-base 64 character, more than two padding characters, or an illegal character among the padding characters.</source>
+          <target state="translated">輸入不是有效的BASE64字符串，因為它包含非BASE64允許的字符，兩個以上的填充字符或填充字符中含有非法字符。</target>
+        </trans-unit>
       </group>
     </body>
   </file>

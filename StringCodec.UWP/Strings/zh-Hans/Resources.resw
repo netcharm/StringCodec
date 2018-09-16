@@ -807,4 +807,7 @@
   <data name="optIconSquare.Text" xml:space="preserve">
     <value>正方形图标图像</value>
   </data>
+  <data name="BASE64ERROR" xml:space="preserve">
+    <value>输入不是有效的BASE64字符串，因为它包含非BASE64允许的字符，两个以上的填充字符或填充字符中含有非法字符。</value>
+  </data>
 </root>
