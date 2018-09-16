@@ -1069,22 +1069,23 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        public static async Task<StorageFile> StoreTemporaryFile(this WriteableBitmap image, string prefix="")
+        public static async Task<StorageFile> StoreTemporaryFile(this WriteableBitmap image, string prefix="", string suffix = "")
         {
-            return(await image.StoreTemporaryFile(image.PixelBuffer, image.PixelWidth, image.PixelHeight, prefix));
+            return(await image.StoreTemporaryFile(image.PixelBuffer, image.PixelWidth, image.PixelHeight, prefix, suffix));
         }
 
-        public static async Task<StorageFile> StoreTemporaryFile(this WriteableBitmap image, int width, int height, string prefix = "")
+        public static async Task<StorageFile> StoreTemporaryFile(this WriteableBitmap image, int width, int height, string prefix = "", string suffix = "")
         {
-            return (await image.StoreTemporaryFile(image.PixelBuffer, width, height, prefix));
+            return (await image.StoreTemporaryFile(image.PixelBuffer, width, height, prefix, suffix));
         }
 
-        public static async Task<StorageFile> StoreTemporaryFile(this WriteableBitmap image, IBuffer pixelBuffer, int width, int height, string prefix="")
+        public static async Task<StorageFile> StoreTemporaryFile(this WriteableBitmap image, IBuffer pixelBuffer, int width, int height, string prefix="", string suffix="")
         {
             var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
             var now = DateTime.Now;
             if (!string.IsNullOrEmpty(prefix)) prefix = $"{prefix}_";
-            var fn = $"{prefix}{now.ToString("yyyyMMddHHmmssff")}.png";
+            if (!string.IsNullOrEmpty(suffix)) suffix = $"_{suffix}";
+            var fn = $"{prefix}{now.ToString("yyyyMMddHHmmssff")}{suffix}.png";
             StorageFile tempFile = await ApplicationData.Current.TemporaryFolder.CreateFileAsync(fn, CreationCollisionOption.ReplaceExisting);
             if (tempFile != null)
             {
@@ -1571,7 +1572,7 @@ namespace StringCodec.UWP.Common
             }
         }
 
-        public static async Task<FileUpdateStatus> Share(WriteableBitmap image, string prefix="")
+        public static async Task<FileUpdateStatus> Share(WriteableBitmap image, string prefix="", string suffix="")
         {
             if (!SHARE_INITED)
             {
@@ -1589,7 +1590,7 @@ namespace StringCodec.UWP.Common
 
             SHARED_IMAGE = image;
             #region Save image to a temporary file for Share
-            StorageFile tempFile = await image.StoreTemporaryFile(image.PixelBuffer, image.PixelWidth, image.PixelHeight, prefix);
+            StorageFile tempFile = await image.StoreTemporaryFile(image.PixelBuffer, image.PixelWidth, image.PixelHeight, prefix, suffix);
             if (tempFile != null)
             {
                 _tempExportFile = tempFile;
@@ -2031,12 +2032,12 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        public static async Task<string> ShowSaveDialog(Image image, string prefix = "")
+        public static async Task<string> ShowSaveDialog(Image image, string prefix = "", string suffix="")
         {
             if(image.Source is SvgImageSource)
             {
                 var svg = image.Source as SvgImageSource;
-                return (await ShowSaveDialog(image, (int)svg.RasterizePixelWidth, (int)svg.RasterizePixelHeight, prefix));
+                return (await ShowSaveDialog(image, (int)svg.RasterizePixelWidth, (int)svg.RasterizePixelHeight, prefix, suffix));
             }
             else
             {
@@ -2045,18 +2046,18 @@ namespace StringCodec.UWP.Common
                 {
                     var width = bmp.PixelWidth;
                     var height = bmp.PixelHeight;
-                    return (await ShowSaveDialog(image, width, height, prefix));
+                    return (await ShowSaveDialog(image, width, height, prefix, suffix));
                 }
                 else return (string.Empty);
             }               
         }
 
-        public static async Task<string> ShowSaveDialog(Image image, int size, string prefix = "")
+        public static async Task<string> ShowSaveDialog(Image image, int size, string prefix = "", string suffix = "")
         {
-            return (await ShowSaveDialog(image, size, size, prefix));
+            return (await ShowSaveDialog(image, size, size, prefix, suffix));
         }
 
-        public static async Task<string> ShowSaveDialog(Image image, int width, int height, string prefix = "")
+        public static async Task<string> ShowSaveDialog(Image image, int width, int height, string prefix = "", string suffix = "")
         {
             if (image.Source == null) return (string.Empty);
             string result = string.Empty;
@@ -2067,7 +2068,8 @@ namespace StringCodec.UWP.Common
             //fp.FileTypeChoices.Add("Image File", new List<string>() { ".png", ".jpg", ".jpeg", ".tif", ".tiff", ".gif", ".bmp" });
             fp.FileTypeChoices.Add("Image File", image_ext);
             if (!string.IsNullOrEmpty(prefix)) prefix = $"{prefix}_";
-            fp.SuggestedFileName = $"{prefix}{now.ToString("yyyyMMddHHmmssff")}.png";
+            if (!string.IsNullOrEmpty(suffix)) suffix = $"_{suffix}";
+            fp.SuggestedFileName = $"{prefix}{now.ToString("yyyyMMddHHmmssff")}{suffix}.png";
             StorageFile TargetFile = await fp.PickSaveFileAsync();
             if (TargetFile != null)
             {
