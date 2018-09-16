@@ -1062,6 +1062,10 @@
           <source>Encoding Name</source>
           <target state="translated">エンコーディング名</target>
         </trans-unit>
+        <trans-unit id="optIconSquare.Text" translate="yes" xml:space="preserve">
+          <source>Make Square Icons</source>
+          <target state="translated">スクウェアアイコン画像</target>
+        </trans-unit>
       </group>
     </body>
   </file>

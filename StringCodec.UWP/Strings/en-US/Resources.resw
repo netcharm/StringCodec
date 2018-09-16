@@ -909,4 +909,7 @@
   <data name="WebName" xml:space="preserve">
     <value>Web Name</value>
   </data>
+  <data name="optIconSquare.Text" xml:space="preserve">
+    <value>Make Square Icons</value>
+  </data>
 </root>

@@ -804,4 +804,7 @@
   <data name="EncodingName" xml:space="preserve">
     <value>エンコーディング名</value>
   </data>
+  <data name="optIconSquare.Text" xml:space="preserve">
+    <value>スクウェアアイコン画像</value>
+  </data>
 </root>

@@ -155,7 +155,8 @@ namespace StringCodec.UWP.Common
                         int.TryParse(v.Value.Trim(), out w);
                         w = w == 0 ? 1 : w;
                         //w = Convert.ToInt32(v.Value.Trim());
-                        if(vb == null) v.Value = "auto";
+                        //if(vb == null) v.Value = "auto";
+                        v.Value = "auto";
                     }
 
                     if (vh != null)
@@ -164,7 +165,8 @@ namespace StringCodec.UWP.Common
                         int.TryParse(v.Value.Trim(), out h);
                         h = h == 0 ? 1 : h;
                         //h = Convert.ToInt32(v.Value.Trim());
-                        if (vb == null) v.Value = "auto";
+                        //if (vb == null) v.Value = "auto";
+                        v.Value = "auto";
                     }
 
                     if (vb == null)

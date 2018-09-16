@@ -41,6 +41,7 @@ namespace StringCodec.UWP.Pages
     {
         private string CURRENT_FORMAT = ".png";
         private string CURRENT_ICONS = "win";
+        private bool CURRENT_SQUARE = false;
 
         private string SourceFileName = string.Empty;
 
@@ -123,6 +124,20 @@ namespace StringCodec.UWP.Pages
                 var w = (int)imgSvg.ActualWidth;
                 var h = (int)imgSvg.ActualHeight;
                 var factor = (double)h / (double)w;
+                if (CURRENT_SQUARE)
+                {
+                    if (w < h)
+                    {
+                        var delta = (int)((h - w) / 2);
+                        wb = wb.Extend(delta, 0, delta, 0, Colors.Transparent);
+                    }
+                    else if (w > h)
+                    {
+                        var delta = (int)((w - h) / 2);
+                        wb = wb.Extend(0, delta, 0, delta, Colors.Transparent);
+                    }
+                    factor = 1;
+                }
 
                 //ImageList.ItemsSource = null;
                 //List<int> sizelist = new List<int>() { 256, 128, 96, 72, 64, 48, 32, 24, 16 };
@@ -301,6 +316,11 @@ namespace StringCodec.UWP.Pages
                 else opt.IsChecked = false;
             }
             CURRENT_ICONS = ICO_NAME;
+        }
+
+        private void OptSquareIcon_Click(object sender, RoutedEventArgs e)
+        {
+            CURRENT_SQUARE = optIconSquare.IsChecked;
         }
 
         private async void QRCode_Click(object sender, RoutedEventArgs e)

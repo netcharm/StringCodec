@@ -1,0 +1,258 @@
+Field	ID	Type (Type)	default	en-us	ja	zh-hans	zh-hant
+Description	2	Text		"# Intro
+
+This application is text string encode and decode tool.
+
+## Features
+
+1. URL encode/decode
+1. BASE64 encode/decode
+1. Raw bytes like \x0d\x0a encode/decode
+1. encode small image to base64 string or decode image from base64 string
+1. text to QR code, or decode QR code from clipboard image
+1. text to some 1D barcode, or decode content from clipboard image
+1. rename file or folder name to specified oem charset (UTF8, GBK, BIG5, SHIFT-JIS, ASCII, UNICODE)
+1. convert text file content from source charset to target charset (UTF8, GBK, BIG5, SHIFT-JIS, ASCII, UNICODE)"	"これはテキスト文字列のエンコードとデコードのための小さなツールで、結果をクリップボードからクリップボード/ペーストにコピーし、テキストや生成されたイメージを共有することもできます。
+
+1. URLエンコード/デコード
+2. BASE64符号化/復号化
+3. 生のバイト、\ x0d \ x0aのような文字列の内容のエンコード/デコード
+4. 小さな画像をbase64文字列としてエンコードするか、BASE64文字列から画像をデコードする
+5. テキストをQRコードに、またはQR QRコードをクリップボードから
+6. いくつかの1Dバーコードへのテキスト、またはクリップボードからのコンテンツのデコード
+7. ファイル名またはフォルダ名を指定されたOEM文字セットに変更します（現在、UTF8、GBK、BIG5、SHIFT-JIS、ASCII、UNICODEをサポートしています）
+8. ソース?キャラクタ?セットからターゲット?キャラクタ?セットへのテキスト?ファイル?コンテンツの変換（現在はUTF8、GBK、BIG5、SHIFT-JIS、ASCII、UNICODEをサポートしています）"	"这是一个用于文本字符串编码和解码小工具, 可以复制结果到剪贴板/从剪贴板粘贴以及共享文本或生成的图片.
+
+1. URL编码/解码
+2. BASE64编码/解码
+3. 原始字节，如\x0d\x0a这样的字符串内容的编码/解码
+4. 将小图像编码为base64字符串或从BASE64 字符串解码图像
+5. 文本到QR码，或从剪贴板图像解码QR二维码
+6. 文本到一些一维条形码，或从剪贴板图像解码内容
+7. 将文件或文件夹名称重命名为指定的 OEM 字符集（现支持 UTF8，GBK，BIG5，SHIFT-JIS，ASCII，UNICODE）
+8. 将文本文件内容从源字符集转换为目标字符集（现支持 UTF8，GBK，BIG5，SHIFT-JIS，ASCII，UNICODE）"	"這是一個用於文本字符串編碼和解碼小工具。備註: 截圖和簡體中文沒什麼區別, 就不重複上傳了.
+
+1. URL編碼/解碼
+2. BASE64編碼/解碼
+3. 原始字節，如\x0d\x0a這樣的字符串內容的編碼/解碼
+4. 將小圖像編碼為base64字符串或從BASE64 字符串解碼圖像
+5. 文本到QR碼，或從剪貼板圖像解碼QR二維碼
+6. 文本到一些一維條形碼，或從剪貼板圖像解碼內容
+7. 將檔案或檔案夾名稱重命名為指定的 OEM 字符集（現支持 UTF8，GBK，BIG5，SHIFT-JIS，ASCII，UNICODE）
+8. 將文本檔案內容從源字符集轉換為目標字符集（現支持 UTF8，GBK，BIG5，SHIFT-JIS，ASCII，UNICODE）"
+ReleaseNotes	3	Text		"1. Fixed more bugs
+2. Add more text/file codepage can decode/encode
+3. Add simple svg support for create windows icon bitmap series
+4. Change file/folder treeview behavior, such as expand fetch content, right click item can rename/convert, need not selected first.
+5. Optimized some UI layout"	"表示される日本語のテキストのほとんどはMicrosoft機械翻訳によるものですので、ご迷惑をおかけしてください。
+
+1.いくつかのバグを修正する
+2.デコード/より多くのテキスト/ファイルコードページのエンコードをサポートする
+3. Windowsアイコンを作成するために使用できる一連のビットマップである単純なSVGサポートを追加する
+4.そのようなファイル/サブディレクトリのリストを含むディレクトリを展開取得時のように、行動のファイル/フォルダツリービューを変更し、パフォーマンスを向上させるために。今変換する/名前を変更することができますプロジェクトを直接右クリックして、あなたは彼らができる前にチェックする必要はありません。
+5.いくつかのUIレイアウトを最適化する"	"1. 修复若干错误
+2. 支持解码/编码更多的文本/文件代码页
+3. 添加简单的SVG支持, 可以用来创建Windows图标所需的系列位图
+4. 改变文件/文件夹的树视图的行为, 如展开目录时才获取包含的文件/子目录列表, 以提升性能. 现在直接鼠标右击项目就可以重命名/转换,不需要先选中才可以
+5. 优化一些UI布局"	"1. 修復若干錯誤
+2. 支持解碼/編碼更多的文本/檔案代碼頁
+3. 添加簡單的SVG支持, 可以用來創建Windows圖標所需的系列位圖
+4. 改變檔案/檔案夾的樹視圖的行為, 如展開目錄時才獲取包含的檔案/子目錄列表, 以提升性能. 現在直接鼠標右擊項目就可以重命名/轉換,不需要先選中才可以
+5. 優化一些UI佈局"
+Title	4	Text		StringCodec	テキストコーデック	文本编码解码工具	文本編碼解碼工具
+ShortTitle	5	Text					
+SortTitle	6	Text					
+VoiceTitle	7	Text					
+ShortDescription	8	Text					
+DevStudio	9	Text		netcharm	netcharm	netcharm	netcharm
+CopyrightTrademarkInformation	12	Text					
+AdditionalLicenseTerms	13	Text					
+DesktopScreenshot1	100	Relative path (or URL to file in Dev Center)		https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688096497/listings/1152922700001118342/listingassets/2000000000017839999	https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688096497/listings/1152922700001118344/listingassets/2000000000017845202	https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688096497/listings/1152922700001118346/listingassets/2000000000017843766	https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688096497/listings/1152922700001118348/listingassets/2000000000017843164
+DesktopScreenshot2	101	Relative path (or URL to file in Dev Center)		https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688096497/listings/1152922700001118342/listingassets/2000000000017840226	https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688096497/listings/1152922700001118344/listingassets/2000000000017845207	https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688096497/listings/1152922700001118346/listingassets/2000000000017843910	
+DesktopScreenshot3	102	Relative path (or URL to file in Dev Center)		https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688096497/listings/1152922700001118342/listingassets/2000000000017840292	https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688096497/listings/1152922700001118344/listingassets/2000000000017845261	https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688096497/listings/1152922700001118346/listingassets/2000000000017843911	
+DesktopScreenshot4	103	Relative path (or URL to file in Dev Center)		https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688096497/listings/1152922700001118342/listingassets/2000000000017840297	https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688096497/listings/1152922700001118344/listingassets/2000000000017845263	https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688096497/listings/1152922700001118346/listingassets/2000000000017843912	
+DesktopScreenshot5	104	Relative path (or URL to file in Dev Center)		https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688096497/listings/1152922700001118342/listingassets/2000000000017840347	https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688096497/listings/1152922700001118344/listingassets/2000000000017845268	https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688096497/listings/1152922700001118346/listingassets/2000000000017843913	
+DesktopScreenshot6	105	Relative path (or URL to file in Dev Center)		https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688096497/listings/1152922700001118342/listingassets/2000000000017840421	https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688096497/listings/1152922700001118344/listingassets/2000000000017845306	https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688096497/listings/1152922700001118346/listingassets/2000000000017843915	
+DesktopScreenshot7	106	Relative path (or URL to file in Dev Center)		https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688096497/listings/1152922700001118342/listingassets/2000000000017840425	https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688096497/listings/1152922700001118344/listingassets/2000000000017845323	https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688096497/listings/1152922700001118346/listingassets/2000000000017843916	
+DesktopScreenshot8	107	Relative path (or URL to file in Dev Center)		https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688096497/listings/1152922700001118342/listingassets/2000000000017840535	https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688096497/listings/1152922700001118344/listingassets/2000000000017845367	https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688096497/listings/1152922700001118346/listingassets/2000000000017843919	
+DesktopScreenshot9	108	Relative path (or URL to file in Dev Center)		https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688096497/listings/1152922700001118342/listingassets/2000000000017840582	https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688096497/listings/1152922700001118344/listingassets/2000000000017845396	https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688096497/listings/1152922700001118346/listingassets/2000000000017844091	
+DesktopScreenshot10	109	Relative path (or URL to file in Dev Center)		https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688096497/listings/1152922700001118342/listingassets/2000000000017840588	https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688096497/listings/1152922700001118344/listingassets/2000000000017845414	https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688096497/listings/1152922700001118346/listingassets/2000000000017844095	
+DesktopScreenshotCaption1	150	Text		Main UI	テキストコーデック表示	导航视图	
+DesktopScreenshotCaption2	151	Text		QR Encode and Decode UI	ナビゲーションビュー	文本编码解码视图	
+DesktopScreenshotCaption3	152	Text		Small Image From/To BASE64 UI	QRコード生成/解釈ビュー	二维码生成/解读视图	
+DesktopScreenshotCaption4	153	Text		Common 1-D Barcode Encode and Decode UI	BASE64と画像変換ビュー	一维条码生成/解码视图	
+DesktopScreenshotCaption5	154	Text		QR Code and 1D Barcode Foreground/Background Color picker dialog	バーコード生成/復号化ビュー	二维码/条码颜色选取对话框	
+DesktopScreenshotCaption6	155	Text		Common QR Code Builder UI	特定のコンテンツのQRコード生成ビュー	特定内容的二维码生成视图	
+DesktopScreenshotCaption7	156	Text		Common QR Code options flyout	指定したファイル/フォルダを開き、ファイル/フォルダ名を指定した文字セットに変更するか、ソースファイルセットから指定した文字セットに変更します	"打开指定的文件/文件夹, 以便对文件/文件夹的名称做指定字符集的重命名或者文本文件的内容从源字符集转换为指定的字符集"	
+DesktopScreenshotCaption8	157	Text		File and Folder rename/convert UI with source Shift-JIS text	上のコマンドボタンバーで、名前の変更/変換ボタンを右クリックして、関連するオプションを表示します。	"选中一个文件或者文件后, 就可以右键弹出快捷菜单以便重命名/文本内容转换"	
+DesktopScreenshotCaption9	158	Text		when selected one item you can right-click mouse/right tapped to popup a context flyout for fast rename/convert item	"选中一个文件或者文件后, 就可以右键弹出快捷菜单以便重命名/文本内容转换"	"在上方的命令按钮条上, 右键点击重命名/转换按钮会弹出相关的选项."	
+DesktopScreenshotCaption10	159	Text		"right-click or right tapped on rename/convert AppBar command button, will popup the options for rename/convert"	ビューセット、あなたが今、窓ダーク/ライトのテーマだけでなく、ユーザーインターフェースの言語を設定することができます流暢ではないが、私を許してください場合は、今、機械翻訳のための英語/簡体字中国語/繁体字中国語/日本語、日本語ベースのインターフェイスをサポートしています	"设定视图, 现在可以设定窗口主题深色/浅色, 以及用户界面的语言, 现在支持英语/简体中文/繁体中文/日语, 日语界面为机器翻译为主, 如有不通顺请见谅"	
+MobileScreenshot1	200	Relative path (or URL to file in Dev Center)					
+MobileScreenshot2	201	Relative path (or URL to file in Dev Center)					
+MobileScreenshotCaption1	250	Text					
+MobileScreenshotCaption2	251	Text					
+StoreLogo720x1080	600	Relative path (or URL to file in Dev Center)					
+StoreLogo1080x1080	601	Relative path (or URL to file in Dev Center)					
+StoreLogo300x300	602	Relative path (or URL to file in Dev Center)					
+OverrideLogosForWin10	603	True/False		FALSE	FALSE	FALSE	FALSE
+StoreLogoOverride150x150	604	Relative path (or URL to file in Dev Center)					
+StoreLogoOverride71x71	605	Relative path (or URL to file in Dev Center)					
+PromoImage1920x1080	606	Relative path (or URL to file in Dev Center)					
+PromoImage2400x1200	607	Relative path (or URL to file in Dev Center)					
+OptionalPromo358x358	611	Relative path (or URL to file in Dev Center)					
+OptionalPromo1000x800	612	Relative path (or URL to file in Dev Center)					
+OptionalPromo414x180	613	Relative path (or URL to file in Dev Center)					
+Feature1	700	Text		"Text From/To URL, BASE64, QRCODE, BARCODE..."	BASE64コーデック画像	BASE64 编解码图像	BASE64 编解码图像
+Feature2	701	Text		"Load SVG Icon file, and convert it to windows icon images"	QRコードQRコードを生成する	生成QRCode二维码	生成QRCode二维码
+Feature3	702	Text			テキストまたはQRコード/画像を共有する	共享文本或者二维码/图像	共享文本或者二维码/图像
+Feature4	703	Text				SVG转换为图标系列图像文件	
+Feature5	704	Text					
+Feature6	705	Text					
+Feature7	706	Text					
+Feature8	707	Text					
+SearchTerm1	900	Text		String Encode Decode	テキストエンコーディングのデコード	文本 编码 解码	文本 編碼 解碼
+SearchTerm2	901	Text		Text Encode Decode	BASE64画像符号化復号化	BASE64 图像 编码 解码	BASE64 圖像 編碼 解碼
+SearchTerm3	902	Text		QRCode Generator Decode 	QRコードエンコードデコード	二维码 编码 解码	二維碼 編碼 解碼
+SearchTerm4	903	Text		Image From To Base64	1次元バーコードのエンコードとデコード	一维 条码 编码 解码	一維 條碼 編碼 解碼
+MobileScreenshot3	202	Relative path (or URL to file in Dev Center)					
+MobileScreenshot4	203	Relative path (or URL to file in Dev Center)					
+MobileScreenshot5	204	Relative path (or URL to file in Dev Center)					
+MobileScreenshot6	205	Relative path (or URL to file in Dev Center)					
+MobileScreenshot7	206	Relative path (or URL to file in Dev Center)					
+MobileScreenshot8	207	Relative path (or URL to file in Dev Center)					
+MobileScreenshot9	208	Relative path (or URL to file in Dev Center)					
+MobileScreenshot10	209	Relative path (or URL to file in Dev Center)					
+XboxScreenshot1	300	Relative path (or URL to file in Dev Center)					
+XboxScreenshot2	301	Relative path (or URL to file in Dev Center)					
+XboxScreenshot3	302	Relative path (or URL to file in Dev Center)					
+XboxScreenshot4	303	Relative path (or URL to file in Dev Center)					
+XboxScreenshot5	304	Relative path (or URL to file in Dev Center)					
+XboxScreenshot6	305	Relative path (or URL to file in Dev Center)					
+XboxScreenshot7	306	Relative path (or URL to file in Dev Center)					
+XboxScreenshot8	307	Relative path (or URL to file in Dev Center)					
+XboxScreenshot9	308	Relative path (or URL to file in Dev Center)					
+XboxScreenshot10	309	Relative path (or URL to file in Dev Center)					
+HolographicScreenshot1	400	Relative path (or URL to file in Dev Center)					
+HolographicScreenshot2	401	Relative path (or URL to file in Dev Center)					
+HolographicScreenshot3	402	Relative path (or URL to file in Dev Center)					
+HolographicScreenshot4	403	Relative path (or URL to file in Dev Center)					
+HolographicScreenshot5	404	Relative path (or URL to file in Dev Center)					
+HolographicScreenshot6	405	Relative path (or URL to file in Dev Center)					
+HolographicScreenshot7	406	Relative path (or URL to file in Dev Center)					
+HolographicScreenshot8	407	Relative path (or URL to file in Dev Center)					
+HolographicScreenshot9	408	Relative path (or URL to file in Dev Center)					
+HolographicScreenshot10	409	Relative path (or URL to file in Dev Center)					
+Trailer1	1000	Relative path (or URL to file in Dev Center)					
+Trailer2	1001	Relative path (or URL to file in Dev Center)					
+Trailer3	1002	Relative path (or URL to file in Dev Center)					
+Trailer4	1003	Relative path (or URL to file in Dev Center)					
+Trailer5	1004	Relative path (or URL to file in Dev Center)					
+Trailer6	1005	Relative path (or URL to file in Dev Center)					
+Trailer7	1006	Relative path (or URL to file in Dev Center)					
+Trailer8	1007	Relative path (or URL to file in Dev Center)					
+Trailer9	1008	Relative path (or URL to file in Dev Center)					
+Trailer10	1009	Relative path (or URL to file in Dev Center)					
+Trailer11	1010	Relative path (or URL to file in Dev Center)					
+Trailer12	1011	Relative path (or URL to file in Dev Center)					
+Trailer13	1012	Relative path (or URL to file in Dev Center)					
+Trailer14	1013	Relative path (or URL to file in Dev Center)					
+MobileScreenshotCaption3	252	Text					
+MobileScreenshotCaption4	253	Text					
+MobileScreenshotCaption5	254	Text					
+MobileScreenshotCaption6	255	Text					
+MobileScreenshotCaption7	256	Text					
+MobileScreenshotCaption8	257	Text					
+MobileScreenshotCaption9	258	Text					
+MobileScreenshotCaption10	259	Text					
+XboxScreenshotCaption1	350	Text					
+XboxScreenshotCaption2	351	Text					
+XboxScreenshotCaption3	352	Text					
+XboxScreenshotCaption4	353	Text					
+XboxScreenshotCaption5	354	Text					
+XboxScreenshotCaption6	355	Text					
+XboxScreenshotCaption7	356	Text					
+XboxScreenshotCaption8	357	Text					
+XboxScreenshotCaption9	358	Text					
+XboxScreenshotCaption10	359	Text					
+HolographicScreenshotCaption1	450	Text					
+HolographicScreenshotCaption2	451	Text					
+HolographicScreenshotCaption3	452	Text					
+HolographicScreenshotCaption4	453	Text					
+HolographicScreenshotCaption5	454	Text					
+HolographicScreenshotCaption6	455	Text					
+HolographicScreenshotCaption7	456	Text					
+HolographicScreenshotCaption8	457	Text					
+HolographicScreenshotCaption9	458	Text					
+HolographicScreenshotCaption10	459	Text					
+XboxBrandedKeyArt584x800	608	Relative path (or URL to file in Dev Center)					
+XboxTitledHero1920x1080	609	Relative path (or URL to file in Dev Center)					
+XboxFeaturedPromo1080x1080	610	Relative path (or URL to file in Dev Center)					
+Feature9	708	Text					
+Feature10	709	Text					
+Feature11	710	Text					
+Feature12	711	Text					
+Feature13	712	Text					
+Feature14	713	Text					
+Feature15	714	Text					
+Feature16	715	Text					
+Feature17	716	Text					
+Feature18	717	Text					
+Feature19	718	Text					
+Feature20	719	Text					
+MinimumHardwareReq1	800	Text					
+MinimumHardwareReq2	801	Text					
+MinimumHardwareReq3	802	Text					
+MinimumHardwareReq4	803	Text					
+MinimumHardwareReq5	804	Text					
+MinimumHardwareReq6	805	Text					
+MinimumHardwareReq7	806	Text					
+MinimumHardwareReq8	807	Text					
+MinimumHardwareReq9	808	Text					
+MinimumHardwareReq10	809	Text					
+MinimumHardwareReq11	810	Text					
+RecommendedHardwareReq1	850	Text					
+RecommendedHardwareReq2	851	Text					
+RecommendedHardwareReq3	852	Text					
+RecommendedHardwareReq4	853	Text					
+RecommendedHardwareReq5	854	Text					
+RecommendedHardwareReq6	855	Text					
+RecommendedHardwareReq7	856	Text					
+RecommendedHardwareReq8	857	Text					
+RecommendedHardwareReq9	858	Text					
+RecommendedHardwareReq10	859	Text					
+RecommendedHardwareReq11	860	Text					
+SearchTerm5	904	Text		SVG To Image	文字セット名の変更とテキストファイルの変換を指定する	指定字符集重命名以及转换文本文件	指定字符集重命名以及轉換文本檔案
+SearchTerm6	905	Text		File Folder change charset	SVG画像	SVG 图像	SVG 圖像
+SearchTerm7	906	Text					
+TrailerToPlayAtTopOfListing	999	Relative path (or URL to file in Dev Center)					
+Trailer15	1014	Relative path (or URL to file in Dev Center)					
+TrailerTitle1	1020	Text					
+TrailerTitle2	1021	Text					
+TrailerTitle3	1022	Text					
+TrailerTitle4	1023	Text					
+TrailerTitle5	1024	Text					
+TrailerTitle6	1025	Text					
+TrailerTitle7	1026	Text					
+TrailerTitle8	1027	Text					
+TrailerTitle9	1028	Text					
+TrailerTitle10	1029	Text					
+TrailerTitle11	1030	Text					
+TrailerTitle12	1031	Text					
+TrailerTitle13	1032	Text					
+TrailerTitle14	1033	Text					
+TrailerTitle15	1034	Text					
+TrailerThumbnail1	1040	Relative path (or URL to file in Dev Center)					
+TrailerThumbnail2	1041	Relative path (or URL to file in Dev Center)					
+TrailerThumbnail3	1042	Relative path (or URL to file in Dev Center)					
+TrailerThumbnail4	1043	Relative path (or URL to file in Dev Center)					
+TrailerThumbnail5	1044	Relative path (or URL to file in Dev Center)					
+TrailerThumbnail6	1045	Relative path (or URL to file in Dev Center)					
+TrailerThumbnail7	1046	Relative path (or URL to file in Dev Center)					
+TrailerThumbnail8	1047	Relative path (or URL to file in Dev Center)					
+TrailerThumbnail9	1048	Relative path (or URL to file in Dev Center)					
+TrailerThumbnail10	1049	Relative path (or URL to file in Dev Center)					
+TrailerThumbnail11	1050	Relative path (or URL to file in Dev Center)					
+TrailerThumbnail12	1051	Relative path (or URL to file in Dev Center)					
+TrailerThumbnail13	1052	Relative path (or URL to file in Dev Center)					
+TrailerThumbnail14	1053	Relative path (or URL to file in Dev Center)					
+TrailerThumbnail15	1054	Relative path (or URL to file in Dev Center)					

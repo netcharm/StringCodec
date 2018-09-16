@@ -71,6 +71,8 @@
                         <MenuFlyoutSeparator/>
                         <ToggleMenuFlyoutItem x:Name="optIconWin" x:Uid="optIconWin" Text="Windows Icons" IsChecked="True" Click="OptIcon_Click"/>
                         <ToggleMenuFlyoutItem x:Name="optIconUwp" x:Uid="optIconUwp" Text="UWP Logo Assets" Click="OptIcon_Click"/>
+                        <MenuFlyoutSeparator/>
+                        <ToggleMenuFlyoutItem x:Name="optIconSquare" x:Uid="optIconSquare" Text="Make Square Icons" IsChecked="False" Click="OptSquareIcon_Click"/>
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>

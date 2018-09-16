@@ -55,9 +55,9 @@ namespace StringCodec.UWP.Common
             args.TrackAsyncAction(Task.Run(async () =>
             {
                 // Load the background image and create an image brush from it
-                this.logoImage = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Square71x71Logo.scale-150.png"));
+                logoImage = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Square71x71Logo.scale-150.png"));
                 //this.logoImage = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/CheckboardPattern_3264.png"));
-                this.logoBrush = new CanvasImageBrush(sender, this.logoImage) { Opacity = 1.0f };
+                logoBrush = new CanvasImageBrush(sender, logoImage) { Opacity = 1.0f };
 
                 // Set the brush's edge behaviour to wrap, so the image repeats if the drawn region is too big
                 //this.logoBrush.ExtendX = this.logoBrush.ExtendY = CanvasEdgeBehavior.Wrap;
@@ -69,7 +69,7 @@ namespace StringCodec.UWP.Common
         {
             var session = args.DrawingSession;
             //session.FillRectangle(new Rect(new Point(), sender.RenderSize), this.logoBrush);
-            if(this.RequestedTheme == ElementTheme.Dark)
+            if(RequestedTheme == ElementTheme.Dark)
             {
                 session.DrawImage(logoImage);
             }

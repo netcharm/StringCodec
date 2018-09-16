@@ -804,4 +804,7 @@
   <data name="EncodingName" xml:space="preserve">
     <value>編碼名</value>
   </data>
+  <data name="optIconSquare.Text" xml:space="preserve">
+    <value>正方形圖標圖像</value>
+  </data>
 </root>
