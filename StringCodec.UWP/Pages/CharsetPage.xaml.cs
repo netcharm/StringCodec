@@ -440,7 +440,7 @@ namespace StringCodec.UWP.Pages
 
             ToggleMenuFlyoutItem[] optsSrc = new ToggleMenuFlyoutItem[] {optSrcAuto,
                 optSrcAscii,
-                optSrc1250, optSrc1251, optSrc1253, optSrc1254, optSrc1255, optSrc1256, optSrc1257, optSrc1258,
+                optSrc1250, optSrc1251, optSrc1252, optSrc1253, optSrc1254, optSrc1255, optSrc1256, optSrc1257, optSrc1258,
                 optSrcThai, optSrcRussian,
                 optSrcGBK, optSrcBIG5, optSrcJIS, optSrcKorean,
                 optSrcUnicode, optSrcUTF8
@@ -461,7 +461,7 @@ namespace StringCodec.UWP.Pages
 
             ToggleMenuFlyoutItem[] optsDst = new ToggleMenuFlyoutItem[] {optDstAuto,
                 optDstAscii,
-                optDst1250, optDst1251, optDst1253, optDst1254, optDst1255, optDst1256, optDst1257, optDst1258,
+                optDst1250, optDst1251, optDst1252, optDst1253, optDst1254, optDst1255, optDst1256, optDst1257, optDst1258,
                 optDstThai, optDstRussian,
                 optDstGBK, optDstBIG5, optDstJIS, optDstKorean,
                 optDstUnicode, optDstUTF8
