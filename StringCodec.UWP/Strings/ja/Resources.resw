@@ -762,6 +762,9 @@
   <data name="optLang1251.Text" xml:space="preserve">
     <value>キリル語</value>
   </data>
+  <data name="optLang1252.Text" xml:space="preserve">
+    <value>西ヨーロッパ</value>
+  </data>
   <data name="optLang1253.Text" xml:space="preserve">
     <value>ギリシャ語</value>
   </data>

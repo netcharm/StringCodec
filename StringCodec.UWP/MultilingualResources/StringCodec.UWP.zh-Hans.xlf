@@ -1006,6 +1006,10 @@
           <source>Cyrillic</source>
           <target state="translated">西里尔语</target>
         </trans-unit>
+        <trans-unit id="optLang1252.Text" translate="yes" xml:space="preserve">
+          <source>Western European</source>
+          <target state="translated">西欧语系</target>
+        </trans-unit>
         <trans-unit id="optLang1253.Text" translate="yes" xml:space="preserve">
           <source>Greek</source>
           <target state="translated">希腊语</target>

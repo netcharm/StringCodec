@@ -60,6 +60,8 @@ namespace StringCodec.UWP.Pages
                 btnCapture.Visibility = Visibility.Visible;
                 btnCapture.IsEnabled = true;
             }
+            btnCapture.Visibility = Visibility.Collapsed;
+            btnCapture.IsEnabled = false;
             #endregion
         }
 

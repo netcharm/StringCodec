@@ -762,6 +762,9 @@
   <data name="optLang1251.Text" xml:space="preserve">
     <value>西里尔语</value>
   </data>
+  <data name="optLang1252.Text" xml:space="preserve">
+    <value>西欧语系</value>
+  </data>
   <data name="optLang1253.Text" xml:space="preserve">
     <value>希腊语</value>
   </data>

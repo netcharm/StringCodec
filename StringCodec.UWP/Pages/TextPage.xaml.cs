@@ -125,7 +125,7 @@ namespace StringCodec.UWP.Pages
         {
             ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] {
                 optLangAscii,
-                optLang1250, optLang1251, optLang1253, optLang1254, optLang1255, optLang1256, optLang1257, optLang1258,
+                optLang1250, optLang1251, optLang1252, optLang1253, optLang1254, optLang1255, optLang1256, optLang1257, optLang1258,
                 optLangThai, optLangRussian,
                 optLangGBK, optLangBIG5, optLangJIS, optLangKorean,
                 optLangUnicode, optLangUTF8
