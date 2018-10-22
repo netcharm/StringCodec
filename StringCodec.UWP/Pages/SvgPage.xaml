@@ -124,8 +124,8 @@
                              Margin="12, 28, 0, 0" 
                              AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop"
                              CreateResources="BackgroundCanvas32_CreateResources" Draw="BackgroundCanvas32_Draw" />
-        <Viewbox Grid.Row="1" Grid.Column="1" StretchDirection="Both" Margin="12, 28, 0, 0" >
-            <Image x:Name="imgSvg" x:Uid="imgBase64" Stretch="Uniform" VerticalAlignment="Center" HorizontalAlignment="Center"
+        <Viewbox Grid.Row="1" Grid.Column="1" StretchDirection="Both" Margin="12, 28, 0, 0" x:Name="viewSvg">
+            <Image x:Name="imgSvg" x:Uid="imgBase64" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center"
                 AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" />
         </Viewbox>
     </Grid>

@@ -144,21 +144,28 @@ namespace StringCodec.UWP.Pages
                 imagelist.Clear();
                 foreach (var s in sizelist)
                 {
-                    var item = new ImageItem()
+                    try
                     {
-                        IsValid = valid,
-                        Size = s,
-                        Text = $"{s}x{s}",
-                        Margin = new Thickness(-12, 0, 0, 0),
-                        MinHeight = 96,
-                        MaxHeight = 256,
-                        Width = 256,
-                        Source = wb.Resize((int)s, (int)(s * factor), WriteableBitmapExtensions.Interpolation.Bilinear)
-                    };
-                    if (imgSvg.Tag is byte[]) item.Bytes = imgSvg.Tag as byte[];
-                    if (s > MinHeight) item.Height = s;
-                    if (!string.IsNullOrEmpty(SourceFileName)) item.SourceName = SourceFileName;
-                    imagelist.Add(item);
+                        var item = new ImageItem()
+                        {
+                            IsValid = valid,
+                            Size = s,
+                            Text = $"{s}x{s}",
+                            Margin = new Thickness(-12, 0, 0, 0),
+                            MinHeight = 96,
+                            MaxHeight = 256,
+                            Width = 256,
+                            Source = wb.Resize((int)s, (int)(s * factor), WriteableBitmapExtensions.Interpolation.Bilinear)
+                        };
+                        if (imgSvg.Tag is byte[]) item.Bytes = imgSvg.Tag as byte[];
+                        if (s > MinHeight) item.Height = s;
+                        if (!string.IsNullOrEmpty(SourceFileName)) item.SourceName = SourceFileName;
+                        imagelist.Add(item);
+                    }
+                    catch (Exception ex)
+                    {
+                        await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
+                    }
                 }
                 //ImageList.ItemsSource = imagelist;
                 //ImageList.SelectionMode = ListViewSelectionMode.None;
@@ -192,24 +199,30 @@ namespace StringCodec.UWP.Pages
                 imagelist.Clear();
                 foreach (var s in sizelist)
                 {
-
-                    var tw = s.Width;
-                    var th = s.Height;
-                    var item = new ImageItem()
+                    try
                     {
-                        IsValid = valid,
-                        Size = (int)Math.Max(s.Width, s.Height),
-                        Text = $"{tw}x{th}",
-                        Margin = new Thickness(-12, 0, 0, 0),
-                        MinHeight = 96,
-                        MaxHeight = 256,
-                        Width = 256,
-                        Source = wb.Resize((int)tw, (int)th, WriteableBitmapExtensions.Interpolation.Bilinear)
-                    };
-                    if (imgSvg.Tag is byte[]) item.Bytes = imgSvg.Tag as byte[];
-                    if (tw > MinHeight) item.Height = tw;
-                    if (!string.IsNullOrEmpty(SourceFileName)) item.SourceName = SourceFileName;
-                    imagelist.Add(item);
+                        var tw = s.Width;
+                        var th = s.Height;
+                        var item = new ImageItem()
+                        {
+                            IsValid = valid,
+                            Size = (int)Math.Max(s.Width, s.Height),
+                            Text = $"{tw}x{th}",
+                            Margin = new Thickness(-12, 0, 0, 0),
+                            MinHeight = 96,
+                            MaxHeight = 256,
+                            Width = 256,
+                            Source = wb.Resize((int)tw, (int)th, WriteableBitmapExtensions.Interpolation.Bilinear)
+                        };
+                        if (imgSvg.Tag is byte[]) item.Bytes = imgSvg.Tag as byte[];
+                        if (tw > MinHeight) item.Height = tw;
+                        if (!string.IsNullOrEmpty(SourceFileName)) item.SourceName = SourceFileName;
+                        imagelist.Add(item);
+                    }
+                    catch (Exception ex)
+                    {
+                        await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
+                    }
                 }
             }
         }
@@ -493,6 +506,7 @@ namespace StringCodec.UWP.Pages
                             var svgData = await SVG.CreateFromStorageFile(file);
                             imgSvg.Source = svgData.Source;
                             imgSvg.Tag = svgData.Bytes;
+                            viewSvg.StretchDirection = StretchDirection.Both;
                         }
                         //else if (file.FileType.ToLower().Equals(".xaml"))
                         //{
@@ -503,6 +517,7 @@ namespace StringCodec.UWP.Pages
                         else
                         {
                             imgSvg.Source = await file.ToWriteableBitmap();
+                            viewSvg.StretchDirection = StretchDirection.DownOnly;
                         }
                     }
                     break;
@@ -647,6 +662,17 @@ namespace StringCodec.UWP.Pages
                                         imgSvg.Tag = svg.Bytes;
                                     }
                                     imgSvg.Source = bitmapImage;
+                                    viewSvg.StretchDirection = StretchDirection.Both;
+                                }
+                                else if (storageFile.FileType.ToLower().Equals(".xaml"))
+                                {
+                                    //var xaml = await FileIO.ReadTextAsync(storageFile);
+                                    //var ui = xaml.LoadXAML();
+                                }
+                                else
+                                {
+                                    imgSvg.Source = await storageFile.ToWriteableBitmap();
+                                    viewSvg.StretchDirection = StretchDirection.DownOnly;
                                 }
                             }
                         }

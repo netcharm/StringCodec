@@ -31,6 +31,7 @@ using Windows.UI.Text;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Markup;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
@@ -90,7 +91,7 @@ namespace StringCodec.UWP.Common
             }
         }
 
-        private static string FixStyle(string content)
+        private static string FixStyle(string content, bool stretch = true)
         {
             string xmlsrc = content;
 
@@ -149,7 +150,7 @@ namespace StringCodec.UWP.Common
                         child.Attributes.InsertBefore(a, child.Attributes[0]);// Append(a);
                     }
 
-                    if (vw != null)
+                    if (vw != null && stretch)
                     {
                         var v = (XmlAttribute)vw;
                         int.TryParse(v.Value.Trim(), out w);
@@ -159,7 +160,7 @@ namespace StringCodec.UWP.Common
                         v.Value = "auto";
                     }
 
-                    if (vh != null)
+                    if (vh != null && stretch)
                     {
                         var v = (XmlAttribute)vh;
                         int.TryParse(v.Value.Trim(), out h);
@@ -222,10 +223,10 @@ namespace StringCodec.UWP.Common
             return (xmlsrc);
         }
 
-        private static byte[] FixStyle(byte[] bytes)
+        private static byte[] FixStyle(byte[] bytes, bool stretch=true)
         {
             var svgDoc = Encoding.UTF8.GetString(bytes);
-            var xmlsrc = FixStyle(svgDoc);
+            var xmlsrc = FixStyle(svgDoc, stretch);
             var arr = Encoding.UTF8.GetBytes(xmlsrc);
             return (arr);
         }
@@ -288,17 +289,17 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        public static async Task<SVG> CreateFromXml(string svgXml)
+        public static async Task<SVG> CreateFromXml(string svgXml, bool stretch = true)
         {
             var arr = Encoding.UTF8.GetBytes(svgXml);
-            return (await CreateFromBytes(arr));
+            return (await CreateFromBytes(arr, stretch));
         }
 
-        public static async Task<SVG> CreateFromBytes(byte[] svgBytes)
+        public static async Task<SVG> CreateFromBytes(byte[] svgBytes, bool stretch = true)
         {
             SVG result = new SVG
             {
-                Bytes = FixStyle(svgBytes)
+                Bytes = FixStyle(svgBytes, stretch)
             };
 
             try
@@ -323,7 +324,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        public static async Task<SVG> CreateFromStream(IRandomAccessStream svgStream)
+        public static async Task<SVG> CreateFromStream(IRandomAccessStream svgStream, bool stretch = true)
         {
             SVG result = new SVG();
             using (var byteStream = WindowsRuntimeStreamExtensions.AsStreamForRead(svgStream.GetInputStreamAt(0)))
@@ -331,13 +332,13 @@ namespace StringCodec.UWP.Common
                 using (MemoryStream ms = new MemoryStream())
                 {
                     await byteStream.CopyToAsync(ms);
-                    result = await CreateFromBytes(ms.ToArray());
+                    result = await CreateFromBytes(ms.ToArray(), stretch);
                 }
             }
             return (result);
         }
 
-        public static async Task<SVG> CreateFromStorageFile(StorageFile svgFile)
+        public static async Task<SVG> CreateFromStorageFile(StorageFile svgFile, bool stretch = true)
         {
             SVG result = new SVG();
             if (Utils.image_ext.Contains(svgFile.FileType.ToLower()))
@@ -345,7 +346,7 @@ namespace StringCodec.UWP.Common
                 if (svgFile.FileType.ToLower().Equals(".svg"))
                 {
                     byte[] bytes = WindowsRuntimeBufferExtensions.ToArray(await FileIO.ReadBufferAsync(svgFile));
-                    result = await CreateFromBytes(bytes);
+                    result = await CreateFromBytes(bytes, stretch);
                 }
             }
             return (result);
@@ -402,6 +403,28 @@ namespace StringCodec.UWP.Common
                 }
                 result.Source = image.Source as SvgImageSource;
             }
+            return (result);
+        }
+    }
+    #endregion
+
+    #region XAML UI/ICON Extensions
+    public static class XAMLExtentions
+    {
+        public static UIElement LoadXAML(this string xaml)
+        {
+            UIElement result = null;
+
+            var dpo = XamlReader.Load(xaml) as DependencyObject;
+            if (dpo is Viewbox)
+            {
+
+            }
+            else if (dpo is UIElement)
+            {
+                result = dpo as UIElement;
+            }
+
             return (result);
         }
     }
@@ -1514,6 +1537,7 @@ namespace StringCodec.UWP.Common
 
     class Utils
     {
+        //public static string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif", ".svg", ".xaml" };
         public static string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif", ".svg" };
         public static string[] text_ext = new string[] {
             ".txt", ".text", ".base64", ".md", ".me", ".html", ".rst", ".xml",
