@@ -210,34 +210,41 @@ namespace StringCodec.UWP.Common
         static public async Task<string> Encode(string content, CODEC Codec, bool LineBreak = false)
         {
             string result = string.Empty;
-            switch (Codec)
+            try
             {
-                case CODEC.URL:
-                    result = URL.Encode(content);
-                    break;
-                case CODEC.BASE64:
-                    result = await BASE64.Encode(content, LineBreak);
-                    break;
-                case CODEC.UUE:
-                    result = UUE.Encode(content);
-                    break;
-                case CODEC.XXE:
-                    result = XXE.Encode(content);
-                    break;
-                case CODEC.RAW:
-                    result = RAW.Encode(content);
-                    break;
-                case CODEC.QUOTED:
-                    result = QUOTED.Encode(content);
-                    break;
-                case CODEC.THUNDER:
-                    result = await THUNDER.Encode(content);
-                    break;
-                case CODEC.FLASHGET:
-                    result = await FLASHGET.Encode(content);
-                    break;
-                default:
-                    break;
+                switch (Codec)
+                {
+                    case CODEC.URL:
+                        result = URL.Encode(content);
+                        break;
+                    case CODEC.BASE64:
+                        result = await BASE64.Encode(content, LineBreak);
+                        break;
+                    case CODEC.UUE:
+                        result = UUE.Encode(content);
+                        break;
+                    case CODEC.XXE:
+                        result = XXE.Encode(content);
+                        break;
+                    case CODEC.RAW:
+                        result = RAW.Encode(content);
+                        break;
+                    case CODEC.QUOTED:
+                        result = QUOTED.Encode(content);
+                        break;
+                    case CODEC.THUNDER:
+                        result = await THUNDER.Encode(content);
+                        break;
+                    case CODEC.FLASHGET:
+                        result = await FLASHGET.Encode(content);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
             }
             return (result);
         }
@@ -460,34 +467,41 @@ namespace StringCodec.UWP.Common
         static public async Task<string> Decode(string content, CODEC Codec, Encoding enc)
         {
             string result = string.Empty;
-            switch (Codec)
+            try
             {
-                case CODEC.URL:
-                    result = URL.Decode(content, enc);
-                    break;
-                case CODEC.BASE64:
-                    result = await BASE64.Decode(content, enc);
-                    break;
-                case CODEC.UUE:
-                    result = UUE.Decode(content, enc);
-                    break;
-                case CODEC.XXE:
-                    result = XXE.Decode(content, enc);
-                    break;
-                case CODEC.RAW:
-                    result = RAW.Decode(content, enc);
-                    break;
-                case CODEC.QUOTED:
-                    result = QUOTED.Decode(content, enc);
-                    break;
-                case CODEC.THUNDER:
-                    result = await THUNDER.Decode(content, enc);
-                    break;
-                case CODEC.FLASHGET:
-                    result = await FLASHGET.Decode(content, enc);
-                    break;
-                default:
-                    break;
+                switch (Codec)
+                {
+                    case CODEC.URL:
+                        result = URL.Decode(content, enc);
+                        break;
+                    case CODEC.BASE64:
+                        result = await BASE64.Decode(content, enc);
+                        break;
+                    case CODEC.UUE:
+                        result = UUE.Decode(content, enc);
+                        break;
+                    case CODEC.XXE:
+                        result = XXE.Decode(content, enc);
+                        break;
+                    case CODEC.RAW:
+                        result = RAW.Decode(content, enc);
+                        break;
+                    case CODEC.QUOTED:
+                        result = QUOTED.Decode(content, enc);
+                        break;
+                    case CODEC.THUNDER:
+                        result = await THUNDER.Decode(content, enc);
+                        break;
+                    case CODEC.FLASHGET:
+                        result = await FLASHGET.Decode(content, enc);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
             }
             return (result);
         }
@@ -574,26 +588,32 @@ namespace StringCodec.UWP.Common
         static public async Task<string> ToBase64(this WriteableBitmap wb, string format, bool prefix, bool linebreak)
         {
             string result = string.Empty;
-            var size = wb.PixelWidth * wb.PixelHeight;
-            if (size > 196608)
+            try
             {
-                var dlgMessage = new MessageDialog("Image is big, it's maybe too slower to encoding & filling textbox. \n Continued?".T(), "Confirm".T()) { Options = MessageDialogOptions.AcceptUserInputAfterDelay };
-                dlgMessage.Commands.Add(new UICommand("OK".T()) { Id = 0 });
-                dlgMessage.Commands.Add(new UICommand("Cancel".T()) { Id = 1 });
-                // Set the command that will be invoked by default
-                dlgMessage.DefaultCommandIndex = 0;
-                // Set the command to be invoked when escape is pressed
-                dlgMessage.CancelCommandIndex = 1;
-                // Show the message dialog
-                var dlgResult = await dlgMessage.ShowAsync();
-                if ((int)dlgResult.Id == 0)
+                var size = wb.PixelWidth * wb.PixelHeight;
+                if (size > 196608)
                 {
-                    result = await ProgressEncode(wb, format, prefix, linebreak);
+                    var dlgMessage = new MessageDialog("Image is big, it's maybe too slower to encoding & filling textbox. \n Continued?".T(), "Confirm".T()) { Options = MessageDialogOptions.AcceptUserInputAfterDelay };
+                    dlgMessage.Commands.Add(new UICommand("OK".T()) { Id = 0 });
+                    dlgMessage.Commands.Add(new UICommand("Cancel".T()) { Id = 1 });
+                    // Set the command that will be invoked by default
+                    dlgMessage.DefaultCommandIndex = 0;
+                    // Set the command to be invoked when escape is pressed
+                    dlgMessage.CancelCommandIndex = 1;
+                    // Show the message dialog
+                    var dlgResult = await dlgMessage.ShowAsync();
+                    if ((int)dlgResult.Id == 0)
+                    {
+                        result = await ProgressEncode(wb, format, prefix, linebreak);
+                    }
                 }
+                else
+                    result = await Encode(wb, format, prefix, linebreak);
             }
-            else
-                result = await Encode(wb, format, prefix, linebreak);
-
+            catch(Exception ex)
+            {
+                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
+            }
             return (result);
         }
 
@@ -719,40 +739,45 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static public string ToString(this byte[] array, Encoding enc)
+        static public async Task<string> ToStringAsync(this byte[] array, Encoding enc)
         {
             var result = string.Empty;
-
-            if (array != null && array.Length > 0)
+            try
             {
-                // UTF-16
-                if (array[0] == 0xFF && array[1] == 0xFE)
-                    result = Encoding.Unicode.GetString(array.Skip(2).ToArray());
-                // UTF-16 Big-Endian
-                else if (array[0] == 0xFE && array[1] == 0xFF)
-                    result = Encoding.BigEndianUnicode.GetString(array.Skip(2).ToArray());
-                // UTF-8
-                else if (array[0] == 0xEF && array[1] == 0xBB && array[2] == 0xBF)
-                    result = Encoding.UTF8.GetString(array.Skip(3).ToArray());
-                // UTF-32
-                else if (array[0] == 0xFF && array[1] == 0xFE && array[2] == 0x00 && array[3] == 0x00)
-                    result = Encoding.UTF32.GetString(array.Skip(4).ToArray());
-                // UTF-32 Big-Endian
-                else if (array[0] == 0x00 && array[1] == 0x00 && array[2] == 0xFE && array[3] == 0xFF)
-                    result = Encoding.GetEncoding("utf-32BE").GetString(array.Skip(4).ToArray());
-                // UTF-7
-                else if (array[0] == 0x2B && array[1] == 0x2F && array[2] == 0x76 && (array[2] == 0x38 || array[2] == 0x39 || array[2] == 0x2B || array[2] == 0x2F))
-                    result = Encoding.UTF7.GetString(array.Skip(4).ToArray());
-                // UTF-1
-                //else if (array[0] == 0xF7 && array[1] == 0x64 && array[2] == 0x4C)
-                //    result = Encoding.GetEncoding("UTF-1").GetString(array.Skip(3).ToArray());
-                // GB-18030
-                else if (array[0] == 0x84 && array[1] == 0x31 && array[2] == 0x95 && array[3] == 0x33)
-                    result = Encoding.GetEncoding("GB18030").GetString(array.Skip(4).ToArray());
-                else
-                    result = enc.GetString(array);
+                if (array != null && array.Length > 0)
+                {
+                    // UTF-16
+                    if (array[0] == 0xFF && array[1] == 0xFE)
+                        result = Encoding.Unicode.GetString(array.Skip(2).ToArray());
+                    // UTF-16 Big-Endian
+                    else if (array[0] == 0xFE && array[1] == 0xFF)
+                        result = Encoding.BigEndianUnicode.GetString(array.Skip(2).ToArray());
+                    // UTF-8
+                    else if (array[0] == 0xEF && array[1] == 0xBB && array[2] == 0xBF)
+                        result = Encoding.UTF8.GetString(array.Skip(3).ToArray());
+                    // UTF-32
+                    else if (array[0] == 0xFF && array[1] == 0xFE && array[2] == 0x00 && array[3] == 0x00)
+                        result = Encoding.UTF32.GetString(array.Skip(4).ToArray());
+                    // UTF-32 Big-Endian
+                    else if (array[0] == 0x00 && array[1] == 0x00 && array[2] == 0xFE && array[3] == 0xFF)
+                        result = Encoding.GetEncoding("utf-32BE").GetString(array.Skip(4).ToArray());
+                    // UTF-7
+                    else if (array[0] == 0x2B && array[1] == 0x2F && array[2] == 0x76 && (array[2] == 0x38 || array[2] == 0x39 || array[2] == 0x2B || array[2] == 0x2F))
+                        result = Encoding.UTF7.GetString(array.Skip(4).ToArray());
+                    // UTF-1
+                    //else if (array[0] == 0xF7 && array[1] == 0x64 && array[2] == 0x4C)
+                    //    result = Encoding.GetEncoding("UTF-1").GetString(array.Skip(3).ToArray());
+                    // GB-18030
+                    else if (array[0] == 0x84 && array[1] == 0x31 && array[2] == 0x95 && array[3] == 0x33)
+                        result = Encoding.GetEncoding("GB18030").GetString(array.Skip(4).ToArray());
+                    else
+                        result = enc.GetString(array);
+                }
             }
-
+            catch (Exception ex)
+            {
+                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
+            }
             return (result);
         }
 

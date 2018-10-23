@@ -486,7 +486,7 @@ namespace StringCodec.UWP.Pages
 
         }
 
-        private void OptSrc_Click(object sender, RoutedEventArgs e)
+        private async void OptSrc_Click(object sender, RoutedEventArgs e)
         {
             ToggleMenuFlyoutItem[] btns = new ToggleMenuFlyoutItem[] { optSrcAuto,
                 optSrcAscii,
@@ -506,7 +506,7 @@ namespace StringCodec.UWP.Pages
 
             ConvertFrom(TreeFiles, CURRENT_SRCENC);
             if (fcontent != null && fcontent is byte[])
-                edSrc.Text = fcontent.ToString(CURRENT_SRCENC);
+                edSrc.Text = await fcontent.ToStringAsync(CURRENT_SRCENC);
         }
 
         private void OptDst_Click(object sender, RoutedEventArgs e)
@@ -616,7 +616,7 @@ namespace StringCodec.UWP.Pages
                                 reader.ReadBytes(fileContent);
                                 fcontent = (byte[])fileContent.Clone();
                                 if (fcontent != null && fcontent is byte[])
-                                    edSrc.Text = fcontent.ToString(CURRENT_SRCENC);
+                                    edSrc.Text = await fcontent.ToStringAsync(CURRENT_SRCENC);
                                 //string text = Encoding.Default.GetString(fileContent, 0, fileContent.Length);
                                 //edSrc.Text = text;
                                 args.Handled = true;
@@ -675,7 +675,7 @@ namespace StringCodec.UWP.Pages
                                     reader.ReadBytes(fileContent);
                                     fcontent = (byte[])fileContent.Clone();
                                     if (fcontent != null && fcontent is byte[])
-                                        edSrc.Text = fcontent.ToString(CURRENT_SRCENC);
+                                        edSrc.Text = await fcontent.ToStringAsync(CURRENT_SRCENC);
                                 }
                                 else
                                 {
