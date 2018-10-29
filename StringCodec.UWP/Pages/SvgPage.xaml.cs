@@ -238,6 +238,12 @@ namespace StringCodec.UWP.Pages
             MakeImages(new List<int>() { 256, 128 });
         }
 
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            BackgroundCanvas.RemoveFromVisualTree();
+            BackgroundCanvas = null;
+        }
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             if (e.Parameter != null)

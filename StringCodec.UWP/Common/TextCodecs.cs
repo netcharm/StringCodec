@@ -590,6 +590,7 @@ namespace StringCodec.UWP.Common
             string result = string.Empty;
             try
             {
+                if (wb == null || !(wb is WriteableBitmap)) return (result);
                 var size = wb.PixelWidth * wb.PixelHeight;
                 if (size > 196608)
                 {
@@ -604,6 +605,7 @@ namespace StringCodec.UWP.Common
                     var dlgResult = await dlgMessage.ShowAsync();
                     if ((int)dlgResult.Id == 0)
                     {
+                        if (string.IsNullOrEmpty(format)) format = ".png";
                         result = await ProgressEncode(wb, format, prefix, linebreak);
                     }
                 }
@@ -696,39 +698,87 @@ namespace StringCodec.UWP.Common
             {
                 int cp = System.Globalization.CultureInfo.InstalledUICulture.TextInfo.OEMCodePage;
 
-                byte[] arr = null;
-                switch (cp)
+                //// 判断韩语
+                //if (Regex.IsMatch(text, @"[\uac00-\ud7ff]+"))
+                //{
+                //    cp = 949;
+                //}
+                //// 判断日语
+                //else if (Regex.IsMatch(text, @"[\u0800-\u4e00]+"))
+                //{
+                //    cp = 932;
+                //}
+                //// 判断中文
+                //else if (Regex.IsMatch(text, @"[\u4e00-\u9fa5]+")) // 如果是中文
+                //{
+                //    cp = 936;
+                //}
+                var subtexts = text.Split(new char[]{ '\u30FB' });
+                List<string> sl = new List<string>();
+                foreach(var t in subtexts)
                 {
-                    case 936:
-                        arr = Encoding.GetEncoding("GBK").GetBytes(text);
-                        break;
-                    case 950:
-                        arr = Encoding.GetEncoding("BIG5").GetBytes(text);
-                        break;
-                    case 932:
-                        arr = Encoding.GetEncoding("Shift-JIS").GetBytes(text);
-                        break;
-                    case 949:
-                        arr = Encoding.GetEncoding("Korean").GetBytes(text);
-                        break;
-                    case 1200:
-                        arr = arr = Encoding.Unicode.GetBytes(text);
-                        break;
-                    case 1201:
-                        arr = Encoding.BigEndianUnicode.GetBytes(text);
-                        break;
-                    case 65000:
-                        arr = Encoding.UTF7.GetBytes(text);
-                        break;
-                    case 65001:
-                        arr = Encoding.UTF8.GetBytes(text);
-                        break;
-                    default:
-                        arr = Encoding.ASCII.GetBytes(text);
-                        break;
+                    byte[] arr = null;
+                    switch (cp)
+                    {
+                        case 936:
+                            arr = Encoding.GetEncoding("GBK").GetBytes(t);
+                            break;
+                        case 950:
+                            arr = Encoding.GetEncoding("BIG5").GetBytes(t);
+                            break;
+                        case 932:
+                            arr = Encoding.GetEncoding("Shift-JIS").GetBytes(t);
+                            break;
+                        case 949:
+                            arr = Encoding.GetEncoding("Korean").GetBytes(t);
+                            break;
+                        case 1200:
+                            arr = arr = Encoding.Unicode.GetBytes(t);
+                            break;
+                        case 1201:
+                            arr = Encoding.BigEndianUnicode.GetBytes(t);
+                            break;
+                        case 1250:
+                            arr = GetTextEncoder("1250").GetBytes(t);
+                            break;
+                        case 1251:
+                            arr = GetTextEncoder("1251").GetBytes(t);
+                            break;
+                        case 1252:
+                            arr = GetTextEncoder("1252").GetBytes(t);
+                            break;
+                        case 1253:
+                            arr = GetTextEncoder("1253").GetBytes(t);
+                            break;
+                        case 1254:
+                            arr = GetTextEncoder("1254").GetBytes(t);
+                            break;
+                        case 1255:
+                            arr = GetTextEncoder("1255").GetBytes(t);
+                            break;
+                        case 1256:
+                            arr = GetTextEncoder("1256").GetBytes(t);
+                            break;
+                        case 1257:
+                            arr = GetTextEncoder("1257").GetBytes(t);
+                            break;
+                        case 1258:
+                            arr = GetTextEncoder("1258").GetBytes(t);
+                            break;
+                        case 65000:
+                            arr = Encoding.UTF7.GetBytes(t);
+                            break;
+                        case 65001:
+                            arr = Encoding.UTF8.GetBytes(t);
+                            break;
+                        default:
+                            arr = Encoding.ASCII.GetBytes(t);
+                            break;
+                    }
+                    if (arr != null && arr.Length > 0)
+                        sl.Add(enc.GetString(arr));
                 }
-                if (arr != null && arr.Length > 0)
-                    result = enc.GetString(arr);
+                result = string.Join("\u30FB", sl);
             }
             else
             {

@@ -6,25 +6,39 @@
     xmlns:local="using:StringCodec.UWP.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:win2d="using:Microsoft.Graphics.Canvas.UI.Xaml"
     mc:Ignorable="d"
     Loaded="Page_Loaded"
+    Unloaded="Page_Unloaded"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
         <MenuFlyout x:Name="TreeNodeContextFlyout" x:Key="TreeNodeContextFlyout" Opened="TreeFilesNodeContextFlyout_Opened" Closed="TreeFilesNodeContextFlyout_Closed">
-            <MenuFlyoutItem x:Name="TreeNodeActionRename" x:Uid="ActionRename" Text="Rename To Current Charset" Icon="Rename" Click="TreeFilesNodeFlyout_Click" />
-            <MenuFlyoutItem x:Name="TreeNodeActionConvert" x:Uid="ActionConvert" Text="Convert Content To Target Charset" Icon="Save" Click="TreeFilesNodeFlyout_Click" />
-            <MenuFlyoutSeparator/>
-            <MenuFlyoutItem x:Name="TreeNodeActionClearAll" x:Uid="ActionClearAll" Text="Clear All Items" Icon="Clear" Click="TreeFilesNodeFlyout_Click" />
+            <MenuFlyoutItem x:Name="TreeNodeActionRename" x:Uid="ActionRename" Text="Rename To Current Charset" Icon="Rename" IsTapEnabled="True" Click="TreeFilesNodeFlyout_Click">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="F2" />
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem x:Name="TreeNodeActionConvert" x:Uid="ActionConvert" Text="Convert Content To Target Charset" Icon="Save" IsTapEnabled="True" Click="TreeFilesNodeFlyout_Click">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="F3" />
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
+            <MenuFlyoutSeparator />
+            <MenuFlyoutItem x:Name="TreeNodeActionClearAll" x:Uid="ActionClearAll" Text="Clear All Items" Icon="Clear" IsTapEnabled="True" Click="TreeFilesNodeFlyout_Click">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="F7" />
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
         </MenuFlyout>
 
-        <DataTemplate x:Key="TreeViewNodeTemplate" x:DataType="local:MyTreeViewNode">
-            <Grid Margin="0, 0, 0, 0"
+        <DataTemplate x:Key="TreeViewItemTemplate" x:DataType="local:MyTreeViewNode">
+            <Grid Margin="0"
                   HorizontalAlignment="Stretch"
-                  Tag="{x:Bind Node, Mode=OneWay}" 
+                  Tag="{x:Bind Node, Mode=OneWay}"
                   ContextFlyout="{StaticResource TreeNodeContextFlyout}">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="22"/>
+                    <ColumnDefinition Width="22" />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Grid.Background>
@@ -32,25 +46,31 @@
                 </Grid.Background>
 
                 <!--<Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <NavigationViewItem Grid.Column="0"  Width="Auto"
                                 Icon="{x:Bind Icon}" Content="{x:Bind Content, Mode=OneWay}"
                                 Tag="{x:Bind Node, Mode=OneWay}"
                                 Tapped="TreeNode_ItemInvoked"
-                                ContextFlyout="{StaticResource TreeNodeContextFlyout}"/>-->
+                                ContextFlyout="{StaticResource TreeNodeContextFlyout}" />-->
 
-                <TextBlock Grid.Column="0" 
+                <!--<Rectangle Grid.ColumnSpan="2" Fill="Aquamarine" Stretch="Fill"
                            ContextFlyout="{StaticResource TreeNodeContextFlyout}"
-                           Text="{x:Bind Icon.Glyph}" FontFamily="{x:Bind Icon.FontFamily}"
-                           Tag="{x:Bind Node, Mode=OneWay}"
-                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                           Tag="{x:Bind Node, Mode=OneWay}" />-->
 
+                <TextBlock Grid.Column="0"
+                           ContextFlyout="{StaticResource TreeNodeContextFlyout}"
+                           Text="{x:Bind Icon.Glyph, Mode=OneWay}" FontFamily="{x:Bind Icon.FontFamily}"
+                           Tag="{x:Bind Node, Mode=OneWay}"
+                           VerticalAlignment="Center" HorizontalAlignment="Center" />
+                
                 <TextBlock Grid.Column="1"
+                           Style="{ThemeResource BodyTextBlockStyle}"
                            ContextFlyout="{StaticResource TreeNodeContextFlyout}"
-                           Text="{x:Bind Content, Mode=OneWay}" 
+                           Text="{x:Bind Content, Mode=OneWay}"
                            Tag="{x:Bind Node, Mode=OneWay}"
-                           HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                           HorizontalTextAlignment="Left"
+                           HorizontalAlignment="Stretch" VerticalAlignment="Center" />
             </Grid>
         </DataTemplate>
 
@@ -60,8 +80,8 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="TreeView">
                         <TreeViewList x:Name="ListControl"
-                                      ItemTemplate="{StaticResource TreeViewNodeTemplate}"
-                                      ItemContainerStyle="{StaticResource TreeViewItemStyle}"                                      
+                                      ItemTemplate="{StaticResource TreeViewItemTemplate}"
+                                      ItemContainerStyle="{StaticResource TreeViewItemStyle}"
                                       CanDragItems="False"
                                       AllowDrop="False"
                                       CanReorderItems="False">
@@ -77,7 +97,9 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
+        <Style TargetType="TreeViewItem">
+            <Setter Property="ContextFlyout" Value="{StaticResource TreeNodeContextFlyout}" />
+        </Style>
     </Page.Resources>
 
     <Grid Margin="12, 0, 12, 12" x:Name="LayoutRoot">
@@ -86,74 +108,86 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width=".38*"/>
-            <ColumnDefinition Width=".62*"/>
+            <ColumnDefinition Width=".38*" />
+            <ColumnDefinition Width=".62*" />
         </Grid.ColumnDefinitions>
 
         <CommandBar Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="CmdBar" x:Uid="CmdBar">
-            <AppBarButton x:Name="btnOpenFolder" x:Uid="btnOpenFolder" Label="Folder" Icon="OpenLocal" ToolTipService.ToolTip="Open Folder" VerticalAlignment="Center" Click="AppBarButton_Click"  />
-            <AppBarButton x:Name="btnOpenFile" x:Uid="btnOpenFile" Label="File" Icon="OpenFile" ToolTipService.ToolTip="Open File" VerticalAlignment="Center" Click="AppBarButton_Click"  />
-            <AppBarButton x:Name="btnClearAll" x:Uid="btnClearAll" Label="Clear" Icon="Clear" ToolTipService.ToolTip="Clear All Items" VerticalAlignment="Center" Click="AppBarButton_Click"  />
+            <AppBarButton x:Name="btnOpenFolder" x:Uid="btnOpenFolder" Label="Folder" Icon="OpenLocal" ToolTipService.ToolTip="Open Folder" VerticalAlignment="Center" Click="AppBarButton_Click" />
+            <AppBarButton x:Name="btnOpenFile" x:Uid="btnOpenFile" Label="File" Icon="OpenFile" ToolTipService.ToolTip="Open File" VerticalAlignment="Center" Click="AppBarButton_Click" />
+            <AppBarButton x:Name="btnClearAll" x:Uid="btnClearAll" Label="Clear" Icon="Clear" ToolTipService.ToolTip="Clear All Items" VerticalAlignment="Center" Click="AppBarButton_Click" >
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="F7" />
+                </AppBarButton.KeyboardAccelerators>
+            </AppBarButton>
             <AppBarSeparator />
             <AppBarButton Grid.Column="0" x:Name="btnOptSrc" x:Uid="btnOptSrc" Icon="Character" Label="Source" VerticalAlignment="Center">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
                         <ToggleMenuFlyoutItem x:Name="optSrcGBK" x:Uid="optLangGBK" Text="GBK" Click="OptSrc_Click">
                             <ToggleMenuFlyoutItem.Icon>
-                                <FontIcon Glyph="&#xE98A;" FontFamily="Segoe MDL2 Assets"/>
+                                <FontIcon Glyph="&#xE98A;" FontFamily="Segoe MDL2 Assets" />
                             </ToggleMenuFlyoutItem.Icon>
                         </ToggleMenuFlyoutItem>
                         <ToggleMenuFlyoutItem x:Name="optSrcBIG5" x:Uid="optLangBIG5" Text="BIG-5" Click="OptSrc_Click">
                             <ToggleMenuFlyoutItem.Icon>
-                                <FontIcon Glyph="&#xE88C;" FontFamily="Segoe MDL2 Assets"/>
+                                <FontIcon Glyph="&#xE88C;" FontFamily="Segoe MDL2 Assets" />
                             </ToggleMenuFlyoutItem.Icon>
                         </ToggleMenuFlyoutItem>
                         <ToggleMenuFlyoutItem x:Name="optSrcJIS" x:Uid="optLangJIS" Text="Shift-JIS" Click="OptSrc_Click">
                             <ToggleMenuFlyoutItem.Icon>
-                                <FontIcon Glyph="&#xE986;" FontFamily="Segoe MDL2 Assets"/>
+                                <FontIcon Glyph="&#xE986;" FontFamily="Segoe MDL2 Assets" />
                             </ToggleMenuFlyoutItem.Icon>
                         </ToggleMenuFlyoutItem>
                         <ToggleMenuFlyoutItem x:Name="optSrcKorean" x:Uid="optLangKorean" Text="Korean" Click="OptSrc_Click">
                             <ToggleMenuFlyoutItem.Icon>
-                                <FontIcon Glyph="&#xE97D;" FontFamily="Segoe MDL2 Assets"/>
+                                <FontIcon Glyph="&#xE97D;" FontFamily="Segoe MDL2 Assets" />
                             </ToggleMenuFlyoutItem.Icon>
                         </ToggleMenuFlyoutItem>
                         <ToggleMenuFlyoutItem x:Name="optSrcAscii" x:Uid="optLangAscii" Text="ASCII" Click="OptSrc_Click">
                             <ToggleMenuFlyoutItem.Icon>
-                                <FontIcon Glyph="&#xE97E;" FontFamily="Segoe MDL2 Assets"/>
+                                <FontIcon Glyph="&#xE97E;" FontFamily="Segoe MDL2 Assets" />
                             </ToggleMenuFlyoutItem.Icon>
                         </ToggleMenuFlyoutItem>
-                        <MenuFlyoutSeparator/>
-                        <ToggleMenuFlyoutItem x:Name="optSrcUTF8" x:Uid="optLangUTF8" Text="UTF-8" Click="OptSrc_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optSrcUnicode" x:Uid="optLangUnicode" Text="Unicode" Click="OptSrc_Click"/>
-                        <MenuFlyoutSeparator/>
+                        <MenuFlyoutSeparator />
+                        <ToggleMenuFlyoutItem x:Name="optSrcUTF8" x:Uid="optLangUTF8" Text="UTF-8" Click="OptSrc_Click" />
+                        <ToggleMenuFlyoutItem x:Name="optSrcUnicode" x:Uid="optLangUnicode" Text="Unicode" Click="OptSrc_Click" />
+                        <MenuFlyoutSeparator />
                         <MenuFlyoutSubItem x:Name="optSrcOther" x:Uid="optLangOther" Text="Other Languages">
-                            <ToggleMenuFlyoutItem x:Name="optSrc1252" x:Uid="optLang1252" Text="Western European" Click="OptSrc_Click"/>
-                            <ToggleMenuFlyoutItem x:Name="optSrc1250" x:Uid="optLang1250" Text="Central European" Click="OptSrc_Click"/>
-                            <ToggleMenuFlyoutItem x:Name="optSrc1257" x:Uid="optLang1257" Text="Baltic" Click="OptSrc_Click"/>
-                            <ToggleMenuFlyoutItem x:Name="optSrc1254" x:Uid="optLang1254" Text="Turkish" Click="OptSrc_Click"/>
-                            <ToggleMenuFlyoutItem x:Name="optSrc1258" x:Uid="optLang1258" Text="Vietnamese" Click="OptSrc_Click"/>
-                            <MenuFlyoutSeparator/>
-                            <ToggleMenuFlyoutItem x:Name="optSrcRussian" x:Uid="optLangRussian" Text="Russian" Click="OptSrc_Click"/>
-                            <ToggleMenuFlyoutItem x:Name="optSrc1251" x:Uid="optLang1251" Text="Cyrillic" Click="OptSrc_Click"/>
-                            <ToggleMenuFlyoutItem x:Name="optSrc1253" x:Uid="optLang1253" Text="Greek" Click="OptSrc_Click"/>
-                            <MenuFlyoutSeparator/>
-                            <ToggleMenuFlyoutItem x:Name="optSrc1256" x:Uid="optLang1256" Text="Arabic" Click="OptSrc_Click"/>
-                            <ToggleMenuFlyoutItem x:Name="optSrc1255" x:Uid="optLang1255" Text="Hebrew" Click="OptSrc_Click"/>
-                            <MenuFlyoutSeparator/>
-                            <ToggleMenuFlyoutItem x:Name="optSrcThai" x:Uid="optLangThai" Text="Thai" Click="OptSrc_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optSrc1252" x:Uid="optLang1252" Text="Western European" Click="OptSrc_Click" />
+                            <ToggleMenuFlyoutItem x:Name="optSrc1250" x:Uid="optLang1250" Text="Central European" Click="OptSrc_Click" />
+                            <ToggleMenuFlyoutItem x:Name="optSrc1257" x:Uid="optLang1257" Text="Baltic" Click="OptSrc_Click" />
+                            <ToggleMenuFlyoutItem x:Name="optSrc1254" x:Uid="optLang1254" Text="Turkish" Click="OptSrc_Click" />
+                            <ToggleMenuFlyoutItem x:Name="optSrc1258" x:Uid="optLang1258" Text="Vietnamese" Click="OptSrc_Click" />
+                            <MenuFlyoutSeparator />
+                            <ToggleMenuFlyoutItem x:Name="optSrcRussian" x:Uid="optLangRussian" Text="Russian" Click="OptSrc_Click" />
+                            <ToggleMenuFlyoutItem x:Name="optSrc1251" x:Uid="optLang1251" Text="Cyrillic" Click="OptSrc_Click" />
+                            <ToggleMenuFlyoutItem x:Name="optSrc1253" x:Uid="optLang1253" Text="Greek" Click="OptSrc_Click" />
+                            <MenuFlyoutSeparator />
+                            <ToggleMenuFlyoutItem x:Name="optSrc1256" x:Uid="optLang1256" Text="Arabic" Click="OptSrc_Click" />
+                            <ToggleMenuFlyoutItem x:Name="optSrc1255" x:Uid="optLang1255" Text="Hebrew" Click="OptSrc_Click" />
+                            <MenuFlyoutSeparator />
+                            <ToggleMenuFlyoutItem x:Name="optSrcThai" x:Uid="optLangThai" Text="Thai" Click="OptSrc_Click" />
                         </MenuFlyoutSubItem>
-                        <MenuFlyoutSeparator/>
-                        <ToggleMenuFlyoutItem x:Name="optSrcAuto" x:Uid="optLangDefault" Text="Default" MinWidth="100" Click="OptSrc_Click"/>
+                        <MenuFlyoutSeparator />
+                        <ToggleMenuFlyoutItem x:Name="optSrcAuto" x:Uid="optLangDefault" Text="Default" MinWidth="100" Click="OptSrc_Click" />
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
             <AppBarButton x:Name="btnRename" x:Uid="btnRename" Label="Rename" Icon="Rename" ToolTipService.ToolTip="Rename selected filename to current source charset" VerticalAlignment="Center" Click="AppBarButton_Click">
                 <AppBarButton.ContextFlyout>
                     <MenuFlyout Opened="TreeFilesNodeContextFlyout_Opened" Closed="TreeFilesNodeContextFlyout_Closed">
-                        <MenuFlyoutItem x:Name="ActionRename" x:Uid="ActionRename" Text="Rename Selected Item" Click="TreeViewAction_Click"  />
-                        <MenuFlyoutItem x:Name="ActionRenameAll" x:Uid="ActionRenameAll" Text="Rename All Items" IsEnabled="False" Visibility="Collapsed" Click="TreeViewAction_Click" />
-                        <MenuFlyoutSeparator/>
+                        <MenuFlyoutItem x:Name="ActionRename" x:Uid="ActionRename" Text="Rename Selected Item" Click="TreeViewAction_Click">
+                            <MenuFlyoutItem.KeyboardAccelerators>
+                                <KeyboardAccelerator Key="F2" />
+                            </MenuFlyoutItem.KeyboardAccelerators>
+                        </MenuFlyoutItem>
+                        <MenuFlyoutItem x:Name="ActionRenameAll" x:Uid="ActionRenameAll" Text="Rename All Items" IsEnabled="False" Visibility="Collapsed" Click="TreeViewAction_Click">
+                            <MenuFlyoutItem.KeyboardAccelerators>
+                                <KeyboardAccelerator Key="F4" />
+                            </MenuFlyoutItem.KeyboardAccelerators>
+                        </MenuFlyoutItem>
+                        <MenuFlyoutSeparator />
                         <ToggleMenuFlyoutItem x:Name="optActionRename" x:Uid="optActionRename" Text="Replace Exists File" Click="TreeViewAction_Click" />
                     </MenuFlyout>
                 </AppBarButton.ContextFlyout>
@@ -164,60 +198,68 @@
                     <MenuFlyout>
                         <ToggleMenuFlyoutItem x:Name="optDstGBK" x:Uid="optLangGBK" Text="GBK" Click="OptDst_Click">
                             <ToggleMenuFlyoutItem.Icon>
-                                <FontIcon Glyph="&#xE98A;" FontFamily="Segoe MDL2 Assets"/>
+                                <FontIcon Glyph="&#xE98A;" FontFamily="Segoe MDL2 Assets" />
                             </ToggleMenuFlyoutItem.Icon>
                         </ToggleMenuFlyoutItem>
                         <ToggleMenuFlyoutItem x:Name="optDstBIG5" x:Uid="optLangBIG5" Text="BIG-5" Click="OptDst_Click">
                             <ToggleMenuFlyoutItem.Icon>
-                                <FontIcon Glyph="&#xE88C;" FontFamily="Segoe MDL2 Assets"/>
+                                <FontIcon Glyph="&#xE88C;" FontFamily="Segoe MDL2 Assets" />
                             </ToggleMenuFlyoutItem.Icon>
                         </ToggleMenuFlyoutItem>
                         <ToggleMenuFlyoutItem x:Name="optDstJIS" x:Uid="optLangJIS" Text="Shift-JIS" Click="OptDst_Click">
                             <ToggleMenuFlyoutItem.Icon>
-                                <FontIcon Glyph="&#xE986;" FontFamily="Segoe MDL2 Assets"/>
+                                <FontIcon Glyph="&#xE986;" FontFamily="Segoe MDL2 Assets" />
                             </ToggleMenuFlyoutItem.Icon>
                         </ToggleMenuFlyoutItem>
                         <ToggleMenuFlyoutItem x:Name="optDstKorean" x:Uid="optLangKorean" Text="Korean" Click="OptDst_Click">
                             <ToggleMenuFlyoutItem.Icon>
-                                <FontIcon Glyph="&#xE97D;" FontFamily="Segoe MDL2 Assets"/>
+                                <FontIcon Glyph="&#xE97D;" FontFamily="Segoe MDL2 Assets" />
                             </ToggleMenuFlyoutItem.Icon>
                         </ToggleMenuFlyoutItem>
                         <ToggleMenuFlyoutItem x:Name="optDstAscii" x:Uid="optLangAscii" Text="ASCII" Click="OptDst_Click">
                             <ToggleMenuFlyoutItem.Icon>
-                                <FontIcon Glyph="&#xE97E;" FontFamily="Segoe MDL2 Assets"/>
+                                <FontIcon Glyph="&#xE97E;" FontFamily="Segoe MDL2 Assets" />
                             </ToggleMenuFlyoutItem.Icon>
                         </ToggleMenuFlyoutItem>
-                        <MenuFlyoutSeparator/>
-                        <ToggleMenuFlyoutItem x:Name="optDstUTF8" x:Uid="optLangUTF8" Text="UTF-8" Click="OptDst_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optDstUnicode" x:Uid="optLangUnicode" Text="Unicode" Click="OptDst_Click"/>
-                        <MenuFlyoutSeparator/>
+                        <MenuFlyoutSeparator />
+                        <ToggleMenuFlyoutItem x:Name="optDstUTF8" x:Uid="optLangUTF8" Text="UTF-8" Click="OptDst_Click" />
+                        <ToggleMenuFlyoutItem x:Name="optDstUnicode" x:Uid="optLangUnicode" Text="Unicode" Click="OptDst_Click" />
+                        <MenuFlyoutSeparator />
                         <MenuFlyoutSubItem x:Name="optDstOther" x:Uid="optLangOther" Text="Other Languages">
-                            <ToggleMenuFlyoutItem x:Name="optDst1252" x:Uid="optLang1252" Text="Western European" Click="OptDst_Click"/>
-                            <ToggleMenuFlyoutItem x:Name="optDst1250" x:Uid="optLang1250" Text="Central European" Click="OptDst_Click"/>
-                            <ToggleMenuFlyoutItem x:Name="optDst1257" x:Uid="optLang1257" Text="Baltic" Click="OptDst_Click"/>
-                            <ToggleMenuFlyoutItem x:Name="optDst1254" x:Uid="optLang1254" Text="Turkish" Click="OptDst_Click"/>
-                            <ToggleMenuFlyoutItem x:Name="optDst1258" x:Uid="optLang1258" Text="Vietnamese" Click="OptDst_Click"/>
-                            <MenuFlyoutSeparator/>
-                            <ToggleMenuFlyoutItem x:Name="optDstRussian" x:Uid="optLangRussian" Text="Russian" Click="OptDst_Click"/>
-                            <ToggleMenuFlyoutItem x:Name="optDst1251" x:Uid="optLang1251" Text="Cyrillic" Click="OptDst_Click"/>
-                            <ToggleMenuFlyoutItem x:Name="optDst1253" x:Uid="optLang1253" Text="Greek" Click="OptDst_Click"/>
-                            <MenuFlyoutSeparator/>
-                            <ToggleMenuFlyoutItem x:Name="optDst1256" x:Uid="optLang1256" Text="Arabic" Click="OptDst_Click"/>
-                            <ToggleMenuFlyoutItem x:Name="optDst1255" x:Uid="optLang1255" Text="Hebrew" Click="OptDst_Click"/>
-                            <MenuFlyoutSeparator/>
-                            <ToggleMenuFlyoutItem x:Name="optDstThai" x:Uid="optLangThai" Text="Thai" Click="OptDst_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optDst1252" x:Uid="optLang1252" Text="Western European" Click="OptDst_Click" />
+                            <ToggleMenuFlyoutItem x:Name="optDst1250" x:Uid="optLang1250" Text="Central European" Click="OptDst_Click" />
+                            <ToggleMenuFlyoutItem x:Name="optDst1257" x:Uid="optLang1257" Text="Baltic" Click="OptDst_Click" />
+                            <ToggleMenuFlyoutItem x:Name="optDst1254" x:Uid="optLang1254" Text="Turkish" Click="OptDst_Click" />
+                            <ToggleMenuFlyoutItem x:Name="optDst1258" x:Uid="optLang1258" Text="Vietnamese" Click="OptDst_Click" />
+                            <MenuFlyoutSeparator />
+                            <ToggleMenuFlyoutItem x:Name="optDstRussian" x:Uid="optLangRussian" Text="Russian" Click="OptDst_Click" />
+                            <ToggleMenuFlyoutItem x:Name="optDst1251" x:Uid="optLang1251" Text="Cyrillic" Click="OptDst_Click" />
+                            <ToggleMenuFlyoutItem x:Name="optDst1253" x:Uid="optLang1253" Text="Greek" Click="OptDst_Click" />
+                            <MenuFlyoutSeparator />
+                            <ToggleMenuFlyoutItem x:Name="optDst1256" x:Uid="optLang1256" Text="Arabic" Click="OptDst_Click" />
+                            <ToggleMenuFlyoutItem x:Name="optDst1255" x:Uid="optLang1255" Text="Hebrew" Click="OptDst_Click" />
+                            <MenuFlyoutSeparator />
+                            <ToggleMenuFlyoutItem x:Name="optDstThai" x:Uid="optLangThai" Text="Thai" Click="OptDst_Click" />
                         </MenuFlyoutSubItem>
-                        <MenuFlyoutSeparator/>
-                        <ToggleMenuFlyoutItem x:Name="optDstAuto" x:Uid="optLangDefault" Text="Default" MinWidth="100" Click="OptDst_Click"/>
+                        <MenuFlyoutSeparator />
+                        <ToggleMenuFlyoutItem x:Name="optDstAuto" x:Uid="optLangDefault" Text="Default" MinWidth="100" Click="OptDst_Click" />
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
             <AppBarButton x:Name="btnConvert" x:Uid="btnConvert" Label="Convert" Icon="Save" ToolTipService.ToolTip="Convert selected file content to selected target charset" VerticalAlignment="Center" Click="AppBarButton_Click">
                 <AppBarButton.ContextFlyout>
                     <MenuFlyout Opened="TreeFilesNodeContextFlyout_Opened" Closed="TreeFilesNodeContextFlyout_Closed">
-                        <MenuFlyoutItem x:Name="ActionConvert" x:Uid="ActionConvert" Text="Convert Selected File" Click="TreeViewAction_Click" />
-                        <MenuFlyoutItem x:Name="ActionConvertAll" x:Uid="ActionConvertAll" Text="Convert All Text File" IsEnabled="False" Visibility="Collapsed" Click="TreeViewAction_Click" />
-                        <MenuFlyoutSeparator/>
+                        <MenuFlyoutItem x:Name="ActionConvert" x:Uid="ActionConvert" Text="Convert Selected File" Click="TreeViewAction_Click">
+                            <MenuFlyoutItem.KeyboardAccelerators>
+                                <KeyboardAccelerator Key="F3" />
+                            </MenuFlyoutItem.KeyboardAccelerators>
+                        </MenuFlyoutItem>
+                        <MenuFlyoutItem x:Name="ActionConvertAll" x:Uid="ActionConvertAll" Text="Convert All Text File" IsEnabled="False" Visibility="Collapsed" Click="TreeViewAction_Click">
+                            <MenuFlyoutItem.KeyboardAccelerators>
+                                <KeyboardAccelerator Key="F5" />
+                            </MenuFlyoutItem.KeyboardAccelerators>
+                        </MenuFlyoutItem>
+                        <MenuFlyoutSeparator />
                         <ToggleMenuFlyoutItem x:Name="optActionConvert" x:Uid="optActionConvert" Text="Overwrite Original File" Click="TreeViewAction_Click" />
                     </MenuFlyout>
                 </AppBarButton.ContextFlyout>
@@ -230,52 +272,69 @@
                 <AppBarButton x:Name="optFolderDeep" x:Uid="optFolderDeep" Label="Folder Deep" IsEnabled="False">
                     <AppBarButton.Flyout>
                         <MenuFlyout Placement="Left">
-                            <ToggleMenuFlyoutItem x:Name="optFolderDeepF" x:Uid="optFolderDeepF" Text="All Sub-Tree" Click="OptFolderDeep_Click"/>
-                            <ToggleMenuFlyoutItem x:Name="optFolderDeep0" x:Uid="optFolderDeep0" Text="Current Folder" Click="OptFolderDeep_Click"/>
-                            <ToggleMenuFlyoutItem x:Name="optFolderDeep1" x:Uid="optFolderDeep1" Text="Level 1" Click="OptFolderDeep_Click"/>
-                            <ToggleMenuFlyoutItem x:Name="optFolderDeep2" x:Uid="optFolderDeep2" Text="Level 2" Click="OptFolderDeep_Click"/>
-                            <ToggleMenuFlyoutItem x:Name="optFolderDeep3" x:Uid="optFolderDeep3" Text="Level 3" Click="OptFolderDeep_Click"/>
-                            <ToggleMenuFlyoutItem x:Name="optFolderDeep4" x:Uid="optFolderDeep4" Text="Level 4" Click="OptFolderDeep_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optFolderDeepF" x:Uid="optFolderDeepF" Text="All Sub-Tree" Click="OptFolderDeep_Click" />
+                            <ToggleMenuFlyoutItem x:Name="optFolderDeep0" x:Uid="optFolderDeep0" Text="Current Folder" Click="OptFolderDeep_Click" />
+                            <ToggleMenuFlyoutItem x:Name="optFolderDeep1" x:Uid="optFolderDeep1" Text="Level 1" Click="OptFolderDeep_Click" />
+                            <ToggleMenuFlyoutItem x:Name="optFolderDeep2" x:Uid="optFolderDeep2" Text="Level 2" Click="OptFolderDeep_Click" />
+                            <ToggleMenuFlyoutItem x:Name="optFolderDeep3" x:Uid="optFolderDeep3" Text="Level 3" Click="OptFolderDeep_Click" />
+                            <ToggleMenuFlyoutItem x:Name="optFolderDeep4" x:Uid="optFolderDeep4" Text="Level 4" Click="OptFolderDeep_Click" />
                         </MenuFlyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>
-                <AppBarSeparator/>
+                <AppBarSeparator />
                 <AppBarToggleButton x:Name="optWrapText" x:Uid="optWrapText" Label="Wrap Text" Click="OptWrap_Click">
                     <AppBarToggleButton.Icon>
-                        <FontIcon Glyph="&#xE751;" FontFamily="Segoe MDL2 Assets"/>
+                        <FontIcon Glyph="&#xE751;" FontFamily="Segoe MDL2 Assets" />
                     </AppBarToggleButton.Icon>
                 </AppBarToggleButton>
-                <!--<AppBarButton Label="About"/>-->
+                <!--<AppBarButton Label="About" />-->
             </CommandBar.SecondaryCommands>
 
             <CommandBar.Content>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <!--<ProgressRing Grid.Column="0" x:Name="ring" x:Uid="Ring" VerticalAlignment="Center"/>-->
-                    <TextBlock Grid.Column="1" x:Name="edInfo" x:Uid="edInfo" Text="" Margin="12,14" VerticalAlignment="Center"/>
+                    <!--<ProgressRing Grid.Column="0" x:Name="ring" x:Uid="Ring" VerticalAlignment="Center" />-->
+                    <TextBlock Grid.Column="1" x:Name="edInfo" x:Uid="edInfo" Text="" Margin="12,14" VerticalAlignment="Center" />
                 </Grid>
             </CommandBar.Content>
         </CommandBar>
 
-
-        <TreeView Grid.Row="1" Grid.Column="0" x:Name="TreeFiles" x:Uid="tvFiles" 
+        <TreeView Grid.Row="1" Grid.Column="0" x:Name="TreeFiles" x:Uid="tvFiles"
                   Margin="8,16,0,8" CanDrag="False" SelectionMode="Single"
-                  ScrollViewer.VerticalScrollBarVisibility="Auto" 
-                  ScrollViewer.HorizontalScrollBarVisibility="Auto" 
-                  ItemInvoked="TreeView_ItemInvoked" IsRightTapEnabled="True"
+                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                  ItemInvoked="TreeView_ItemInvoked" IsRightTapEnabled="True" IsHoldingEnabled="True"
+                  UseSystemFocusVisuals="True"
                   Expanding="TreeFiles_Expanding"
-                  AllowDrop="False" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" Collapsed="TreeFiles_Collapsed"/>
+                  AllowDrop="False" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" Collapsed="TreeFiles_Collapsed" />
 
-        <TextBox Grid.Row="1" Grid.Column="1" x:Name="edSrc" x:Uid="edSrcContent" 
+        <TextBox Grid.Row="1" Grid.Column="1" x:Name="edSrc" x:Uid="edSrcContent"
                  Header="Contents:" PlaceholderText="Here is text file contents" Margin="8,16,8,8"
                  AcceptsReturn="True" CanDrag="False"
                  FontSize="16"
-                 ScrollViewer.VerticalScrollBarVisibility="Auto" 
-                 ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                 Visibility="Collapsed"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
                  TextChanged="edSrc_TextChanged"
                  AllowDrop="False" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" />
+
+        <Grid Grid.Row="1" Grid.Column="1" Margin="8, 16, 8, 8" x:Name="ImagePreview" Visibility="Collapsed">
+            <win2d:CanvasControl x:Name="BackgroundCanvas"                                  
+                                 AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop"
+                                 CreateResources="BackgroundCanvas_CreateResources" Draw="BackgroundCanvas_Draw" />
+            <Viewbox StretchDirection="DownOnly" Margin="8" x:Name="viewImage">
+                <Image x:Name="imgPreview" x:Uid="imgPreview" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center"
+                AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" />
+            </Viewbox>
+        </Grid>
+        <TextBlock Grid.Row="1" Grid.Column="1" Margin="8, 16, 8, 8" 
+                   x:Name="UnknownFileInfo" Visibility="Collapsed"
+                   FontSize="256" FontWeight="SemiBold"
+                   Text="?" Opacity="0.38" 
+                   HorizontalTextAlignment="Center"
+                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
     </Grid>
 </Page>

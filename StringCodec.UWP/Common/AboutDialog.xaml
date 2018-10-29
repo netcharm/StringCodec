@@ -10,6 +10,7 @@
     x:Name="AboutMeDialog"
     x:Uid="AboutDialog"
     Title="About"
+    Unloaded="Dialog_Unloaded"
     PrimaryButtonText="OK"
     PrimaryButtonClick="ContentDialog_PrimaryButtonClick">
 

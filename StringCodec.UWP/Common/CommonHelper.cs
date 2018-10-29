@@ -1,6 +1,7 @@
 ﻿using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Svg;
 using Microsoft.Graphics.Canvas.Text;
+using Microsoft.Graphics.Canvas.UI.Xaml;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -787,6 +788,22 @@ namespace StringCodec.UWP.Common
         #endregion
 
         #region WriteableBitmmap Converter
+        private static ImageSource _UnknownImage = new BitmapImage(new Uri("ms-appx:///Assets/unknown_file.png"));
+
+        public static ImageSource UnknowFile()
+        {
+            if(!(_UnknownImage is ImageSource))
+                _UnknownImage = new BitmapImage(new Uri("ms-appx:///Assets/unknown_file.png"));
+            return (_UnknownImage);
+        }
+
+        public static ImageSource UnknowFile(this StorageFile file)
+        {
+            if (!(_UnknownImage is ImageSource))
+                _UnknownImage = new BitmapImage(new Uri("ms-appx:///Assets/unknown_file.png"));
+            return (_UnknownImage);
+        }
+
         public static byte[] ToBytes(this WriteableBitmap image)
         {
             if (image == null) return (null);
@@ -1538,7 +1555,8 @@ namespace StringCodec.UWP.Common
     class Utils
     {
         //public static string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif", ".svg", ".xaml" };
-        public static string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif", ".svg" };
+        public static string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif", ".svg", ".spa", ".sph" };
+        public static string[] image_exts = new string[] { ".pcx", ".tga", ".ras", ".sun", ".ppm", ".pgm", ".pbm", ".pnm", ".sgi"};
         public static string[] text_ext = new string[] {
             ".txt", ".text", ".base64", ".md", ".me", ".html", ".rst", ".xml",
             ".cs", ".xaml",".js", ".ts", ".cpp", ".hpp", ".c", ".h", ".vb", ".vbs", ".py", ".pyw",".pas",

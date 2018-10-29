@@ -1,4 +1,9 @@
-﻿using StringCodec.UWP.Common;
+﻿using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.Brushes;
+using Microsoft.Graphics.Canvas.Effects;
+using Microsoft.Graphics.Canvas.UI;
+using Microsoft.Graphics.Canvas.UI.Xaml;
+using StringCodec.UWP.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -32,6 +37,12 @@ namespace StringCodec.UWP.Pages
     /// </summary>
     public sealed partial class CharsetPage : Page
     {
+        private CanvasBitmap backgroundImage32;
+        private CanvasImageBrush backgroundBrush32;
+        private CanvasBitmap unknownFileImage;
+        private CanvasImageBrush unknownFileBrush;
+        private bool UNKNOWNFILE = false;
+
         private Encoding CURRENT_SRCENC = Encoding.Default;
         private Encoding CURRENT_DSTENC = Encoding.Default;
         private int CURRENT_TREEDEEP = 2;
@@ -61,6 +72,14 @@ namespace StringCodec.UWP.Pages
             bool IsTextNodeSelected = IsSelected && 
                                       (TreeFiles.SelectedNodes[0] as MyTreeViewNode).StorageItem is StorageFile &&
                                       Utils.text_ext.Contains(((TreeFiles.SelectedNodes[0] as MyTreeViewNode).StorageItem as StorageFile).FileType);
+            if(TreeFiles.SelectionMode == TreeViewSelectionMode.Multiple)
+            {
+                foreach (var cnode in TreeFiles.SelectedNodes)
+                {
+                    IsTextNodeSelected = IsTextNodeSelected || ((cnode as MyTreeViewNode).StorageItem is StorageFile &&
+                                      Utils.text_ext.Contains(((cnode as MyTreeViewNode).StorageItem as StorageFile).FileType));
+                }
+            }
 
             if (target is TreeViewNode || IsSelected)
             {
@@ -362,33 +381,50 @@ namespace StringCodec.UWP.Pages
             {
                 if (IsDropped) return (result);
 
-                var cnode = target;
-                if (cnode is TreeViewNode)
+                if (target is TreeViewNode)
                 {
+                    if (flist.ContainsKey(target))
+                    {
+                        var f = flist[target];
 
+                        if (CURRENT_RENAME_REPLACE)
+                            await f.RenameAsync(f.Name.ConvertFrom(CURRENT_SRCENC, true), NameCollisionOption.ReplaceExisting);
+                        else
+                            await f.RenameAsync(f.Name.ConvertFrom(CURRENT_SRCENC, true), NameCollisionOption.GenerateUniqueName);
+
+                        target.Content = f.Name;
+                        if (target.HasChildren)
+                            await RefreshFolder(target);
+
+                        result = true;
+                    }
                 }
                 else if (TreeFiles.SelectedNodes.Count > 0)
                 {
-                    cnode = TreeFiles.SelectedNodes[0];
+                    foreach(var cnode in TreeFiles.SelectedNodes)
+                    {
+                        if (flist.ContainsKey(cnode))
+                        {
+                            var f = flist[cnode];
+
+                            var fn = f.Name.ConvertFrom(CURRENT_SRCENC, true);
+                            if(!fn.Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))
+                            {
+                                if (CURRENT_RENAME_REPLACE)
+                                    await f.RenameAsync(fn, NameCollisionOption.ReplaceExisting);
+                                else
+                                    await f.RenameAsync(fn, NameCollisionOption.GenerateUniqueName);
+
+                                cnode.Content = f.Name;
+                                if (cnode.HasChildren)
+                                    await RefreshFolder(cnode);
+                            }
+                        }
+                    }
+                    //TreeFiles.itemtype
+                    //TreeFiles.SelectedNodes.Clear();
+                    result = true;
                 }
-                else return (result);
-
-                //cnode = tvFiles.SelectedNodes[0];
-                if (!flist.ContainsKey(cnode)) return (result);
-
-                var f = flist[cnode];
-
-                if (CURRENT_RENAME_REPLACE)
-                    await f.RenameAsync(f.Name.ConvertFrom(CURRENT_SRCENC, true), NameCollisionOption.ReplaceExisting);
-                else
-                    await f.RenameAsync(f.Name.ConvertFrom(CURRENT_SRCENC, true), NameCollisionOption.GenerateUniqueName);
-
-                cnode.Content = f.Name;
-                if (cnode.HasChildren)
-                {
-                    await RefreshFolder(cnode);
-                }
-                result = true;
             }
             catch (Exception ex)
             {
@@ -402,25 +438,37 @@ namespace StringCodec.UWP.Pages
             bool result = false;
 
             if (IsDropped) return (result);
-            var cnode = target;
-            if (cnode is TreeViewNode)
+            if (target is TreeViewNode)
             {
+                if (flist.ContainsKey(target))
+                {
+                    var f = flist[target];
 
+                    if (f is StorageFile)
+                    {
+                        var file = f as StorageFile;
+                        result = await Utils.ConvertFile(file, CURRENT_SRCENC, CURRENT_DSTENC, CURRENT_CONVERT_ORIGINAL);
+                    }
+                }
             }
             else if (TreeFiles.SelectedNodes.Count > 0)
             {
-                cnode = TreeFiles.SelectedNodes[0];
-            }
-            else return (result);
-
-            if (!flist.ContainsKey(cnode)) return (result);
-
-            var f = flist[cnode];
-
-            if (f is StorageFile)
-            {
-                var file = f as StorageFile;
-                result = await Utils.ConvertFile(file, CURRENT_SRCENC, CURRENT_DSTENC, CURRENT_CONVERT_ORIGINAL);
+                foreach(var cnode in TreeFiles.SelectedNodes)
+                {
+                    if (flist.ContainsKey(cnode))
+                    {
+                        var f = flist[cnode];
+                        if (f is StorageFile)
+                        {
+                            var file = f as StorageFile;
+                            var cresult = await Utils.ConvertFile(file, CURRENT_SRCENC, CURRENT_DSTENC, CURRENT_CONVERT_ORIGINAL);
+                            //if(cresult) TreeFiles.SelectedNodes.Remove(cnode);
+                            result = cresult && result;
+                        }
+                    }
+                }
+                //TreeFiles.SelectedNodes.Clear();
+                //TreeFiles.UpdateLayout();
             }
             return (result);
         }
@@ -484,6 +532,12 @@ namespace StringCodec.UWP.Pages
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            BackgroundCanvas.RemoveFromVisualTree();
+            BackgroundCanvas = null;
         }
 
         private async void OptSrc_Click(object sender, RoutedEventArgs e)
@@ -590,13 +644,21 @@ namespace StringCodec.UWP.Pages
             {
                 CURRENT_CONVERT_ORIGINAL = optActionConvert.IsChecked;
             }
+            else if(sender == btnClearAll || sender == TreeNodeActionClearAll)
+            {
+                ClearTree(TreeFiles);
+            }
         }
 
         private async void TreeView_ItemInvoked(TreeView sender, TreeViewItemInvokedEventArgs args)
         {
             TreeViewNode item = args.InvokedItem as TreeViewNode;
-            TreeFiles.SelectedNodes.Clear();
-            TreeFiles.SelectedNodes.Add(item);
+            if(TreeFiles.SelectionMode == TreeViewSelectionMode.Single)
+            {
+                //if (!Window.Current.CoreWindow.GetKeyState(Windows.System.VirtualKey.Control).HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down))
+                    TreeFiles.SelectedNodes.Clear();
+                TreeFiles.SelectedNodes.Add(item);
+            }
             if (flist.ContainsKey(item))
             {
                 var file = flist[item];
@@ -609,7 +671,10 @@ namespace StringCodec.UWP.Pages
                             var f = file as StorageFile;
                             if (Utils.text_ext.Contains(f.FileType))
                             {
-                                //edSrc.Text = await FileIO.ReadTextAsync(f, Windows.Storage.Streams.UnicodeEncoding.Utf8);
+                                edSrc.Visibility = Visibility.Visible;
+                                ImagePreview.Visibility = Visibility.Collapsed;
+                                UnknownFileInfo.Visibility = Visibility.Collapsed;
+
                                 IBuffer buffer = await FileIO.ReadBufferAsync(f);
                                 DataReader reader = DataReader.FromBuffer(buffer);
                                 byte[] fileContent = new byte[reader.UnconsumedBufferLength];
@@ -617,15 +682,31 @@ namespace StringCodec.UWP.Pages
                                 fcontent = (byte[])fileContent.Clone();
                                 if (fcontent != null && fcontent is byte[])
                                     edSrc.Text = await fcontent.ToStringAsync(CURRENT_SRCENC);
-                                //string text = Encoding.Default.GetString(fileContent, 0, fileContent.Length);
-                                //edSrc.Text = text;
                                 args.Handled = true;
+                                UNKNOWNFILE = false;
+                            }
+                            else if (Utils.image_ext.Contains(f.FileType))
+                            {
+                                edSrc.Visibility = Visibility.Collapsed;
+                                ImagePreview.Visibility = Visibility.Visible;
+                                UnknownFileInfo.Visibility = Visibility.Collapsed;
+
+                                imgPreview.Source = await f.ToWriteableBitmap();
+                                UNKNOWNFILE = false;
                             }
                             else
                             {
+                                edSrc.Visibility = Visibility.Collapsed;
+                                ImagePreview.Visibility = Visibility.Collapsed;
+                                UnknownFileInfo.Visibility = Visibility.Visible;
+                                //imgPreview.Source = f.UnknowFile();
+                                imgPreview.Source = null;
+                                UNKNOWNFILE = true;
+
                                 edSrc.Text = string.Empty;
                                 fcontent = null;
                             }
+                            //BackgroundCanvas.Invalidate();
                         }
                         catch (Exception ex)
                         {
@@ -651,54 +732,20 @@ namespace StringCodec.UWP.Pages
             args.Node.HasUnrealizedChildren = true;
         }
 
-        private async void TreeFiles_ItemInvoked(object sender, TappedRoutedEventArgs e)
-        {
-            NavigationViewItem item = sender as NavigationViewItem;
-            if (item.Tag is TreeViewNode)
-            {
-                TreeViewNode node = item.Tag as TreeViewNode;
-                if (flist.ContainsKey(node))
-                {
-                    var file = flist[node];
-                    if (file != null)
-                    {
-                        if (file is StorageFile)
-                        {
-                            try
-                            {
-                                var f = file as StorageFile;
-                                if (Utils.text_ext.Contains(f.FileType))
-                                {
-                                    IBuffer buffer = await FileIO.ReadBufferAsync(f);
-                                    DataReader reader = DataReader.FromBuffer(buffer);
-                                    byte[] fileContent = new byte[reader.UnconsumedBufferLength];
-                                    reader.ReadBytes(fileContent);
-                                    fcontent = (byte[])fileContent.Clone();
-                                    if (fcontent != null && fcontent is byte[])
-                                        edSrc.Text = await fcontent.ToStringAsync(CURRENT_SRCENC);
-                                }
-                                else
-                                {
-                                    edSrc.Text = string.Empty;
-                                    fcontent = null;
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         private void TreeFilesNodeContextFlyout_Opened(object sender, object e)
         {
             if (sender is MenuFlyout)
             {
                 var ft = (sender as MenuFlyout).Target;
-                if (ft.Tag is MyTreeViewNode) target = ft.Tag as MyTreeViewNode;
+                if (ft.Tag is MyTreeViewNode)
+                {
+                    target = ft.Tag as MyTreeViewNode;
+                    if (TreeFiles.SelectionMode == TreeViewSelectionMode.Single)
+                    {
+                        TreeFiles.SelectedNodes.Clear();
+                        TreeFiles.SelectedNodes.Add(target as TreeViewNode);
+                    }
+                }
             }
             CheckFlyoutValid();
         }
@@ -728,6 +775,50 @@ namespace StringCodec.UWP.Pages
         }
         #endregion
 
+        #region Draw Canvas Background Checkboard
+        private void BackgroundCanvas_CreateResources(CanvasControl sender, CanvasCreateResourcesEventArgs args)
+        {
+            args.TrackAsyncAction(Task.Run(async () =>
+            {
+                unknownFileImage = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/unknown_file.png"));
+                unknownFileBrush = new CanvasImageBrush(sender, unknownFileImage) { Opacity = 0.3f };
+
+                // Load the background image and create an image brush from it
+                backgroundImage32 = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/CheckboardPattern_3264.png"));
+                backgroundBrush32 = new CanvasImageBrush(sender, backgroundImage32) { Opacity = 0.3f };
+
+                // Set the brush's edge behaviour to wrap, so the image repeats if the drawn region is too big
+                backgroundBrush32.ExtendX = backgroundBrush32.ExtendY = CanvasEdgeBehavior.Wrap;
+
+                //this.resourcesLoaded32 = true;
+            }).AsAsyncAction());
+        }
+
+        private void BackgroundCanvas_Draw(CanvasControl sender, CanvasDrawEventArgs args)
+        {
+            // Just fill a rectangle with our tiling image brush, covering the entire bounds of the canvas control
+            var session = args.DrawingSession;
+            session.FillRectangle(new Rect(new Point(), sender.RenderSize), backgroundBrush32);
+
+            if (UNKNOWNFILE)
+            {
+            //    var srcRect = new Rect(0,0, unknownFileImage.Size.Width, unknownFileImage.Size.Height);
+            //    var x = (sender.RenderSize.Width - srcRect.Width) / 2;
+            //    var y = (sender.RenderSize.Height - srcRect.Height) / 2;
+
+            //    if (Settings.GetTheme() == ElementTheme.Dark)
+            //    {
+            //        session.DrawImage(unknownFileImage, (float)x, (float)y, srcRect, 0.38f);
+            //    }
+            //    else
+            //    {
+            //        var invert = new InvertEffect() { Source = unknownFileImage };
+            //        session.DrawImage(invert, (float)x, (float)y, srcRect, 0.38f);
+            //    }                
+            }
+        }
+        #endregion
+
         private async void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
             var btn = sender as AppBarButton;
@@ -740,12 +831,8 @@ namespace StringCodec.UWP.Pages
                     var folder = await fdp.PickSingleFolderAsync();
                     if (folder != null)
                     {
-                        //flist.Clear();
-                        //TreeFiles.RootNodes.Clear();
-                        //var ret = await AddTo(tvFiles, folder);
                         FillTree(TreeFiles, folder);
                         IsDropped = false;
-
                     }
                     break;
                 case "btnOpenFile":
@@ -758,14 +845,7 @@ namespace StringCodec.UWP.Pages
                     var files = await fop.PickMultipleFilesAsync();
                     if (files != null)
                     {
-                        //flist.Clear();
-                        //TreeFiles.RootNodes.Clear();
                         FillTree(TreeFiles, files);
-
-                        //foreach (var file in files)
-                        //{
-                        //    var ret = await AddTo(tvFiles, file);
-                        //}
                         IsDropped = false;
                     }
                     break;
@@ -867,7 +947,6 @@ namespace StringCodec.UWP.Pages
             //def.Complete();
         }
         #endregion
-
     }
 
     public sealed class MyTreeViewNode : TreeViewNode
