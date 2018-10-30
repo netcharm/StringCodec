@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel.DataTransfer;
-using Windows.Graphics.Capture;
+//using Windows.Graphics.Capture;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI;
@@ -49,17 +49,17 @@ namespace StringCodec.UWP.Pages
             //if (!string.IsNullOrEmpty(text_src)) edQR.Text = text_src;
 
             #region Detecting is ScreenCapture supported?
-            if (!GraphicsCaptureSession.IsSupported())
-            {
-                // Hide the capture UI if screen capture is not supported.
-                btnCapture.Visibility = Visibility.Collapsed;
-                btnCapture.IsEnabled = false;
-            }
-            else
-            {
-                btnCapture.Visibility = Visibility.Visible;
-                btnCapture.IsEnabled = true;
-            }
+            //if (!GraphicsCaptureSession.IsSupported())
+            //{
+            //    // Hide the capture UI if screen capture is not supported.
+            //    btnCapture.Visibility = Visibility.Collapsed;
+            //    btnCapture.IsEnabled = false;
+            //}
+            //else
+            //{
+            //    btnCapture.Visibility = Visibility.Visible;
+            //    btnCapture.IsEnabled = true;
+            //}
             btnCapture.Visibility = Visibility.Collapsed;
             btnCapture.IsEnabled = false;
             #endregion
@@ -250,8 +250,7 @@ namespace StringCodec.UWP.Pages
                     imgQR.Source = QRCodec.EncodeQR(edQR.Text, CURRENT_FGCOLOR, CURRENT_BGCOLOR, CURRENT_ECL);
                     break;
                 case "btnDecode":
-                    edQR.Text = await QRCodec.Decode(await imgQR.ToWriteableBitmap());
-                    
+                    edQR.Text = await QRCodec.Decode(await imgQR.ToWriteableBitmap());                    
                     break;
                 case "btnCopy":
                     Utils.SetClipboard(imgQR, CURRENT_SIZE);
@@ -260,8 +259,8 @@ namespace StringCodec.UWP.Pages
                     edQR.Text = await Utils.GetClipboard(edQR.Text, imgQR);
                     break;
                 case "btnCapture":
-                    var sc = new ScreenCapture(imgQR);
-                    await sc.StartCaptureAsync();
+                    //var sc = new ScreenCapture(imgQR);
+                    //await sc.StartCaptureAsync();
                     break;
                 case "btnSave":
                     await Utils.ShowSaveDialog(imgQR, CURRENT_SIZE, "QR");

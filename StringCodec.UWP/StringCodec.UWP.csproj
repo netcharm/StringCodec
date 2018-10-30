@@ -129,7 +129,6 @@
       <DependentUpon>ProgressDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\QRCodec.cs" />
-    <Compile Include="Common\ScreenCapture.cs" />
     <Compile Include="Common\TextCodecs.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
