@@ -866,7 +866,7 @@
   </data>
   <data name="optLang1252.Text" xml:space="preserve">
     <value>Western European</value>
-  </data>  
+  </data>
   <data name="optLang1253.Text" xml:space="preserve">
     <value>Greek</value>
   </data>
@@ -917,5 +917,8 @@
   </data>
   <data name="BASE64ERROR" xml:space="preserve">
     <value>The input is not a valid Base-64 string as it contains a non-base 64 character, more than two padding characters, or an illegal character among the padding characters.</value>
+  </data>
+  <data name="Size" xml:space="preserve">
+    <value>Size</value>
   </data>
 </root>

@@ -813,4 +813,7 @@
   <data name="BASE64ERROR" xml:space="preserve">
     <value>輸入不是有效的BASE64字符串，因為它包含非BASE64允許的字符，兩個以上的填充字符或填充字符中含有非法字符。</value>
   </data>
+  <data name="Size" xml:space="preserve">
+    <value>大小</value>
+  </data>
 </root>

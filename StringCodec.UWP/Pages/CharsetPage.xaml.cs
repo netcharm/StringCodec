@@ -584,7 +584,7 @@ namespace StringCodec.UWP.Pages
 
         private void edSrc_TextChanged(object sender, TextChangedEventArgs e)
         {
-            edInfo.Text = $"{"Count".T()}: {edSrc.Text.Length}";
+            PreviewInfo.Text = $"{"Count".T()}: {edSrc.Text.Length}";
         }
 
         private void OptWrap_Click(object sender, RoutedEventArgs e)
@@ -691,7 +691,9 @@ namespace StringCodec.UWP.Pages
                                 ImagePreview.Visibility = Visibility.Visible;
                                 UnknownFileInfo.Visibility = Visibility.Collapsed;
 
-                                imgPreview.Source = await f.ToWriteableBitmap();
+                                var wb = await f.ToWriteableBitmap();
+                                imgPreview.Source = wb;
+                                PreviewInfo.Text = $"{"Size".T()}: {wb.PixelWidth}x{wb.PixelHeight}";
                                 UNKNOWNFILE = false;
                             }
                             else
@@ -705,6 +707,8 @@ namespace StringCodec.UWP.Pages
 
                                 edSrc.Text = string.Empty;
                                 fcontent = null;
+
+                                PreviewInfo.Text = string.Empty;
                             }
                             //BackgroundCanvas.Invalidate();
                         }

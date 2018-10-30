@@ -1074,6 +1074,10 @@
           <source>The input is not a valid Base-64 string as it contains a non-base 64 character, more than two padding characters, or an illegal character among the padding characters.</source>
           <target state="translated">入力には有効なBASE64文字列は含まれていないため、BASE64には許可されていない文字が含まれているため、2つ以上のパディング文字またはパディング文字に不正な文字が含まれています。</target>
         </trans-unit>
+        <trans-unit id="Size" translate="yes" xml:space="preserve">
+          <source>Size</source>
+          <target state="translated">寸法</target>
+        </trans-unit>
       </group>
     </body>
   </file>

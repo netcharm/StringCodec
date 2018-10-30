@@ -297,7 +297,7 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <!--<ProgressRing Grid.Column="0" x:Name="ring" x:Uid="Ring" VerticalAlignment="Center" />-->
-                    <TextBlock Grid.Column="1" x:Name="edInfo" x:Uid="edInfo" Text="" Margin="12,14" VerticalAlignment="Center" />
+                    <TextBlock Grid.Column="1" x:Name="PreviewInfo" x:Uid="edInfo" Text="" Margin="12,14" VerticalAlignment="Center" />
                 </Grid>
             </CommandBar.Content>
         </CommandBar>
@@ -313,7 +313,7 @@
 
         <TextBox Grid.Row="1" Grid.Column="1" x:Name="edSrc" x:Uid="edSrcContent"
                  Header="Contents:" PlaceholderText="Here is text file contents" Margin="8,16,8,8"
-                 AcceptsReturn="True" CanDrag="False"
+                 AcceptsReturn="True" CanDrag="False" IsReadOnly="True"
                  FontSize="16"
                  Visibility="Collapsed"
                  ScrollViewer.VerticalScrollBarVisibility="Auto"

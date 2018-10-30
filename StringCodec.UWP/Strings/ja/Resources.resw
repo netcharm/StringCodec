@@ -813,4 +813,7 @@
   <data name="BASE64ERROR" xml:space="preserve">
     <value>入力には有効なBASE64文字列は含まれていないため、BASE64には許可されていない文字が含まれているため、2つ以上のパディング文字またはパディング文字に不正な文字が含まれています。</value>
   </data>
+  <data name="Size" xml:space="preserve">
+    <value>寸法</value>
+  </data>
 </root>

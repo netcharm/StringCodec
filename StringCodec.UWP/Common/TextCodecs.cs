@@ -690,6 +690,128 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
+        static private Dictionary<char, char> KanaCaseMap = new Dictionary<char, char>()
+        {
+            { '\uFF65', '\u30FB' }, // '･' : '・'
+            { '\uFF66', '\u30F2' }, // 'ｦ' : 'ヲ'
+            { '\uFF67', '\u30A1' }, // 'ｧ' : 'ァ'
+            { '\uFF68', '\u30A3' }, // 'ｨ' : 'ィ'
+            { '\uFF69', '\u30A5' }, // 'ｩ' : 'ゥ'
+            { '\uFF6A', '\u30A7' }, // 'ｪ' : 'ェ'
+            { '\uFF6B', '\u30A9' }, // 'ｫ' : 'ォ'
+            { '\uFF6C', '\u30E3' }, // 'ｬ' : 'ャ'
+            { '\uFF6D', '\u30E5' }, // 'ｭ' : 'ュ'
+            { '\uFF6E', '\u30E7' }, // 'ｮ' : 'ョ'
+            { '\uFF6F', '\u30C3' }, // 'ｯ' : 'ッ'
+            { '\uFF70', '\u30FC' }, // 'ｰ' : 'ー'
+            { '\uFF71', '\u30A2' }, // 'ｱ' : 'ア'
+            { '\uFF72', '\u30A4' }, // 'ｲ' : 'イ'
+            { '\uFF73', '\u30A6' }, // 'ｳ' : 'ウ'
+            { '\uFF74', '\u30A8' }, // 'ｴ' : 'エ'
+            { '\uFF75', '\u30AA' }, // 'ｵ' : 'オ'
+            { '\uFF76', '\u30AB' }, // 'ｶ' : 'カ'
+            { '\uFF77', '\u30AD' }, // 'ｷ' : 'キ'
+            { '\uFF78', '\u30AF' }, // 'ｸ' : 'ク'
+            { '\uFF79', '\u30B1' }, // 'ｹ' : 'ケ'
+            { '\uFF7A', '\u30B3' }, // 'ｺ' : 'コ'
+            { '\uFF7B', '\u30B5' }, // 'ｻ' : 'サ'
+            { '\uFF7C', '\u30B7' }, // 'ｼ' : 'シ'
+            { '\uFF7D', '\u30B9' }, // 'ｽ' : 'ス'
+            { '\uFF7E', '\u30BB' }, // 'ｾ' : 'セ'
+            { '\uFF7F', '\u30BD' }, // 'ｿ' : 'ソ'
+            { '\uFF80', '\u30BF' }, // 'ﾀ' : 'タ'
+            { '\uFF81', '\u30C1' }, // 'ﾁ' : 'チ'
+            { '\uFF82', '\u30C4' }, // 'ﾂ' : 'ツ'
+            { '\uFF83', '\u30C6' }, // 'ﾃ' : 'テ'
+            { '\uFF84', '\u30C8' }, // 'ﾄ' : 'ト'
+            { '\uFF85', '\u30CA' }, // 'ﾅ' : 'ナ'
+            { '\uFF86', '\u30CB' }, // 'ﾆ' : 'ニ'
+            { '\uFF87', '\u30CC' }, // 'ﾇ' : 'ヌ'
+            { '\uFF88', '\u30CD' }, // 'ﾈ' : 'ネ'
+            { '\uFF89', '\u30CE' }, // 'ﾉ' : 'ノ'
+            { '\uFF8A', '\u30CF' }, // 'ﾊ' : 'ハ'
+            { '\uFF8B', '\u30D2' }, // 'ﾋ' : 'ヒ'
+            { '\uFF8C', '\u30D5' }, // 'ﾌ' : 'フ'
+            { '\uFF8D', '\u30D8' }, // 'ﾍ' : 'ヘ'
+            { '\uFF8E', '\u30DB' }, // 'ﾎ' : 'ホ'
+            { '\uFF8F', '\u30DE' }, // 'ﾏ' : 'マ'
+            { '\uFF90', '\u30DF' }, // 'ﾐ' : 'ミ'
+            { '\uFF91', '\u30E0' }, // 'ﾑ' : 'ム'
+            { '\uFF92', '\u30E1' }, // 'ﾒ' : 'メ'
+            { '\uFF93', '\u30E2' }, // 'ﾓ' : 'モ'
+            { '\uFF94', '\u30E4' }, // 'ﾔ' : 'ヤ'
+            { '\uFF95', '\u30E6' }, // 'ﾕ' : 'ユ'
+            { '\uFF96', '\u30E8' }, // 'ﾖ' : 'ヨ'
+            { '\uFF97', '\u30E9' }, // 'ﾗ' : 'ラ'
+            { '\uFF98', '\u30EA' }, // 'ﾘ' : 'リ'
+            { '\uFF99', '\u30EB' }, // 'ﾙ' : 'ル'
+            { '\uFF9A', '\u30EC' }, // 'ﾚ' : 'レ'
+            { '\uFF9B', '\u30ED' }, // 'ﾛ' : 'ロ'
+            { '\uFF9C', '\u30EF' }, // 'ﾜ' : 'ワ'
+            { '\uFF9D', '\u30F3' }, // 'ﾝ' : 'ン'
+            { '\uFF9E', '\u309B' }, // 'ﾞ' : '゛'
+            { '\uFF9F', '\u309C' }, // 'ﾟ' : '゜'
+        };
+
+        static public string KatakanaHalfToFull(this string text)
+        {
+            var result = string.Empty;
+            for (var i = 0; i < text.Length; i++)
+            {               
+                if (text[i] == 32)
+                {
+                    result += (char)12288;
+                }
+                if (text[i] < 127)
+                {
+                    result += (char)(text[i] + 65248);
+                }
+            }
+
+            if (string.IsNullOrEmpty(result))
+                result = text;
+            return result;
+        }
+
+        static public string KatakanaFullToHalf(this string text)
+        {
+            var result = string.Empty;
+            for (var i = 0; i < text.Length; i++)
+            {
+                if (text[i] > 65248 && text[i] < 65375)
+                {
+                    result += (char)(text[i] - 65248);
+                }
+                else
+                {
+                    result += (char)text[i];
+                }
+            }
+            return result;
+        }
+
+        static public string KanaToUpper(this string text)
+        {
+            var result = string.Empty;
+            for (var i = 0; i < text.Length; i++)
+            {
+                if (KanaCaseMap.ContainsKey(text[i])) result += KanaCaseMap[text[i]];
+                else result += text[i];
+            }
+            return (result);
+        }
+
+        static public string KanaToLower(this string text)
+        {
+            var result = string.Empty;
+            for (var i = 0; i < text.Length; i++)
+            {                
+                if (KanaCaseMap.ContainsValue(text[i])) result += KanaCaseMap.FirstOrDefault(x => x.Value == text[i]).Key;
+                else result += text[i];
+            }
+            return (result);
+        }
+
         static public string ConvertFrom(this string text, Encoding enc, bool IsOEM = false)
         {
             var result = string.Empty;
@@ -713,7 +835,11 @@ namespace StringCodec.UWP.Common
                 //{
                 //    cp = 936;
                 //}
-                var subtexts = text.Split(new char[]{ '\u30FB' });
+                var cpc = enc.CodePage;
+                string[] subtexts = new string[]{ text };
+                if(cpc == 932 || cpc == 936 || cpc == 950)
+                    subtexts = text.Split(new char[]{ '\u30FB', '\uFF65' });
+
                 List<string> sl = new List<string>();
                 foreach(var t in subtexts)
                 {

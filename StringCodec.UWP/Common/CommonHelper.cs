@@ -790,14 +790,14 @@ namespace StringCodec.UWP.Common
         #region WriteableBitmmap Converter
         private static ImageSource _UnknownImage = new BitmapImage(new Uri("ms-appx:///Assets/unknown_file.png"));
 
-        public static ImageSource UnknowFile()
+        public static ImageSource UnknownFile()
         {
             if(!(_UnknownImage is ImageSource))
                 _UnknownImage = new BitmapImage(new Uri("ms-appx:///Assets/unknown_file.png"));
             return (_UnknownImage);
         }
 
-        public static ImageSource UnknowFile(this StorageFile file)
+        public static ImageSource UnknownFile(this StorageFile file)
         {
             if (!(_UnknownImage is ImageSource))
                 _UnknownImage = new BitmapImage(new Uri("ms-appx:///Assets/unknown_file.png"));
