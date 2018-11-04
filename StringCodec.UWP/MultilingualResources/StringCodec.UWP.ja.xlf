@@ -1078,6 +1078,14 @@
           <source>Size</source>
           <target state="translated">寸法</target>
         </trans-unit>
+        <trans-unit id="ShareDescription" translate="yes" xml:space="preserve">
+          <source>Share the codec result to other apps</source>
+          <target state="translated">コーデック結果を他のアプリケーションに共有する</target>
+        </trans-unit>
+        <trans-unit id="ShareTitle" translate="yes" xml:space="preserve">
+          <source>Share From StringCodec To...</source>
+          <target state="translated">テキストのエンコードおよびデコードツールからのシェア</target>
+        </trans-unit>
       </group>
     </body>
   </file>

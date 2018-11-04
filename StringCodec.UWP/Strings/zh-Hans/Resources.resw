@@ -816,4 +816,10 @@
   <data name="Size" xml:space="preserve">
     <value>大小</value>
   </data>
+  <data name="ShareDescription" xml:space="preserve">
+    <value>分享编解码结果到其他的应用</value>
+  </data>
+  <data name="ShareTitle" xml:space="preserve">
+    <value>从文本编码解码工具分享</value>
+  </data>
 </root>

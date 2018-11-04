@@ -1577,8 +1577,8 @@ namespace StringCodec.UWP.Common
             try
             {
                 DataPackage requestData = args.Request.Data;
-                requestData.Properties.Title = "Share To...";
-                requestData.Properties.Description = "Share the QRCode/BASE64 decoded image to other apps.";
+                requestData.Properties.Title = "ShareTitle".T();
+                requestData.Properties.Description = "ShareDescription".T();
 
                 if (!string.IsNullOrEmpty(SHARED_TEXT) && SHARED_IMAGE == null)
                 {

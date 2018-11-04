@@ -816,4 +816,10 @@
   <data name="Size" xml:space="preserve">
     <value>寸法</value>
   </data>
+  <data name="ShareDescription" xml:space="preserve">
+    <value>コーデック結果を他のアプリケーションに共有する</value>
+  </data>
+  <data name="ShareTitle" xml:space="preserve">
+    <value>テキストのエンコードおよびデコードツールからのシェア</value>
+  </data>
 </root>

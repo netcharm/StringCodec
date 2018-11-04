@@ -1078,6 +1078,14 @@
           <source>Size</source>
           <target state="translated">大小</target>
         </trans-unit>
+        <trans-unit id="ShareDescription" translate="yes" xml:space="preserve">
+          <source>Share the codec result to other apps</source>
+          <target state="translated">分享編解碼結果到其他的應用</target>
+        </trans-unit>
+        <trans-unit id="ShareTitle" translate="yes" xml:space="preserve">
+          <source>Share From StringCodec To...</source>
+          <target state="translated">從文本編碼解碼工具分享</target>
+        </trans-unit>
       </group>
     </body>
   </file>
