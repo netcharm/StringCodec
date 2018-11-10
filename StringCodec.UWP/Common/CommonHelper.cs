@@ -1558,8 +1558,8 @@ namespace StringCodec.UWP.Common
         public static string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif", ".svg", ".spa", ".sph" };
         public static string[] image_exts = new string[] { ".pcx", ".tga", ".ras", ".sun", ".ppm", ".pgm", ".pbm", ".pnm", ".sgi"};
         public static string[] text_ext = new string[] {
-            ".txt", ".text", ".base64", ".md", ".me", ".html", ".rst", ".xml",
-            ".cs", ".xaml",".js", ".ts", ".cpp", ".hpp", ".c", ".h", ".vb", ".vbs", ".py", ".pyw",".pas",
+            ".txt", ".text", ".base64", ".md", ".me", ".htm", ".html", ".xhtml", ".css", ".rst", ".xml", ".csv",
+            ".cs", ".xaml", ".js", ".ts", ".json", ".cpp", ".hpp", ".c", ".cc", ".h", ".vb", ".vbs", ".py", ".pyw",".pas", ".r",
             ".url"
         };
         public static string[] url_ext = new string[] { ".url" };
@@ -2298,7 +2298,7 @@ namespace StringCodec.UWP.Common
             bool result = false;
             try
             {
-                if (text_ext.Contains(file.FileType))
+                if (text_ext.Contains(file.FileType.ToLower()))
                 {
                     IBuffer buffer = await FileIO.ReadBufferAsync(file);
                     DataReader reader = DataReader.FromBuffer(buffer);

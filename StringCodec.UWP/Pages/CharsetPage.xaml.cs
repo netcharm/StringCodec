@@ -68,16 +68,16 @@ namespace StringCodec.UWP.Pages
             bool IsSelected = TreeFiles.SelectedNodes.Count > 0;
             bool IsTextNode = target is MyTreeViewNode &&
                               (target as MyTreeViewNode).StorageItem is StorageFile &&
-                              Utils.text_ext.Contains(((target as MyTreeViewNode).StorageItem as StorageFile).FileType);
+                              Utils.text_ext.Contains(((target as MyTreeViewNode).StorageItem as StorageFile).FileType.ToLower());
             bool IsTextNodeSelected = IsSelected && 
                                       (TreeFiles.SelectedNodes[0] as MyTreeViewNode).StorageItem is StorageFile &&
-                                      Utils.text_ext.Contains(((TreeFiles.SelectedNodes[0] as MyTreeViewNode).StorageItem as StorageFile).FileType);
+                                      Utils.text_ext.Contains(((TreeFiles.SelectedNodes[0] as MyTreeViewNode).StorageItem as StorageFile).FileType.ToLower());
             if(TreeFiles.SelectionMode == TreeViewSelectionMode.Multiple)
             {
                 foreach (var cnode in TreeFiles.SelectedNodes)
                 {
                     IsTextNodeSelected = IsTextNodeSelected || ((cnode as MyTreeViewNode).StorageItem is StorageFile &&
-                                      Utils.text_ext.Contains(((cnode as MyTreeViewNode).StorageItem as StorageFile).FileType));
+                                      Utils.text_ext.Contains(((cnode as MyTreeViewNode).StorageItem as StorageFile).FileType.ToLower()));
                 }
             }
 
@@ -669,7 +669,7 @@ namespace StringCodec.UWP.Pages
                         try
                         {
                             var f = file as StorageFile;
-                            if (Utils.text_ext.Contains(f.FileType))
+                            if (Utils.text_ext.Contains(f.FileType.ToLower()))
                             {
                                 edSrc.Visibility = Visibility.Visible;
                                 ImagePreview.Visibility = Visibility.Collapsed;
