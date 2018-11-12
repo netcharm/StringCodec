@@ -536,8 +536,11 @@ namespace StringCodec.UWP.Pages
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
-            BackgroundCanvas.RemoveFromVisualTree();
-            BackgroundCanvas = null;
+            if (BackgroundCanvas is CanvasControl)
+            {
+                BackgroundCanvas.RemoveFromVisualTree();
+                BackgroundCanvas = null;
+            }
         }
 
         private async void OptSrc_Click(object sender, RoutedEventArgs e)

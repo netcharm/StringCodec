@@ -48,8 +48,11 @@ namespace StringCodec.UWP.Common
 
         private void Dialog_Unloaded(object sender, RoutedEventArgs e)
         {
-            AboutLogo.RemoveFromVisualTree();
-            AboutLogo = null;
+            if (AboutLogo is CanvasControl)
+            {
+                AboutLogo.RemoveFromVisualTree();
+                AboutLogo = null;
+            }
         }
 
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)

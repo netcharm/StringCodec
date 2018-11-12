@@ -240,8 +240,11 @@ namespace StringCodec.UWP.Pages
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
-            BackgroundCanvas.RemoveFromVisualTree();
-            BackgroundCanvas = null;
+            if(BackgroundCanvas is CanvasControl)
+            {
+                BackgroundCanvas.RemoveFromVisualTree();
+                BackgroundCanvas = null;
+            }
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

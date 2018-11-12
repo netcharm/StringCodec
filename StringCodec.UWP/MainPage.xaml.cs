@@ -322,33 +322,36 @@ namespace StringCodec.UWP
             }
             else
             {
-                var item = args.SelectedItem as NavigationViewItem;
-                switch (item.Name)
+                if(args.SelectedItem is NavigationViewItem)
                 {
-                    case "nvItemText":
-                        ContentFrame.Navigate(typeof(Pages.TextPage), this);
-                        break;
-                    case "nvItemQRCode":
-                        ContentFrame.Navigate(typeof(Pages.QRCodePage), this);
-                        break;
-                    case "nvItemImage":
-                        ContentFrame.Navigate(typeof(Pages.ImagePage), this);
-                        break;
-                    case "nvItemCommonQR":
-                        ContentFrame.Navigate(typeof(Pages.CommonQRPage), this);
-                        break;
-                    case "nvItemCommonOneD":
-                        ContentFrame.Navigate(typeof(Pages.CommonOneDPage), this);
-                        break;
-                    case "nvItemCharset":
-                        ContentFrame.Navigate(typeof(Pages.CharsetPage), this);
-                        break;
-                    case "nvItemSvg":
-                        ContentFrame.Navigate(typeof(Pages.SvgPage), this);
-                        break;
-                    default:
-                        ContentFrame.Navigate(typeof(Pages.TextPage), this);
-                        break;
+                    var item = args.SelectedItem as NavigationViewItem;
+                    switch (item.Name)
+                    {
+                        case "nvItemText":
+                            ContentFrame.Navigate(typeof(Pages.TextPage), this);
+                            break;
+                        case "nvItemQRCode":
+                            ContentFrame.Navigate(typeof(Pages.QRCodePage), this);
+                            break;
+                        case "nvItemImage":
+                            ContentFrame.Navigate(typeof(Pages.ImagePage), this);
+                            break;
+                        case "nvItemCommonQR":
+                            ContentFrame.Navigate(typeof(Pages.CommonQRPage), this);
+                            break;
+                        case "nvItemCommonOneD":
+                            ContentFrame.Navigate(typeof(Pages.CommonOneDPage), this);
+                            break;
+                        case "nvItemCharset":
+                            ContentFrame.Navigate(typeof(Pages.CharsetPage), this);
+                            break;
+                        case "nvItemSvg":
+                            ContentFrame.Navigate(typeof(Pages.SvgPage), this);
+                            break;
+                        default:
+                            ContentFrame.Navigate(typeof(Pages.TextPage), this);
+                            break;
+                    }
                 }
             }
         }
