@@ -80,7 +80,12 @@ namespace StringCodec.UWP.Pages
                 #region Display UI Language with Current Language
                 var lang = (string)Settings.Get("UILanguage", string.Empty);
                 UILanguageSwitch.IsEnabled = false;
-                UILanguageSwitch.SelectedIndex = Settings.LoadUILanguage(lang);
+                var langIndex = Settings.LoadUILanguage(lang);
+                if (UILanguageSwitch.Items != null && UILanguageSwitch.Items.Count > 0 &&
+                    langIndex >= 0 && langIndex < UILanguageSwitch.Items.Count)
+                    UILanguageSwitch.SelectedIndex = langIndex;
+                else
+                    UILanguageSwitch.SelectedIndex = -1;
                 UILanguageSwitch.IsEnabled = true;
                 #endregion
             }

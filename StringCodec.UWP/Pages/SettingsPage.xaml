@@ -17,11 +17,11 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0">
             <ComboBox x:Name="UILanguageSwitch" x:Uid="UILanguageSwitch" Header="Language Select" SelectedIndex="0" IsEnabled="False" SelectionChanged="UILanguage_Chganged" >
-                <ComboBoxItem  x:Uid="UILanguageDefault" Content="Default"/>
-                <ComboBoxItem  x:Uid="UILanguageEN" Content="English"/>
-                <ComboBoxItem  x:Uid="UILanguageCHS" Content="Chinese Simplified"/>
-                <ComboBoxItem  x:Uid="UILanguageCHT" Content="Chinese Traditional"/>
-                <ComboBoxItem  x:Uid="UILanguageJA" Content="Japanese"/>
+                <ComboBoxItem x:Uid="UILanguageDefault" Content="Default"/>
+                <ComboBoxItem x:Uid="UILanguageEN" Content="English"/>
+                <ComboBoxItem x:Uid="UILanguageCHS" Content="Chinese Simplified"/>
+                <ComboBoxItem x:Uid="UILanguageCHT" Content="Chinese Traditional"/>
+                <ComboBoxItem x:Uid="UILanguageJA" Content="Japanese"/>
             </ComboBox>
             <Line Margin="0,12,0,0" Stroke="{ThemeResource SystemControlAcrylicWindowBrush}" StrokeThickness="2" X2="10" Stretch="Fill" VerticalAlignment="Bottom"/>
             <ToggleSwitch x:Name="UIThemeSwitch" x:Uid="UIThemeSwitch" Header="Theme Toggle" OffContent="Light Theme" OnContent="Dark Theme" IsOn="False" IsTapEnabled="True" Toggled="UITheme_Toggled" />

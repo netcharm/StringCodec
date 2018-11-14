@@ -1425,6 +1425,8 @@ namespace StringCodec.UWP.Common
         public static int LoadUILanguage(string lang)
         {
             var LanguageIndex = 0;
+
+            if (string.IsNullOrEmpty(lang)) lang = "default";
             switch (lang.ToLower())
             {
                 case "default":
