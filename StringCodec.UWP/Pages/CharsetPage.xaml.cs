@@ -538,8 +538,8 @@ namespace StringCodec.UWP.Pages
         {
             if (BackgroundCanvas is CanvasControl)
             {
-                BackgroundCanvas.RemoveFromVisualTree();
-                BackgroundCanvas = null;
+                //BackgroundCanvas.RemoveFromVisualTree();
+                //BackgroundCanvas = null;
             }
         }
 

@@ -50,8 +50,8 @@ namespace StringCodec.UWP.Common
         {
             if (AboutLogo is CanvasControl)
             {
-                AboutLogo.RemoveFromVisualTree();
-                AboutLogo = null;
+                //AboutLogo.RemoveFromVisualTree();
+                //AboutLogo = null;
             }
         }
 

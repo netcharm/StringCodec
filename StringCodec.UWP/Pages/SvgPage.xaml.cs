@@ -238,12 +238,16 @@ namespace StringCodec.UWP.Pages
             MakeImages(new List<int>() { 256, 128 });
         }
 
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+        }
+
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             if(BackgroundCanvas is CanvasControl)
             {
-                BackgroundCanvas.RemoveFromVisualTree();
-                BackgroundCanvas = null;
+                //BackgroundCanvas.RemoveFromVisualTree();
+                //BackgroundCanvas = null;
             }
         }
 
