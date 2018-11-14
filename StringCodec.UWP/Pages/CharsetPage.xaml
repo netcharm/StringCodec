@@ -266,9 +266,22 @@
             </AppBarButton>
             <AppBarSeparator />
             <AppBarButton x:Name="btnShare" x:Uid="btnShare" Label="Share" Icon="Share" VerticalAlignment="Center" Click="AppBarButton_Click" />
+            <AppBarButton x:Name="btnCopy" x:Uid="btnCopy" Label="Copy" Icon="Copy" VerticalAlignment="Center" Click="AppBarButton_Click"  />
 
             <CommandBar.SecondaryCommands>
                 <!-- More Button Dropdown menu -->
+                <AppBarButton x:Name="btnImageToBase64" x:Uid="btnImageToBase64" Label="Image to BASE64" Icon="Shuffle" VerticalAlignment="Center" Click="ImageTo_Click"  />
+                <AppBarButton x:Name="btnImageQRCode" x:Uid="btnImageQRCode" Label="Image to QRCode" Click="ImageTo_Click">
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xF029;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton x:Name="btnImageOneD" x:Uid="btnImageOneD" Label="Image to 1D Barcode" Click="ImageTo_Click">
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xF02A;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarSeparator />
                 <AppBarButton x:Name="optFolderDeep" x:Uid="optFolderDeep" Label="Folder Deep" IsEnabled="False">
                     <AppBarButton.Flyout>
                         <MenuFlyout Placement="Left">

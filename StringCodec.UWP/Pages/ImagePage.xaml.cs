@@ -42,7 +42,7 @@ namespace StringCodec.UWP.Pages
             set { text_src = value; }
         }
 
-        private bool IsSVG(Image image)
+        private async Task<bool> IsSVG(Image image)
         {
             bool result = false;
 
@@ -77,7 +77,14 @@ namespace StringCodec.UWP.Pages
 
                 result = false;
             }
-
+            int w = 0, h = 0;
+            if(imgBase64.Source is ImageSource)
+            {
+                var wb = await imgBase64.ToWriteableBitmap();
+                w = wb.PixelWidth;
+                h = wb.PixelHeight;
+            }
+            lblInfo.Text = $"{"Count".T()}: {edBase64.Text.Length}, {"Size".T()}: {w}x{h}";
             return (result);
         }
 
@@ -134,9 +141,9 @@ namespace StringCodec.UWP.Pages
                     }
                     imgBase64.Tag = svg.Bytes is byte[] ? svg.Bytes : null;
 
-                    IsSVG(imgBase64);
+                    await IsSVG(imgBase64);
                 }
-                IsSVG(imgBase64);
+                await IsSVG(imgBase64);
             }
         }
 
@@ -283,7 +290,7 @@ namespace StringCodec.UWP.Pages
                 default:
                     break;
             }
-            IsSVG(imgBase64);
+            await IsSVG(imgBase64);
         }
 
         #region Drag/Drop routines
@@ -516,7 +523,6 @@ namespace StringCodec.UWP.Pages
                         }
                     }
                 }
-                IsSVG(imgBase64);
             }
             else if (sender == edBase64)
             {
@@ -571,6 +577,7 @@ namespace StringCodec.UWP.Pages
                     }
                 }
             }
+            await IsSVG(imgBase64);
             //def.Complete();
         }
         #endregion

@@ -826,6 +826,25 @@ namespace StringCodec.UWP.Pages
         }
         #endregion
 
+        private async void ImageTo_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender == btnImageQRCode)
+            {
+                if (imgPreview.Source == null) return;
+                Frame.Navigate(typeof(QRCodePage), await imgPreview.ToWriteableBitmap());
+            }
+            else if (sender == btnImageOneD)
+            {
+                if (imgPreview.Source == null) return;
+                Frame.Navigate(typeof(CommonOneDPage), await imgPreview.ToWriteableBitmap());
+            }            
+            else if (sender == btnImageToBase64)
+            {
+                if (imgPreview.Source == null) return;
+                Frame.Navigate(typeof(ImagePage), await imgPreview.ToWriteableBitmap());
+            }
+       }
+
         private async void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
             var btn = sender as AppBarButton;
@@ -868,6 +887,12 @@ namespace StringCodec.UWP.Pages
                     break;
                 case "btnConvert":
                     await ConvertFileContent();
+                    break;
+                case "btnCopy":
+                    if(ImagePreview.Visibility == Visibility.Visible)
+                        Utils.SetClipboard(imgPreview, -1);
+                    else if(edSrc.Visibility == Visibility.Visible)
+                        Utils.SetClipboard(edSrc.Text);
                     break;
                 case "btnShare":
                     if (TreeFiles.SelectedNodes.Count > 0)
@@ -954,6 +979,7 @@ namespace StringCodec.UWP.Pages
             //def.Complete();
         }
         #endregion
+
     }
 
     public sealed class MyTreeViewNode : TreeViewNode
