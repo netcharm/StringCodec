@@ -1573,6 +1573,7 @@ namespace StringCodec.UWP.Common
         private static bool SHARE_INITED = false;
         private static WriteableBitmap SHARED_IMAGE = null;
         private static string SHARED_TEXT = string.Empty;
+        private static Uri SHARED_LINK = null;
 
         private static async void DataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
         {
@@ -1584,11 +1585,12 @@ namespace StringCodec.UWP.Common
 
                 if (!string.IsNullOrEmpty(SHARED_TEXT) && SHARED_IMAGE == null)
                 {
+                    requestData.Properties.Description += $" {"Text".T()}";
                     requestData.SetText(SHARED_TEXT);
                 }
                 else if (string.IsNullOrEmpty(SHARED_TEXT) && SHARED_IMAGE != null)
                 {
-
+                    requestData.Properties.Description += $" {"Image".T()}";
                     #region Save image to a temporary file for Share
                     List<IStorageItem> imageItems = new List<IStorageItem> { _tempExportFile };
                     requestData.SetStorageItems(imageItems);
@@ -1604,8 +1606,14 @@ namespace StringCodec.UWP.Common
                     //requestData.SetBitmap(imageStreamRef);
                     #endregion
                 }
+                else if(SHARED_LINK is Uri)
+                {
+                    requestData.Properties.Description += $" {"Link".T()}";
+                    requestData.SetWebLink(SHARED_LINK);
+                }
                 else if(_tempExportFile != null)
                 {
+                    requestData.Properties.Description += $" {"File".T()}";
                     List<IStorageItem> imageItems = new List<IStorageItem> { _tempExportFile };
                     requestData.SetStorageItems(imageItems);
                 }
@@ -1627,6 +1635,7 @@ namespace StringCodec.UWP.Common
             //ApplicationData.Current.TemporaryFolder.
             SHARED_TEXT = string.Empty;
             SHARED_IMAGE = null;
+            SHARED_LINK = null;
             _tempExportFile = null;
 
             FileUpdateStatus status = FileUpdateStatus.Failed;
@@ -1655,6 +1664,31 @@ namespace StringCodec.UWP.Common
             return status;
         }
 
+        public async static Task<FileUpdateStatus> Share(string text, bool AsLink)
+        {
+            var result = FileUpdateStatus.Failed;
+            if (AsLink)
+            {
+                try
+                {
+                    if (!string.IsNullOrEmpty(text))
+                    {
+                        var url = new Uri(text);
+                        result = (Share(url));
+                    }
+                }
+                catch(Exception ex)
+                {
+                    await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
+                }
+            }
+            else
+            {
+                result = Share(text);
+            }
+            return (result);
+        }
+
         public static FileUpdateStatus Share(string text)
         {
             if (!SHARE_INITED)
@@ -1665,12 +1699,36 @@ namespace StringCodec.UWP.Common
 
             SHARED_TEXT = string.Empty;
             SHARED_IMAGE = null;
+            SHARED_LINK = null;
             _tempExportFile = null;
 
             FileUpdateStatus status = FileUpdateStatus.Failed;
             if (string.IsNullOrEmpty(text)) return (status);
 
             SHARED_TEXT = text;
+            DataTransferManager.ShowShareUI();
+            status = FileUpdateStatus.Complete;
+            //return status;
+            return status;
+        }
+
+        public static FileUpdateStatus Share(Uri url)
+        {
+            if (!SHARE_INITED)
+            {
+                dataTransferManager.DataRequested += DataTransferManager_DataRequested;
+                SHARE_INITED = true;
+            }
+
+            SHARED_TEXT = string.Empty;
+            SHARED_IMAGE = null;
+            SHARED_LINK = null;
+            _tempExportFile = null;
+
+            FileUpdateStatus status = FileUpdateStatus.Failed;
+            if (string.IsNullOrEmpty(url.AbsolutePath)) return (status);
+
+            SHARED_LINK = url;
             DataTransferManager.ShowShareUI();
             status = FileUpdateStatus.Complete;
             //return status;
@@ -1687,6 +1745,7 @@ namespace StringCodec.UWP.Common
 
             SHARED_TEXT = string.Empty;
             SHARED_IMAGE = null;
+            SHARED_LINK = null;
             _tempExportFile = null;
 
             FileUpdateStatus status = FileUpdateStatus.Failed;

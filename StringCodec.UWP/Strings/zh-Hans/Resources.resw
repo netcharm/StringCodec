@@ -822,4 +822,28 @@
   <data name="ShareTitle" xml:space="preserve">
     <value>从文本编码解码工具分享</value>
   </data>
+  <data name="btnShareDstAsURL.Text" xml:space="preserve">
+    <value>分享输出的链接</value>
+  </data>
+  <data name="btnShareDstContent.Text" xml:space="preserve">
+    <value>分享输出的文本</value>
+  </data>
+  <data name="btnShareSrcAsURL.Text" xml:space="preserve">
+    <value>分享输入的链接</value>
+  </data>
+  <data name="btnShareSrcContent.Text" xml:space="preserve">
+    <value>分享输入的文本</value>
+  </data>
+  <data name="Image" xml:space="preserve">
+    <value>图像</value>
+  </data>
+  <data name="Link" xml:space="preserve">
+    <value>链接</value>
+  </data>
+  <data name="Text" xml:space="preserve">
+    <value>文本</value>
+  </data>
+  <data name="File" xml:space="preserve">
+    <value>文件</value>
+  </data>
 </root>

@@ -822,4 +822,28 @@
   <data name="ShareTitle" xml:space="preserve">
     <value>テキストのエンコードおよびデコードツールからのシェア</value>
   </data>
+  <data name="btnShareDstAsURL.Text" xml:space="preserve">
+    <value>出力を共有するリンク</value>
+  </data>
+  <data name="btnShareDstContent.Text" xml:space="preserve">
+    <value>出力のテキストを共有する</value>
+  </data>
+  <data name="btnShareSrcAsURL.Text" xml:space="preserve">
+    <value>入力テキストの共有</value>
+  </data>
+  <data name="btnShareSrcContent.Text" xml:space="preserve">
+    <value>入力テキストコンテンツの共有</value>
+  </data>
+  <data name="Image" xml:space="preserve">
+    <value>イメージ</value>
+  </data>
+  <data name="Link" xml:space="preserve">
+    <value>リンク</value>
+  </data>
+  <data name="Text" xml:space="preserve">
+    <value>テキスト</value>
+  </data>
+  <data name="File" xml:space="preserve">
+    <value>ファイル</value>
+  </data>
 </root>

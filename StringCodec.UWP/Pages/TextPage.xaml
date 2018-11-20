@@ -92,7 +92,17 @@
             <AppBarButton x:Name="btnDecode" x:Uid="btnDecode" Label="Decode" Icon="Read" VerticalAlignment="Center" Click="AppBarButton_Click" />
             <AppBarSeparator />
             <AppBarButton x:Name="btnSave" x:Uid="btnSave" Label="Save" Icon="Save" VerticalAlignment="Center" Click="AppBarButton_Click" />
-            <AppBarButton x:Name="btnShare" x:Uid="btnShare" Label="Share" Icon="Share" VerticalAlignment="Center" Click="AppBarButton_Click" />
+            <AppBarButton x:Name="btnShare" x:Uid="btnShare" Label="Share" Icon="Share" VerticalAlignment="Center">
+                <AppBarButton.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem x:Name="btnShareSrcAsURL" x:Uid="btnShareSrcAsURL" Text="Share Input As URL" Click="AppBarShare_Click"/>
+                        <MenuFlyoutItem x:Name="btnShareDstAsURL" x:Uid="btnShareDstAsURL" Text="Share Output As URL" Click="AppBarShare_Click"/>
+                        <MenuFlyoutSeparator />
+                        <MenuFlyoutItem x:Name="btnShareSrcContent" x:Uid="btnShareSrcContent" Text="Share Input Contents" Click="AppBarShare_Click"/>
+                        <MenuFlyoutItem x:Name="btnShareDstContent" x:Uid="btnShareDstContent" Text="Share Output Contents" Click="AppBarShare_Click"/>
+                    </MenuFlyout>
+                </AppBarButton.Flyout>                
+            </AppBarButton>
 
             <CommandBar.SecondaryCommands>
                 <!-- More Button Dropdown menu -->

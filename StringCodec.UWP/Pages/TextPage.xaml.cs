@@ -181,33 +181,61 @@ namespace StringCodec.UWP.Pages
             text_src = edSrc.Text;
         }
 
+        private async void AppBarShare_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is MenuFlyoutItem)
+            {
+                var btn = sender as MenuFlyoutItem;
+                switch (btn.Name)
+                {
+                    case "btnShareSrcAsURL":
+                        await Utils.Share(edSrc.Text, true);
+                        break;
+                    case "btnShareDstAsURL":
+                        await Utils.Share(edDst.Text, true);
+                        break;
+                    case "btnShareSrcContent":
+                        Utils.Share(edSrc.Text);
+                        break;
+                    case "btnShareDstContent":
+                        Utils.Share(edDst.Text);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
         private async void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
-            var btn = sender as AppBarButton;
-            switch (btn.Name)
+            if (sender is AppBarButton)
             {
-                case "btnEncode":
-                    edDst.Text = await TextCodecs.Encode(edSrc.Text, CURRENT_CODEC, CURRENT_LINEBREAK);
-                    text_src = edDst.Text;
-                    break;
-                case "btnDecode":
-                    edDst.Text = await TextCodecs.Decode(edSrc.Text, CURRENT_CODEC, CURRENT_ENC);
-                    text_src = edDst.Text;
-                    break;
-                case "btnCopy":
-                    Utils.SetClipboard(edDst.Text);
-                    break;
-                case "btnPaste":
-                    edSrc.Text = await Utils.GetClipboard(edSrc.Text);
-                    break;
-                case "btnSave":
-                    await Utils.ShowSaveDialog(edDst.Text);
-                    break;
-                case "btnShare":
-                    Utils.Share(edDst.Text);
-                    break;
-                default:
-                    break;
+                var btn = sender as AppBarButton;
+                switch (btn.Name)
+                {
+                    case "btnEncode":
+                        edDst.Text = await TextCodecs.Encode(edSrc.Text, CURRENT_CODEC, CURRENT_LINEBREAK);
+                        text_src = edDst.Text;
+                        break;
+                    case "btnDecode":
+                        edDst.Text = await TextCodecs.Decode(edSrc.Text, CURRENT_CODEC, CURRENT_ENC);
+                        text_src = edDst.Text;
+                        break;
+                    case "btnCopy":
+                        Utils.SetClipboard(edDst.Text);
+                        break;
+                    case "btnPaste":
+                        edSrc.Text = await Utils.GetClipboard(edSrc.Text);
+                        break;
+                    case "btnSave":
+                        await Utils.ShowSaveDialog(edDst.Text);
+                        break;
+                    case "btnShare":
+                        //Utils.Share(edSrc.Text);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
@@ -323,8 +351,8 @@ namespace StringCodec.UWP.Pages
             }
             //def.Complete();
         }
-        #endregion
 
+        #endregion
 
     }
 }

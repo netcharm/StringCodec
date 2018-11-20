@@ -1086,6 +1086,38 @@
           <source>Share From StringCodec To...</source>
           <target state="translated">从文本编码解码工具分享</target>
         </trans-unit>
+        <trans-unit id="btnShareDstAsURL.Text" translate="yes" xml:space="preserve">
+          <source>Share Output As URL</source>
+          <target state="translated">分享输出的链接</target>
+        </trans-unit>
+        <trans-unit id="btnShareDstContent.Text" translate="yes" xml:space="preserve">
+          <source>Share Output Contents</source>
+          <target state="translated">分享输出的文本</target>
+        </trans-unit>
+        <trans-unit id="btnShareSrcAsURL.Text" translate="yes" xml:space="preserve">
+          <source>Share Input As URL</source>
+          <target state="translated">分享输入的链接</target>
+        </trans-unit>
+        <trans-unit id="btnShareSrcContent.Text" translate="yes" xml:space="preserve">
+          <source>Share Input Contents</source>
+          <target state="translated">分享输入的文本</target>
+        </trans-unit>
+        <trans-unit id="Image" translate="yes" xml:space="preserve">
+          <source>Image</source>
+          <target state="translated">图像</target>
+        </trans-unit>
+        <trans-unit id="Link" translate="yes" xml:space="preserve">
+          <source>Link</source>
+          <target state="translated">链接</target>
+        </trans-unit>
+        <trans-unit id="Text" translate="yes" xml:space="preserve">
+          <source>Text</source>
+          <target state="translated">文本</target>
+        </trans-unit>
+        <trans-unit id="File" translate="yes" xml:space="preserve">
+          <source>File</source>
+          <target state="translated">文件</target>
+        </trans-unit>
       </group>
     </body>
   </file>

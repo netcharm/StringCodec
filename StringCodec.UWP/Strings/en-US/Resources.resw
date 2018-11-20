@@ -927,4 +927,28 @@
   <data name="ShareTitle" xml:space="preserve">
     <value>Share From StringCodec To...</value>
   </data>
+  <data name="btnShareDstAsURL.Text" xml:space="preserve">
+    <value>Share Output As URL</value>
+  </data>
+  <data name="btnShareDstContent.Text" xml:space="preserve">
+    <value>Share Output Contents</value>
+  </data>
+  <data name="btnShareSrcAsURL.Text" xml:space="preserve">
+    <value>Share Input As URL</value>
+  </data>
+  <data name="btnShareSrcContent.Text" xml:space="preserve">
+    <value>Share Input Contents</value>
+  </data>
+  <data name="Image" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="Link" xml:space="preserve">
+    <value>Link</value>
+  </data>
+  <data name="Text" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="File" xml:space="preserve">
+    <value>File</value>
+  </data>
 </root>
