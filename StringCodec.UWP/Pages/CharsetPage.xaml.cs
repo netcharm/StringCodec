@@ -112,7 +112,7 @@ namespace StringCodec.UWP.Pages
             return (result);
         }
 
-        private void ConvertFrom(TreeViewNode node, Encoding enc)
+        private async void ConvertFrom(TreeViewNode node, Encoding enc)
         {
             if (node.HasChildren)
             {
@@ -121,7 +121,7 @@ namespace StringCodec.UWP.Pages
                     ConvertFrom(child, enc);
                 }
             }
-            node.Content = flist[node].Name.ConvertFrom(CURRENT_SRCENC, true);
+            node.Content = await flist[node].Name.ConvertFrom(CURRENT_SRCENC, true);
         }
 
         private void ConvertFrom(TreeView tree, Encoding enc)
@@ -180,7 +180,7 @@ namespace StringCodec.UWP.Pages
             if (item is StorageFolder)
             {
                 var folder = item as StorageFolder;
-                var root = new MyTreeViewNode() { Content = folder.Name.ConvertFrom(CURRENT_SRCENC, true) };
+                var root = new MyTreeViewNode() { Content = await folder.Name.ConvertFrom(CURRENT_SRCENC, true) };
                 root.Icon = IconFolder;
                 root.HasUnrealizedChildren = true;
                 flist.Add(root, folder);
@@ -196,7 +196,7 @@ namespace StringCodec.UWP.Pages
                 var sfiles = await queryFiles.GetFilesAsync();
                 foreach (var file in sfiles)
                 {
-                    var fnode = new MyTreeViewNode() { Content = file.Name.ConvertFrom(CURRENT_SRCENC, true) };
+                    var fnode = new MyTreeViewNode() { Content = await file.Name.ConvertFrom(CURRENT_SRCENC, true) };
                     fnode.Icon = IconFile;
                     root.Children.Add(fnode);
                     flist.Add(fnode, file);
@@ -207,7 +207,7 @@ namespace StringCodec.UWP.Pages
             else if (item is StorageFile)
             {
                 var file = item as StorageFile;
-                var fnode = new MyTreeViewNode() { Content = file.Name.ConvertFrom(CURRENT_SRCENC, true) };
+                var fnode = new MyTreeViewNode() { Content = await file.Name.ConvertFrom(CURRENT_SRCENC, true) };
                 fnode.Icon = IconFile;
                 node.Children.Add(fnode);
                 flist.Add(fnode, file);
@@ -224,7 +224,7 @@ namespace StringCodec.UWP.Pages
             if (item is StorageFolder)
             {
                 var folder = item as StorageFolder;
-                var root = new MyTreeViewNode() { Content = folder.Name.ConvertFrom(CURRENT_SRCENC, true) };
+                var root = new MyTreeViewNode() { Content = await folder.Name.ConvertFrom(CURRENT_SRCENC, true) };
                 root.Icon = IconFolder;
                 root.HasUnrealizedChildren = true;
                 root.IsExpanded = true;
@@ -241,7 +241,7 @@ namespace StringCodec.UWP.Pages
                 var sfiles = await queryFiles.GetFilesAsync();
                 foreach (var file in sfiles)
                 {
-                    var fnode = new MyTreeViewNode() { Content = file.Name.ConvertFrom(CURRENT_SRCENC, true) };
+                    var fnode = new MyTreeViewNode() { Content = await file.Name.ConvertFrom(CURRENT_SRCENC, true) };
                     fnode.Icon = IconFile;
                     root.Children.Add(fnode);
                     flist.Add(fnode, file);
@@ -252,7 +252,7 @@ namespace StringCodec.UWP.Pages
             else if (item is StorageFile)
             {
                 var file = item as StorageFile;
-                var fnode = new MyTreeViewNode() { Content = file.Name.ConvertFrom(CURRENT_SRCENC, true) };
+                var fnode = new MyTreeViewNode() { Content = await file.Name.ConvertFrom(CURRENT_SRCENC, true) };
                 fnode.Icon = IconFile;
                 tree.RootNodes.Add(fnode);
                 flist.Add(fnode, file);
@@ -295,7 +295,7 @@ namespace StringCodec.UWP.Pages
                     if (node.HasChildren) node.Children.Clear();
                     foreach (var sItem in sItems)
                     {
-                        MyTreeViewNode fNode = filenode.ContainsKey(sItem.Path) ? filenode[sItem.Path] : new MyTreeViewNode() { Content = sItem.Name.ConvertFrom(CURRENT_SRCENC, true) };
+                        MyTreeViewNode fNode = filenode.ContainsKey(sItem.Path) ? filenode[sItem.Path] : new MyTreeViewNode() { Content = await sItem.Name.ConvertFrom(CURRENT_SRCENC, true) };
 
                         if (sItem is StorageFolder)
                         {
@@ -322,10 +322,10 @@ namespace StringCodec.UWP.Pages
             return (result);
         }
 
-        private void FillTree(TreeView tree, IStorageItem item)
+        private async void FillTree(TreeView tree, IStorageItem item)
         {
             //var fNode = new MyTreeViewNode() { Content = item.Name.ConvertFrom(CURRENT_SRCENC, true) };
-            MyTreeViewNode fNode = filenode.ContainsKey(item.Path) ? filenode[item.Path] : new MyTreeViewNode() { Content = item.Name.ConvertFrom(CURRENT_SRCENC, true) };
+            MyTreeViewNode fNode = filenode.ContainsKey(item.Path) ? filenode[item.Path] : new MyTreeViewNode() { Content = await item.Name.ConvertFrom(CURRENT_SRCENC, true) };
             if (item is StorageFolder)
             {
                 fNode.Icon = IconFolder;
@@ -388,9 +388,9 @@ namespace StringCodec.UWP.Pages
                         var f = flist[target];
 
                         if (CURRENT_RENAME_REPLACE)
-                            await f.RenameAsync(f.Name.ConvertFrom(CURRENT_SRCENC, true), NameCollisionOption.ReplaceExisting);
+                            await f.RenameAsync(await f.Name.ConvertFrom(CURRENT_SRCENC, true), NameCollisionOption.ReplaceExisting);
                         else
-                            await f.RenameAsync(f.Name.ConvertFrom(CURRENT_SRCENC, true), NameCollisionOption.GenerateUniqueName);
+                            await f.RenameAsync(await f.Name.ConvertFrom(CURRENT_SRCENC, true), NameCollisionOption.GenerateUniqueName);
 
                         target.Content = f.Name;
                         if (target.HasChildren)
@@ -407,7 +407,7 @@ namespace StringCodec.UWP.Pages
                         {
                             var f = flist[cnode];
 
-                            var fn = f.Name.ConvertFrom(CURRENT_SRCENC, true);
+                            var fn = await f.Name.ConvertFrom(CURRENT_SRCENC, true);
                             if(!fn.Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))
                             {
                                 if (CURRENT_RENAME_REPLACE)
@@ -436,39 +436,45 @@ namespace StringCodec.UWP.Pages
         private async Task<bool> ConvertFileContent()
         {
             bool result = false;
-
-            if (IsDropped) return (result);
-            if (target is TreeViewNode)
+            try
             {
-                if (flist.ContainsKey(target))
+                if (IsDropped) return (result);
+                if (target is TreeViewNode)
                 {
-                    var f = flist[target];
+                    if (flist.ContainsKey(target))
+                    {
+                        var f = flist[target];
 
-                    if (f is StorageFile)
-                    {
-                        var file = f as StorageFile;
-                        result = await Utils.ConvertFile(file, CURRENT_SRCENC, CURRENT_DSTENC, CURRENT_CONVERT_ORIGINAL);
-                    }
-                }
-            }
-            else if (TreeFiles.SelectedNodes.Count > 0)
-            {
-                foreach(var cnode in TreeFiles.SelectedNodes)
-                {
-                    if (flist.ContainsKey(cnode))
-                    {
-                        var f = flist[cnode];
                         if (f is StorageFile)
                         {
                             var file = f as StorageFile;
-                            var cresult = await Utils.ConvertFile(file, CURRENT_SRCENC, CURRENT_DSTENC, CURRENT_CONVERT_ORIGINAL);
-                            //if(cresult) TreeFiles.SelectedNodes.Remove(cnode);
-                            result = cresult && result;
+                            result = await Utils.ConvertFile(file, CURRENT_SRCENC, CURRENT_DSTENC, CURRENT_CONVERT_ORIGINAL);
                         }
                     }
                 }
-                //TreeFiles.SelectedNodes.Clear();
-                //TreeFiles.UpdateLayout();
+                else if (TreeFiles.SelectedNodes.Count > 0)
+                {
+                    foreach (var cnode in TreeFiles.SelectedNodes)
+                    {
+                        if (flist.ContainsKey(cnode))
+                        {
+                            var f = flist[cnode];
+                            if (f is StorageFile)
+                            {
+                                var file = f as StorageFile;
+                                var cresult = await Utils.ConvertFile(file, CURRENT_SRCENC, CURRENT_DSTENC, CURRENT_CONVERT_ORIGINAL);
+                                //if(cresult) TreeFiles.SelectedNodes.Remove(cnode);
+                                result = cresult && result;
+                            }
+                        }
+                    }
+                    //TreeFiles.SelectedNodes.Clear();
+                    //TreeFiles.UpdateLayout();
+                }
+            }
+            catch (Exception ex)
+            {
+                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
             }
             return (result);
         }

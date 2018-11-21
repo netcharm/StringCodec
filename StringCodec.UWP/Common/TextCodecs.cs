@@ -619,74 +619,39 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static public string ConvertTo(this string text, Encoding SrcEnc, Encoding DstEnc)
+        static public async Task<string> ConvertTo(this string text, Encoding SrcEnc, Encoding DstEnc)
         {
             var result = string.Empty;
 
-            if (DstEnc == SrcEnc) result = text;
-            else
+            try
             {
-                byte[] arr = SrcEnc.GetBytes(text);
-                result = DstEnc.GetString(arr);
+                if (DstEnc == SrcEnc) result = text;
+                else
+                {
+                    byte[] arr = SrcEnc.GetBytes(text);
+                    result = DstEnc.GetString(arr);
+                }
             }
-
+            catch (Exception ex)
+            {
+                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
+            }
             return (result);
         }
 
-        static public string ConvertTo(this string text, Encoding enc)
+        static public async Task<string> ConvertTo(this string text, Encoding enc)
         {
             var result = string.Empty;
-
-            //if (Encoding.Default.CodePage == 936)
-            //{
-            //    byte[] arr = Encoding.GetEncoding("GBK").GetBytes(text);
-            //    result = DstEnc.GetString(arr);
-            //}
-            //else if (Encoding.Default.CodePage == 950)
-            //{
-            //    byte[] arr = Encoding.GetEncoding("BIG5").GetBytes(text);
-            //    result = DstEnc.GetString(arr);
-            //}
-            //else if (Encoding.Default.CodePage == 932)
-            //{
-            //    byte[] arr = Encoding.GetEncoding("Shift-JIS").GetBytes(text);
-            //    result = DstEnc.GetString(arr);
-            //}
-            //else if (Encoding.Default.CodePage == 949)
-            //{
-            //    byte[] arr = Encoding.GetEncoding("Korean").GetBytes(text);
-            //    result = DstEnc.GetString(arr);
-            //}
-            //else if (Encoding.Default.CodePage == 1200)
-            //{
-            //    byte[] arr = Encoding.Unicode.GetBytes(text);
-            //    result = DstEnc.GetString(arr);
-            //}
-            //else if (Encoding.Default.CodePage == 1201)
-            //{
-            //    byte[] arr = Encoding.BigEndianUnicode.GetBytes(text);
-            //    result = DstEnc.GetString(arr);
-            //}
-            //else if (Encoding.Default.CodePage == 65000)
-            //{
-            //    byte[] arr = Encoding.UTF7.GetBytes(text);
-            //    result = DstEnc.GetString(arr);
-            //}
-            //else if (Encoding.Default.CodePage == 65001)
-            //{
-            //    byte[] arr = Encoding.UTF8.GetBytes(text);
-            //    result = DstEnc.GetString(arr);
-            //}
-            //else
-            //{
-            //    byte[] arr = Encoding.ASCII.GetBytes(text);
-            //    result = DstEnc.GetString(arr);
-            //}
-
-            byte[] arr = Encoding.Default.GetBytes(text);
-            if (arr != null && arr.Length > 0)
-                result = enc.GetString(arr);
-
+            try
+            {
+                byte[] arr = Encoding.Default.GetBytes(text);
+                if (arr != null && arr.Length > 0)
+                    result = enc.GetString(arr);
+            }
+            catch (Exception ex)
+            {
+                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
+            }
             return (result);
         }
 
@@ -812,105 +777,119 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static public string ConvertFrom(this string text, Encoding enc, bool IsOEM = false)
+        static public async Task<string> ConvertFrom(this string text, Encoding enc, bool IsOEM = false)
         {
             var result = string.Empty;
-
-            if (IsOEM)
+            try
             {
-                int cp = System.Globalization.CultureInfo.InstalledUICulture.TextInfo.OEMCodePage;
-
-                //// 判断韩语
-                //if (Regex.IsMatch(text, @"[\uac00-\ud7ff]+"))
-                //{
-                //    cp = 949;
-                //}
-                //// 判断日语
-                //else if (Regex.IsMatch(text, @"[\u0800-\u4e00]+"))
-                //{
-                //    cp = 932;
-                //}
-                //// 判断中文
-                //else if (Regex.IsMatch(text, @"[\u4e00-\u9fa5]+")) // 如果是中文
-                //{
-                //    cp = 936;
-                //}
-                var cpc = enc.CodePage;
-                string[] subtexts = new string[]{ text };
-                if(cpc == 932 || cpc == 936 || cpc == 950)
-                    subtexts = text.Split(new char[]{ '\u30FB', '\uFF65' });
-
-                List<string> sl = new List<string>();
-                foreach(var t in subtexts)
+                if (IsOEM)
                 {
-                    byte[] arr = null;
-                    switch (cp)
+                    int cp = System.Globalization.CultureInfo.InstalledUICulture.TextInfo.OEMCodePage;
+
+                    //// 判断韩语
+                    //if (Regex.IsMatch(text, @"[\uac00-\ud7ff]+"))
+                    //{
+                    //    cp = 949;
+                    //}
+                    //// 判断日语
+                    //else if (Regex.IsMatch(text, @"[\u0800-\u4e00]+"))
+                    //{
+                    //    cp = 932;
+                    //}
+                    //// 判断中文
+                    //else if (Regex.IsMatch(text, @"[\u4e00-\u9fa5]+")) // 如果是中文
+                    //{
+                    //    cp = 936;
+                    //}
+                    var cpc = enc.CodePage;
+                    string[] subtexts = new string[]{ text };
+                    if (cpc == 932 || cpc == 936 || cpc == 950 || cpc == 949 || cpc == 65001)
+                        subtexts = text.Split(new char[] { '\u30FB', '\uFF65' });
+
+                    List<string> sl = new List<string>();
+                    foreach (var t in subtexts)
                     {
-                        case 936:
-                            arr = Encoding.GetEncoding("GBK").GetBytes(t);
-                            break;
-                        case 950:
-                            arr = Encoding.GetEncoding("BIG5").GetBytes(t);
-                            break;
-                        case 932:
-                            arr = Encoding.GetEncoding("Shift-JIS").GetBytes(t);
-                            break;
-                        case 949:
-                            arr = Encoding.GetEncoding("Korean").GetBytes(t);
-                            break;
-                        case 1200:
-                            arr = arr = Encoding.Unicode.GetBytes(t);
-                            break;
-                        case 1201:
-                            arr = Encoding.BigEndianUnicode.GetBytes(t);
-                            break;
-                        case 1250:
-                            arr = GetTextEncoder("1250").GetBytes(t);
-                            break;
-                        case 1251:
-                            arr = GetTextEncoder("1251").GetBytes(t);
-                            break;
-                        case 1252:
-                            arr = GetTextEncoder("1252").GetBytes(t);
-                            break;
-                        case 1253:
-                            arr = GetTextEncoder("1253").GetBytes(t);
-                            break;
-                        case 1254:
-                            arr = GetTextEncoder("1254").GetBytes(t);
-                            break;
-                        case 1255:
-                            arr = GetTextEncoder("1255").GetBytes(t);
-                            break;
-                        case 1256:
-                            arr = GetTextEncoder("1256").GetBytes(t);
-                            break;
-                        case 1257:
-                            arr = GetTextEncoder("1257").GetBytes(t);
-                            break;
-                        case 1258:
-                            arr = GetTextEncoder("1258").GetBytes(t);
-                            break;
-                        case 65000:
-                            arr = Encoding.UTF7.GetBytes(t);
-                            break;
-                        case 65001:
-                            arr = Encoding.UTF8.GetBytes(t);
-                            break;
-                        default:
-                            arr = Encoding.ASCII.GetBytes(t);
-                            break;
+                        byte[] arr = null;
+                        var cpEnc = GetTextEncoder(cp);
+                        arr = cpEnc.GetBytes(t);
+                        //switch (cp)
+                        //{
+                        //    case 936:
+                        //        arr = Encoding.GetEncoding("GBK").GetBytes(t);
+                        //        break;
+                        //    case 950:
+                        //        arr = Encoding.GetEncoding("BIG5").GetBytes(t);
+                        //        break;
+                        //    case 932:
+                        //        arr = Encoding.GetEncoding("Shift-JIS").GetBytes(t);
+                        //        break;
+                        //    case 949:
+                        //        arr = Encoding.GetEncoding("Korean").GetBytes(t);
+                        //        break;
+                        //    case 1200:
+                        //        arr = Encoding.Unicode.GetBytes(t);
+                        //        break;
+                        //    case 1201:
+                        //        arr = Encoding.BigEndianUnicode.GetBytes(t);
+                        //        break;
+                        //    case 1250:
+                        //        arr = GetTextEncoder("1250").GetBytes(t);
+                        //        break;
+                        //    case 1251:
+                        //        arr = GetTextEncoder("1251").GetBytes(t);
+                        //        break;
+                        //    case 1252:
+                        //        arr = GetTextEncoder("1252").GetBytes(t);
+                        //        break;
+                        //    case 1253:
+                        //        arr = GetTextEncoder("1253").GetBytes(t);
+                        //        break;
+                        //    case 1254:
+                        //        arr = GetTextEncoder("1254").GetBytes(t);
+                        //        break;
+                        //    case 1255:
+                        //        arr = GetTextEncoder("1255").GetBytes(t);
+                        //        break;
+                        //    case 1256:
+                        //        arr = GetTextEncoder("1256").GetBytes(t);
+                        //        break;
+                        //    case 1257:
+                        //        arr = GetTextEncoder("1257").GetBytes(t);
+                        //        break;
+                        //    case 1258:
+                        //        arr = GetTextEncoder("1258").GetBytes(t);
+                        //        break;
+                        //    case 65000:
+                        //        arr = Encoding.UTF7.GetBytes(t);
+                        //        break;
+                        //    case 65001:
+                        //        arr = Encoding.UTF8.GetBytes(t);
+                        //        break;
+                        //    default:
+                        //        arr = Encoding.ASCII.GetBytes(t);
+                        //        break;
+                        //}
+                        if (arr != null && arr.Length > 0)
+                        {
+                            //if(enc == Encoding.Default)
+                            if (enc.CodePage == Encoding.Default.CodePage)
+                                sl.Add(GetTextEncoder(cp).GetString(arr));
+                            else
+                                sl.Add(enc.GetString(arr));
+                        }                            
                     }
-                    if (arr != null && arr.Length > 0)
-                        sl.Add(enc.GetString(arr));
+                    result = string.Join("\u30FB", sl);
                 }
-                result = string.Join("\u30FB", sl);
+                else
+                {
+                    byte[] arr = enc.GetBytes(text);
+                    if (arr != null && arr.Length > 0)
+                        result = Encoding.Default.GetString(arr);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                byte[] arr = enc.GetBytes(text);
-                if (arr != null && arr.Length > 0)
-                    result = Encoding.Default.GetString(arr);
+                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
             }
             return (result);
         }
@@ -1023,6 +1002,69 @@ namespace StringCodec.UWP.Common
                 return (null);
         }
 
+        static public Encoding GetTextEncoder(int codepage)
+        {
+            var result = Encoding.Default;
+            switch (codepage)
+            {
+                case 936:
+                    result = Encoding.GetEncoding("GBK");
+                    break;
+                case 950:
+                    result = Encoding.GetEncoding("BIG5");
+                    break;
+                case 932:
+                    result = Encoding.GetEncoding("Shift-JIS");
+                    break;
+                case 949:
+                    result = Encoding.GetEncoding("Korean");
+                    break;
+                case 1200:
+                    result = Encoding.Unicode;
+                    break;
+                case 1201:
+                    result = Encoding.BigEndianUnicode;
+                    break;
+                case 1250:
+                    result = GetTextEncoder("1250");
+                    break;
+                case 1251:
+                    result = GetTextEncoder("1251");
+                    break;
+                case 1252:
+                    result = GetTextEncoder("1252");
+                    break;
+                case 1253:
+                    result = GetTextEncoder("1253");
+                    break;
+                case 1254:
+                    result = GetTextEncoder("1254");
+                    break;
+                case 1255:
+                    result = GetTextEncoder("1255");
+                    break;
+                case 1256:
+                    result = GetTextEncoder("1256");
+                    break;
+                case 1257:
+                    result = GetTextEncoder("1257");
+                    break;
+                case 1258:
+                    result = GetTextEncoder("1258");
+                    break;
+                case 65000:
+                    result = Encoding.UTF7;
+                    break;
+                case 65001:
+                    result = Encoding.UTF8;
+                    break;
+                default:
+                    result = Encoding.ASCII;
+                    break;
+            }
+            return (result);
+        }
+
         static public Encoding GetTextEncoder(string fmt)
         {
             var result = Encoding.Default;
@@ -1032,13 +1074,17 @@ namespace StringCodec.UWP.Common
                 result = Encoding.UTF8;
             else if (string.Equals(ENC_NAME, "Unicode", StringComparison.CurrentCultureIgnoreCase))
                 result = Encoding.Unicode;
-            else if (string.Equals(ENC_NAME, "GBK", StringComparison.CurrentCultureIgnoreCase))
+            else if (string.Equals(ENC_NAME, "GBK", StringComparison.CurrentCultureIgnoreCase)||
+                     string.Equals(ENC_NAME, "936", StringComparison.CurrentCultureIgnoreCase))
                 result = Encoding.GetEncoding("GBK");
-            else if (string.Equals(ENC_NAME, "BIG5", StringComparison.CurrentCultureIgnoreCase))
+            else if (string.Equals(ENC_NAME, "BIG5", StringComparison.CurrentCultureIgnoreCase) ||
+                     string.Equals(ENC_NAME, "950", StringComparison.CurrentCultureIgnoreCase))
                 result = Encoding.GetEncoding("BIG5");
-            else if (string.Equals(ENC_NAME, "JIS", StringComparison.CurrentCultureIgnoreCase))
+            else if (string.Equals(ENC_NAME, "JIS", StringComparison.CurrentCultureIgnoreCase) ||
+                     string.Equals(ENC_NAME, "932", StringComparison.CurrentCultureIgnoreCase))
                 result = Encoding.GetEncoding("Shift-JIS");
-            else if (string.Equals(ENC_NAME, "Korean", StringComparison.CurrentCultureIgnoreCase))
+            else if (string.Equals(ENC_NAME, "Korean", StringComparison.CurrentCultureIgnoreCase) ||
+                     string.Equals(ENC_NAME, "949", StringComparison.CurrentCultureIgnoreCase))
                 result = Encoding.GetEncoding("Korean");
             else if (string.Equals(ENC_NAME, "1250", StringComparison.CurrentCultureIgnoreCase))
                 result = Encoding.GetEncoding("Windows-1250");
