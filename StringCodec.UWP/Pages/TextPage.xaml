@@ -21,6 +21,7 @@
                 <AppBarButton.Flyout>
                     <MenuFlyout>
                         <ToggleMenuFlyoutItem x:Name="optURL" x:Uid="optURL" Text="URL" Click="Codec_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optHtml" x:Uid="optHtml" Text="HTML/XML" Click="Codec_Click"/>
                         <ToggleMenuFlyoutItem x:Name="optBase64" x:Uid="optBase64" Text="BASE64" Click="Codec_Click"/>
                         <ToggleMenuFlyoutItem x:Name="optUUE" x:Uid="optUUE" Text="UUE" Click="Codec_Click"/>
                         <ToggleMenuFlyoutItem x:Name="optXXE" x:Uid="optXXE" Text="XXE" Click="Codec_Click"/>

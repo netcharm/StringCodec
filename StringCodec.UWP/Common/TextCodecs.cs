@@ -16,7 +16,7 @@ namespace StringCodec.UWP.Common
 {
     static public class TextCodecs
     {
-        public enum CODEC { URL, BASE64, UUE, XXE, RAW, QUOTED, THUNDER, FLASHGET };
+        public enum CODEC { URL, HTML, BASE64, UUE, XXE, RAW, QUOTED, THUNDER, FLASHGET };
 
         static public class BASE64
         {
@@ -77,6 +77,92 @@ namespace StringCodec.UWP.Common
                 return (result);
             }
 
+        }
+
+        static public class HTML
+        {
+            static private string EntityToUnicode(string html)
+            {
+                var replacements = new Dictionary<string, string>();
+                var regex = new Regex("(&[a-zA-Z]{2,7};)");
+                foreach (Match match in regex.Matches(html))
+                {
+                    if (!replacements.ContainsKey(match.Value))
+                    {
+                        var unicode = System.Web.HttpUtility.HtmlDecode(match.Value);
+                        if (unicode.Length == 1)
+                        {
+                            replacements.Add(match.Value, string.Concat("&#", Convert.ToInt32(unicode[0]), ";"));
+                        }
+                    }
+                }
+                var entryPattenDec = new Regex("&\\#([0-9]{1,6});", RegexOptions.IgnoreCase);
+                //entryPatten.Replace(html, Convert.ToChar(Convert.ToInt32("$1")).ToString());
+                foreach (Match match in entryPattenDec.Matches(html))
+                {
+                    if (!replacements.ContainsKey(match.Value))
+                    {
+                        if(match.Groups.Count()>1)
+                            replacements.Add(match.Value, $"{Convert.ToChar(Convert.ToInt32(match.Groups[1].Value))}");
+                    }
+                }
+                var entryPattenHex = new Regex("&\\#x([a-fA-F0-9]{1,6});", RegexOptions.IgnoreCase);
+                foreach (Match match in entryPattenDec.Matches(html))
+                {
+                    if (!replacements.ContainsKey(match.Value))
+                    {
+                        if (match.Groups.Count() > 1)
+                            replacements.Add(match.Value, $"{Convert.ToChar(Convert.ToInt32(match.Groups[1].Value, 16))}");
+                    }
+                }
+
+                foreach (var replacement in replacements)
+                {
+                    html = html.Replace(replacement.Key, replacement.Value);
+                }
+                return html;
+            }
+
+            static private string UnicodeToEntity(string html)
+            {
+
+                return (html);
+            }
+
+            static public async Task<string> Encode(string text)
+            {
+                string result = text;
+
+                try
+                {
+                    //result = System.Web.HttpUtility.HtmlEncode(result);
+                    result = System.Net.WebUtility.HtmlEncode(result);
+                }
+                catch (Exception ex)
+                {
+                    await new MessageDialog($"HTML{"ERROR".T()}\n{ex.Message}", "ERROR".T()).ShowAsync();
+                }               
+
+                return (result);
+            }
+
+            static public async Task<string> Decode(string text, Encoding enc)
+            {
+                string result = text;
+
+                try
+                {
+                    //result = System.Web.HttpUtility.HtmlDecode(result);
+                    result = EntityToUnicode(System.Net.WebUtility.HtmlDecode(result));
+                    result = await result.ConvertFrom(enc);
+                }
+                catch(Exception ex)
+                {
+                    await new MessageDialog($"HTML{"ERROR".T()}\n{ex.Message}", "ERROR".T()).ShowAsync();
+                }
+
+                return (result);
+            }
         }
 
         static public class UUE
@@ -217,6 +303,9 @@ namespace StringCodec.UWP.Common
                     case CODEC.URL:
                         result = URL.Encode(content);
                         break;
+                    case CODEC.HTML:
+                        result = await HTML.Encode(content);
+                        break;
                     case CODEC.BASE64:
                         result = await BASE64.Encode(content, LineBreak);
                         break;
@@ -247,11 +336,6 @@ namespace StringCodec.UWP.Common
                 await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
             }
             return (result);
-        }
-
-        static public async Task<string> Encoder(this string content, CODEC Codec, bool LineBreak = false)
-        {
-            return (await Encode(content, Codec, LineBreak));
         }
 
         static public async Task<string> Encode(WriteableBitmap image, string format = ".png", bool prefix = true, bool LineBreak = false)
@@ -459,6 +543,11 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
+        static public async Task<string> Encoder(this string content, CODEC Codec, bool LineBreak = false)
+        {
+            return (await Encode(content, Codec, LineBreak));
+        }
+
         static public async Task<string> Encoder(this WriteableBitmap image, string format = ".png", bool prefix = true, bool LineBreak = false)
         {
             return (await Encode(image, format, prefix, LineBreak));
@@ -473,6 +562,9 @@ namespace StringCodec.UWP.Common
                 {
                     case CODEC.URL:
                         result = URL.Decode(content, enc);
+                        break;
+                    case CODEC.HTML:
+                        result = await HTML.Decode(content, enc);
                         break;
                     case CODEC.BASE64:
                         result = await BASE64.Decode(content, enc);
@@ -506,9 +598,35 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static public async Task<string> Decoder(this string content, CODEC Codec, Encoding enc)
+        static public async Task<WriteableBitmap> Decode(string content)
         {
-            return (await Decode(content, Codec, enc));
+            WriteableBitmap result = new WriteableBitmap(1, 1);
+            if (content.Length <= 0) return (result);
+
+            try
+            {
+                string bs = Regex.Replace(content, @"data:image/.*?;base64,", "", RegexOptions.IgnoreCase);
+                byte[] arr = Convert.FromBase64String(bs.Trim());
+                using (MemoryStream ms = new MemoryStream(arr))
+                {
+                    byte[] buf = ms.ToArray();
+                    using (InMemoryRandomAccessStream fileStream = new InMemoryRandomAccessStream())
+                    {
+                        using (DataWriter writer = new DataWriter(fileStream.GetOutputStreamAt(0)))
+                        {
+                            writer.WriteBytes(buf);
+                            writer.StoreAsync().GetResults();
+                            await fileStream.FlushAsync();
+                        }
+                        result.SetSource(fileStream);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
+            }
+            return (result);
         }
 
         static public async Task<SVG> DecodeSvg(this string content)
@@ -549,35 +667,9 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static public async Task<WriteableBitmap> Decode(string content)
+        static public async Task<string> Decoder(this string content, CODEC Codec, Encoding enc)
         {
-            WriteableBitmap result = new WriteableBitmap(1, 1);
-            if (content.Length <= 0) return (result);
-
-            try
-            {
-                string bs = Regex.Replace(content, @"data:image/.*?;base64,", "", RegexOptions.IgnoreCase);
-                byte[] arr = Convert.FromBase64String(bs.Trim());
-                using (MemoryStream ms = new MemoryStream(arr))
-                {
-                    byte[] buf = ms.ToArray();
-                    using (InMemoryRandomAccessStream fileStream = new InMemoryRandomAccessStream())
-                    {
-                        using (DataWriter writer = new DataWriter(fileStream.GetOutputStreamAt(0)))
-                        {
-                            writer.WriteBytes(buf);
-                            writer.StoreAsync().GetResults();
-                            await fileStream.FlushAsync();
-                        }
-                        result.SetSource(fileStream);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
-            }
-            return (result);
+            return (await Decode(content, Codec, enc));
         }
 
         static public async Task<WriteableBitmap> Decoder(this string content)
