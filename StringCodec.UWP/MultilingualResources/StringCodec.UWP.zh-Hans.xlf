@@ -1118,6 +1118,22 @@
           <source>File</source>
           <target state="translated">文件</target>
         </trans-unit>
+        <trans-unit id="Morse" translate="yes" xml:space="preserve">
+          <source>Morse Code</source>
+          <target state="translated">摩尔斯电码</target>
+        </trans-unit>
+        <trans-unit id="optMorse.Text" translate="yes" xml:space="preserve">
+          <source>Morse Code</source>
+          <target state="translated">摩尔斯电码</target>
+        </trans-unit>
+        <trans-unit id="optMorseAbbr.Text" translate="yes" xml:space="preserve">
+          <source>Morse Code Expand Abbr.</source>
+          <target state="translated">摩尔斯电码(展开缩写)</target>
+        </trans-unit>
+        <trans-unit id="optPassword.Text" translate="yes" xml:space="preserve">
+          <source>Password</source>
+          <target state="translated">简单密码</target>
+        </trans-unit>
       </group>
     </body>
   </file>

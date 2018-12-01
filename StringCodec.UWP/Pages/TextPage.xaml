@@ -30,6 +30,11 @@
                         <ToggleMenuFlyoutItem x:Name="optThunder" x:Uid="optThunder" Text="Thunder" Click="Codec_Click"/>
                         <ToggleMenuFlyoutItem x:Name="optFlashGet" x:Uid="optFlashGet" Text="FlashGet" Click="Codec_Click"/>
                         <MenuFlyoutSeparator />
+                        <MenuFlyoutSubItem x:Name="optPassword" x:Uid="optPassword" Text="Password">
+                            <ToggleMenuFlyoutItem x:Name="optMorse" x:Uid="optMorse" Text="Morse Code" Click="Codec_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optMorseAbbr" x:Uid="optMorseAbbr" Text="Morse Code Expand Abbr." Click="Codec_Click"/>
+                        </MenuFlyoutSubItem>
+                        <MenuFlyoutSeparator />
                         <ToggleMenuFlyoutItem x:Name="optLineBreak" x:Uid="optLineBreak" Text="Line Break" Click="OptLang_Click"/>
                     </MenuFlyout>
                 </AppBarButton.Flyout>

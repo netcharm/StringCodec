@@ -846,4 +846,16 @@
   <data name="File" xml:space="preserve">
     <value>檔案</value>
   </data>
+  <data name="Morse" xml:space="preserve">
+    <value>摩爾斯電碼</value>
+  </data>
+  <data name="optMorse.Text" xml:space="preserve">
+    <value>摩爾斯電碼</value>
+  </data>
+  <data name="optMorseAbbr.Text" xml:space="preserve">
+    <value>摩爾斯電碼(展開縮寫)</value>
+  </data>
+  <data name="optPassword.Text" xml:space="preserve">
+    <value>簡單密碼</value>
+  </data>
 </root>

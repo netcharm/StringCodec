@@ -1118,6 +1118,22 @@
           <source>File</source>
           <target state="translated">ファイル</target>
         </trans-unit>
+        <trans-unit id="Morse" translate="yes" xml:space="preserve">
+          <source>Morse Code</source>
+          <target state="translated">モールス</target>
+        </trans-unit>
+        <trans-unit id="optMorse.Text" translate="yes" xml:space="preserve">
+          <source>Morse Code</source>
+          <target state="translated">モールス</target>
+        </trans-unit>
+        <trans-unit id="optMorseAbbr.Text" translate="yes" xml:space="preserve">
+          <source>Morse Code Expand Abbr.</source>
+          <target state="translated">モールス符号 (拡張略語)</target>
+        </trans-unit>
+        <trans-unit id="optPassword.Text" translate="yes" xml:space="preserve">
+          <source>Password</source>
+          <target state="translated">簡単なパスワード</target>
+        </trans-unit>
       </group>
     </body>
   </file>

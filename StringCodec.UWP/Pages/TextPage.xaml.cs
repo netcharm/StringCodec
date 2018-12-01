@@ -106,7 +106,12 @@ namespace StringCodec.UWP.Pages
                 return;
             }
 
-            ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] { optBase64, optUUE, optXXE, optURL, optHtml, optThunder, optRaw, optQuoted, optFlashGet };
+            ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] {
+                optBase64, optUUE, optXXE, optQuoted,
+                optURL, optHtml, optRaw,
+                optThunder, optFlashGet,
+                optMorse, optMorseAbbr
+            };
 
             var btn = sender as ToggleMenuFlyoutItem;
 

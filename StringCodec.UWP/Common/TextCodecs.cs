@@ -16,7 +16,7 @@ namespace StringCodec.UWP.Common
 {
     static public class TextCodecs
     {
-        public enum CODEC { URL, HTML, BASE64, UUE, XXE, RAW, QUOTED, THUNDER, FLASHGET };
+        public enum CODEC { URL, HTML, BASE64, UUE, XXE, RAW, QUOTED, THUNDER, FLASHGET, MORSE, MORSEABBR };
 
         static public class BASE64
         {
@@ -96,22 +96,24 @@ namespace StringCodec.UWP.Common
                         }
                     }
                 }
+
                 var entryPattenDec = new Regex("&\\#([0-9]{1,6});", RegexOptions.IgnoreCase);
                 //entryPatten.Replace(html, Convert.ToChar(Convert.ToInt32("$1")).ToString());
                 foreach (Match match in entryPattenDec.Matches(html))
                 {
                     if (!replacements.ContainsKey(match.Value))
                     {
-                        if(match.Groups.Count()>1)
+                        if (match.Groups.Count > 1)
                             replacements.Add(match.Value, $"{Convert.ToChar(Convert.ToInt32(match.Groups[1].Value))}");
                     }
                 }
+                
                 var entryPattenHex = new Regex("&\\#x([a-fA-F0-9]{1,6});", RegexOptions.IgnoreCase);
                 foreach (Match match in entryPattenDec.Matches(html))
                 {
                     if (!replacements.ContainsKey(match.Value))
                     {
-                        if (match.Groups.Count() > 1)
+                        if (match.Groups.Count > 1 && !replacements.ContainsKey(match.Value))
                             replacements.Add(match.Value, $"{Convert.ToChar(Convert.ToInt32(match.Groups[1].Value, 16))}");
                     }
                 }
@@ -125,6 +127,20 @@ namespace StringCodec.UWP.Common
 
             static private string UnicodeToEntity(string html)
             {
+                var replacements = new Dictionary<string, string>();
+                foreach (Match match in Regex.Matches(html, @"((^[\u0000-\u007f])|([\u2300-\u23ff])|([\u2600-\u27ff])|([\u1f000-\u1f9ff]))"))
+                {
+                    if (match.Groups.Count > 1 && !replacements.ContainsKey(match.Value))
+                    {
+                        var v = Convert.ToInt32(match.Groups[1].Value[0]);
+                        if(127 < v) replacements.Add(match.Value, $"&#{v};");
+                    }                        
+                }
+
+                foreach (var replacement in replacements)
+                {
+                    html = html.Replace(replacement.Key, replacement.Value);
+                }
 
                 return (html);
             }
@@ -136,7 +152,7 @@ namespace StringCodec.UWP.Common
                 try
                 {
                     //result = System.Web.HttpUtility.HtmlEncode(result);
-                    result = System.Net.WebUtility.HtmlEncode(result);
+                    result = UnicodeToEntity(System.Net.WebUtility.HtmlEncode(result));
                 }
                 catch (Exception ex)
                 {
@@ -290,7 +306,209 @@ namespace StringCodec.UWP.Common
                 result = Regex.Replace(url, @"^\[FLASHGET\](.*?)\[FLASHGET\]$", "$1", RegexOptions.IgnoreCase | RegexOptions.Multiline);
                 return (result);
             }
+        }
 
+        static public class MORSE
+        {
+            private static readonly Dictionary<string, string> MorseTable = new Dictionary<string, string>() {
+                // 以下数据来源于 维基百科(Wikipedia) 中文版
+                // https://zh.wikipedia.org/zh-cn/%E6%91%A9%E5%B0%94%E6%96%AF%E7%94%B5%E7%A0%81#%E7%8E%B0%E4%BB%A3%E5%9B%BD%E9%99%85%E6%91%A9%E5%B0%94%E6%96%AF%E7%94%B5%E7%A0%81
+                //
+                // 基础拉丁字母
+                { "A", ".-" }, { "B", "-..." }, { "C", "-.-." }, { "D", "-.." }, { "E", "." }, { "F", "..-." }, { "G", "--." },
+                { "H", "...." }, { "I", ".." }, { "J", ".---" }, { "K", "-.-" }, { "L", ".-.." }, { "M", "--" }, { "N", "-." },
+                { "O", "---" }, { "P", ".--." }, { "Q", "--.-" }, { "R", ".-." }, { "S", "..." }, { "T", "-" }, { "U", "..-" },
+                { "V", "...-" }, { "W", ".--" }, { "X", "-..-" }, { "Y", "-.--" }, { "Z", "--.." },
+                // 数字
+                { "1", ".----" }, { "2", "..---" }, { "3", "...--" }, { "4", "....-" }, { "5", "....." },
+                { "6", "-...." }, { "7", "--..." }, { "8", "---.." }, { "9", "----." }, { "0", "-----" },
+                // 标点符号
+                { ".", ".-.-.-" }, { ":", "---..." }, { ",", "--..--" }, { ";", "-.-.-." }, { "?", "..--.." }, { "=", "-...-" },
+                { "\'", ".----." }, { "/", "-..-." }, { "!", "-.-.--" }, { "-", "-....-" }, { "_", "..--.-" }, { "\"", ".-..-." },
+                { "(", "-.--." }, { ")", "-.--.-" }, { "$", "...-..-" }, { "&", ".-..." }, { "@", ".--.-." }, { "+", ".-.-." },
+                // 派生拉丁字母
+                //{"Ä", "·-·-"}, {"Æ", "·-·-"}, {"Ą", "·-·-"}, {"À", "·--·-"}, {"Å", "·--·-"}, {"Ç", "-·-··"}, {"Ĉ", "-·-··"}, {"Ć","-·-··"}, {"Č", "·--·"}, {"Ch", "----"}, {"Š", "----"}, {"Ĥ", "----"}, {"Ð", "··--·"}, {"È", "----"}, {"Ł", "·-··-"},
+                //{"É", "----"}, {"Đ", "----"}, {"Ę", "··-··"}, {"Ĝ", "--·-·"}, {"Ĥ", "-·--·"}, {"Ĵ", "·---·"}, {"Ñ", "----"}, {"Ń", "--·--"}, {"Ö", "----"}, {"Ø", "----"}, {"Ó ", "---·"}, {"Ś", "···-···"},
+                //{"Ŝ", "···-·"}, {"ß", "···--··"}, {"Þ", "·--··"}, {"Ü", "----"}, {"Ŭ", "··--"}, {"Ź", "--··-·"}, {"Ž", "·--"}, {"Ż", "--··-"},
+                // 特殊符号（统一符号）
+                // 这是一些有特殊意义的点划组合。它们由二个或多个字母的摩尔斯电码连成一个使用，
+                // 这样可以省去正常时把它们做为两个字母发送所必须的中间间隔时间。 
+                { "AAAAA", "·-·-·-·-·-" },  // 调用信号，表示“我有消息发送”。
+                { "AAA", "·-·-·-" },        // 表示“本句完，接下一句”（同句号）。
+                { "HH", "········" },       // 表示“有错，从上一字重新开始”。
+                { "AR", "·-·-·" },          // 表示“消息结束”。
+                { "AS", "·-···" },          // 等待。
+                { "TTTTT", "-----" },       // 表示“我正在接收你的消息”。
+                //{ "K", "-·-" },             // 表示“我已准备好，请开始发送消息”。
+                //{ "T", "-" },               // 表示“字收到了”。
+                { "IMI", "··--··" },        // 表示“请重复你的电码，我不是很明白”（同问号）。
+                //{ "R", "·-·" },             // 表示“消息已收到”。
+                { "SK", "···-·-" },         // 表示终止（联系结束）。
+                { "BT", "-···-" },          // 分隔符。
+                { "SOS", "···---···" },     // 求救信号。
+                // 以下并不是真正的统一符号：
+                { "{REPEAT LAST WORD}", "···-·" }, // 我将重新发送最后一个单词 
+                { "{SAME}", "·· ··" },             // 同样
+                { "{OOO}", "---------" },          // 错误（Out Of Order）
+                // 其它
+                { "{UNDERSTOOD}", "...-." },
+                { "{ERROR}", "........" },
+                { "{INVITATION TO TRANSMIT}", "-.-" },
+                { "{WAIT}", ".-..." },
+                { "{END OF WORK}", "...-.-" },
+                { "{STARTING SIGNAL}", "-.-.-" },
+                { " ", "/" }, //{ " ", "\u2423" },
+            };
+
+            private static readonly Dictionary<string, string> MorseAbbrTable = new Dictionary<string, string>()
+            {
+                { "AA", "All after" },                                                // 某字以后
+                { "AB", "All before" },                                               // 字以前
+                { "ARRL", "American Radio Relay League" },                            // 美国无线电中继联盟
+                { "ABT", "About" },                                                   // 大约
+                { "ADS", "Address" },                                                 // 地址
+                { "AGN", "Again" },                                                   // 再一次
+                { "ANT", "Antenna" },                                                 // 天线
+                { "BN", "All between" },                                              // ……之间
+                { "BUG", "Semiautomatic key" },                                       // 半自动关键
+                //{ "C", "Yes" },                                                       // 是，好
+                { "CBA", "Callbook address" },                                        // 呼号手册
+                { "CFM", "Confirm" },                                                 // 确认
+                { "CLG", "Calling" },                                                 // 调用
+                { "CQ", "Calling any station" },                                      // 调用任意台站
+                { "CUL", "See you later" },                                           // 再见
+                { "CUZ", "Because" },                                                 // 因为
+                { "CW", "Continuous wave" },                                          // 连续波
+                { "CX", "Conditions" },                                               // 状况
+                { "CY", "Copy" },                                                     // 抄收
+                { "DE", "From" },                                                     // 来自
+                { "DX", "Distance (sometimes refers to long distance contact)" },     // 距离（有时指长程通联）
+                { "ES", "And" },                                                      // （和；且）
+                { "FB", "Fine business (Analogous to \"OK\")" },                      // 类似于“确定”
+                { "FCC", "Federal Communications Commission" },                       // （美国）联邦通信委员会
+                { "FER", "For" },                                                     // 为了
+                { "FREQ", "Frequency" },                                              // 频率
+                { "GA", "Good afternoon or Go ahead (depending on context)" },        // 午安；请发报（依上下文而定）
+                { "GE", "Good evening" },                                             // 晚安
+                { "GM", "Good morning" },                                             // 早安
+                { "GND", "Ground (ground potential)" },                               // 地面（地电位）
+                { "GUD", "Good" },                                                    // 好
+                { "HI", "Laughter" },                                                 // 笑
+                { "HR", "Here" },                                                     // 这里
+                { "HV", "Have" },                                                     // 有
+                { "LID", "Lid" },                                                     // 覆盖
+                { "MILS", "Milliamperes" },                                           // 毫安培
+                { "NIL", "Nothing" },                                                 // 无收信，空白
+                { "NR", "Number" },                                                   // 编号，第……
+                { "OB", "Old boy" },                                                  // 老大哥
+                { "OC", "Old chap" },                                                 // 老伙计
+                { "OM", "Old man (any male amateur radio operator is an OM)" },       // 前辈，老手（男性）（任何男性业余无线电操作员都是OM）
+                { "OO", "Official Observer" },                                        // 官方观察员
+                { "OP", "Operator" },                                                 // 操作员
+                { "OT", "Old timer" },                                                // 老前辈
+                { "OTC", "Old timers club" },                                         // 老手俱乐部
+                { "OOTC", "Old old timers club" },                                    // 资深老手俱乐部
+                { "PSE", "Please" },                                                  // 请
+                { "PWR", "Power" },                                                   // 功率
+                { "QCWA", "Quarter Century Wireless Association" },                   // 四分之一世界无线电协会
+                //{ "R", "Received,Roger or decimal point (depending on context)" },    // 收到；小数点（依上下文而定）
+                { "RCVR", "Receiver" },                                               // 接收机
+                { "RPT", "Repeat or report (depending on context)" },                 // 重复；报告（依上下文而定）
+                { "RST", "Signal report format (Readability-Signal Strength-Tone)" }, // 信号报告格式（可读性信号强度音）
+                { "RTTY", "Radioteletype" },                                          // 无线电传
+                { "RX", "Receive" },                                                  // 接收
+                { "SAE", "Self addressed envelope" },                                 // 回邮信（即已填写自己地址以便对方回信的信封）
+                { "SASE", "Self addressed, stamped envelope" },                       // 带邮票的回邮信封
+                { "SED", "Said" },                                                    // 说
+                { "SEZ", "Says" },                                                    // 说
+                { "SIG", "Signal" },                                                  // 信号
+                { "SIGS", "Signals" },                                                // 信号
+                { "SKED", "Schedule" },                                               // 进程表
+                { "SN", "Soon" },                                                     // 很快；不久的将来
+                { "SRI", "Sorry" },                                                   // 抱歉
+                { "STN", "Station" },                                                 // 台站
+                { "TEMP", "Temperature" },                                            // 温度
+                { "TMW", "Tomorrow" },                                                // 明天
+                { "TNX", "Thanks" },                                                  // 谢谢
+                { "TU", "Thank you" },                                                // 谢谢你
+                { "TX", "Transmit" },                                                 // 发射
+                //{ "U", "You" },                                                       // 你
+                { "UR", "Your or you're (depending on context)" },                    // 你的；你是（依上下文而定）
+                { "URS", "Yours" },                                                   // 你的
+                { "VY", "Very" },                                                     // 非常；很
+                { "WDS", "Words" },                                                   // 词
+                { "WKD", "Worked" },                                                  // 工作
+                { "WL", "Will or Well" },                                             // 将会；好（依上下文而定）
+                { "WUD", "Would" },                                                   // 将会
+                { "WX", "Weather" },                                                  // 天气
+                { "XMTR", "Transmitter" },                                            // 发射机
+                { "XYL", "Wife" },                                                    // 妻子
+                { "YL", "Young lady (used of any female)" },                          // 女报务员（称呼任何女性报务员）
+                { "73", "Best regards" },                                             // 致敬
+                { "88", "Love and kisses" },                                          // 吻别
+                { "99", "go way" },                                                   // 走开（非友善） 
+            };
+
+            static public async Task<string> Encode(string text)
+            {
+                string result = string.Empty;
+
+                try
+                {
+                    if (!string.IsNullOrEmpty(text))
+                    {
+                        List<string> ret = new List<string>();
+                        foreach (var c in text.Trim().ToUpper())
+                        {
+                            var k = c.ToString();
+                            if (MorseTable.ContainsKey(k)) ret.Add(MorseTable[k]);
+                        }
+                        result = string.Join(" ", ret).Trim().Replace(".", "\u30FB").Replace("-", "\u30FC");//.Replace("/", "/ ");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    await new MessageDialog($"{"Morse".T()} {"ERROR".T()}\n{ex.Message}", "ERROR".T()).ShowAsync();
+                }
+
+                return (result);
+            }
+
+            static public async Task<string> Decode(string text, bool KeepAbbr = true)
+            {
+                string result = string.Empty;
+
+                try
+                {
+                    if (!string.IsNullOrEmpty(text))
+                    {
+                        var cs = text.Replace("\u30FB", ".").Replace("\u30FC", "-").Split(" ");
+                        List<string> ret = new List<string>();
+                        foreach (var c in cs)
+                        {
+                            if (MorseTable.ContainsValue(c))
+                            {
+                                var v = MorseTable.FirstOrDefault(kv => kv.Value.Equals(c));
+                                ret.Add(v.Key);
+                            }
+                        }
+                        result = string.Join("", ret).Trim();
+                        if (!KeepAbbr)
+                        {
+                            foreach (var kv in MorseAbbrTable)
+                            {
+                                result = result.Replace(kv.Key, kv.Value, StringComparison.InvariantCultureIgnoreCase);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    await new MessageDialog($"{"Morse".T()} {"ERROR".T()}\n{ex.Message}", "ERROR".T()).ShowAsync();
+                }
+
+                return (result);
+            }
         }
 
         static public async Task<string> Encode(string content, CODEC Codec, bool LineBreak = false)
@@ -326,6 +544,10 @@ namespace StringCodec.UWP.Common
                         break;
                     case CODEC.FLASHGET:
                         result = await FLASHGET.Encode(content);
+                        break;
+                    case CODEC.MORSE:
+                    case CODEC.MORSEABBR:
+                        result = await MORSE.Encode(content);
                         break;
                     default:
                         break;
@@ -586,6 +808,12 @@ namespace StringCodec.UWP.Common
                         break;
                     case CODEC.FLASHGET:
                         result = await FLASHGET.Decode(content, enc);
+                        break;
+                    case CODEC.MORSE:
+                        result = await MORSE.Decode(content);
+                        break;
+                    case CODEC.MORSEABBR:
+                        result = await MORSE.Decode(content, false);
                         break;
                     default:
                         break;
