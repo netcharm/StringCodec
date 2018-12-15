@@ -963,4 +963,64 @@
   <data name="optPassword.Text" xml:space="preserve">
     <value>Password</value>
   </data>
+  <data name="optCase.Text" xml:space="preserve">
+    <value>Case Convert</value>
+  </data>
+  <data name="optCaseLow.Text" xml:space="preserve">
+    <value>Lower Case</value>
+  </data>
+  <data name="optCaseUp.Text" xml:space="preserve">
+    <value>Upper Case</value>
+  </data>
+  <data name="optCaseCapsSentence.Text" xml:space="preserve">
+    <value>Capitalized Sentence</value>
+  </data>
+  <data name="optCaseCapsWord.Text" xml:space="preserve">
+    <value>Capitalized Word</value>
+  </data>
+  <data name="optCaseJaFullKana.Text" xml:space="preserve">
+    <value>Japaness Full-Width Katakana</value>
+  </data>
+  <data name="optCaseJaHalfKana.Text" xml:space="preserve">
+    <value>Japaness Half-Width Katakana</value>
+  </data>
+  <data name="optCaseJaLowKana.Text" xml:space="preserve">
+    <value>Japaness Lower Katakana</value>
+  </data>
+  <data name="optCaseJaUpKana.Text" xml:space="preserve">
+    <value>Japaness Upper Katakana</value>
+  </data>
+  <data name="optCaseJaLowNum.Text" xml:space="preserve">
+    <value>Japaness Lower Number</value>
+  </data>
+  <data name="optCaseJaUpNum.Text" xml:space="preserve">
+    <value>Japaness Upper Number</value>
+  </data>
+  <data name="optCaseZhFullNum.Text" xml:space="preserve">
+    <value>Chinese Full-Width Number/Symbol</value>
+  </data>
+  <data name="optCaseZhHalfNum.Text" xml:space="preserve">
+    <value>Chinese Half-Width Number/Symbol</value>
+  </data>
+  <data name="optCaseZhLowNum.Text" xml:space="preserve">
+    <value>Chinese Lower Number</value>
+  </data>
+  <data name="optCaseZhUpNum.Text" xml:space="preserve">
+    <value>Chinese Upper Number</value>
+  </data>
+  <data name="optCaseZhLowRmbNum.Text" xml:space="preserve">
+    <value>Chinese Lower Currency</value>
+  </data>
+  <data name="optCaseZhUpRmbNum.Text" xml:space="preserve">
+    <value>Chinese Upper Currency</value>
+  </data>
+  <data name="optCaseJaUpRmbNum.Text" xml:space="preserve">
+    <value>Japaness Upper Currency</value>
+  </data>
+  <data name="optCaseZhS2T.Text" xml:space="preserve">
+    <value>Chinese Simplified to Traditional</value>
+  </data>
+  <data name="optCaseZhT2S.Text" xml:space="preserve">
+    <value>Chinese Traditional To Simplified</value>
+  </data>
 </root>

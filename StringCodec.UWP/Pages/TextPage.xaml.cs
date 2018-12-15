@@ -126,6 +126,66 @@ namespace StringCodec.UWP.Pages
             CURRENT_CODEC = (TextCodecs.CODEC)Enum.Parse(typeof(TextCodecs.CODEC), btn.Name.ToUpper().Substring(3));
         }
 
+        private async void Case_Click(object sender, RoutedEventArgs e)
+        {
+            var text = edSrc.Text;
+            var result = text;
+
+            try
+            {
+                #region English case convert
+                if (sender == optCaseUp)
+                    result = text.Upper();
+                else if (sender == optCaseLow)
+                    result = text.Lower();
+                else if (sender == optCaseCapsWord)
+                    result = text.CapsWord();
+                else if (sender == optCaseCapsSentence)
+                    result = text.CapsSentence();
+                #endregion
+                #region Chinese case convert
+                else if (sender == optCaseZhUpNum)
+                    result = text.ChinaNumToUpper();
+                else if (sender == optCaseZhLowNum)
+                    result = text.ChinaNumToLower();
+                else if (sender == optCaseZhUpRmbNum)
+                    result = text.ChinaNumToUpper(true);
+                else if (sender == optCaseZhLowRmbNum)
+                    result = text.ChinaNumToLower(true);
+                else if (sender == optCaseZhHalfNum)
+                    result = text.ChinaFullToHalf();
+                else if (sender == optCaseZhFullNum)
+                    result = text.ChinaHalfToFull();
+                else if (sender == optCaseZhS2T)
+                    result = text.ChinaS2T();
+                else if (sender == optCaseZhT2S)
+                    result = text.ChinaT2S();
+                #endregion
+                #region Japaness case convert
+                else if (sender == optCaseJaUpNum)
+                    result = text.JapanNumToUpper();
+                else if (sender == optCaseJaLowNum)
+                    result = text.JapanNumToLower();
+                else if (sender == optCaseJaUpRmbNum)
+                    result = text.JapanNumToUpper(true);
+                else if (sender == optCaseJaUpKana)
+                    result = text.KanaToUpper();
+                else if (sender == optCaseJaLowKana)
+                    result = text.KanaToLower();
+                else if (sender == optCaseJaHalfKana)
+                    result = text.KatakanaFullToHalf();
+                else if (sender == optCaseJaFullKana)
+                    result = text.KatakanaHalfToFull();
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                await new Windows.UI.Popups.MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
+            }
+
+            edDst.Text = result.Trim();
+        }
+
         private void OptLang_Click(object sender, RoutedEventArgs e)
         {
             ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] {
@@ -186,6 +246,25 @@ namespace StringCodec.UWP.Pages
             text_src = edSrc.Text;
         }
 
+        private void edSrc_PreviewKeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key.HasFlag(Windows.System.VirtualKey.Control) && e.Key == Windows.System.VirtualKey.W)
+            {
+                if (sender != CmdBar)
+                    optWrapText.IsChecked = !optWrapText.IsChecked;
+                if (optWrapText.IsChecked == true)
+                {
+                    edSrc.TextWrapping = TextWrapping.Wrap;
+                    edDst.TextWrapping = TextWrapping.Wrap;
+                }
+                else
+                {
+                    edSrc.TextWrapping = TextWrapping.NoWrap;
+                    edDst.TextWrapping = TextWrapping.NoWrap;
+                }
+            }
+        }
+
         private async void AppBarShare_Click(object sender, RoutedEventArgs e)
         {
             if (sender is MenuFlyoutItem)
@@ -219,11 +298,35 @@ namespace StringCodec.UWP.Pages
                 switch (btn.Name)
                 {
                     case "btnEncode":
-                        edDst.Text = await TextCodecs.Encode(edSrc.Text, CURRENT_CODEC, CURRENT_LINEBREAK);
+                        if (CURRENT_CODEC == TextCodecs.CODEC.UUID)
+                        {
+                            StringBuilder sb = new StringBuilder();
+                            string guid = TextCodecs.GUID.Encode(edSrc.Text);
+                            sb.AppendLine(TextCodecs.GUID.Encode(guid, "N"));
+                            sb.AppendLine(TextCodecs.GUID.Encode(guid, "D"));
+                            sb.AppendLine(TextCodecs.GUID.Encode(guid, "B"));
+                            sb.AppendLine(TextCodecs.GUID.Encode(guid, "P"));
+                            sb.AppendLine(TextCodecs.GUID.Encode(guid, "X"));
+                            edDst.Text = sb.ToString();
+                        }
+                        else
+                            edDst.Text = await TextCodecs.Encode(edSrc.Text, CURRENT_CODEC, CURRENT_LINEBREAK);
                         text_src = edDst.Text;
                         break;
                     case "btnDecode":
-                        edDst.Text = await TextCodecs.Decode(edSrc.Text, CURRENT_CODEC, CURRENT_ENC);
+                        if (CURRENT_CODEC == TextCodecs.CODEC.UUID)
+                        {
+                            StringBuilder sb = new StringBuilder();
+                            string guid = TextCodecs.GUID.Decode(edSrc.Text);
+                            sb.AppendLine(TextCodecs.GUID.Decode(guid, "N"));
+                            sb.AppendLine(TextCodecs.GUID.Decode(guid, "D"));
+                            sb.AppendLine(TextCodecs.GUID.Decode(guid, "B"));
+                            sb.AppendLine(TextCodecs.GUID.Decode(guid, "P"));
+                            sb.AppendLine(TextCodecs.GUID.Decode(guid, "X"));
+                            edDst.Text = sb.ToString();
+                        }
+                        else
+                            edDst.Text = await TextCodecs.Decode(edSrc.Text, CURRENT_CODEC, CURRENT_ENC);
                         text_src = edDst.Text;
                         break;
                     case "btnCopy":
@@ -358,6 +461,7 @@ namespace StringCodec.UWP.Pages
         }
 
         #endregion
+
 
     }
 }

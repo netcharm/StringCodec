@@ -12,12 +12,17 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
+using Microsoft.International.Converters.TraditionalChineseToSimplifiedConverter;
+
 namespace StringCodec.UWP.Common
 {
     static public class TextCodecs
     {
-        public enum CODEC { URL, HTML, BASE64, UUE, XXE, RAW, QUOTED, THUNDER, FLASHGET, MORSE, MORSEABBR };
+        public static string[] LINEBREAK = new string[]{ "\r\n", "\n\r", "\r", "\n" };
 
+        public enum CODEC { URL, HTML, BASE64, UUE, XXE, RAW, QUOTED, THUNDER, FLASHGET, UUID, GUID, MORSE, MORSEABBR };
+
+        #region Basic Encoder/Decoder
         static public class BASE64
         {
             static public async Task<string> Encode(string text, bool LineBreak = false)
@@ -511,6 +516,72 @@ namespace StringCodec.UWP.Common
             }
         }
 
+        static public class GUID
+        {
+            static public string Encode(string text, string fmt = "D", bool UpCase = true, bool UUID = false)
+            {
+                string result = string.Empty;
+
+                Guid guid;
+                if (!Guid.TryParse(text, out guid)) guid = Guid.NewGuid();
+
+                if (string.IsNullOrEmpty(fmt)) fmt = "D";
+
+                result = guid.ToString(fmt);
+                if (UpCase) result = result.ToUpper();
+                if (UUID)
+                {
+                    var pos = result.IndexOf('-', 22);
+                    if (pos > 0) result = result.Remove(pos, 1);
+                }
+                if (fmt.Equals("X", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    result = result.Replace("0X", "0x");
+                }
+
+                return (result);
+            }
+
+            static public string Decode(string text, string fmt="")
+            {
+                string result = string.Empty;
+
+                Guid guid;
+
+                if (string.IsNullOrEmpty(text))
+                    text = Encode(text, "D", true, true);
+
+                var pos = text.IndexOf('-', 18);
+                if (pos > 0) text = text.Insert(pos+5, "-").Replace("--", "-");
+
+                if (string.IsNullOrEmpty(fmt))
+                {
+                    if (Guid.TryParse(text, out guid))
+                    {
+                        result = guid.ToString("D").ToUpper();
+                    }
+                }
+                else
+                {
+                    if (Guid.TryParseExact(text, fmt, out guid))
+                    {
+                        result = guid.ToString(fmt).ToUpper();
+                    }
+                    else if(Guid.TryParse(text, out guid))
+                    {
+                        result = guid.ToString(fmt).ToUpper();
+                    }
+                }
+                if(fmt.Equals("X", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    result = result.Replace("0X", "0x");
+                }
+                return (result);
+            }
+        }
+        #endregion
+
+        #region Encoder helper routines
         static public async Task<string> Encode(string content, CODEC Codec, bool LineBreak = false)
         {
             string result = string.Empty;
@@ -548,6 +619,12 @@ namespace StringCodec.UWP.Common
                     case CODEC.MORSE:
                     case CODEC.MORSEABBR:
                         result = await MORSE.Encode(content);
+                        break;
+                    case CODEC.UUID:
+                        result = GUID.Encode(content, "D", true, true);
+                        break;
+                    case CODEC.GUID:
+                        result = GUID.Encode(content);
                         break;
                     default:
                         break;
@@ -774,7 +851,9 @@ namespace StringCodec.UWP.Common
         {
             return (await Encode(image, format, prefix, LineBreak));
         }
+        #endregion
 
+        #region Decoder helper routines
         static public async Task<string> Decode(string content, CODEC Codec, Encoding enc)
         {
             string result = string.Empty;
@@ -814,6 +893,12 @@ namespace StringCodec.UWP.Common
                         break;
                     case CODEC.MORSEABBR:
                         result = await MORSE.Decode(content, false);
+                        break;
+                    case CODEC.UUID:
+                        result = GUID.Decode(content);
+                        break;
+                    case CODEC.GUID:
+                        result = GUID.Decode(content);
                         break;
                     default:
                         break;
@@ -904,8 +989,10 @@ namespace StringCodec.UWP.Common
         {
             return (await Decode(content));
         }
+        #endregion
 
-        static public async Task<string> ToBase64(this WriteableBitmap wb, string format, bool prefix, bool linebreak)
+        #region Convert helper routines
+        public static async Task<string> ToBase64(this WriteableBitmap wb, string format, bool prefix, bool linebreak)
         {
             string result = string.Empty;
             try
@@ -939,7 +1026,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static public async Task<string> ConvertTo(this string text, Encoding SrcEnc, Encoding DstEnc)
+        public static async Task<string> ConvertTo(this string text, Encoding SrcEnc, Encoding DstEnc)
         {
             var result = string.Empty;
 
@@ -959,7 +1046,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static public async Task<string> ConvertTo(this string text, Encoding enc)
+        public static async Task<string> ConvertTo(this string text, Encoding enc)
         {
             var result = string.Empty;
             try
@@ -975,7 +1062,62 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static private Dictionary<char, char> KanaCaseMap = new Dictionary<char, char>()
+        public static string Upper(this string text)
+        {
+            return (System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToUpper(text));
+        }
+
+        public static string Lower(this string text)
+        {
+            return (System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToLower(text));
+        }
+
+        public static string CapsWord(this string text)
+        {
+            return (System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(text));
+        }
+
+        public static string CapsSentence(this string text)
+        {
+            string result = text;
+
+            var paras = text.Split(LINEBREAK, StringSplitOptions.None);
+            StringBuilder sb = new StringBuilder();
+            foreach (var para in paras)
+            {
+                var sentences = para.Split(". ");
+                List<string> ls = new List<string>();
+                foreach (var sentence in sentences)
+                {
+                    if (string.IsNullOrEmpty(sentence))
+                    {
+                        ls.Add("");
+                        continue;
+                    }
+
+                    var prefix = string.Empty;
+                    var first = string.Empty;
+                    var suffix = string.Empty;
+                    for (var i = 0; i < sentence.Length; i++)
+                    {
+                        if (char.IsLetter(sentence.Skip(i).First()))
+                        {
+                            prefix = string.Join("", sentence.Take(i));
+                            first = string.Join("", sentence.Skip(i).First());
+                            suffix = string.Join("", sentence.Skip(i + 1));
+                            ls.Add($"{prefix}{System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(first)}{suffix}");
+                            break;
+                        }
+                    }
+                }
+                sb.AppendLine(string.Join(". ", ls));
+            }
+            result = sb.ToString();
+
+            return (result);
+        }
+
+        private static Dictionary<char, char> KanaCaseMap = new Dictionary<char, char>()
         {
             { '\uFF65', '\u30FB' }, // '･' : '・'
             { '\uFF66', '\u30F2' }, // 'ｦ' : 'ヲ'
@@ -1038,7 +1180,7 @@ namespace StringCodec.UWP.Common
             { '\uFF9F', '\u309C' }, // 'ﾟ' : '゜'
         };
 
-        static public string KatakanaHalfToFull(this string text)
+        public static string KatakanaHalfToFull(this string text)
         {
             var result = string.Empty;
             for (var i = 0; i < text.Length; i++)
@@ -1058,7 +1200,7 @@ namespace StringCodec.UWP.Common
             return result;
         }
 
-        static public string KatakanaFullToHalf(this string text)
+        public static string KatakanaFullToHalf(this string text)
         {
             var result = string.Empty;
             for (var i = 0; i < text.Length; i++)
@@ -1075,7 +1217,7 @@ namespace StringCodec.UWP.Common
             return result;
         }
 
-        static public string KanaToUpper(this string text)
+        public static string KanaToUpper(this string text)
         {
             var result = string.Empty;
             for (var i = 0; i < text.Length; i++)
@@ -1086,7 +1228,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static public string KanaToLower(this string text)
+        public static string KanaToLower(this string text)
         {
             var result = string.Empty;
             for (var i = 0; i < text.Length; i++)
@@ -1097,7 +1239,410 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static public async Task<string> ConvertFrom(this string text, Encoding enc, bool IsOEM = false)
+        private static class JapanDigital
+        {
+            // General
+            static public Dictionary<char, string> Number = new Dictionary<char, string>()
+            {
+                { '0', "零" }, { '1', "一" }, { '2', "二" }, { '3', "三" }, { '4', "四" },
+                { '5', "五" }, { '6', "六" }, { '7', "七" }, { '8', "八" }, { '9', "九" }
+            };
+            static public Dictionary<int, string> Digit = new Dictionary<int, string>()
+            {
+                { 1, "十" }, { 2, "百" }, { 3, "千" }, { 4, "万" },
+                { 5, "十" }, { 6, "百" }, { 7, "千" }, { 8, "億" },
+                { 9, "十" }, { 10, "百" }, { 11, "千" }, { 12, "兆" },
+                { 13, "十" }, { 14, "百" }, { 15, "千" }, { 16, "京" },
+                { 17, "十" }, { 18, "百" }, { 19, "千" }, { 20, "垓" },
+                { 21, "十" }, { 22, "百" }, { 23, "千" }, { 24, "秭" },
+                { 25, "十" }, { 26, "百" }, { 27, "千" }, { 28, "穰" },
+                { 29, "十" }, { 30, "百" }, { 31, "千" }, { 32, "溝" },
+                { 33, "十" }, { 34, "百" }, { 35, "千" }, { 36, "澗" },
+                { 37, "十" }, { 38, "百" }, { 39, "千" }, { 40, "正" },
+                { 41, "十" }, { 42, "百" }, { 43, "千" }, { 44, "載" },
+                { 45, "十" }, { 46, "百" }, { 47, "千" }, { 48, "極" },
+                { 49, "十" }, { 50, "百" }, { 51, "千" }, { 52, "恒河沙" },
+                { 53, "十" }, { 54, "百" }, { 55, "千" }, { 56, "阿僧祇" },
+                { 57, "十" }, { 58, "百" }, { 59, "千" }, { 60, "那由他" },
+                { 61, "十" }, { 62, "百" }, { 63, "千" }, { 64, "不可思議" },
+                { 65, "十" }, { 66, "百" }, { 67, "千" }, { 0, "無量大数" }
+            };
+            static public Dictionary<string, string> Sign = new Dictionary<string, string>()
+            {
+                { "+", "正" }, { "-", "負" }, { ".", "・" }
+            };
+
+            // Currency
+            static public Dictionary<char, string> CurrencyNumber = new Dictionary<char, string>()
+            {
+                { '0', "零" }, { '1', "壱" }, { '2', "弐" }, { '3', "参" }, { '4', "四" },
+                { '5', "五" }, { '6', "六" }, { '7', "七" }, { '8', "八" }, { '9', "九" }
+            };
+            static public Dictionary<int, string> CurrencyDigit = new Dictionary<int, string>()
+            {
+                { 1, "拾" }, { 2, "佰" }, { 3, "仟" }, { 4, "萬" },
+                { 5, "拾" }, { 6, "佰" }, { 7, "仟" }, { 8, "億" },
+                { 9, "十" }, { 10, "百" }, { 11, "千" }, { 12, "兆" },
+                { 13, "十" }, { 14, "百" }, { 15, "千" }, { 16, "京" },
+                { 17, "十" }, { 18, "百" }, { 19, "千" }, { 20, "垓" },
+                { 21, "十" }, { 22, "百" }, { 23, "千" }, { 24, "秭" },
+                { 25, "十" }, { 26, "百" }, { 27, "千" }, { 28, "穰" },
+                { 29, "十" }, { 30, "百" }, { 31, "千" }, { 32, "溝" },
+                { 33, "十" }, { 34, "百" }, { 35, "千" }, { 36, "澗" },
+                { 37, "十" }, { 38, "百" }, { 39, "千" }, { 40, "正" },
+                { 41, "十" }, { 42, "百" }, { 43, "千" }, { 44, "載" },
+                { 45, "十" }, { 46, "百" }, { 47, "千" }, { 48, "極" },
+                { 49, "十" }, { 50, "百" }, { 51, "千" }, { 52, "恒河沙" },
+                { 53, "十" }, { 54, "百" }, { 55, "千" }, { 56, "阿僧祇" },
+                { 57, "十" }, { 58, "百" }, { 59, "千" }, { 60, "那由他" },
+                { 61, "十" }, { 62, "百" }, { 63, "千" }, { 64, "不可思議" },
+                { 65, "十" }, { 66, "百" }, { 67, "千" }, { 0, "無量大数" }
+            };
+            static public Dictionary<int, string> CurrencyUnit = new Dictionary<int, string>()
+            {
+                { 0, "円" }, { 1, "割" }, { 2, "分" }, { 3, "厘" }, { 4, "毛" }, { 5, "糸" }
+            };
+            static public Dictionary<string, string> CurrencySign = new Dictionary<string, string>()
+            {
+                { "+", "正" }, { "-", "負" }, { ".", "円" }
+            };
+        }
+
+        public static string JapanNumToUpper(this string text, bool IsCurrency = false)
+        {
+            string result = text;
+
+            var pat = @"(([+-]){0,1}(\d+)(\.\d+){0,1})";
+            Dictionary<string, string> replist = new Dictionary<string, string>();
+            foreach (Match m in Regex.Matches(text, pat))
+            {
+                if (m.Groups.Count > 0)
+                {
+                    var t = m.Value;
+                    var tu = t;
+
+                    var s = m.Groups[2].Value;
+                    var i = m.Groups[3].Value.TrimStart('0');
+                    var f = m.Groups[4].Value.TrimEnd('0');
+
+                    var su = s;
+                    var iu = i;
+                    var fu = f;
+
+                    if (!string.IsNullOrEmpty(s) && JapanDigital.Sign.ContainsKey(s))
+                        su = JapanDigital.Sign[s];
+
+                    List<string> vil = new List<string>();
+                    for (int c = 0; c < i.Length; c++)
+                    {
+                        var cn = i.Length - c - 1;
+
+                        if (cn != 0 || !i[c].Equals('0'))
+                        {
+                            if (IsCurrency)
+                                vil.Add(JapanDigital.CurrencyNumber[i[c]]);
+                            else
+                                vil.Add(JapanDigital.Number[i[c]]);
+                        }
+
+                        if (cn > 0 && !i[c].Equals('0'))
+                        {
+                            if (IsCurrency)
+                                vil.Add(JapanDigital.CurrencyDigit[cn % 68]);
+                            else
+                                vil.Add(JapanDigital.Digit[cn % 68]);
+                        }
+                    }
+
+                    if (IsCurrency)
+                        iu = $"{string.Join("", vil)}{JapanDigital.CurrencyUnit[0]}";
+                    else
+                        iu = string.Join("", vil);
+
+                    if (!string.IsNullOrEmpty(f))
+                    {
+                        List<string> vfl = new List<string>();
+                        if (!IsCurrency) vfl.Add(JapanDigital.Sign["."]);
+                        for (int c = 1; c < f.Length; c++)
+                        {
+                            if (IsCurrency)
+                            {
+                                if (c == 6)
+                                    vfl.Add(JapanDigital.Sign["."]);
+                                if (c <= 4)
+                                {
+                                    vfl.Add(JapanDigital.CurrencyNumber[f[c]]);
+                                    vfl.Add(JapanDigital.CurrencyUnit[c]);
+                                }
+                                else
+                                    vfl.Add(JapanDigital.CurrencyNumber[f[c]]);
+                            }
+                            else
+                                vfl.Add(JapanDigital.Number[f[c]]);
+                        }
+                        if (IsCurrency && f.Length > 5)
+                            vfl.Add(JapanDigital.CurrencyUnit[5]);
+                        fu = string.Join("", vfl);
+                    }
+
+                    if (IsCurrency)
+                        tu = $"{su}{iu}{fu}整";
+                    else
+                        tu = $"{su}{iu}{fu}";
+
+                    if (!replist.ContainsKey(t))
+                        replist[t] = tu;
+                }
+            }
+
+            var repl = replist.Keys.ToList();
+            repl.Sort();
+            repl.Reverse();
+            foreach (var k in repl)
+            {
+                result = result.Replace(k, replist[k]);
+            }
+
+            return (result);
+        }
+
+        public static string JapanNumToLower(this string text, bool RMB = false)
+        {
+            string result = text;
+
+            return (result);
+        }
+
+        private static class ChinaDigital
+        {
+            // General
+            static public Dictionary<char, string> Number = new Dictionary<char, string>()
+            {
+                { '0', "零" }, { '1', "一" }, { '2', "二" }, { '3', "三" }, { '4', "四" },
+                { '5', "五" }, { '6', "六" }, { '7', "七" }, { '8', "八" }, { '9', "九" }
+            };
+            static public Dictionary<int, string> Digit = new Dictionary<int, string>()
+            {
+                { 1, "十" }, { 2, "百" }, { 3, "千" }, { 4, "万" },
+                { 5, "十" }, { 6, "百" }, { 7, "千" }, { 8, "亿" },
+                { 9, "十" }, { 10, "百" }, { 11, "千" }, { 12, "兆" },
+                { 13, "十" }, { 14, "百" }, { 15, "千" }, { 16, "京" },
+                { 17, "十" }, { 18, "百" }, { 19, "千" }, { 20, "垓" },
+                { 21, "十" }, { 22, "百" }, { 23, "千" }, { 24, "秭" },
+                { 25, "十" }, { 26, "百" }, { 27, "千" }, { 28, "穰" },
+                { 29, "十" }, { 30, "百" }, { 31, "千" }, { 32, "溝" },
+                { 33, "十" }, { 34, "百" }, { 35, "千" }, { 36, "澗" },
+                { 37, "十" }, { 38, "百" }, { 39, "千" }, { 40, "正" },
+                { 41, "十" }, { 42, "百" }, { 43, "千" }, { 0, "載" },
+            };
+            static public Dictionary<string, string> Sign = new Dictionary<string, string>()
+            {
+                { "+", "正" }, { "-", "负" }, { ".", "点" }
+            };
+
+            // Currency
+            static public Dictionary<char, string> CurrencyNumber = new Dictionary<char, string>()
+            {
+                { '0', "零" }, { '1', "壹" }, { '2', "贰" }, { '3', "叁" }, { '4', "肆" },
+                { '5', "伍" }, { '6', "陆" }, { '7', "染" }, { '8', "捌" }, { '9', "玖" }
+            };
+            static public Dictionary<int, string> CurrencyDigit = new Dictionary<int, string>()
+            {
+                { 1, "拾" }, { 2, "佰" }, { 3, "仟" }, { 4, "萬" },
+                { 5, "拾" }, { 6, "佰" }, { 7, "仟" }, { 8, "億" },
+                { 9, "拾" }, { 10, "佰" }, { 11, "仟" }, { 12, "兆" },
+                { 13, "拾" }, { 14, "佰" }, { 15, "仟" }, { 16, "京" },
+                { 17, "拾" }, { 18, "佰" }, { 19, "仟" }, { 20, "垓" },
+                { 21, "拾" }, { 22, "佰" }, { 23, "仟" }, { 24, "秭" },
+                { 25, "拾" }, { 26, "佰" }, { 27, "仟" }, { 28, "穰" },
+                { 29, "拾" }, { 30, "佰" }, { 31, "仟" }, { 32, "溝" },
+                { 33, "拾" }, { 34, "佰" }, { 35, "仟" }, { 36, "澗" },
+                { 37, "拾" }, { 38, "佰" }, { 39, "仟" }, { 40, "正" },
+                { 41, "拾" }, { 42, "佰" }, { 43, "仟" }, { 0, "載" },
+            };
+            static public Dictionary<int, string> CurrencyUnit = new Dictionary<int, string>()
+            {
+                { 0, "圆" }, { 1, "角" }, { 2, "分" },  { 3, "厘" }
+            };
+            static public Dictionary<string, string> CurrencySign = new Dictionary<string, string>()
+            {
+                { "+", "正" }, { "-", "负" }, { ".", "圆" }
+            };
+        }
+
+        public static string ChinaNumToUpper(this string text, bool IsCurrency = false)
+        {
+            string result = text;
+
+            var zh = System.Globalization.CultureInfo.GetCultureInfo("zh-Hans");
+
+            var pat = @"(([+-]){0,1}(\d+)(\.\d+){0,1})";
+            Dictionary<string, string> replist = new Dictionary<string, string>();
+            foreach(Match m in Regex.Matches(text, pat))
+            {
+                if (m.Groups.Count > 0)
+                {
+                    var t = m.Value;
+                    var tu = t;
+
+                    var s = m.Groups[2].Value;
+                    var i = m.Groups[3].Value.TrimStart('0');
+                    var f = m.Groups[4].Value.TrimEnd('0');
+
+                    var su = s;
+                    var iu = i;
+                    var fu = f;
+
+                    if (!string.IsNullOrEmpty(s) && ChinaDigital.Sign.ContainsKey(s))
+                        su = ChinaDigital.Sign[s];
+
+                    List<string> vil = new List<string>();
+                    for (int c = 0; c < i.Length; c++)
+                    {
+                        var cn = i.Length - c - 1;
+
+                        if (cn != 0 || !i[c].Equals('0'))
+                        {
+                            if (IsCurrency)
+                                vil.Add(ChinaDigital.CurrencyNumber[i[c]]);
+                            else
+                                vil.Add(ChinaDigital.Number[i[c]]);
+                        }
+
+                        if (cn > 0 && !i[c].Equals('0'))
+                        {
+                            if (IsCurrency)
+                                vil.Add(ChinaDigital.CurrencyDigit[cn % 44]);
+                            else
+                                vil.Add(ChinaDigital.Digit[cn % 44]);
+                        }
+                    }
+
+                    if (IsCurrency)
+                        iu = $"{string.Join("", vil)}{ChinaDigital.CurrencyUnit[0]}";
+                    else
+                        iu = string.Join("", vil);
+
+                    if (!string.IsNullOrEmpty(f))
+                    {
+                        List<string> vfl = new List<string>();
+                        if (!IsCurrency) vfl.Add(ChinaDigital.Sign["."]);
+                        for (int c = 1; c < f.Length; c++)
+                        {
+                            if (IsCurrency)
+                            {
+                                if (c == 4)
+                                    vfl.Add(ChinaDigital.Sign["."]);
+
+                                if (c == 1 || c == 2)
+                                {
+                                    vfl.Add(ChinaDigital.CurrencyNumber[f[c]]);
+                                    vfl.Add(ChinaDigital.CurrencyUnit[c]);
+                                }
+                                else
+                                    vfl.Add(ChinaDigital.CurrencyNumber[f[c]]);
+                            }
+                            else
+                                vfl.Add(ChinaDigital.Number[f[c]]);
+                        }
+                        if (IsCurrency && f.Length > 3)
+                            vfl.Add(ChinaDigital.CurrencyUnit[3]);
+                        fu = string.Join("", vfl);
+                    }
+
+                    if (IsCurrency)
+                        tu = $"{su}{iu}{fu}整";
+                    else
+                        tu = $"{su}{iu}{fu}";
+
+                    if (!replist.ContainsKey(t))
+                        replist[t] = tu;
+                }
+            }
+
+            var repl = replist.Keys.ToList();
+            repl.Sort();
+            repl.Reverse();
+            foreach (var k in repl)
+            {
+                result = result.Replace(k, replist[k]);
+            }
+
+            return (result);
+        }
+
+        public static string ChinaNumToLower(this string text, bool RMB = false)
+        {
+            string result = text;
+
+            var zh = System.Globalization.CultureInfo.CreateSpecificCulture("zh-Hans");
+
+            return (result);
+        }
+
+        public static string ChinaHalfToFull(this string text)
+        {
+            string result = text;
+
+            StringBuilder sb = new StringBuilder();
+            var lines = text.Split(LINEBREAK, StringSplitOptions.None);
+            foreach(var line in lines)
+            {
+                char[] c = line.ToCharArray();
+                for (int i = 0; i < c.Length; i++)
+                {
+                    if (c[i] == 32)
+                    {
+                        c[i] = (char)12288;
+                        continue;
+                    }
+                    if (c[i] < 127)
+                        c[i] = (char)(c[i] + 65248);
+                }
+                sb.AppendLine(new string(c));
+            }
+            result = sb.ToString();
+
+            return (result);
+        }
+
+        public static string ChinaFullToHalf(this string text)
+        {
+            string result = text;
+
+            StringBuilder sb = new StringBuilder();
+            var lines = text.Split(LINEBREAK, StringSplitOptions.None);
+            foreach (var line in lines)
+            {
+                char[] c = line.ToCharArray();
+                for (int i = 0; i < c.Length; i++)
+                {
+                    if (c[i] == 12288)
+                    {
+                        c[i] = (char)32;
+                        continue;
+                    }
+                    if (c[i] > 65280 && c[i] < 65375)
+                        c[i] = (char)(c[i] - 65248);
+                }
+                sb.AppendLine(new string(c));
+            }
+            result = sb.ToString();
+
+            return (result);
+        }
+
+        public static string ChinaS2T(this string text)
+        {
+            return (ChineseConverter.Convert(text, ChineseConversionDirection.SimplifiedToTraditional));
+        }
+
+        public static string ChinaT2S(this string text)
+        {
+            return(ChineseConverter.Convert(text, ChineseConversionDirection.TraditionalToSimplified));
+        }
+
+        public static async Task<string> ConvertFrom(this string text, Encoding enc, bool IsOEM = false)
         {
             var result = string.Empty;
             try
@@ -1214,7 +1759,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static public async Task<string> ToStringAsync(this byte[] array, Encoding enc)
+        public static async Task<string> ToStringAsync(this byte[] array, Encoding enc)
         {
             var result = string.Empty;
             try
@@ -1255,8 +1800,10 @@ namespace StringCodec.UWP.Common
             }
             return (result);
         }
+        #endregion
 
-        static public byte[] GetBOM(this Encoding enc)
+        #region System encoder helper routines
+        public static byte[] GetBOM(this Encoding enc)
         {
             byte[] result = new byte[] { };
 
@@ -1274,8 +1821,9 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static private Dictionary<int, System.Globalization.CultureInfo> CodePageInfo = new Dictionary<int, System.Globalization.CultureInfo>();
-        static public System.Globalization.CultureInfo GetCodePageInfo(int codepage)
+        private static Dictionary<int, System.Globalization.CultureInfo> CodePageInfo = new Dictionary<int, System.Globalization.CultureInfo>();
+
+        public static System.Globalization.CultureInfo GetCodePageInfo(int codepage)
         {
             if (CodePageInfo.Count() <= 0)
             {
@@ -1322,7 +1870,7 @@ namespace StringCodec.UWP.Common
                 return (null);
         }
 
-        static public Encoding GetTextEncoder(int codepage)
+        public static Encoding GetTextEncoder(int codepage)
         {
             var result = Encoding.Default;
             switch (codepage)
@@ -1385,7 +1933,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static public Encoding GetTextEncoder(string fmt)
+        public static Encoding GetTextEncoder(string fmt)
         {
             var result = Encoding.Default;
 
@@ -1435,5 +1983,6 @@ namespace StringCodec.UWP.Common
 
             return (result);
         }
+        #endregion
     }
 }

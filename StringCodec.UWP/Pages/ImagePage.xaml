@@ -39,16 +39,27 @@
             <AppBarButton x:Name="btnCopy" x:Uid="btnCopy" Label="Copy" Icon="Copy" VerticalAlignment="Center" Click="AppBarButton_Click"  />
             <AppBarButton x:Name="btnPaste" x:Uid="btnPaste" Label="Paste" Icon="Paste" VerticalAlignment="Center" Click="AppBarButton_Click" />
             <AppBarSeparator />
-            <AppBarButton x:Name="btnEncode" x:Uid="btnEncode" Label="Encode" Icon="Shuffle" VerticalAlignment="Center" Click="AppBarButton_Click"  />
+            <AppBarButton x:Name="btnEncode" x:Uid="btnEncode" Label="Encode" Icon="Shuffle" VerticalAlignment="Center" Click="AppBarButton_Click">
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="F2" />
+                </AppBarButton.KeyboardAccelerators>
+            </AppBarButton>
             <AppBarButton x:Name="btnDecode" x:Uid="btnDecode" Label="Decode" VerticalAlignment="Center" Click="AppBarButton_Click">
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="F3" />
+                </AppBarButton.KeyboardAccelerators>
                 <AppBarButton.Icon>
                     <FontIcon Glyph="&#xF03E;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
                 </AppBarButton.Icon>
             </AppBarButton>
             <AppBarSeparator />
             <AppBarButton x:Name="btnSave" x:Uid="btnSave" Label="Save" Icon="Save" VerticalAlignment="Center" Click="AppBarButton_Click" />
-            <AppBarButton x:Name="btnShare" x:Uid="btnShare" Label="Share" Icon="Share" VerticalAlignment="Center" Click="AppBarButton_Click" />
-
+            <AppBarButton x:Name="btnShare" x:Uid="btnShare" Label="Share" Icon="Share" VerticalAlignment="Center" Click="AppBarButton_Click" >
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="F12"/>
+                </AppBarButton.KeyboardAccelerators>
+            </AppBarButton>
+            
             <CommandBar.SecondaryCommands>
                 <!-- More Button Dropdown menu -->
                 <AppBarButton x:Name="btnImageQRCode" x:Uid="btnImageQRCode" Label="Image to QRCode" Click="QRCode_Click">

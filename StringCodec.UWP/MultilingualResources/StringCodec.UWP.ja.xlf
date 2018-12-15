@@ -1134,6 +1134,86 @@
           <source>Password</source>
           <target state="translated">簡単なパスワード</target>
         </trans-unit>
+        <trans-unit id="optCase.Text" translate="yes" xml:space="preserve">
+          <source>Case Convert</source>
+          <target state="translated">文字変換</target>
+        </trans-unit>
+        <trans-unit id="optCaseCapsSentence.Text" translate="yes" xml:space="preserve">
+          <source>Capitalized Sentence</source>
+          <target state="translated">大文字の文の最初の文字</target>
+        </trans-unit>
+        <trans-unit id="optCaseCapsWord.Text" translate="yes" xml:space="preserve">
+          <source>Capitalized Word</source>
+          <target state="translated">大文字の単語の先頭文字</target>
+        </trans-unit>
+        <trans-unit id="optCaseJaLowKana.Text" translate="yes" xml:space="preserve">
+          <source>Japaness Lower Katakana</source>
+          <target state="translated">日本語小文字カタカナ</target>
+        </trans-unit>
+        <trans-unit id="optCaseJaLowNum.Text" translate="yes" xml:space="preserve">
+          <source>Japaness Lower Number</source>
+          <target state="translated">日本語小文字の数字</target>
+        </trans-unit>
+        <trans-unit id="optCaseJaUpKana.Text" translate="yes" xml:space="preserve">
+          <source>Japaness Upper Katakana</source>
+          <target state="translated">日本語小文字カタカナ</target>
+        </trans-unit>
+        <trans-unit id="optCaseJaUpNum.Text" translate="yes" xml:space="preserve">
+          <source>Japaness Upper Number</source>
+          <target state="translated">日本語大文字の数字</target>
+        </trans-unit>
+        <trans-unit id="optCaseLow.Text" translate="yes" xml:space="preserve">
+          <source>Lower Case</source>
+          <target state="translated">小文字</target>
+        </trans-unit>
+        <trans-unit id="optCaseUp.Text" translate="yes" xml:space="preserve">
+          <source>Upper Case</source>
+          <target state="translated">大文字</target>
+        </trans-unit>
+        <trans-unit id="optCaseZhFullNum.Text" translate="yes" xml:space="preserve">
+          <source>Chinese Full-Width Number/Symbol</source>
+          <target state="translated">中国語全角数字記号</target>
+        </trans-unit>
+        <trans-unit id="optCaseZhHalfNum.Text" translate="yes" xml:space="preserve">
+          <source>Chinese Half-Width Number/Symbol</source>
+          <target state="translated">中国語半角数字記号</target>
+        </trans-unit>
+        <trans-unit id="optCaseZhLowNum.Text" translate="yes" xml:space="preserve">
+          <source>Chinese Lower Number</source>
+          <target state="translated">中国語小文字の数字</target>
+        </trans-unit>
+        <trans-unit id="optCaseZhUpNum.Text" translate="yes" xml:space="preserve">
+          <source>Chinese Upper Number</source>
+          <target state="translated">中国語大文字の数字</target>
+        </trans-unit>
+        <trans-unit id="optCaseJaFullKana.Text" translate="yes" xml:space="preserve">
+          <source>Japaness Full-Width Katakana</source>
+          <target state="translated">日本語全角カタカナ</target>
+        </trans-unit>
+        <trans-unit id="optCaseJaHalfKana.Text" translate="yes" xml:space="preserve">
+          <source>Japaness Half-Width Katakana</source>
+          <target state="translated">日本語半角カタカナ</target>
+        </trans-unit>
+        <trans-unit id="optCaseZhLowRmbNum.Text" translate="yes" xml:space="preserve">
+          <source>Chinese Lower Currency</source>
+          <target state="translated">中国語小文字の通貨</target>
+        </trans-unit>
+        <trans-unit id="optCaseZhUpRmbNum.Text" translate="yes" xml:space="preserve">
+          <source>Chinese Upper Currency</source>
+          <target state="translated">中国語大文字の通貨</target>
+        </trans-unit>
+        <trans-unit id="optCaseJaUpRmbNum.Text" translate="yes" xml:space="preserve">
+          <source>Japaness Upper Currency</source>
+          <target state="translated">日本語大文字の通貨</target>
+        </trans-unit>
+        <trans-unit id="optCaseZhS2T.Text" translate="yes" xml:space="preserve">
+          <source>Chinese Simplified to Traditional</source>
+          <target state="translated">繁体字中国語</target>
+        </trans-unit>
+        <trans-unit id="optCaseZhT2S.Text" translate="yes" xml:space="preserve">
+          <source>Chinese Traditional To Simplified</source>
+          <target state="translated">簡体字中国語</target>
+        </trans-unit>
       </group>
     </body>
   </file>

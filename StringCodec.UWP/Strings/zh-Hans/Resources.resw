@@ -858,4 +858,64 @@
   <data name="optPassword.Text" xml:space="preserve">
     <value>简单密码</value>
   </data>
+  <data name="optCase.Text" xml:space="preserve">
+    <value>字符转换</value>
+  </data>
+  <data name="optCaseCapsSentence.Text" xml:space="preserve">
+    <value>句子首字大写</value>
+  </data>
+  <data name="optCaseCapsWord.Text" xml:space="preserve">
+    <value>单词首字大写</value>
+  </data>
+  <data name="optCaseJaLowKana.Text" xml:space="preserve">
+    <value>日语小写片假名</value>
+  </data>
+  <data name="optCaseJaLowNum.Text" xml:space="preserve">
+    <value>日语小写数字</value>
+  </data>
+  <data name="optCaseJaUpKana.Text" xml:space="preserve">
+    <value>日语大写片假名</value>
+  </data>
+  <data name="optCaseJaUpNum.Text" xml:space="preserve">
+    <value>日语大写数字</value>
+  </data>
+  <data name="optCaseLow.Text" xml:space="preserve">
+    <value>小写字符</value>
+  </data>
+  <data name="optCaseUp.Text" xml:space="preserve">
+    <value>大写字符</value>
+  </data>
+  <data name="optCaseZhFullNum.Text" xml:space="preserve">
+    <value>中文全宽数字符号</value>
+  </data>
+  <data name="optCaseZhHalfNum.Text" xml:space="preserve">
+    <value>中文半宽数字符号</value>
+  </data>
+  <data name="optCaseZhLowNum.Text" xml:space="preserve">
+    <value>中文小写数字</value>
+  </data>
+  <data name="optCaseZhUpNum.Text" xml:space="preserve">
+    <value>中文大写数字</value>
+  </data>
+  <data name="optCaseJaFullKana.Text" xml:space="preserve">
+    <value>日语全宽片假名</value>
+  </data>
+  <data name="optCaseJaHalfKana.Text" xml:space="preserve">
+    <value>日语半宽片假名</value>
+  </data>
+  <data name="optCaseZhLowRmbNum.Text" xml:space="preserve">
+    <value>中文小写货币</value>
+  </data>
+  <data name="optCaseZhUpRmbNum.Text" xml:space="preserve">
+    <value>中文大写货币</value>
+  </data>
+  <data name="optCaseJaUpRmbNum.Text" xml:space="preserve">
+    <value>日语大写货币</value>
+  </data>
+  <data name="optCaseZhS2T.Text" xml:space="preserve">
+    <value>中文简体转繁体</value>
+  </data>
+  <data name="optCaseZhT2S.Text" xml:space="preserve">
+    <value>中文繁体转简体</value>
+  </data>
 </root>

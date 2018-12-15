@@ -9,14 +9,14 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Loaded="Page_Loaded">
 
 
-    <Grid  Margin="12, 0, 12, 12" x:Name="LayoutRoot">
+    <Grid  Margin="12, 0, 12, 12" x:Name="LayoutRoot" >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height=".5*" />
             <RowDefinition Height=".5*" />
         </Grid.RowDefinitions>
 
-        <CommandBar Grid.Row="0" x:Name="CmdBar" x:Uid="CmdBar">
+        <CommandBar Grid.Row="0" x:Name="CmdBar" x:Uid="CmdBar" KeyboardAcceleratorPlacementMode="Auto" PreviewKeyDown="edSrc_PreviewKeyDown">
             <AppBarButton x:Name="btnOpt" x:Uid="btnOpt" Icon="Bullets" Label="Options" VerticalAlignment="Center">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
@@ -30,11 +30,36 @@
                         <ToggleMenuFlyoutItem x:Name="optThunder" x:Uid="optThunder" Text="Thunder" Click="Codec_Click"/>
                         <ToggleMenuFlyoutItem x:Name="optFlashGet" x:Uid="optFlashGet" Text="FlashGet" Click="Codec_Click"/>
                         <MenuFlyoutSeparator />
+                        <ToggleMenuFlyoutItem x:Name="optUUID" x:Uid="optUUID" Text="GUID/UUID" Click="Codec_Click"/>
+                        <MenuFlyoutSeparator />
                         <MenuFlyoutSubItem x:Name="optPassword" x:Uid="optPassword" Text="Password">
                             <ToggleMenuFlyoutItem x:Name="optMorse" x:Uid="optMorse" Text="Morse Code" Click="Codec_Click"/>
                             <ToggleMenuFlyoutItem x:Name="optMorseAbbr" x:Uid="optMorseAbbr" Text="Morse Code Expand Abbr." Click="Codec_Click"/>
                         </MenuFlyoutSubItem>
                         <MenuFlyoutSeparator />
+                        <MenuFlyoutSubItem x:Name="optCase" x:Uid="optCase" Text="Case Convert">
+                            <MenuFlyoutItem x:Name="optCaseUp" x:Uid="optCaseUp" Text="Upper Case" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optCaseLow" x:Uid="optCaseLow" Text="Lower Case" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optCaseCapsWord" x:Uid="optCaseCapsWord" Text="Capitalized Word" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optCaseCapsSentence" x:Uid="optCaseCapsSentence" Text="Capitalized Sentence" Click="Case_Click"/>
+                            <MenuFlyoutSeparator />
+                            <MenuFlyoutItem x:Name="optCaseZhUpNum" x:Uid="optCaseZhUpNum" Text="Chinese Upper Number" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optCaseZhLowNum" x:Uid="optCaseZhLowNum" Text="Chinese Lower Number" Click="Case_Click" Visibility="Collapsed" />
+                            <MenuFlyoutItem x:Name="optCaseZhUpRmbNum" x:Uid="optCaseZhUpRmbNum" Text="Chinese Upper Currency" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optCaseZhLowRmbNum" x:Uid="optCaseZhLowRmbNum" Text="Chinese Lower Currency" Click="Case_Click" Visibility="Collapsed" />
+                            <MenuFlyoutItem x:Name="optCaseZhHalfNum" x:Uid="optCaseZhHalfNum" Text="Chinese Half-Width Number/Symbol" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optCaseZhFullNum" x:Uid="optCaseZhFullNum" Text="Chinese Full-Width Number/Symbol" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optCaseZhS2T" x:Uid="optCaseZhS2T" Text="Chinese Simplified to Traditional" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optCaseZhT2S" x:Uid="optCaseZhT2S" Text="Chinese Traditional To Simplified" Click="Case_Click"/>
+                            <MenuFlyoutSeparator />
+                            <MenuFlyoutItem x:Name="optCaseJaUpNum" x:Uid="optCaseJaUpNum" Text="Japaness Upper Number" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optCaseJaLowNum" x:Uid="optCaseJaLowNum" Text="Japaness Lower Number" Click="Case_Click" Visibility="Collapsed" />
+                            <MenuFlyoutItem x:Name="optCaseJaUpRmbNum" x:Uid="optCaseJaUpRmbNum" Text="Japaness Upper Currency" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optCaseJaUpKana" x:Uid="optCaseJaUpKana" Text="Japaness Upper Katakana" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optCaseJaLowKana" x:Uid="optCaseJaLowKana" Text="Japaness Lower Katakana" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optCaseJaHalfKana" x:Uid="optCaseJaHalfKana" Text="Japaness Half-Width Katakana" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optCaseJaFullKana" x:Uid="optCaseJaFullKana" Text="Japaness Full-Width Katakana" Click="Case_Click"/>
+                        </MenuFlyoutSubItem>
                         <ToggleMenuFlyoutItem x:Name="optLineBreak" x:Uid="optLineBreak" Text="Line Break" Click="OptLang_Click"/>
                     </MenuFlyout>
                 </AppBarButton.Flyout>
@@ -94,11 +119,22 @@
             <AppBarButton x:Name="btnCopy" x:Uid="btnCopy" Label="Copy" Icon="Copy" VerticalAlignment="Center" Click="AppBarButton_Click"  />
             <AppBarButton x:Name="btnPaste" x:Uid="btnPaste" Label="Paste" Icon="Paste" VerticalAlignment="Center" Click="AppBarButton_Click" />
             <AppBarSeparator />
-            <AppBarButton x:Name="btnEncode" x:Uid="btnEncode" Label="Encode" Icon="Mail" VerticalAlignment="Center" Click="AppBarButton_Click"  />
-            <AppBarButton x:Name="btnDecode" x:Uid="btnDecode" Label="Decode" Icon="Read" VerticalAlignment="Center" Click="AppBarButton_Click" />
+            <AppBarButton x:Name="btnEncode" x:Uid="btnEncode" Label="Encode" Icon="Mail" VerticalAlignment="Center" Click="AppBarButton_Click" >
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="F2" />
+                </AppBarButton.KeyboardAccelerators>
+            </AppBarButton>
+            <AppBarButton x:Name="btnDecode" x:Uid="btnDecode" Label="Decode" Icon="Read" VerticalAlignment="Center" Click="AppBarButton_Click" >
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="F3" />
+                </AppBarButton.KeyboardAccelerators>
+            </AppBarButton>
             <AppBarSeparator />
             <AppBarButton x:Name="btnSave" x:Uid="btnSave" Label="Save" Icon="Save" VerticalAlignment="Center" Click="AppBarButton_Click" />
             <AppBarButton x:Name="btnShare" x:Uid="btnShare" Label="Share" Icon="Share" VerticalAlignment="Center">
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="F12"/>
+                </AppBarButton.KeyboardAccelerators>
                 <AppBarButton.Flyout>
                     <MenuFlyout>
                         <MenuFlyoutItem x:Name="btnShareSrcAsURL" x:Uid="btnShareSrcAsURL" Text="Share Input As URL" Click="AppBarShare_Click"/>
@@ -112,7 +148,7 @@
 
             <CommandBar.SecondaryCommands>
                 <!-- More Button Dropdown menu -->
-                <AppBarButton x:Name="btnSrcQRCode" x:Uid="btnSrcQRCode" Label="Input to QRCode" Click="QRCode_Click">
+                <AppBarButton x:Name="btnSrcQRCode" x:Uid="btnSrcQRCode" Label="Input to QRCode" Click="QRCode_Click" >
                     <AppBarButton.Icon>
                         <FontIcon Glyph="&#xF029;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
                     </AppBarButton.Icon>
@@ -123,7 +159,10 @@
                     </AppBarButton.Icon>
                 </AppBarButton>
                 <AppBarSeparator />
-                <AppBarToggleButton x:Name="optWrapText" x:Uid="optWrapText" Label="Wrap Text" Click="OptWrap_Click">
+                <AppBarToggleButton x:Name="optWrapText" x:Uid="optWrapText" Label="Wrap Text" Click="OptWrap_Click" >
+                    <AppBarToggleButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control" Key="W" />
+                    </AppBarToggleButton.KeyboardAccelerators>
                     <AppBarToggleButton.Icon>
                         <FontIcon Glyph="&#xE751;" FontFamily="Segoe MDL2 Assets"/>
                     </AppBarToggleButton.Icon>
@@ -143,21 +182,24 @@
             </CommandBar.Content>
         </CommandBar>
 
-
         <TextBox Grid.Row="1" Margin="0 16 0 0" x:Name="edSrc" x:Uid="edSrc" 
                  Header="Input:" PlaceholderText="Input at here" 
                  AcceptsReturn="True" CanDrag="True" 
                  FontFamily="Consolas" FontSize="16" 
+                 SelectionHighlightColorWhenNotFocused="{ThemeResource ButtonBorderThemeBrush}"
                  ScrollViewer.VerticalScrollBarVisibility="Auto" 
                  ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                 PreviewKeyDown="edSrc_PreviewKeyDown"
                  TextChanged="edSrc_TextChanged"
                  AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" />
         <TextBox Grid.Row="2" Margin="0 12 0 0" x:Name="edDst" x:Uid="edDst" 
                  Header="Output:" PlaceholderText="Here is output" 
                  AcceptsReturn="True" IsReadOnly="True" 
                  FontFamily="Consolas" FontSize="16" 
+                 SelectionHighlightColorWhenNotFocused="{ThemeResource ButtonBorderThemeBrush}"
                  ScrollViewer.VerticalScrollBarVisibility="Auto" 
-                 ScrollViewer.HorizontalScrollBarVisibility="Auto"/>
+                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                 PreviewKeyDown="edSrc_PreviewKeyDown" />
 
     </Grid>
 </Page>

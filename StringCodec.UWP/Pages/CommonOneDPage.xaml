@@ -56,16 +56,27 @@
             <AppBarButton x:Name="btnPaste" x:Uid="btnPaste" Label="Paste" Icon="Paste" VerticalAlignment="Center" Click="AppBarButton_Click" />
             <AppBarSeparator />
             <AppBarButton x:Name="btnEncode" x:Uid="btnEncode" Label="Encode" VerticalAlignment="Center" Click="AppBarButton_Click">
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="F2" />
+                </AppBarButton.KeyboardAccelerators>
                 <AppBarButton.Icon>
                     <FontIcon Glyph="&#xF02A;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarButton x:Name="btnDecode" x:Uid="btnDecode" Label="Decode" Icon="Character" VerticalAlignment="Center" Click="AppBarButton_Click" />
+            <AppBarButton x:Name="btnDecode" x:Uid="btnDecode" Label="Decode" Icon="Character" VerticalAlignment="Center" Click="AppBarButton_Click">
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="F3" />
+                </AppBarButton.KeyboardAccelerators>
+            </AppBarButton>
             <AppBarSeparator />
             <AppBarButton x:Name="btnCapture" x:Uid="btnCapture" Label="Capture" Icon="Camera" VerticalAlignment="Center" Click="AppBarButton_Click" />
             <AppBarButton x:Name="btnSave" x:Uid="btnSave" Label="Save" Icon="Save" VerticalAlignment="Center" Click="AppBarButton_Click" />
-            <AppBarButton x:Name="btnShare" x:Uid="btnShare" Label="Share" Icon="Share" VerticalAlignment="Center" Click="AppBarButton_Click" />
-
+            <AppBarButton x:Name="btnShare" x:Uid="btnShare" Label="Share" Icon="Share" VerticalAlignment="Center" Click="AppBarButton_Click" >
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="F12"/>
+                </AppBarButton.KeyboardAccelerators>
+            </AppBarButton>
+            
             <CommandBar.SecondaryCommands>
                 <!-- More Button Dropdown menu -->
                 <AppBarButton x:Name="btnImageToBase64" x:Uid="btnImageToBase64" Label="Image to BASE64" Icon="Shuffle" VerticalAlignment="Center" Click="Base64_Click"  />

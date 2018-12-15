@@ -113,8 +113,16 @@
         </Grid.ColumnDefinitions>
 
         <CommandBar Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="CmdBar" x:Uid="CmdBar">
-            <AppBarButton x:Name="btnOpenFolder" x:Uid="btnOpenFolder" Label="Folder" Icon="OpenLocal" ToolTipService.ToolTip="Open Folder" VerticalAlignment="Center" Click="AppBarButton_Click" />
-            <AppBarButton x:Name="btnOpenFile" x:Uid="btnOpenFile" Label="File" Icon="OpenFile" ToolTipService.ToolTip="Open File" VerticalAlignment="Center" Click="AppBarButton_Click" />
+            <AppBarButton x:Name="btnOpenFolder" x:Uid="btnOpenFolder" Label="Folder" Icon="OpenLocal" ToolTipService.ToolTip="Open Folder" VerticalAlignment="Center" Click="AppBarButton_Click" >
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Control" Key="F" />
+                </AppBarButton.KeyboardAccelerators>
+            </AppBarButton>
+            <AppBarButton x:Name="btnOpenFile" x:Uid="btnOpenFile" Label="File" Icon="OpenFile" ToolTipService.ToolTip="Open File" VerticalAlignment="Center" Click="AppBarButton_Click" >
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Control" Key="O" />
+                </AppBarButton.KeyboardAccelerators>
+            </AppBarButton>
             <AppBarButton x:Name="btnClearAll" x:Uid="btnClearAll" Label="Clear" Icon="Clear" ToolTipService.ToolTip="Clear All Items" VerticalAlignment="Center" Click="AppBarButton_Click" >
                 <AppBarButton.KeyboardAccelerators>
                     <KeyboardAccelerator Key="F7" />
@@ -265,7 +273,11 @@
                 </AppBarButton.ContextFlyout>
             </AppBarButton>
             <AppBarSeparator />
-            <AppBarButton x:Name="btnShare" x:Uid="btnShare" Label="Share" Icon="Share" VerticalAlignment="Center" Click="AppBarButton_Click" />
+            <AppBarButton x:Name="btnShare" x:Uid="btnShare" Label="Share" Icon="Share" VerticalAlignment="Center" Click="AppBarButton_Click" >
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="F12"/>
+                </AppBarButton.KeyboardAccelerators>
+            </AppBarButton>
             <AppBarButton x:Name="btnCopy" x:Uid="btnCopy" Label="Copy" Icon="Copy" VerticalAlignment="Center" Click="AppBarButton_Click"  />
 
             <CommandBar.SecondaryCommands>

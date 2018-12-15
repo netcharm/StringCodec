@@ -60,16 +60,19 @@ namespace StringCodec.UWP.Pages
             //if (!string.IsNullOrEmpty(text_src)) edBarcode.Text = text_src;
 
             #region Detecting is ScreenCapture supported?
-            if (!GraphicsCaptureSession.IsSupported())
+            // Hide the capture UI if screen capture is not supported.
+            btnCapture.Visibility = Visibility.Collapsed;
+            btnCapture.IsEnabled = false;
+            try
             {
-                // Hide the capture UI if screen capture is not supported.
-                btnCapture.Visibility = Visibility.Collapsed;
-                btnCapture.IsEnabled = false;
+                if (GraphicsCaptureSession.IsSupported())
+                {
+                    btnCapture.Visibility = Visibility.Visible;
+                    btnCapture.IsEnabled = true;
+                }
             }
-            else
+            catch(Exception)
             {
-                btnCapture.Visibility = Visibility.Visible;
-                btnCapture.IsEnabled = true;
             }
             #endregion
         }

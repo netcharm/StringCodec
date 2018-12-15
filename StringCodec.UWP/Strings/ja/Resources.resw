@@ -858,4 +858,64 @@
   <data name="optPassword.Text" xml:space="preserve">
     <value>簡単なパスワード</value>
   </data>
+  <data name="optCase.Text" xml:space="preserve">
+    <value>文字変換</value>
+  </data>
+  <data name="optCaseCapsSentence.Text" xml:space="preserve">
+    <value>大文字の文の最初の文字</value>
+  </data>
+  <data name="optCaseCapsWord.Text" xml:space="preserve">
+    <value>大文字の単語の先頭文字</value>
+  </data>
+  <data name="optCaseJaLowKana.Text" xml:space="preserve">
+    <value>日本語小文字カタカナ</value>
+  </data>
+  <data name="optCaseJaLowNum.Text" xml:space="preserve">
+    <value>日本語小文字の数字</value>
+  </data>
+  <data name="optCaseJaUpKana.Text" xml:space="preserve">
+    <value>日本語小文字カタカナ</value>
+  </data>
+  <data name="optCaseJaUpNum.Text" xml:space="preserve">
+    <value>日本語大文字の数字</value>
+  </data>
+  <data name="optCaseLow.Text" xml:space="preserve">
+    <value>小文字</value>
+  </data>
+  <data name="optCaseUp.Text" xml:space="preserve">
+    <value>大文字</value>
+  </data>
+  <data name="optCaseZhFullNum.Text" xml:space="preserve">
+    <value>中国語全角数字記号</value>
+  </data>
+  <data name="optCaseZhHalfNum.Text" xml:space="preserve">
+    <value>中国語半角数字記号</value>
+  </data>
+  <data name="optCaseZhLowNum.Text" xml:space="preserve">
+    <value>中国語小文字の数字</value>
+  </data>
+  <data name="optCaseZhUpNum.Text" xml:space="preserve">
+    <value>中国語大文字の数字</value>
+  </data>
+  <data name="optCaseJaFullKana.Text" xml:space="preserve">
+    <value>日本語全角カタカナ</value>
+  </data>
+  <data name="optCaseJaHalfKana.Text" xml:space="preserve">
+    <value>日本語半角カタカナ</value>
+  </data>
+  <data name="optCaseZhLowRmbNum.Text" xml:space="preserve">
+    <value>中国語小文字の通貨</value>
+  </data>
+  <data name="optCaseZhUpRmbNum.Text" xml:space="preserve">
+    <value>中国語大文字の通貨</value>
+  </data>
+  <data name="optCaseJaUpRmbNum.Text" xml:space="preserve">
+    <value>日本語大文字の通貨</value>
+  </data>
+  <data name="optCaseZhS2T.Text" xml:space="preserve">
+    <value>繁体字中国語</value>
+  </data>
+  <data name="optCaseZhT2S.Text" xml:space="preserve">
+    <value>簡体字中国語</value>
+  </data>
 </root>

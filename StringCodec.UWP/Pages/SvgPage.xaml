@@ -82,11 +82,23 @@
             <AppBarButton x:Name="btnCopy" x:Uid="btnCopy" Label="Copy" Icon="Copy" VerticalAlignment="Center" Click="AppBarButton_Click"  />
             <AppBarButton x:Name="btnPaste" x:Uid="btnPaste" Label="Paste" Icon="Paste" VerticalAlignment="Center" Click="AppBarButton_Click" />
             <AppBarSeparator />
-            <AppBarButton x:Name="btnOpenFile" x:Uid="btnOpenFile" Label="File" Icon="OpenFile" VerticalAlignment="Center" Click="AppBarButton_Click"  />
-            <AppBarButton x:Name="btnMake" x:Uid="btnMake" Label="Make" Icon="Pictures" VerticalAlignment="Center" ToolTipService.ToolTip="Generating Icon Images" Click="AppBarButton_Click"  />
+            <AppBarButton x:Name="btnOpenFile" x:Uid="btnOpenFile" Label="File" Icon="OpenFile" VerticalAlignment="Center" Click="AppBarButton_Click" >
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Control" Key="O" />
+                </AppBarButton.KeyboardAccelerators>
+            </AppBarButton>
+            <AppBarButton x:Name="btnMake" x:Uid="btnMake" Label="Make" Icon="Pictures" VerticalAlignment="Center" ToolTipService.ToolTip="Generating Icon Images" Click="AppBarButton_Click" >
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="F2" />
+                </AppBarButton.KeyboardAccelerators>
+            </AppBarButton>
             <AppBarSeparator />
             <AppBarButton x:Name="btnSave" x:Uid="btnSave" Label="Save" Icon="Save" VerticalAlignment="Center" Click="AppBarButton_Click" />
-            <AppBarButton x:Name="btnShare" x:Uid="btnShare" Label="Share" Icon="Share" VerticalAlignment="Center" Click="AppBarButton_Click" />
+            <AppBarButton x:Name="btnShare" x:Uid="btnShare" Label="Share" Icon="Share" VerticalAlignment="Center" Click="AppBarButton_Click" >
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="F12"/>
+                </AppBarButton.KeyboardAccelerators>
+            </AppBarButton>
 
             <CommandBar.SecondaryCommands>
                 <!-- More Button Dropdown menu -->
