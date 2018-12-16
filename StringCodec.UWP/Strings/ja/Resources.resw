@@ -786,9 +786,6 @@
   <data name="optLangKorean.Text" xml:space="preserve">
     <value>韓国語</value>
   </data>
-  <data name="optLangRussian.Text" xml:space="preserve">
-    <value>ロシア語</value>
-  </data>
   <data name="optLangThai.Text" xml:space="preserve">
     <value>タイ語</value>
   </data>
@@ -917,5 +914,38 @@
   </data>
   <data name="optCaseZhT2S.Text" xml:space="preserve">
     <value>簡体字中国語</value>
+  </data>
+  <data name="optLangEn.Text" xml:space="preserve">
+    <value>英語</value>
+  </data>
+  <data name="optLangFr.Text" xml:space="preserve">
+    <value>フランス語</value>
+  </data>
+  <data name="optLangDe.Text" xml:space="preserve">
+    <value>ドイツ語</value>
+  </data>
+  <data name="optLangEs.Text" xml:space="preserve">
+    <value>スペイン語</value>
+  </data>
+  <data name="optLangPt.Text" xml:space="preserve">
+    <value>ポルトガル語</value>
+  </data>
+  <data name="optLangNl.Text" xml:space="preserve">
+    <value>オランダ語</value>
+  </data>
+  <data name="optLangRu.Text" xml:space="preserve">
+    <value>ロシア語</value>
+  </data>
+  <data name="optLangIt.Text" xml:space="preserve">
+    <value>イタリアン</value>
+  </data>
+  <data name="optLangGr.Text" xml:space="preserve">
+    <value>グリーク</value>
+  </data>
+  <data name="optLangDa.Text" xml:space="preserve">
+    <value>デンマーク</value>
+  </data>
+  <data name="optLangCz.Text" xml:space="preserve">
+    <value>チェコ</value>
   </data>
 </root>

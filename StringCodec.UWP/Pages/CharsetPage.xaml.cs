@@ -45,6 +45,9 @@ namespace StringCodec.UWP.Pages
 
         private Encoding CURRENT_SRCENC = Encoding.Default;
         private Encoding CURRENT_DSTENC = Encoding.Default;
+        private System.Globalization.CultureInfo CURRENT_SRCCULTURE = System.Globalization.CultureInfo.CurrentCulture;
+        private System.Globalization.CultureInfo CURRENT_DSTCULTURE = System.Globalization.CultureInfo.CurrentCulture;
+
         private int CURRENT_TREEDEEP = 2;
         private bool CURRENT_RENAME_REPLACE = false;
         private bool CURRENT_CONVERT_ORIGINAL = true;
@@ -495,7 +498,8 @@ namespace StringCodec.UWP.Pages
             ToggleMenuFlyoutItem[] optsSrc = new ToggleMenuFlyoutItem[] {optSrcAuto,
                 optSrcAscii,
                 optSrc1250, optSrc1251, optSrc1252, optSrc1253, optSrc1254, optSrc1255, optSrc1256, optSrc1257, optSrc1258,
-                optSrcThai, optSrcRussian,
+                optSrcEn, optSrcFr, optSrcDe, optSrcEs, optSrcPt, optSrcNl, optSrcRu, optSrcIt, optSrcGr, optSrcDa, optSrcCz,
+                optSrcThai,
                 optSrcGBK, optSrcBIG5, optSrcJIS, optSrcKorean,
                 optSrcUnicode, optSrcUTF8
             };
@@ -516,7 +520,8 @@ namespace StringCodec.UWP.Pages
             ToggleMenuFlyoutItem[] optsDst = new ToggleMenuFlyoutItem[] {optDstAuto,
                 optDstAscii,
                 optDst1250, optDst1251, optDst1252, optDst1253, optDst1254, optDst1255, optDst1256, optDst1257, optDst1258,
-                optDstThai, optDstRussian,
+                optDstEn, optDstFr, optDstDe, optDstEs, optDstPt, optDstNl, optDstRu, optDstIt, optDstGr, optDstDa, optDstCz,
+                optDstThai,
                 optDstGBK, optDstBIG5, optDstJIS, optDstKorean,
                 optDstUnicode, optDstUTF8
             };
@@ -554,7 +559,8 @@ namespace StringCodec.UWP.Pages
             ToggleMenuFlyoutItem[] btns = new ToggleMenuFlyoutItem[] { optSrcAuto,
                 optSrcAscii,
                 optSrc1250, optSrc1251, optSrc1252, optSrc1253, optSrc1254, optSrc1255, optSrc1256, optSrc1257, optSrc1258,
-                optSrcThai, optSrcRussian,
+                optSrcEn, optSrcFr, optSrcDe, optSrcEs, optSrcPt, optSrcNl, optSrcRu, optSrcIt, optSrcGr, optSrcDa, optSrcCz,
+                optSrcThai,
                 optSrcGBK, optSrcBIG5, optSrcJIS, optSrcKorean,
                 optSrcUnicode, optSrcUTF8
             };
@@ -566,6 +572,7 @@ namespace StringCodec.UWP.Pages
             var enc = sender as ToggleMenuFlyoutItem;
             var ENC_NAME = enc.Name.Substring(6);
             CURRENT_SRCENC = TextCodecs.GetTextEncoder(ENC_NAME);
+            CURRENT_SRCCULTURE = TextCodecs.GetCulture(ENC_NAME);
 
             ConvertFrom(TreeFiles, CURRENT_SRCENC);
             if (fcontent != null && fcontent is byte[])
@@ -577,7 +584,8 @@ namespace StringCodec.UWP.Pages
             ToggleMenuFlyoutItem[] btns = new ToggleMenuFlyoutItem[] { optDstAuto,
                 optDstAscii,
                 optDst1250, optDst1251, optDst1252, optDst1253, optDst1254, optDst1255, optDst1256, optDst1257, optDst1258,
-                optDstThai, optDstRussian,
+                optDstEn, optDstFr, optDstDe, optDstEs, optDstPt, optDstNl, optDstRu, optDstIt, optDstGr, optDstDa, optDstCz,
+                optDstThai,
                 optDstGBK, optDstBIG5, optDstJIS, optDstKorean,
                 optDstUnicode, optDstUTF8
             };
@@ -589,6 +597,7 @@ namespace StringCodec.UWP.Pages
             var enc = sender as ToggleMenuFlyoutItem;
             var ENC_NAME = enc.Name.Substring(6);
             CURRENT_DSTENC = TextCodecs.GetTextEncoder(ENC_NAME);
+            CURRENT_DSTCULTURE = TextCodecs.GetCulture(ENC_NAME);
         }
 
         private void edSrc_TextChanged(object sender, TextChangedEventArgs e)

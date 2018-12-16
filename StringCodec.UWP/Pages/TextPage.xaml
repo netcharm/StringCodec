@@ -103,13 +103,23 @@
                             <ToggleMenuFlyoutItem x:Name="optLang1254" x:Uid="optLang1254" Text="Turkish" Click="OptLang_Click"/>
                             <ToggleMenuFlyoutItem x:Name="optLang1258" x:Uid="optLang1258" Text="Vietnamese" Click="OptLang_Click"/>
                             <MenuFlyoutSeparator/>
-                            <ToggleMenuFlyoutItem x:Name="optLangRussian" x:Uid="optLangRussian" Text="Russian" Click="OptLang_Click"/>
                             <ToggleMenuFlyoutItem x:Name="optLang1251" x:Uid="optLang1251" Text="Cyrillic" Click="OptLang_Click"/>
                             <ToggleMenuFlyoutItem x:Name="optLang1253" x:Uid="optLang1253" Text="Greek" Click="OptLang_Click"/>
                             <MenuFlyoutSeparator/>
                             <ToggleMenuFlyoutItem x:Name="optLang1256" x:Uid="optLang1256" Text="Arabic" Click="OptLang_Click"/>
                             <ToggleMenuFlyoutItem x:Name="optLang1255" x:Uid="optLang1255" Text="Hebrew" Click="OptLang_Click"/>
                             <MenuFlyoutSeparator/>
+                            <ToggleMenuFlyoutItem x:Name="optLangEn" x:Uid="optLangEn" Text="English" Click="OptLang_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optLangFr" x:Uid="optLangFr" Text="French" Click="OptLang_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optLangDe" x:Uid="optLangDe" Text="German" Click="OptLang_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optLangEs" x:Uid="optLangEs" Text="Spanish" Click="OptLang_Click" Visibility="Collapsed"/>
+                            <ToggleMenuFlyoutItem x:Name="optLangPt" x:Uid="optLangPt" Text="Portuguese" Click="OptLang_Click" Visibility="Collapsed"/>
+                            <ToggleMenuFlyoutItem x:Name="optLangNl" x:Uid="optLangNl" Text="Dutch" Click="OptLang_Click" Visibility="Collapsed"/>
+                            <ToggleMenuFlyoutItem x:Name="optLangRu" x:Uid="optLangRu" Text="Russian" Click="OptLang_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optLangIt" x:Uid="optLangIt" Text="Italian" Click="OptLang_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optLangGr" x:Uid="optLangGr" Text="Greek" Click="OptLang_Click" Visibility="Collapsed"/>
+                            <ToggleMenuFlyoutItem x:Name="optLangDa" x:Uid="optLangDa" Text="Danish" Click="OptLang_Click" Visibility="Collapsed"/>
+                            <ToggleMenuFlyoutItem x:Name="optLangCz" x:Uid="optLangCz" Text="Czech" Click="OptLang_Click" Visibility="Collapsed"/>
                             <ToggleMenuFlyoutItem x:Name="optLangThai" x:Uid="optLangThai" Text="Thai" Click="OptLang_Click"/>
                         </MenuFlyoutSubItem>
                     </MenuFlyout>
@@ -185,7 +195,7 @@
         <TextBox Grid.Row="1" Margin="0 16 0 0" x:Name="edSrc" x:Uid="edSrc" 
                  Header="Input:" PlaceholderText="Input at here" 
                  AcceptsReturn="True" CanDrag="True" 
-                 FontFamily="Consolas" FontSize="16" 
+                 FontFamily="Consolas" FontSize="16" IsSpellCheckEnabled="True" 
                  SelectionHighlightColorWhenNotFocused="{ThemeResource ButtonBorderThemeBrush}"
                  ScrollViewer.VerticalScrollBarVisibility="Auto" 
                  ScrollViewer.HorizontalScrollBarVisibility="Auto" 
@@ -194,7 +204,7 @@
                  AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" />
         <TextBox Grid.Row="2" Margin="0 12 0 0" x:Name="edDst" x:Uid="edDst" 
                  Header="Output:" PlaceholderText="Here is output" 
-                 AcceptsReturn="True" IsReadOnly="True" 
+                 AcceptsReturn="True" IsReadOnly="True" IsSpellCheckEnabled="True" 
                  FontFamily="Consolas" FontSize="16" 
                  SelectionHighlightColorWhenNotFocused="{ThemeResource ButtonBorderThemeBrush}"
                  ScrollViewer.VerticalScrollBarVisibility="Auto" 

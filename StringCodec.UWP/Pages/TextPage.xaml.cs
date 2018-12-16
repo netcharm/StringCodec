@@ -32,6 +32,7 @@ namespace StringCodec.UWP.Pages
     {
         private TextCodecs.CODEC CURRENT_CODEC = TextCodecs.CODEC.URL;
         private Encoding CURRENT_ENC = Encoding.UTF8;
+        private System.Globalization.CultureInfo CURRENT_CULTURE = System.Globalization.CultureInfo.CurrentCulture;
         private bool CURRENT_LINEBREAK = false;
 
         static private string text_src = string.Empty;
@@ -61,7 +62,7 @@ namespace StringCodec.UWP.Pages
             ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] {
                 optLangAscii,
                 optLang1250, optLang1251, optLang1252, optLang1253, optLang1254, optLang1255, optLang1256, optLang1257, optLang1258,
-                optLangThai, optLangRussian,
+                optLangThai, optLangRu,
                 optLangGBK, optLangBIG5, optLangJIS, optLangKorean,
                 optLangUnicode, optLangUTF8
             };
@@ -135,13 +136,13 @@ namespace StringCodec.UWP.Pages
             {
                 #region English case convert
                 if (sender == optCaseUp)
-                    result = text.Upper();
+                    result = text.Upper(CURRENT_CULTURE);
                 else if (sender == optCaseLow)
-                    result = text.Lower();
+                    result = text.Lower(CURRENT_CULTURE);
                 else if (sender == optCaseCapsWord)
-                    result = text.CapsWord();
+                    result = text.CapsWord(CURRENT_CULTURE);
                 else if (sender == optCaseCapsSentence)
-                    result = text.CapsSentence();
+                    result = text.CapsSentence(CURRENT_CULTURE);
                 #endregion
                 #region Chinese case convert
                 else if (sender == optCaseZhUpNum)
@@ -191,7 +192,8 @@ namespace StringCodec.UWP.Pages
             ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] {
                 optLangAscii,
                 optLang1250, optLang1251, optLang1252, optLang1253, optLang1254, optLang1255, optLang1256, optLang1257, optLang1258,
-                optLangThai, optLangRussian,
+                optLangEn, optLangFr, optLangDe, optLangEs, optLangPt, optLangNl, optLangRu, optLangIt, optLangGr, optLangDa, optLangCz,
+                optLangThai,
                 optLangGBK, optLangBIG5, optLangJIS, optLangKorean,
                 optLangUnicode, optLangUTF8
             };
@@ -208,6 +210,10 @@ namespace StringCodec.UWP.Pages
 
             var ENC_NAME = btn.Name.Substring(7);
             CURRENT_ENC = TextCodecs.GetTextEncoder(ENC_NAME);
+            CURRENT_CULTURE = TextCodecs.GetCulture(ENC_NAME);
+
+            edSrc.Language = CURRENT_CULTURE.IetfLanguageTag;
+            edDst.Language = CURRENT_CULTURE.IetfLanguageTag;
         }
         
         private void OptWrap_Click(object sender, RoutedEventArgs e)

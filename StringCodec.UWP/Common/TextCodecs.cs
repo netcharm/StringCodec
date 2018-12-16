@@ -1062,30 +1062,40 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        public static string Upper(this string text)
+        public static string Upper(this string text, System.Globalization.CultureInfo enc = null)
         {
-            return (System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToUpper(text));
+            var culture = System.Globalization.CultureInfo.CurrentCulture;
+            if (enc is System.Globalization.CultureInfo) culture = enc;
+            return (culture.TextInfo.ToUpper(text));
         }
 
-        public static string Lower(this string text)
+        public static string Lower(this string text, System.Globalization.CultureInfo enc = null)
         {
-            return (System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToLower(text));
+            var culture = System.Globalization.CultureInfo.CurrentCulture;
+            if (enc is System.Globalization.CultureInfo) culture = enc;
+            return (culture.TextInfo.ToLower(text));
         }
 
-        public static string CapsWord(this string text)
+        public static string CapsWord(this string text, System.Globalization.CultureInfo enc = null)
         {
-            return (System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(text));
+            var culture = System.Globalization.CultureInfo.CurrentCulture;
+            if (enc is System.Globalization.CultureInfo) culture = enc;
+            return (culture.TextInfo.ToTitleCase(text));
         }
 
-        public static string CapsSentence(this string text)
+        public static string CapsSentence(this string text, System.Globalization.CultureInfo enc = null)
         {
             string result = text;
+
+            var culture = System.Globalization.CultureInfo.CurrentCulture;
+            if (enc is System.Globalization.CultureInfo) culture = enc;
 
             var paras = text.Split(LINEBREAK, StringSplitOptions.None);
             StringBuilder sb = new StringBuilder();
             foreach (var para in paras)
             {
                 var sentences = para.Split(". ");
+
                 List<string> ls = new List<string>();
                 foreach (var sentence in sentences)
                 {
@@ -1098,17 +1108,25 @@ namespace StringCodec.UWP.Common
                     var prefix = string.Empty;
                     var first = string.Empty;
                     var suffix = string.Empty;
+
                     for (var i = 0; i < sentence.Length; i++)
                     {
                         if (char.IsLetter(sentence.Skip(i).First()))
                         {
                             prefix = string.Join("", sentence.Take(i));
-                            first = string.Join("", sentence.Skip(i).First());
-                            suffix = string.Join("", sentence.Skip(i + 1));
-                            ls.Add($"{prefix}{System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(first)}{suffix}");
-                            break;
+                            if (i == 0 || prefix.EndsWith(" ") || prefix.EndsWith(".") || prefix.EndsWith(","))
+                            {
+                                first = string.Join("", sentence.Skip(i).First());
+                                suffix = string.Join("", sentence.Skip(i + 1));
+                                ls.Add($"{prefix}{culture.TextInfo.ToTitleCase(first)}{suffix}");
+                                break;
+                            }
+                            else prefix = string.Empty;
                         }
                     }
+
+                    if (string.IsNullOrEmpty(prefix) && string.IsNullOrEmpty(first) && string.IsNullOrEmpty(suffix))
+                        ls.Add(sentence);
                 }
                 sb.AppendLine(string.Join(". ", ls));
             }
@@ -1822,6 +1840,23 @@ namespace StringCodec.UWP.Common
         }
 
         private static Dictionary<int, System.Globalization.CultureInfo> CodePageInfo = new Dictionary<int, System.Globalization.CultureInfo>();
+        private static Dictionary<string, System.Globalization.CultureInfo> Cultures = new Dictionary<string, System.Globalization.CultureInfo>();
+
+        public static System.Globalization.CultureInfo GetCulture(string cultureTag)
+        {
+            if (Cultures.Count <= 0)
+            {
+                var cultures = System.Globalization.CultureInfo.GetCultures(System.Globalization.CultureTypes.AllCultures);
+                foreach (var culture in cultures)
+                {
+                    if (!culture.IetfLanguageTag.Contains("-"))
+                        Cultures.TryAdd(culture.IetfLanguageTag.ToLower(), culture);
+                }
+            }
+            var tag = cultureTag.ToLower();
+            if (Cultures.ContainsKey(tag)) return (Cultures[tag]);
+            else return (System.Globalization.CultureInfo.CurrentCulture);
+        }
 
         public static System.Globalization.CultureInfo GetCodePageInfo(int codepage)
         {
@@ -1840,6 +1875,10 @@ namespace StringCodec.UWP.Common
                         CodePageInfo.TryAdd(culture.TextInfo.EBCDICCodePage, culture);
                     }
                     catch (Exception) { }
+
+                    if (!culture.IetfLanguageTag.Contains("-"))
+                        Cultures.TryAdd(culture.IetfLanguageTag, culture);
+
                     //try
                     //{
                     //    CodePageInfo.TryAdd(culture.TextInfo.MacCodePage, culture);
@@ -1942,6 +1981,7 @@ namespace StringCodec.UWP.Common
                 result = Encoding.UTF8;
             else if (string.Equals(ENC_NAME, "Unicode", StringComparison.CurrentCultureIgnoreCase))
                 result = Encoding.Unicode;
+
             else if (string.Equals(ENC_NAME, "GBK", StringComparison.CurrentCultureIgnoreCase)||
                      string.Equals(ENC_NAME, "936", StringComparison.CurrentCultureIgnoreCase))
                 result = Encoding.GetEncoding("GBK");
@@ -1954,6 +1994,7 @@ namespace StringCodec.UWP.Common
             else if (string.Equals(ENC_NAME, "Korean", StringComparison.CurrentCultureIgnoreCase) ||
                      string.Equals(ENC_NAME, "949", StringComparison.CurrentCultureIgnoreCase))
                 result = Encoding.GetEncoding("Korean");
+
             else if (string.Equals(ENC_NAME, "1250", StringComparison.CurrentCultureIgnoreCase))
                 result = Encoding.GetEncoding("Windows-1250");
             else if (string.Equals(ENC_NAME, "1251", StringComparison.CurrentCultureIgnoreCase))
@@ -1972,10 +2013,33 @@ namespace StringCodec.UWP.Common
                 result = Encoding.GetEncoding("Windows-1257");
             else if (string.Equals(ENC_NAME, "1258", StringComparison.CurrentCultureIgnoreCase))
                 result = Encoding.GetEncoding("Windows-1258");
+
+            else if (string.Equals(ENC_NAME, "En", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.GetEncoding(GetCulture("En").TextInfo.ANSICodePage);
+            else if (string.Equals(ENC_NAME, "Fr", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.GetEncoding(GetCulture("Fr").TextInfo.ANSICodePage);
+            else if (string.Equals(ENC_NAME, "De", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.GetEncoding(GetCulture("De").TextInfo.ANSICodePage);
+            else if (string.Equals(ENC_NAME, "Es", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.GetEncoding(GetCulture("Es").TextInfo.ANSICodePage);
+            else if (string.Equals(ENC_NAME, "Pt", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.GetEncoding(GetCulture("Pt").TextInfo.ANSICodePage);
+            else if (string.Equals(ENC_NAME, "Nl", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.GetEncoding(GetCulture("Nl").TextInfo.ANSICodePage);
+            else if (string.Equals(ENC_NAME, "Ru", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.GetEncoding(GetCulture("Ru").TextInfo.ANSICodePage);
+            else if (string.Equals(ENC_NAME, "It", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.GetEncoding(GetCulture("It").TextInfo.ANSICodePage);
+            else if (string.Equals(ENC_NAME, "Gr", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.GetEncoding(GetCulture("Gr").TextInfo.ANSICodePage);
+            else if (string.Equals(ENC_NAME, "Da", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.GetEncoding(GetCulture("Da").TextInfo.ANSICodePage);
+            else if (string.Equals(ENC_NAME, "Cz", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.GetEncoding(GetCulture("Cz").TextInfo.ANSICodePage);
+
             else if (string.Equals(ENC_NAME, "Thai", StringComparison.CurrentCultureIgnoreCase))
                 result = Encoding.GetEncoding("IBM-Thai");
-            else if (string.Equals(ENC_NAME, "Russian", StringComparison.CurrentCultureIgnoreCase))
-                result = Encoding.GetEncoding(855);
+
             else if (string.Equals(ENC_NAME, "ASCII", StringComparison.CurrentCultureIgnoreCase))
                 result = Encoding.ASCII;
             else

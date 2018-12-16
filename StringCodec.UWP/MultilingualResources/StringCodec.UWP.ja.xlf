@@ -1038,10 +1038,6 @@
           <source>Korean</source>
           <target state="translated">韓国語</target>
         </trans-unit>
-        <trans-unit id="optLangRussian.Text" translate="yes" xml:space="preserve">
-          <source>Russian</source>
-          <target state="translated">ロシア語</target>
-        </trans-unit>
         <trans-unit id="optLangThai.Text" translate="yes" xml:space="preserve">
           <source>Thai</source>
           <target state="translated">タイ語</target>
@@ -1213,6 +1209,50 @@
         <trans-unit id="optCaseZhT2S.Text" translate="yes" xml:space="preserve">
           <source>Chinese Traditional To Simplified</source>
           <target state="translated">簡体字中国語</target>
+        </trans-unit>
+        <trans-unit id="optLangEn.Text" translate="yes" xml:space="preserve">
+          <source>English</source>
+          <target state="translated">英語</target>
+        </trans-unit>
+        <trans-unit id="optLangFr.Text" translate="yes" xml:space="preserve">
+          <source>French</source>
+          <target state="translated">フランス語</target>
+        </trans-unit>
+        <trans-unit id="optLangDe.Text" translate="yes" xml:space="preserve">
+          <source>German</source>
+          <target state="translated">ドイツ語</target>
+        </trans-unit>
+        <trans-unit id="optLangEs.Text" translate="yes" xml:space="preserve">
+          <source>Spanish</source>
+          <target state="translated">スペイン語</target>
+        </trans-unit>
+        <trans-unit id="optLangPt.Text" translate="yes" xml:space="preserve">
+          <source>Portuguese</source>
+          <target state="translated">ポルトガル語</target>
+        </trans-unit>
+        <trans-unit id="optLangNl.Text" translate="yes" xml:space="preserve">
+          <source>Dutch</source>
+          <target state="translated">オランダ語</target>
+        </trans-unit>
+        <trans-unit id="optLangRu.Text" translate="yes" xml:space="preserve">
+          <source>Russian</source>
+          <target state="translated">ロシア語</target>
+        </trans-unit>
+        <trans-unit id="optLangIt.Text" translate="yes" xml:space="preserve">
+          <source>Italian</source>
+          <target state="translated">イタリアン</target>
+        </trans-unit>
+        <trans-unit id="optLangGr.Text" translate="yes" xml:space="preserve">
+          <source>Greek</source>
+          <target state="translated">グリーク</target>
+        </trans-unit>
+        <trans-unit id="optLangDa.Text" translate="yes" xml:space="preserve">
+          <source>Danish</source>
+          <target state="translated">デンマーク</target>
+        </trans-unit>
+        <trans-unit id="optLangCz.Text" translate="yes" xml:space="preserve">
+          <source>Czech</source>
+          <target state="translated">チェコ</target>
         </trans-unit>
       </group>
     </body>
