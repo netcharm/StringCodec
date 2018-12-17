@@ -487,7 +487,10 @@ namespace StringCodec.UWP.Common
                 {
                     if (!string.IsNullOrEmpty(text))
                     {
-                        var cs = text.Replace("\u30FB", ".").Replace("\u30FC", "-").Split(" ");
+                        text = Regex.Replace(text, @"[\u00B7\u2022\u2024\u2027\u2219\u25CF\u25E6\u30FB\uFE52\uFF0E\uFF65・]", ".", RegexOptions.IgnoreCase | RegexOptions.Multiline);
+                        text = Regex.Replace(text, @"[\u2010\u2013\u2014\u2015\u2500\u2501\u2F00\u30FC\uFE58\uFF0D\uFF3F\uFF70\uFFE3\uFFDA_－]", "-", RegexOptions.IgnoreCase | RegexOptions.Multiline);
+
+                        var cs = text.Replace("\u30FB", ".").Replace("\u30FC", "-").Replace("・", ".").Replace("－", "-").Split(" ");
                         List<string> ret = new List<string>();
                         foreach (var c in cs)
                         {
