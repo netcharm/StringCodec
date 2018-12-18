@@ -1385,6 +1385,11 @@ namespace StringCodec.UWP.Common
             return (AppResources.GetString(text));
         }
         #endregion
+
+        public static async void ShowException(this string content, string title)
+        {
+            await new MessageDialog(content, title).ShowAsync();
+        }
     }
 
     class Settings

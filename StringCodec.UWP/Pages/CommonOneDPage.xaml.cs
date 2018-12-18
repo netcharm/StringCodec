@@ -63,6 +63,7 @@ namespace StringCodec.UWP.Pages
             // Hide the capture UI if screen capture is not supported.
             btnCapture.Visibility = Visibility.Collapsed;
             btnCapture.IsEnabled = false;
+#if DEBUG
             try
             {
                 if (GraphicsCaptureSession.IsSupported())
@@ -71,9 +72,11 @@ namespace StringCodec.UWP.Pages
                     btnCapture.IsEnabled = true;
                 }
             }
-            catch(Exception)
+            catch(Exception ex)
             {
+                ex.Message.T().ShowException("ERROR".T());
             }
+#endif
             #endregion
         }
 

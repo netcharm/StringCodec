@@ -86,19 +86,33 @@ namespace StringCodec.UWP
         {
             this.InitializeComponent();
 
-            NavigationCacheMode = NavigationCacheMode.Disabled;
-            ApplicationView.GetForCurrentView().Title = AppResources.AppName;
-            nvMain.PaneTitle = "NvMainNavigationViewPaneTitle".T();
-            //nvMain.SettingsItem
+            try
+            {
+                NavigationCacheMode = NavigationCacheMode.Disabled;
+                ApplicationView.GetForCurrentView().Title = AppResources.AppName;
+                nvMain.PaneTitle = "NvMainNavigationViewPaneTitle".T();
+                //nvMain.SettingsItem
 
-            NavigationCacheMode = NavigationCacheMode.Enabled;
+                NavigationCacheMode = NavigationCacheMode.Enabled;
+            }
+            catch (Exception ex)
+            {
+                ex.Message.T().ShowException("ERROR".T());
+            }
 
             #region Extented the supported string charsets
             //
             // Add GBK/Shift-JiS... to Encoding Supported
             // 使用CodePagesEncodingProvider去注册扩展编码。
             //
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            try
+            {
+                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            }
+            catch(Exception ex)
+            {
+                ex.Message.T().ShowException("ERROR".T());
+            }
             #endregion
 
             #region Add Back Shortcut Key to Alt+Back
@@ -117,21 +131,34 @@ namespace StringCodec.UWP
             #endregion
 
             #region 将应用扩展到标题栏
-            //draw into the title bar
-            CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
-            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
-            //CustomTitleBar.Height = CoreApplication.GetCurrentView().TitleBar.Height;
-            //Window.Current.SetTitleBar(GridTitleBar);
+            try
+            {
+                //draw into the title bar
+                CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
+                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
+                //CustomTitleBar.Height = CoreApplication.GetCurrentView().TitleBar.Height;
+                //Window.Current.SetTitleBar(GridTitleBar);
 
-            SetTheme(Settings.GetTheme(), false);
+                SetTheme(Settings.GetTheme(), false);
+            }
+            catch(Exception ex)
+            {
+                ex.Message.T().ShowException("ERROR".T());
+            }
             #endregion
 
-            ContentFrame.Navigated += NvMain_Navigated;
+            try
+            {
+                ContentFrame.Navigated += NvMain_Navigated;
 
-            nvMain.Header = nvMain.PaneTitle;
-            ContentFrame.Navigate(typeof(Pages.TextPage), this);
-
-            nvMain.IsPaneOpen = false;
+                nvMain.IsPaneOpen = false;
+                nvMain.Header = nvMain.PaneTitle;
+                ContentFrame.Navigate(typeof(Pages.TextPage), this);
+            }
+            catch(Exception ex)
+            {
+                ex.Message.T().ShowException("ERROR".T());
+            }
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -262,43 +289,50 @@ namespace StringCodec.UWP
 
         private void NvMain_Navigated(object sender, NavigationEventArgs e)
         {
-            nvMain.IsBackEnabled = ContentFrame.CanGoBack;
-            if (ContentFrame.SourcePageType == typeof(Pages.SettingsPage))
+            try
             {
-                nvMain.SelectedItem = nvMain.SettingsItem as NavigationViewItem;
+                nvMain.IsBackEnabled = ContentFrame.CanGoBack;
+                if (ContentFrame.SourcePageType == typeof(Pages.SettingsPage))
+                {
+                    nvMain.SelectedItem = nvMain.SettingsItem as NavigationViewItem;
+                }
+                else
+                {
+                    if (e.SourcePageType == typeof(Pages.TextPage))
+                    {
+                        nvMain.SelectedItem = nvItemText as NavigationViewItem;
+                    }
+                    else if (e.SourcePageType == typeof(Pages.QRCodePage))
+                    {
+                        nvMain.SelectedItem = nvItemQRCode as NavigationViewItem;
+                    }
+                    else if (e.SourcePageType == typeof(Pages.ImagePage))
+                    {
+                        nvMain.SelectedItem = nvItemImage as NavigationViewItem;
+                    }
+                    else if (e.SourcePageType == typeof(Pages.CommonQRPage))
+                    {
+                        nvMain.SelectedItem = nvItemCommonQR as NavigationViewItem;
+                    }
+                    else if (e.SourcePageType == typeof(Pages.CommonOneDPage))
+                    {
+                        nvMain.SelectedItem = nvItemCommonOneD as NavigationViewItem;
+                    }
+                    else if (e.SourcePageType == typeof(Pages.CharsetPage))
+                    {
+                        nvMain.SelectedItem = nvItemCharset as NavigationViewItem;
+                    }
+                    else if (e.SourcePageType == typeof(Pages.SvgPage))
+                    {
+                        nvMain.SelectedItem = nvItemSvg as NavigationViewItem;
+                    }
+                }
+                nvMain.Header = (nvMain.SelectedItem as NavigationViewItem).Content;
             }
-            else
+            catch (Exception ex)
             {
-                if(e.SourcePageType == typeof(Pages.TextPage))
-                {
-                    nvMain.SelectedItem = nvItemText as NavigationViewItem;
-                }
-                else if (e.SourcePageType == typeof(Pages.QRCodePage))
-                {
-                    nvMain.SelectedItem = nvItemQRCode as NavigationViewItem;
-                }
-                else if (e.SourcePageType == typeof(Pages.ImagePage))
-                {
-                    nvMain.SelectedItem = nvItemImage as NavigationViewItem;
-                }
-                else if (e.SourcePageType == typeof(Pages.CommonQRPage))
-                {
-                    nvMain.SelectedItem = nvItemCommonQR as NavigationViewItem;
-                }
-                else if (e.SourcePageType == typeof(Pages.CommonOneDPage))
-                {
-                    nvMain.SelectedItem = nvItemCommonOneD as NavigationViewItem;
-                }
-                else if (e.SourcePageType == typeof(Pages.CharsetPage))
-                {
-                    nvMain.SelectedItem = nvItemCharset as NavigationViewItem;
-                }
-                else if (e.SourcePageType == typeof(Pages.SvgPage))
-                {
-                    nvMain.SelectedItem = nvItemSvg as NavigationViewItem;
-                }
+                ex.Message.T().ShowException("ERROR".T());
             }
-            nvMain.Header = (nvMain.SelectedItem as NavigationViewItem).Content;
         }
 
         private void NvMain_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
@@ -324,33 +358,40 @@ namespace StringCodec.UWP
             {
                 if(args.SelectedItem is NavigationViewItem)
                 {
-                    var item = args.SelectedItem as NavigationViewItem;
-                    switch (item.Name)
+                    try
                     {
-                        case "nvItemText":
-                            ContentFrame.Navigate(typeof(Pages.TextPage), this);
-                            break;
-                        case "nvItemQRCode":
-                            ContentFrame.Navigate(typeof(Pages.QRCodePage), this);
-                            break;
-                        case "nvItemImage":
-                            ContentFrame.Navigate(typeof(Pages.ImagePage), this);
-                            break;
-                        case "nvItemCommonQR":
-                            ContentFrame.Navigate(typeof(Pages.CommonQRPage), this);
-                            break;
-                        case "nvItemCommonOneD":
-                            ContentFrame.Navigate(typeof(Pages.CommonOneDPage), this);
-                            break;
-                        case "nvItemCharset":
-                            ContentFrame.Navigate(typeof(Pages.CharsetPage), this);
-                            break;
-                        case "nvItemSvg":
-                            ContentFrame.Navigate(typeof(Pages.SvgPage), this);
-                            break;
-                        default:
-                            ContentFrame.Navigate(typeof(Pages.TextPage), this);
-                            break;
+                        var item = args.SelectedItem as NavigationViewItem;
+                        switch (item.Name)
+                        {
+                            case "nvItemText":
+                                ContentFrame.Navigate(typeof(Pages.TextPage), this);
+                                break;
+                            case "nvItemQRCode":
+                                ContentFrame.Navigate(typeof(Pages.QRCodePage), this);
+                                break;
+                            case "nvItemImage":
+                                ContentFrame.Navigate(typeof(Pages.ImagePage), this);
+                                break;
+                            case "nvItemCommonQR":
+                                ContentFrame.Navigate(typeof(Pages.CommonQRPage), this);
+                                break;
+                            case "nvItemCommonOneD":
+                                ContentFrame.Navigate(typeof(Pages.CommonOneDPage), this);
+                                break;
+                            case "nvItemCharset":
+                                ContentFrame.Navigate(typeof(Pages.CharsetPage), this);
+                                break;
+                            case "nvItemSvg":
+                                ContentFrame.Navigate(typeof(Pages.SvgPage), this);
+                                break;
+                            default:
+                                ContentFrame.Navigate(typeof(Pages.TextPage), this);
+                                break;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        ex.Message.T().ShowException("ERROR".T());
                     }
                 }
             }
