@@ -134,8 +134,10 @@ namespace StringCodec.UWP.Pages
 
             try
             {
+                if (sender == optReverse)
+                    result = text.ReverseOrder();
                 #region English case convert
-                if (sender == optCaseUp)
+                else if (sender == optCaseUp)
                     result = text.Upper(CURRENT_CULTURE);
                 else if (sender == optCaseLow)
                     result = text.Lower(CURRENT_CULTURE);

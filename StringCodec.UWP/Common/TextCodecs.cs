@@ -68,7 +68,50 @@ namespace StringCodec.UWP.Common
             {
                 string result = string.Empty;
 
-                result = Uri.EscapeDataString(text);
+                try
+                {
+                    var url = new Uri(text);
+                    var query =  Uri.UnescapeDataString(url.Query.TrimStart('?'));
+
+                    try
+                    {
+                        var kv = query.Split('&').Select(q => q.Split('=')).Select(o => o.Length>1 ? $"{o.First()}={Uri.EscapeDataString(string.Join("", o.Skip(1)))}" : $"{string.Join("", o)}");
+                        var qSym = kv.Count()<=0  || string.IsNullOrEmpty(query) ? string.Empty : "?";
+                        var uSym = string.IsNullOrEmpty(url.UserInfo) ? string.Empty : "@";
+                        result = $"{url.Scheme}://{url.UserInfo}{uSym}{url.DnsSafeHost}{url.AbsolutePath}{qSym}{string.Join("&", kv)}".Trim();
+                    }
+                    catch (Exception)
+                    {
+                        try
+                        {
+                            var queryParams = query.Split('&').Select(q => q.Split('='));
+                            List<string> queryParamList = new List<string>();
+                            foreach (var param in queryParams)
+                            {
+                                if (param.Length < 1)
+                                    continue;
+                                else if (param.Length == 1)
+                                    queryParamList.Add(param.First());
+                                else if (param.Length > 1)
+                                    queryParamList.Add($"{param.First()}={Uri.EscapeDataString(string.Join("", param.Skip(1)))}");
+                            }
+                            var querySymbol = "?";
+                            if (queryParamList.Count() <= 0) querySymbol = string.Empty;
+                            var userSynbol = "@";
+                            if (string.IsNullOrEmpty(url.UserInfo)) userSynbol = string.Empty;
+                            result = $"{url.Scheme}://{url.UserInfo}{userSynbol}{url.DnsSafeHost}{url.AbsolutePath}{querySymbol}{string.Join("&", queryParamList)}".Trim();
+                        }
+                        catch (Exception ex)
+                        {
+                            ex.Message.T().ShowException("ERROR".T());
+                        }
+
+                    }
+                }
+                catch (Exception)
+                {
+                    result = Uri.EscapeDataString(text);
+                }
 
                 return (result);
             }
@@ -77,7 +120,7 @@ namespace StringCodec.UWP.Common
             {
                 string result = string.Empty;
 
-                result = Uri.UnescapeDataString(text);
+                result = Uri.UnescapeDataString(text);//.Replace('+', ' ');
 
                 return (result);
             }
@@ -994,6 +1037,23 @@ namespace StringCodec.UWP.Common
         }
         #endregion
 
+        public static string ReverseOrder(this string text)
+        {
+            string result = text;
+
+            var sentences = text.Split(LINEBREAK, StringSplitOptions.None);
+            StringBuilder sb = new StringBuilder();
+            foreach(var sentence in sentences.Reverse())
+            {
+                //var chars = sentence.Split();
+                //sb.AppendLine(string.Join("", chars.Reverse()));
+                sb.AppendLine(string.Join("", sentence.Reverse()));
+            }
+            result = sb.ToString();
+
+            return (result);
+        }
+
         #region Convert helper routines
         public static async Task<string> ToBase64(this WriteableBitmap wb, string format, bool prefix, bool linebreak)
         {
@@ -1065,6 +1125,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
+        #region Latin case converter
         public static string Upper(this string text, System.Globalization.CultureInfo enc = null)
         {
             var culture = System.Globalization.CultureInfo.CurrentCulture;
@@ -1137,7 +1198,9 @@ namespace StringCodec.UWP.Common
 
             return (result);
         }
+        #endregion
 
+        #region Japaness case converter
         private static Dictionary<char, char> KanaCaseMap = new Dictionary<char, char>()
         {
             { '\uFF65', '\u30FB' }, // '･' : '・'
@@ -1433,7 +1496,9 @@ namespace StringCodec.UWP.Common
 
             return (result);
         }
+        #endregion
 
+        #region Chinese case converter
         private static class ChinaDigital
         {
             // General
@@ -1662,6 +1727,7 @@ namespace StringCodec.UWP.Common
         {
             return(ChineseConverter.Convert(text, ChineseConversionDirection.TraditionalToSimplified));
         }
+        #endregion
 
         public static async Task<string> ConvertFrom(this string text, Encoding enc, bool IsOEM = false)
         {

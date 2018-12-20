@@ -1254,6 +1254,10 @@
           <source>Czech</source>
           <target state="translated">捷克语</target>
         </trans-unit>
+        <trans-unit id="optReverse.Text" translate="yes" xml:space="preserve">
+          <source>Reverse</source>
+          <target state="translated">逆向文本</target>
+        </trans-unit>
       </group>
     </body>
   </file>

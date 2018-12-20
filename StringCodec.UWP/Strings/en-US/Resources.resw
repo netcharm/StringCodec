@@ -911,7 +911,7 @@
   </data>
   <data name="optLangIt.Text" xml:space="preserve">
     <value>Italian</value>
-  </data> 
+  </data>
   <data name="optLangGr.Text" xml:space="preserve">
     <value>Greek</value>
   </data>
@@ -1052,5 +1052,8 @@
   </data>
   <data name="optCaseZhT2S.Text" xml:space="preserve">
     <value>Chinese Traditional To Simplified</value>
+  </data>
+  <data name="optReverse.Text" xml:space="preserve">
+    <value>Reverse</value>
   </data>
 </root>

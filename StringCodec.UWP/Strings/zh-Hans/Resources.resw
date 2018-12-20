@@ -948,4 +948,7 @@
   <data name="optLangCz.Text" xml:space="preserve">
     <value>捷克语</value>
   </data>
+  <data name="optReverse.Text" xml:space="preserve">
+    <value>逆向文本</value>
+  </data>
 </root>

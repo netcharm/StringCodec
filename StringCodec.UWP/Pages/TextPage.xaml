@@ -37,6 +37,7 @@
                             <ToggleMenuFlyoutItem x:Name="optMorseAbbr" x:Uid="optMorseAbbr" Text="Morse Code Expand Abbr." Click="Codec_Click"/>
                         </MenuFlyoutSubItem>
                         <MenuFlyoutSeparator />
+                        <MenuFlyoutItem x:Name="optReverse" x:Uid="optReverse" Text="Reverse" Click="Case_Click"/>
                         <MenuFlyoutSubItem x:Name="optCase" x:Uid="optCase" Text="Case Convert">
                             <MenuFlyoutItem x:Name="optCaseUp" x:Uid="optCaseUp" Text="Upper Case" Click="Case_Click"/>
                             <MenuFlyoutItem x:Name="optCaseLow" x:Uid="optCaseLow" Text="Lower Case" Click="Case_Click"/>
