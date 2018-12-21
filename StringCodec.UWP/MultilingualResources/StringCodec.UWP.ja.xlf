@@ -1270,6 +1270,10 @@
           <source>General Languages</source>
           <target state="translated">一般的に使用される言語</target>
         </trans-unit>
+        <trans-unit id="btnCaseConvert.Label" translate="yes" xml:space="preserve">
+          <source>Convert</source>
+          <target state="translated">変換</target>
+        </trans-unit>
       </group>
     </body>
   </file>

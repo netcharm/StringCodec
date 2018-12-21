@@ -960,4 +960,7 @@
   <data name="optLangGeneral.Text" xml:space="preserve">
     <value>常见语言</value>
   </data>
+  <data name="btnCaseConvert.Label" xml:space="preserve">
+    <value>转换</value>
+  </data>
 </root>

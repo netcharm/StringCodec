@@ -1065,4 +1065,7 @@
   <data name="optLangGeneral.Text" xml:space="preserve">
     <value>General Languages</value>
   </data>
+  <data name="btnCaseConvert.Label" xml:space="preserve">
+    <value>Convert</value>
+  </data>
 </root>

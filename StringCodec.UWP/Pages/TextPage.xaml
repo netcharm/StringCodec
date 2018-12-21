@@ -37,30 +37,6 @@
                             <ToggleMenuFlyoutItem x:Name="optMorseAbbr" x:Uid="optMorseAbbr" Text="Morse Code Expand Abbr." Click="Codec_Click"/>
                         </MenuFlyoutSubItem>
                         <MenuFlyoutSeparator />
-                        <MenuFlyoutItem x:Name="optReverse" x:Uid="optReverse" Text="Reverse" Click="Case_Click"/>
-                        <MenuFlyoutSubItem x:Name="optCase" x:Uid="optCase" Text="Case Convert">
-                            <MenuFlyoutItem x:Name="optCaseUp" x:Uid="optCaseUp" Text="Upper Case" Click="Case_Click"/>
-                            <MenuFlyoutItem x:Name="optCaseLow" x:Uid="optCaseLow" Text="Lower Case" Click="Case_Click"/>
-                            <MenuFlyoutItem x:Name="optCaseCapsWord" x:Uid="optCaseCapsWord" Text="Capitalized Word" Click="Case_Click"/>
-                            <MenuFlyoutItem x:Name="optCaseCapsSentence" x:Uid="optCaseCapsSentence" Text="Capitalized Sentence" Click="Case_Click"/>
-                            <MenuFlyoutSeparator />
-                            <MenuFlyoutItem x:Name="optCaseZhUpNum" x:Uid="optCaseZhUpNum" Text="Chinese Upper Number" Click="Case_Click"/>
-                            <MenuFlyoutItem x:Name="optCaseZhLowNum" x:Uid="optCaseZhLowNum" Text="Chinese Lower Number" Click="Case_Click" Visibility="Collapsed" />
-                            <MenuFlyoutItem x:Name="optCaseZhUpRmbNum" x:Uid="optCaseZhUpRmbNum" Text="Chinese Upper Currency" Click="Case_Click"/>
-                            <MenuFlyoutItem x:Name="optCaseZhLowRmbNum" x:Uid="optCaseZhLowRmbNum" Text="Chinese Lower Currency" Click="Case_Click" Visibility="Collapsed" />
-                            <MenuFlyoutItem x:Name="optCaseZhHalfNum" x:Uid="optCaseZhHalfNum" Text="Chinese Half-Width Number/Symbol" Click="Case_Click"/>
-                            <MenuFlyoutItem x:Name="optCaseZhFullNum" x:Uid="optCaseZhFullNum" Text="Chinese Full-Width Number/Symbol" Click="Case_Click"/>
-                            <MenuFlyoutItem x:Name="optCaseZhS2T" x:Uid="optCaseZhS2T" Text="Chinese Simplified to Traditional" Click="Case_Click"/>
-                            <MenuFlyoutItem x:Name="optCaseZhT2S" x:Uid="optCaseZhT2S" Text="Chinese Traditional To Simplified" Click="Case_Click"/>
-                            <MenuFlyoutSeparator />
-                            <MenuFlyoutItem x:Name="optCaseJaUpNum" x:Uid="optCaseJaUpNum" Text="Japaness Upper Number" Click="Case_Click"/>
-                            <MenuFlyoutItem x:Name="optCaseJaLowNum" x:Uid="optCaseJaLowNum" Text="Japaness Lower Number" Click="Case_Click" Visibility="Collapsed" />
-                            <MenuFlyoutItem x:Name="optCaseJaUpRmbNum" x:Uid="optCaseJaUpRmbNum" Text="Japaness Upper Currency" Click="Case_Click"/>
-                            <MenuFlyoutItem x:Name="optCaseJaUpKana" x:Uid="optCaseJaUpKana" Text="Japaness Upper Katakana" Click="Case_Click"/>
-                            <MenuFlyoutItem x:Name="optCaseJaLowKana" x:Uid="optCaseJaLowKana" Text="Japaness Lower Katakana" Click="Case_Click"/>
-                            <MenuFlyoutItem x:Name="optCaseJaHalfKana" x:Uid="optCaseJaHalfKana" Text="Japaness Half-Width Katakana" Click="Case_Click"/>
-                            <MenuFlyoutItem x:Name="optCaseJaFullKana" x:Uid="optCaseJaFullKana" Text="Japaness Full-Width Katakana" Click="Case_Click"/>
-                        </MenuFlyoutSubItem>
                         <ToggleMenuFlyoutItem x:Name="optLineBreak" x:Uid="optLineBreak" Text="Line Break" Click="OptLang_Click"/>
                     </MenuFlyout>
                 </AppBarButton.Flyout>
@@ -143,6 +119,58 @@
             <AppBarButton x:Name="btnDecode" x:Uid="btnDecode" Label="Decode" Icon="Read" VerticalAlignment="Center" Click="AppBarButton_Click" >
                 <AppBarButton.KeyboardAccelerators>
                     <KeyboardAccelerator Key="F3" />
+                </AppBarButton.KeyboardAccelerators>
+            </AppBarButton>
+            <AppBarButton x:Name="btnCaseConvert" x:Uid="btnCaseConvert" Label="Convert" VerticalAlignment="Center" >
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xE117;" FontFamily="Segoe MDL2 Assets"/>
+                </AppBarButton.Icon>
+                <AppBarButton.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem x:Name="optReverse" x:Uid="optReverse" Text="Reverse" Click="Case_Click"/>
+                        <MenuFlyoutSubItem x:Name="optCase" x:Uid="optCase" Text="Case Convert">
+                            <MenuFlyoutItem x:Name="optCaseUp" x:Uid="optCaseUp" Text="Upper Case" Click="Case_Click">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE84B;" FontFamily="Segoe MDL2 Assets"/>
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem x:Name="optCaseLow" x:Uid="optCaseLow" Text="Lower Case" Click="Case_Click">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE84A;" FontFamily="Segoe MDL2 Assets"/>
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem x:Name="optCaseCapsWord" x:Uid="optCaseCapsWord" Text="Capitalized Word" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optCaseCapsSentence" x:Uid="optCaseCapsSentence" Text="Capitalized Sentence" Click="Case_Click"/>
+                            <MenuFlyoutSeparator />
+                            <MenuFlyoutItem x:Name="optCaseZhUpNum" x:Uid="optCaseZhUpNum" Text="Chinese Upper Number" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optCaseZhLowNum" x:Uid="optCaseZhLowNum" Text="Chinese Lower Number" Click="Case_Click" Visibility="Collapsed" />
+                            <MenuFlyoutItem x:Name="optCaseZhUpRmbNum" x:Uid="optCaseZhUpRmbNum" Text="Chinese Upper Currency" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optCaseZhLowRmbNum" x:Uid="optCaseZhLowRmbNum" Text="Chinese Lower Currency" Click="Case_Click" Visibility="Collapsed" />
+                            <MenuFlyoutItem x:Name="optCaseZhHalfNum" x:Uid="optCaseZhHalfNum" Text="Chinese Half-Width Number/Symbol" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optCaseZhFullNum" x:Uid="optCaseZhFullNum" Text="Chinese Full-Width Number/Symbol" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optCaseZhS2T" x:Uid="optCaseZhS2T" Text="Chinese Simplified to Traditional" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optCaseZhT2S" x:Uid="optCaseZhT2S" Text="Chinese Traditional To Simplified" Click="Case_Click"/>
+                            <MenuFlyoutSeparator />
+                            <MenuFlyoutItem x:Name="optCaseJaUpNum" x:Uid="optCaseJaUpNum" Text="Japaness Upper Number" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optCaseJaLowNum" x:Uid="optCaseJaLowNum" Text="Japaness Lower Number" Click="Case_Click" Visibility="Collapsed" />
+                            <MenuFlyoutItem x:Name="optCaseJaUpRmbNum" x:Uid="optCaseJaUpRmbNum" Text="Japaness Upper Currency" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optCaseJaUpKana" x:Uid="optCaseJaUpKana" Text="Japaness Upper Katakana" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optCaseJaLowKana" x:Uid="optCaseJaLowKana" Text="Japaness Lower Katakana" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optCaseJaHalfKana" x:Uid="optCaseJaHalfKana" Text="Japaness Half-Width Katakana" Click="Case_Click">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE988;" FontFamily="Segoe MDL2 Assets"/>
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem x:Name="optCaseJaFullKana" x:Uid="optCaseJaFullKana" Text="Japaness Full-Width Katakana" Click="Case_Click">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE987;" FontFamily="Segoe MDL2 Assets"/>
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                        </MenuFlyoutSubItem>
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="F4" />
                 </AppBarButton.KeyboardAccelerators>
             </AppBarButton>
             <AppBarSeparator />
