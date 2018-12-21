@@ -115,7 +115,7 @@ namespace StringCodec.UWP.Pages
             return (result);
         }
 
-        private async void ConvertFrom(TreeViewNode node, Encoding enc)
+        private void ConvertFrom(TreeViewNode node, Encoding enc)
         {
             if (node.HasChildren)
             {
@@ -124,7 +124,7 @@ namespace StringCodec.UWP.Pages
                     ConvertFrom(child, enc);
                 }
             }
-            node.Content = await flist[node].Name.ConvertFrom(CURRENT_SRCENC, true);
+            node.Content = flist[node].Name.ConvertFrom(CURRENT_SRCENC, true);
         }
 
         private void ConvertFrom(TreeView tree, Encoding enc)
@@ -183,7 +183,7 @@ namespace StringCodec.UWP.Pages
             if (item is StorageFolder)
             {
                 var folder = item as StorageFolder;
-                var root = new MyTreeViewNode() { Content = await folder.Name.ConvertFrom(CURRENT_SRCENC, true) };
+                var root = new MyTreeViewNode() { Content = folder.Name.ConvertFrom(CURRENT_SRCENC, true) };
                 root.Icon = IconFolder;
                 root.HasUnrealizedChildren = true;
                 flist.Add(root, folder);
@@ -199,7 +199,7 @@ namespace StringCodec.UWP.Pages
                 var sfiles = await queryFiles.GetFilesAsync();
                 foreach (var file in sfiles)
                 {
-                    var fnode = new MyTreeViewNode() { Content = await file.Name.ConvertFrom(CURRENT_SRCENC, true) };
+                    var fnode = new MyTreeViewNode() { Content = file.Name.ConvertFrom(CURRENT_SRCENC, true) };
                     fnode.Icon = IconFile;
                     root.Children.Add(fnode);
                     flist.Add(fnode, file);
@@ -210,7 +210,7 @@ namespace StringCodec.UWP.Pages
             else if (item is StorageFile)
             {
                 var file = item as StorageFile;
-                var fnode = new MyTreeViewNode() { Content = await file.Name.ConvertFrom(CURRENT_SRCENC, true) };
+                var fnode = new MyTreeViewNode() { Content = file.Name.ConvertFrom(CURRENT_SRCENC, true) };
                 fnode.Icon = IconFile;
                 node.Children.Add(fnode);
                 flist.Add(fnode, file);
@@ -227,7 +227,7 @@ namespace StringCodec.UWP.Pages
             if (item is StorageFolder)
             {
                 var folder = item as StorageFolder;
-                var root = new MyTreeViewNode() { Content = await folder.Name.ConvertFrom(CURRENT_SRCENC, true) };
+                var root = new MyTreeViewNode() { Content = folder.Name.ConvertFrom(CURRENT_SRCENC, true) };
                 root.Icon = IconFolder;
                 root.HasUnrealizedChildren = true;
                 root.IsExpanded = true;
@@ -244,7 +244,7 @@ namespace StringCodec.UWP.Pages
                 var sfiles = await queryFiles.GetFilesAsync();
                 foreach (var file in sfiles)
                 {
-                    var fnode = new MyTreeViewNode() { Content = await file.Name.ConvertFrom(CURRENT_SRCENC, true) };
+                    var fnode = new MyTreeViewNode() { Content = file.Name.ConvertFrom(CURRENT_SRCENC, true) };
                     fnode.Icon = IconFile;
                     root.Children.Add(fnode);
                     flist.Add(fnode, file);
@@ -255,7 +255,7 @@ namespace StringCodec.UWP.Pages
             else if (item is StorageFile)
             {
                 var file = item as StorageFile;
-                var fnode = new MyTreeViewNode() { Content = await file.Name.ConvertFrom(CURRENT_SRCENC, true) };
+                var fnode = new MyTreeViewNode() { Content = file.Name.ConvertFrom(CURRENT_SRCENC, true) };
                 fnode.Icon = IconFile;
                 tree.RootNodes.Add(fnode);
                 flist.Add(fnode, file);
@@ -298,7 +298,7 @@ namespace StringCodec.UWP.Pages
                     if (node.HasChildren) node.Children.Clear();
                     foreach (var sItem in sItems)
                     {
-                        MyTreeViewNode fNode = filenode.ContainsKey(sItem.Path) ? filenode[sItem.Path] : new MyTreeViewNode() { Content = await sItem.Name.ConvertFrom(CURRENT_SRCENC, true) };
+                        MyTreeViewNode fNode = filenode.ContainsKey(sItem.Path) ? filenode[sItem.Path] : new MyTreeViewNode() { Content = sItem.Name.ConvertFrom(CURRENT_SRCENC, true) };
 
                         if (sItem is StorageFolder)
                         {
@@ -325,10 +325,10 @@ namespace StringCodec.UWP.Pages
             return (result);
         }
 
-        private async void FillTree(TreeView tree, IStorageItem item)
+        private void FillTree(TreeView tree, IStorageItem item)
         {
             //var fNode = new MyTreeViewNode() { Content = item.Name.ConvertFrom(CURRENT_SRCENC, true) };
-            MyTreeViewNode fNode = filenode.ContainsKey(item.Path) ? filenode[item.Path] : new MyTreeViewNode() { Content = await item.Name.ConvertFrom(CURRENT_SRCENC, true) };
+            MyTreeViewNode fNode = filenode.ContainsKey(item.Path) ? filenode[item.Path] : new MyTreeViewNode() { Content = item.Name.ConvertFrom(CURRENT_SRCENC, true) };
             if (item is StorageFolder)
             {
                 fNode.Icon = IconFolder;
@@ -391,9 +391,9 @@ namespace StringCodec.UWP.Pages
                         var f = flist[target];
 
                         if (CURRENT_RENAME_REPLACE)
-                            await f.RenameAsync(await f.Name.ConvertFrom(CURRENT_SRCENC, true), NameCollisionOption.ReplaceExisting);
+                            await f.RenameAsync(f.Name.ConvertFrom(CURRENT_SRCENC, true), NameCollisionOption.ReplaceExisting);
                         else
-                            await f.RenameAsync(await f.Name.ConvertFrom(CURRENT_SRCENC, true), NameCollisionOption.GenerateUniqueName);
+                            await f.RenameAsync(f.Name.ConvertFrom(CURRENT_SRCENC, true), NameCollisionOption.GenerateUniqueName);
 
                         target.Content = f.Name;
                         if (target.HasChildren)
@@ -410,7 +410,7 @@ namespace StringCodec.UWP.Pages
                         {
                             var f = flist[cnode];
 
-                            var fn = await f.Name.ConvertFrom(CURRENT_SRCENC, true);
+                            var fn = f.Name.ConvertFrom(CURRENT_SRCENC, true);
                             if(!fn.Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))
                             {
                                 if (CURRENT_RENAME_REPLACE)
@@ -500,7 +500,7 @@ namespace StringCodec.UWP.Pages
                 optSrc1250, optSrc1251, optSrc1252, optSrc1253, optSrc1254, optSrc1255, optSrc1256, optSrc1257, optSrc1258,
                 optSrcEn, optSrcFr, optSrcDe, optSrcEs, optSrcPt, optSrcNl, optSrcRu, optSrcIt, optSrcGr, optSrcDa, optSrcCz,
                 optSrcThai,
-                optSrcGBK, optSrcBIG5, optSrcJIS, optSrcKorean,
+                optSrcGBK, optSrcBIG5, optSrcJIS, optSrcKorean, optSrcEUCJP, optSrcEUCKR,
                 optSrcUnicode, optSrcUTF8
             };
             foreach (var lang in optsSrc)
@@ -522,7 +522,7 @@ namespace StringCodec.UWP.Pages
                 optDst1250, optDst1251, optDst1252, optDst1253, optDst1254, optDst1255, optDst1256, optDst1257, optDst1258,
                 optDstEn, optDstFr, optDstDe, optDstEs, optDstPt, optDstNl, optDstRu, optDstIt, optDstGr, optDstDa, optDstCz,
                 optDstThai,
-                optDstGBK, optDstBIG5, optDstJIS, optDstKorean,
+                optDstGBK, optDstBIG5, optDstJIS, optDstKorean, optDstEUCJP, optDstEUCKR,
                 optDstUnicode, optDstUTF8
             };
             foreach (var lang in optsDst)
@@ -554,14 +554,14 @@ namespace StringCodec.UWP.Pages
             }
         }
 
-        private async void OptSrc_Click(object sender, RoutedEventArgs e)
+        private void OptSrc_Click(object sender, RoutedEventArgs e)
         {
             ToggleMenuFlyoutItem[] btns = new ToggleMenuFlyoutItem[] { optSrcAuto,
                 optSrcAscii,
                 optSrc1250, optSrc1251, optSrc1252, optSrc1253, optSrc1254, optSrc1255, optSrc1256, optSrc1257, optSrc1258,
                 optSrcEn, optSrcFr, optSrcDe, optSrcEs, optSrcPt, optSrcNl, optSrcRu, optSrcIt, optSrcGr, optSrcDa, optSrcCz,
                 optSrcThai,
-                optSrcGBK, optSrcBIG5, optSrcJIS, optSrcKorean,
+                optSrcGBK, optSrcBIG5, optSrcJIS, optSrcKorean, optSrcEUCJP, optSrcEUCKR,
                 optSrcUnicode, optSrcUTF8
             };
             foreach (var btn in btns)
@@ -576,7 +576,7 @@ namespace StringCodec.UWP.Pages
 
             ConvertFrom(TreeFiles, CURRENT_SRCENC);
             if (fcontent != null && fcontent is byte[])
-                edSrc.Text = await fcontent.ToStringAsync(CURRENT_SRCENC);
+                edSrc.Text = fcontent.ToString(CURRENT_SRCENC);
         }
 
         private void OptDst_Click(object sender, RoutedEventArgs e)
@@ -586,7 +586,7 @@ namespace StringCodec.UWP.Pages
                 optDst1250, optDst1251, optDst1252, optDst1253, optDst1254, optDst1255, optDst1256, optDst1257, optDst1258,
                 optDstEn, optDstFr, optDstDe, optDstEs, optDstPt, optDstNl, optDstRu, optDstIt, optDstGr, optDstDa, optDstCz,
                 optDstThai,
-                optDstGBK, optDstBIG5, optDstJIS, optDstKorean,
+                optDstGBK, optDstBIG5, optDstJIS, optDstKorean, optDstEUCJP, optDstEUCKR,
                 optDstUnicode, optDstUTF8
             };
             foreach (var btn in btns)
@@ -699,7 +699,7 @@ namespace StringCodec.UWP.Pages
                                 reader.ReadBytes(fileContent);
                                 fcontent = (byte[])fileContent.Clone();
                                 if (fcontent != null && fcontent is byte[])
-                                    edSrc.Text = await fcontent.ToStringAsync(CURRENT_SRCENC);
+                                    edSrc.Text = fcontent.ToString(CURRENT_SRCENC);
                                 args.Handled = true;
                                 UNKNOWNFILE = false;
                             }

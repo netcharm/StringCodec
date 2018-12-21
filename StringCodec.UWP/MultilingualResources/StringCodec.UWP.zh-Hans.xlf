@@ -1258,6 +1258,18 @@
           <source>Reverse</source>
           <target state="translated">逆向文本</target>
         </trans-unit>
+        <trans-unit id="optLangEUCJP.Text" translate="yes" xml:space="preserve">
+          <source>Japanese(EUC)</source>
+          <target state="translated">日语(EUC)</target>
+        </trans-unit>
+        <trans-unit id="optLangEUCKR.Text" translate="yes" xml:space="preserve">
+          <source>Korean(EUC)</source>
+          <target state="translated">朝鲜语(EUC)</target>
+        </trans-unit>
+        <trans-unit id="optLangGeneral.Text" translate="yes" xml:space="preserve">
+          <source>General Languages</source>
+          <target state="translated">常见语言</target>
+        </trans-unit>
       </group>
     </body>
   </file>

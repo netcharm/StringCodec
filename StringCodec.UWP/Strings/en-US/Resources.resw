@@ -1056,4 +1056,13 @@
   <data name="optReverse.Text" xml:space="preserve">
     <value>Reverse</value>
   </data>
+  <data name="optLangEUCJP.Text" xml:space="preserve">
+    <value>Japanese(EUC)</value>
+  </data>
+  <data name="optLangEUCKR.Text" xml:space="preserve">
+    <value>Korean(EUC)</value>
+  </data>
+  <data name="optLangGeneral.Text" xml:space="preserve">
+    <value>General Languages</value>
+  </data>
 </root>

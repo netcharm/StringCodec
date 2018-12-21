@@ -18,29 +18,34 @@ namespace StringCodec.UWP.Common
 {
     static public class TextCodecs
     {
-        public static string[] LINEBREAK = new string[]{ "\r\n", "\n\r", "\r", "\n" };
+        public static string[] LINEBREAK = new string[]{ "\r\n", "\n\r", "\r", "\n", Environment.NewLine };
 
         public enum CODEC { URL, HTML, BASE64, UUE, XXE, RAW, QUOTED, THUNDER, FLASHGET, UUID, GUID, MORSE, MORSEABBR };
 
         #region Basic Encoder/Decoder
         static public class BASE64
         {
-            static public async Task<string> Encode(string text, bool LineBreak = false)
+            static public async Task<string> Encode(string text, Encoding enc, bool LineBreak = false)
             {
                 string result = string.Empty;
                 try
                 {
-                    byte[] arr = Encoding.Default.GetBytes(text);
+                    byte[] arr = enc.GetBytes(text);
                     var opt = Base64FormattingOptions.None;
                     if (LineBreak) opt = Base64FormattingOptions.InsertLineBreaks;
                     result = Convert.ToBase64String(arr, opt);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     await new MessageDialog($"{"BASE64ERROR".T()}\n{ex.Message}", "ERROR".T()).ShowAsync();
                 }
 
                 return (result);
+            }
+
+            static public async Task<string> Encode(string text, bool LineBreak = false)
+            {
+                return (await Encode(text, Encoding.Default, LineBreak));
             }
 
             static public async Task<string> Decode(string text, Encoding enc)
@@ -64,7 +69,7 @@ namespace StringCodec.UWP.Common
 
         static public class URL
         {
-            static public string Encode(string text, bool LineBreak = false)
+            static public string Encode(string text, Encoding enc, bool LineBreak = false)
             {
                 string result = string.Empty;
 
@@ -114,6 +119,11 @@ namespace StringCodec.UWP.Common
                 }
 
                 return (result);
+            }
+
+            static public string Encode(string text, bool LineBreak = false)
+            {
+                return (Encode(text, Encoding.Default, LineBreak));
             }
 
             static public string Decode(string text, Encoding enc)
@@ -193,9 +203,9 @@ namespace StringCodec.UWP.Common
                 return (html);
             }
 
-            static public async Task<string> Encode(string text)
+            static public async Task<string> Encode(string text, Encoding enc, bool LineBreak = false)
             {
-                string result = text;
+                string result = text.ConvertTo(enc);
 
                 try
                 {
@@ -210,6 +220,11 @@ namespace StringCodec.UWP.Common
                 return (result);
             }
 
+            static public async Task<string> Encode(string text, bool LineBreak = false)
+            {
+                return (await Encode(text, Encoding.Default, LineBreak));
+            }
+
             static public async Task<string> Decode(string text, Encoding enc)
             {
                 string result = text;
@@ -218,7 +233,7 @@ namespace StringCodec.UWP.Common
                 {
                     //result = System.Web.HttpUtility.HtmlDecode(result);
                     result = EntityToUnicode(System.Net.WebUtility.HtmlDecode(result));
-                    result = await result.ConvertFrom(enc);
+                    result = result.ConvertFrom(enc);
                 }
                 catch(Exception ex)
                 {
@@ -231,13 +246,18 @@ namespace StringCodec.UWP.Common
 
         static public class UUE
         {
-            static public string Encode(string text, bool LineBreak = false)
+            static public string Encode(string text, Encoding enc, bool LineBreak = false)
             {
                 string result = string.Empty;
 
                 result = Uri.EscapeDataString(text);
 
                 return (result);
+            }
+
+            static public string Encode(string text, bool LineBreak = false)
+            {
+                return (Encode(text, Encoding.Default, LineBreak));
             }
 
             static public string Decode(string text, Encoding enc)
@@ -253,13 +273,18 @@ namespace StringCodec.UWP.Common
 
         static public class XXE
         {
-            static public string Encode(string text, bool LineBreak = false)
+            static public string Encode(string text, Encoding enc, bool LineBreak = false)
             {
                 string result = string.Empty;
 
                 result = Uri.EscapeDataString(text);
 
                 return (result);
+            }
+
+            static public string Encode(string text, bool LineBreak = false)
+            {
+                return (Encode(text, Encoding.Default, LineBreak));
             }
 
             static public string Decode(string text, Encoding enc)
@@ -275,13 +300,18 @@ namespace StringCodec.UWP.Common
 
         static public class RAW
         {
-            static public string Encode(string text, bool LineBreak = false)
+            static public string Encode(string text, Encoding enc, bool LineBreak = false)
             {
                 string result = string.Empty;
 
                 result = Uri.EscapeDataString(text).Replace("%", "\\x");
 
                 return (result);
+            }
+
+            static public string Encode(string text, bool LineBreak = false)
+            {
+                return (Encode(text, Encoding.Default, LineBreak));
             }
 
             static public string Decode(string text, Encoding enc)
@@ -297,13 +327,18 @@ namespace StringCodec.UWP.Common
 
         static public class QUOTED
         {
-            static public string Encode(string text, bool LineBreak = false)
+            static public string Encode(string text, Encoding enc, bool LineBreak = false)
             {
                 string result = string.Empty;
 
-                result = Uri.EscapeDataString(text);
+                result = Uri.EscapeDataString(text.ConvertTo(enc));
 
                 return (result);
+            }
+
+            static public string Encode(string text, bool LineBreak = false)
+            {
+                return (Encode(text, Encoding.Default, LineBreak));
             }
 
             static public string Decode(string text, Encoding enc)
@@ -319,11 +354,16 @@ namespace StringCodec.UWP.Common
 
         static public class THUNDER
         {
-            static public async Task<string> Encode(string text, bool LineBreak = false)
+            static public async Task<string> Encode(string text, Encoding enc, bool LineBreak = false)
             {
                 string result = string.Empty;
-                result = $"thunder://{await BASE64.Encode($"AA{text}ZZ", LineBreak)}";
+                result = $"thunder://{await BASE64.Encode($"AA{text}ZZ", enc, LineBreak)}";
                 return (result);
+            }
+
+            static public async Task<string> Encode(string text, bool LineBreak = false)
+            {
+                return (await Encode(text, Encoding.Default, LineBreak));
             }
 
             static public async Task<string> Decode(string text, Encoding enc)
@@ -339,11 +379,16 @@ namespace StringCodec.UWP.Common
 
         static public class FLASHGET
         {
-            static public async Task<string> Encode(string text, bool LineBreak = false)
+            static public async Task<string> Encode(string text, Encoding enc, bool LineBreak = false)
             {
                 string result = string.Empty;
-                result = $"flashget://{await BASE64.Encode($"[FLASHGET]{text}[FLASHGET]", LineBreak)}";
+                result = $"flashget://{await BASE64.Encode($"[FLASHGET]{text}[FLASHGET]", enc, LineBreak)}";
                 return (result);
+            }
+
+            static public async Task<string> Encode(string text, bool LineBreak = false)
+            {
+                return (await Encode(text, Encoding.Default, LineBreak));
             }
 
             static public async Task<string> Decode(string text, Encoding enc)
@@ -628,7 +673,7 @@ namespace StringCodec.UWP.Common
         #endregion
 
         #region Encoder helper routines
-        static public async Task<string> Encode(string content, CODEC Codec, bool LineBreak = false)
+        static public async Task<string> Encode(string content, CODEC Codec, Encoding enc, bool LineBreak = false)
         {
             string result = string.Empty;
             try
@@ -636,13 +681,13 @@ namespace StringCodec.UWP.Common
                 switch (Codec)
                 {
                     case CODEC.URL:
-                        result = URL.Encode(content);
+                        result = URL.Encode(content, enc);
                         break;
                     case CODEC.HTML:
-                        result = await HTML.Encode(content);
+                        result = await HTML.Encode(content, enc);
                         break;
                     case CODEC.BASE64:
-                        result = await BASE64.Encode(content, LineBreak);
+                        result = await BASE64.Encode(content, enc, LineBreak);
                         break;
                     case CODEC.UUE:
                         result = UUE.Encode(content);
@@ -657,10 +702,10 @@ namespace StringCodec.UWP.Common
                         result = QUOTED.Encode(content);
                         break;
                     case CODEC.THUNDER:
-                        result = await THUNDER.Encode(content);
+                        result = await THUNDER.Encode(content, enc);
                         break;
                     case CODEC.FLASHGET:
-                        result = await FLASHGET.Encode(content);
+                        result = await FLASHGET.Encode(content, enc);
                         break;
                     case CODEC.MORSE:
                     case CODEC.MORSEABBR:
@@ -681,6 +726,12 @@ namespace StringCodec.UWP.Common
                 await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
             }
             return (result);
+        }
+
+        static public async Task<string> Encode(string content, CODEC Codec, bool LineBreak = false)
+        {
+            return (await Encode(content, Codec, Encoding.Default, LineBreak));
+
         }
 
         static public async Task<string> Encode(WriteableBitmap image, string format = ".png", bool prefix = true, bool LineBreak = false)
@@ -888,9 +939,14 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
+        static public async Task<string> Encoder(this string content, CODEC Codec, Encoding enc, bool LineBreak = false)
+        {
+            return (await Encode(content, Codec, enc, LineBreak));
+        }
+
         static public async Task<string> Encoder(this string content, CODEC Codec, bool LineBreak = false)
         {
-            return (await Encode(content, Codec, LineBreak));
+            return (await Encode(content, Codec, Encoding.Default, LineBreak));
         }
 
         static public async Task<string> Encoder(this WriteableBitmap image, string format = ".png", bool prefix = true, bool LineBreak = false)
@@ -1054,7 +1110,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        #region Convert helper routines
+        #region CodePage converters
         public static async Task<string> ToBase64(this WriteableBitmap wb, string format, bool prefix, bool linebreak)
         {
             string result = string.Empty;
@@ -1089,7 +1145,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        public static async Task<string> ConvertTo(this string text, Encoding SrcEnc, Encoding DstEnc)
+        public static string ConvertTo(this string text, Encoding SrcEnc, Encoding DstEnc)
         {
             var result = string.Empty;
 
@@ -1104,12 +1160,12 @@ namespace StringCodec.UWP.Common
             }
             catch (Exception ex)
             {
-                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
+                ex.Message.T().ShowException("ERROR".T());
             }
             return (result);
         }
 
-        public static async Task<string> ConvertTo(this string text, Encoding enc)
+        public static string ConvertTo(this string text, Encoding enc)
         {
             var result = string.Empty;
             try
@@ -1120,10 +1176,170 @@ namespace StringCodec.UWP.Common
             }
             catch (Exception ex)
             {
-                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
+                ex.Message.T().ShowException("ERROR".T());
             }
             return (result);
         }
+
+        public static string ConvertFrom(this string text, Encoding enc, bool IsOEM = false)
+        {
+            var result = string.Empty;
+            try
+            {
+                if (IsOEM)
+                {
+                    int cp = System.Globalization.CultureInfo.InstalledUICulture.TextInfo.OEMCodePage;
+
+                    //// 判断韩语
+                    //if (Regex.IsMatch(text, @"[\uac00-\ud7ff]+"))
+                    //{
+                    //    cp = 949;
+                    //}
+                    //// 判断日语
+                    //else if (Regex.IsMatch(text, @"[\u0800-\u4e00]+"))
+                    //{
+                    //    cp = 932;
+                    //}
+                    //// 判断中文
+                    //else if (Regex.IsMatch(text, @"[\u4e00-\u9fa5]+")) // 如果是中文
+                    //{
+                    //    cp = 936;
+                    //}
+                    var cpc = enc.CodePage;
+                    string[] subtexts = new string[]{ text };
+                    if (cpc == 932 || cpc == 936 || cpc == 950 || cpc == 949 || cpc == 65001)
+                        subtexts = text.Split(new char[] { '\u30FB', '\uFF65' });
+
+                    List<string> sl = new List<string>();
+                    foreach (var t in subtexts)
+                    {
+                        byte[] arr = null;
+                        var cpEnc = GetTextEncoder(cp);
+                        arr = cpEnc.GetBytes(t);
+                        //switch (cp)
+                        //{
+                        //    case 936:
+                        //        arr = Encoding.GetEncoding("GBK").GetBytes(t);
+                        //        break;
+                        //    case 950:
+                        //        arr = Encoding.GetEncoding("BIG5").GetBytes(t);
+                        //        break;
+                        //    case 932:
+                        //        arr = Encoding.GetEncoding("Shift-JIS").GetBytes(t);
+                        //        break;
+                        //    case 949:
+                        //        arr = Encoding.GetEncoding("Korean").GetBytes(t);
+                        //        break;
+                        //    case 1200:
+                        //        arr = Encoding.Unicode.GetBytes(t);
+                        //        break;
+                        //    case 1201:
+                        //        arr = Encoding.BigEndianUnicode.GetBytes(t);
+                        //        break;
+                        //    case 1250:
+                        //        arr = GetTextEncoder("1250").GetBytes(t);
+                        //        break;
+                        //    case 1251:
+                        //        arr = GetTextEncoder("1251").GetBytes(t);
+                        //        break;
+                        //    case 1252:
+                        //        arr = GetTextEncoder("1252").GetBytes(t);
+                        //        break;
+                        //    case 1253:
+                        //        arr = GetTextEncoder("1253").GetBytes(t);
+                        //        break;
+                        //    case 1254:
+                        //        arr = GetTextEncoder("1254").GetBytes(t);
+                        //        break;
+                        //    case 1255:
+                        //        arr = GetTextEncoder("1255").GetBytes(t);
+                        //        break;
+                        //    case 1256:
+                        //        arr = GetTextEncoder("1256").GetBytes(t);
+                        //        break;
+                        //    case 1257:
+                        //        arr = GetTextEncoder("1257").GetBytes(t);
+                        //        break;
+                        //    case 1258:
+                        //        arr = GetTextEncoder("1258").GetBytes(t);
+                        //        break;
+                        //    case 65000:
+                        //        arr = Encoding.UTF7.GetBytes(t);
+                        //        break;
+                        //    case 65001:
+                        //        arr = Encoding.UTF8.GetBytes(t);
+                        //        break;
+                        //    default:
+                        //        arr = Encoding.ASCII.GetBytes(t);
+                        //        break;
+                        //}
+                        if (arr != null && arr.Length > 0)
+                        {
+                            //if(enc == Encoding.Default)
+                            if (enc.CodePage == Encoding.Default.CodePage)
+                                sl.Add(GetTextEncoder(cp).GetString(arr));
+                            else
+                                sl.Add(enc.GetString(arr));
+                        }
+                    }
+                    result = string.Join("\u30FB", sl);
+                }
+                else
+                {
+                    byte[] arr = enc.GetBytes(text);
+                    if (arr != null && arr.Length > 0)
+                        result = Encoding.Default.GetString(arr);
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.Message.T().ShowException("ERROR".T());
+            }
+            return (result);
+        }
+
+        public static string ToString(this byte[] array, Encoding enc)
+        {
+            var result = string.Empty;
+            try
+            {
+                if (array != null && array.Length > 0)
+                {
+                    // UTF-16
+                    if (array[0] == 0xFF && array[1] == 0xFE)
+                        result = Encoding.Unicode.GetString(array.Skip(2).ToArray());
+                    // UTF-16 Big-Endian
+                    else if (array[0] == 0xFE && array[1] == 0xFF)
+                        result = Encoding.BigEndianUnicode.GetString(array.Skip(2).ToArray());
+                    // UTF-8
+                    else if (array[0] == 0xEF && array[1] == 0xBB && array[2] == 0xBF)
+                        result = Encoding.UTF8.GetString(array.Skip(3).ToArray());
+                    // UTF-32
+                    else if (array[0] == 0xFF && array[1] == 0xFE && array[2] == 0x00 && array[3] == 0x00)
+                        result = Encoding.UTF32.GetString(array.Skip(4).ToArray());
+                    // UTF-32 Big-Endian
+                    else if (array[0] == 0x00 && array[1] == 0x00 && array[2] == 0xFE && array[3] == 0xFF)
+                        result = Encoding.GetEncoding("utf-32BE").GetString(array.Skip(4).ToArray());
+                    // UTF-7
+                    else if (array[0] == 0x2B && array[1] == 0x2F && array[2] == 0x76 && (array[2] == 0x38 || array[2] == 0x39 || array[2] == 0x2B || array[2] == 0x2F))
+                        result = Encoding.UTF7.GetString(array.Skip(4).ToArray());
+                    // UTF-1
+                    //else if (array[0] == 0xF7 && array[1] == 0x64 && array[2] == 0x4C)
+                    //    result = Encoding.GetEncoding("UTF-1").GetString(array.Skip(3).ToArray());
+                    // GB-18030
+                    else if (array[0] == 0x84 && array[1] == 0x31 && array[2] == 0x95 && array[3] == 0x33)
+                        result = Encoding.GetEncoding("GB18030").GetString(array.Skip(4).ToArray());
+                    else
+                        result = enc.GetString(array);
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.Message.T().ShowException("ERROR".T());
+            }
+            return (result);
+        }
+        #endregion
 
         #region Latin case converter
         public static string Upper(this string text, System.Globalization.CultureInfo enc = null)
@@ -1729,166 +1945,6 @@ namespace StringCodec.UWP.Common
         }
         #endregion
 
-        public static async Task<string> ConvertFrom(this string text, Encoding enc, bool IsOEM = false)
-        {
-            var result = string.Empty;
-            try
-            {
-                if (IsOEM)
-                {
-                    int cp = System.Globalization.CultureInfo.InstalledUICulture.TextInfo.OEMCodePage;
-
-                    //// 判断韩语
-                    //if (Regex.IsMatch(text, @"[\uac00-\ud7ff]+"))
-                    //{
-                    //    cp = 949;
-                    //}
-                    //// 判断日语
-                    //else if (Regex.IsMatch(text, @"[\u0800-\u4e00]+"))
-                    //{
-                    //    cp = 932;
-                    //}
-                    //// 判断中文
-                    //else if (Regex.IsMatch(text, @"[\u4e00-\u9fa5]+")) // 如果是中文
-                    //{
-                    //    cp = 936;
-                    //}
-                    var cpc = enc.CodePage;
-                    string[] subtexts = new string[]{ text };
-                    if (cpc == 932 || cpc == 936 || cpc == 950 || cpc == 949 || cpc == 65001)
-                        subtexts = text.Split(new char[] { '\u30FB', '\uFF65' });
-
-                    List<string> sl = new List<string>();
-                    foreach (var t in subtexts)
-                    {
-                        byte[] arr = null;
-                        var cpEnc = GetTextEncoder(cp);
-                        arr = cpEnc.GetBytes(t);
-                        //switch (cp)
-                        //{
-                        //    case 936:
-                        //        arr = Encoding.GetEncoding("GBK").GetBytes(t);
-                        //        break;
-                        //    case 950:
-                        //        arr = Encoding.GetEncoding("BIG5").GetBytes(t);
-                        //        break;
-                        //    case 932:
-                        //        arr = Encoding.GetEncoding("Shift-JIS").GetBytes(t);
-                        //        break;
-                        //    case 949:
-                        //        arr = Encoding.GetEncoding("Korean").GetBytes(t);
-                        //        break;
-                        //    case 1200:
-                        //        arr = Encoding.Unicode.GetBytes(t);
-                        //        break;
-                        //    case 1201:
-                        //        arr = Encoding.BigEndianUnicode.GetBytes(t);
-                        //        break;
-                        //    case 1250:
-                        //        arr = GetTextEncoder("1250").GetBytes(t);
-                        //        break;
-                        //    case 1251:
-                        //        arr = GetTextEncoder("1251").GetBytes(t);
-                        //        break;
-                        //    case 1252:
-                        //        arr = GetTextEncoder("1252").GetBytes(t);
-                        //        break;
-                        //    case 1253:
-                        //        arr = GetTextEncoder("1253").GetBytes(t);
-                        //        break;
-                        //    case 1254:
-                        //        arr = GetTextEncoder("1254").GetBytes(t);
-                        //        break;
-                        //    case 1255:
-                        //        arr = GetTextEncoder("1255").GetBytes(t);
-                        //        break;
-                        //    case 1256:
-                        //        arr = GetTextEncoder("1256").GetBytes(t);
-                        //        break;
-                        //    case 1257:
-                        //        arr = GetTextEncoder("1257").GetBytes(t);
-                        //        break;
-                        //    case 1258:
-                        //        arr = GetTextEncoder("1258").GetBytes(t);
-                        //        break;
-                        //    case 65000:
-                        //        arr = Encoding.UTF7.GetBytes(t);
-                        //        break;
-                        //    case 65001:
-                        //        arr = Encoding.UTF8.GetBytes(t);
-                        //        break;
-                        //    default:
-                        //        arr = Encoding.ASCII.GetBytes(t);
-                        //        break;
-                        //}
-                        if (arr != null && arr.Length > 0)
-                        {
-                            //if(enc == Encoding.Default)
-                            if (enc.CodePage == Encoding.Default.CodePage)
-                                sl.Add(GetTextEncoder(cp).GetString(arr));
-                            else
-                                sl.Add(enc.GetString(arr));
-                        }                            
-                    }
-                    result = string.Join("\u30FB", sl);
-                }
-                else
-                {
-                    byte[] arr = enc.GetBytes(text);
-                    if (arr != null && arr.Length > 0)
-                        result = Encoding.Default.GetString(arr);
-                }
-            }
-            catch (Exception ex)
-            {
-                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
-            }
-            return (result);
-        }
-
-        public static async Task<string> ToStringAsync(this byte[] array, Encoding enc)
-        {
-            var result = string.Empty;
-            try
-            {
-                if (array != null && array.Length > 0)
-                {
-                    // UTF-16
-                    if (array[0] == 0xFF && array[1] == 0xFE)
-                        result = Encoding.Unicode.GetString(array.Skip(2).ToArray());
-                    // UTF-16 Big-Endian
-                    else if (array[0] == 0xFE && array[1] == 0xFF)
-                        result = Encoding.BigEndianUnicode.GetString(array.Skip(2).ToArray());
-                    // UTF-8
-                    else if (array[0] == 0xEF && array[1] == 0xBB && array[2] == 0xBF)
-                        result = Encoding.UTF8.GetString(array.Skip(3).ToArray());
-                    // UTF-32
-                    else if (array[0] == 0xFF && array[1] == 0xFE && array[2] == 0x00 && array[3] == 0x00)
-                        result = Encoding.UTF32.GetString(array.Skip(4).ToArray());
-                    // UTF-32 Big-Endian
-                    else if (array[0] == 0x00 && array[1] == 0x00 && array[2] == 0xFE && array[3] == 0xFF)
-                        result = Encoding.GetEncoding("utf-32BE").GetString(array.Skip(4).ToArray());
-                    // UTF-7
-                    else if (array[0] == 0x2B && array[1] == 0x2F && array[2] == 0x76 && (array[2] == 0x38 || array[2] == 0x39 || array[2] == 0x2B || array[2] == 0x2F))
-                        result = Encoding.UTF7.GetString(array.Skip(4).ToArray());
-                    // UTF-1
-                    //else if (array[0] == 0xF7 && array[1] == 0x64 && array[2] == 0x4C)
-                    //    result = Encoding.GetEncoding("UTF-1").GetString(array.Skip(3).ToArray());
-                    // GB-18030
-                    else if (array[0] == 0x84 && array[1] == 0x31 && array[2] == 0x95 && array[3] == 0x33)
-                        result = Encoding.GetEncoding("GB18030").GetString(array.Skip(4).ToArray());
-                    else
-                        result = enc.GetString(array);
-                }
-            }
-            catch (Exception ex)
-            {
-                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
-            }
-            return (result);
-        }
-        #endregion
-
         #region System encoder helper routines
         public static byte[] GetBOM(this Encoding enc)
         {
@@ -2063,6 +2119,12 @@ namespace StringCodec.UWP.Common
             else if (string.Equals(ENC_NAME, "Korean", StringComparison.CurrentCultureIgnoreCase) ||
                      string.Equals(ENC_NAME, "949", StringComparison.CurrentCultureIgnoreCase))
                 result = Encoding.GetEncoding("Korean");
+
+            else if (string.Equals(ENC_NAME, "EUCJP", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.GetEncoding("EUC-JP");
+            else if (string.Equals(ENC_NAME, "EUCKR", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.GetEncoding("EUC-KR");
+
 
             else if (string.Equals(ENC_NAME, "1250", StringComparison.CurrentCultureIgnoreCase))
                 result = Encoding.GetEncoding("Windows-1250");

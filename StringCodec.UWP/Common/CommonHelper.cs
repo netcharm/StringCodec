@@ -2370,7 +2370,7 @@ namespace StringCodec.UWP.Common
                     DataReader reader = DataReader.FromBuffer(buffer);
                     byte[] fileContent = new byte[reader.UnconsumedBufferLength];
                     reader.ReadBytes(fileContent);
-                    var fs = await fileContent.ToStringAsync(SrcEnc);
+                    var fs = fileContent.ToString(SrcEnc);
 
                     byte[] BOM = DstEnc.GetBOM();
                     byte[] fa = DstEnc.GetBytes(fs);

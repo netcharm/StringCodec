@@ -63,7 +63,7 @@ namespace StringCodec.UWP.Pages
                 optLangAscii,
                 optLang1250, optLang1251, optLang1252, optLang1253, optLang1254, optLang1255, optLang1256, optLang1257, optLang1258,
                 optLangThai, optLangRu,
-                optLangGBK, optLangBIG5, optLangJIS, optLangKorean,
+                optLangGBK, optLangBIG5, optLangJIS, optLangKorean, optLangEUCJP, optLangEUCKR,
                 optLangUnicode, optLangUTF8
             };
             foreach (var lang in opts)
@@ -94,7 +94,7 @@ namespace StringCodec.UWP.Pages
                 {
                     var data = e.Parameter;
                     edSrc.Text = data.ToString();
-                    edDst.Text = await TextCodecs.Encode(edSrc.Text, CURRENT_CODEC, CURRENT_LINEBREAK);
+                    edDst.Text = await TextCodecs.Encode(edSrc.Text, CURRENT_CODEC, CURRENT_ENC, CURRENT_LINEBREAK);
                 }
             }
         }
@@ -196,7 +196,7 @@ namespace StringCodec.UWP.Pages
                 optLang1250, optLang1251, optLang1252, optLang1253, optLang1254, optLang1255, optLang1256, optLang1257, optLang1258,
                 optLangEn, optLangFr, optLangDe, optLangEs, optLangPt, optLangNl, optLangRu, optLangIt, optLangGr, optLangDa, optLangCz,
                 optLangThai,
-                optLangGBK, optLangBIG5, optLangJIS, optLangKorean,
+                optLangGBK, optLangBIG5, optLangJIS, optLangKorean, optLangEUCJP, optLangEUCKR,
                 optLangUnicode, optLangUTF8
             };
 
@@ -318,7 +318,7 @@ namespace StringCodec.UWP.Pages
                             edDst.Text = sb.ToString();
                         }
                         else
-                            edDst.Text = await TextCodecs.Encode(edSrc.Text, CURRENT_CODEC, CURRENT_LINEBREAK);
+                            edDst.Text = await TextCodecs.Encode(edSrc.Text, CURRENT_CODEC, CURRENT_ENC, CURRENT_LINEBREAK);
                         text_src = edDst.Text;
                         break;
                     case "btnDecode":

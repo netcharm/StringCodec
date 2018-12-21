@@ -951,4 +951,13 @@
   <data name="optReverse.Text" xml:space="preserve">
     <value>逆向文本</value>
   </data>
+  <data name="optLangEUCJP.Text" xml:space="preserve">
+    <value>日語(EUC)</value>
+  </data>
+  <data name="optLangEUCKR.Text" xml:space="preserve">
+    <value>朝鮮語(EUC)</value>
+  </data>
+  <data name="optLangGeneral.Text" xml:space="preserve">
+    <value>常見語言</value>
+  </data>
 </root>
