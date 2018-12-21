@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:uap6="http://schemas.microsoft.com/appx/manifest/uap/windows10/6" IgnorableNamespaces="uap mp uap6">
-  <Identity Name="36388NetCharm.StringCodec" Publisher="CN=A674CCFE-6BD6-4100-AB27-D55D1A0F4678" Version="1.1.4.0" />
+  <Identity Name="36388NetCharm.StringCodec" Publisher="CN=A674CCFE-6BD6-4100-AB27-D55D1A0F4678" Version="1.1.5.0" />
   <mp:PhoneIdentity PhoneProductId="7ea1ee67-5777-4bd0-b6ad-a87a046c6a57" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>ms-resource:AppName</DisplayName>
