@@ -640,7 +640,7 @@
     <value>XXE</value>
   </data>
   <data name="optQuoted.Text" xml:space="preserve">
-    <value>Quoted</value>
+    <value>Quoted Printable</value>
   </data>
   <data name="optRaw.Text" xml:space="preserve">
     <value>RAW</value>

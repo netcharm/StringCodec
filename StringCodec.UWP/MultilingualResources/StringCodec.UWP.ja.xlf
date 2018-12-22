@@ -675,8 +675,8 @@
           <target state="translated" state-qualifier="mt-suggestion">XXE</target>
         </trans-unit>
         <trans-unit id="optQuoted.Text" translate="yes" xml:space="preserve">
-          <source>Quoted</source>
-          <target state="translated">Quoted</target>
+          <source>Quoted Printable</source>
+          <target state="translated">印刷可能文字参照エンコード</target>
         </trans-unit>
         <trans-unit id="optRaw.Text" translate="yes" xml:space="preserve">
           <source>RAW</source>

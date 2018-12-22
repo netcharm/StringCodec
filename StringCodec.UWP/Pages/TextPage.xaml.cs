@@ -56,8 +56,8 @@ namespace StringCodec.UWP.Pages
             optUUE.IsEnabled = false;
             optXXE.Visibility = Visibility.Collapsed;
             optXXE.IsEnabled = false;
-            optQuoted.Visibility = Visibility.Collapsed;
-            optQuoted.IsEnabled = false;
+            //optQuoted.Visibility = Visibility.Collapsed;
+            //optQuoted.IsEnabled = false;
 
             ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] {
                 optLangAscii,

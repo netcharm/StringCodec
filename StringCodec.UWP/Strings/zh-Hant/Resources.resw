@@ -514,7 +514,7 @@
     <value>XXE</value>
   </data>
   <data name="optQuoted.Text" xml:space="preserve">
-    <value>Quoted</value>
+    <value>可列印字符引用編碼</value>
   </data>
   <data name="optRaw.Text" xml:space="preserve">
     <value>RAW</value>

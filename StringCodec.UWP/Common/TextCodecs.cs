@@ -331,7 +331,18 @@ namespace StringCodec.UWP.Common
             {
                 string result = string.Empty;
 
-                result = Uri.EscapeDataString(text.ConvertTo(enc));
+                //var asciis = Encoding.Default.GetBytes(text.ConvertTo(enc));
+                var asciis = enc.GetBytes(text);
+                List<string> ReturnString = new List<string>();
+                for (int i = 0; i < asciis.Length; i++)
+                {
+                    var ascii = asciis[i];
+                    if (ascii < 32 || ascii == 61 || ascii > 126)
+                        ReturnString.Add($"={Convert.ToInt32(ascii):X2}");
+                    else
+                        ReturnString.Add($"{(char)ascii}");
+                }
+                result = string.Join("", ReturnString);
 
                 return (result);
             }
@@ -345,7 +356,23 @@ namespace StringCodec.UWP.Common
             {
                 string result = string.Empty;
 
-                result = Uri.UnescapeDataString(text);
+                var asciis = Encoding.Default.GetBytes(text);
+                List<byte> ReturnString = new List<byte>();
+                int i = 0;
+                while (i < asciis.Length)
+                {
+                    var ascii = asciis[i];
+                    if (ascii == 61)
+                    {
+                        var hex = $"{(char)asciis[i + 1]}{(char)asciis[i + 2]}";
+                        ReturnString.Add(byte.Parse(hex, System.Globalization.NumberStyles.HexNumber));
+                        i += 2;
+                    }                        
+                    else
+                        ReturnString.Add(ascii);
+                    i++;
+                }               
+                result = enc.GetString(ReturnString.ToArray());
 
                 return (result);
             }
@@ -690,16 +717,16 @@ namespace StringCodec.UWP.Common
                         result = await BASE64.Encode(content, enc, LineBreak);
                         break;
                     case CODEC.UUE:
-                        result = UUE.Encode(content);
+                        result = UUE.Encode(content, enc);
                         break;
                     case CODEC.XXE:
-                        result = XXE.Encode(content);
+                        result = XXE.Encode(content, enc);
                         break;
                     case CODEC.RAW:
-                        result = RAW.Encode(content);
+                        result = RAW.Encode(content, enc);
                         break;
                     case CODEC.QUOTED:
-                        result = QUOTED.Encode(content);
+                        result = QUOTED.Encode(content, enc);
                         break;
                     case CODEC.THUNDER:
                         result = await THUNDER.Encode(content, enc);

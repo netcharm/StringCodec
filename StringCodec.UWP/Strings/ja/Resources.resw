@@ -514,7 +514,7 @@
     <value>XXE</value>
   </data>
   <data name="optQuoted.Text" xml:space="preserve">
-    <value>Quoted</value>
+    <value>印刷可能文字参照エンコード</value>
   </data>
   <data name="optRaw.Text" xml:space="preserve">
     <value>RAW</value>

@@ -675,8 +675,8 @@
           <target state="translated">XXE</target>
         </trans-unit>
         <trans-unit id="optQuoted.Text" translate="yes" xml:space="preserve">
-          <source>Quoted</source>
-          <target state="translated">Quoted</target>
+          <source>Quoted Printable</source>
+          <target state="translated">可打印字符引用编码</target>
         </trans-unit>
         <trans-unit id="optRaw.Text" translate="yes" xml:space="preserve">
           <source>RAW</source>
