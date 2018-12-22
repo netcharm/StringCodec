@@ -1274,6 +1274,46 @@
           <source>Convert</source>
           <target state="translated">转换</target>
         </trans-unit>
+        <trans-unit id="optMergeBlankLine.Text" translate="yes" xml:space="preserve">
+          <source>Merge Blank Lines</source>
+          <target state="translated">合并空行</target>
+        </trans-unit>
+        <trans-unit id="optRemoveBlankLine.Text" translate="yes" xml:space="preserve">
+          <source>Remove Blank Lines</source>
+          <target state="translated">删除空行</target>
+        </trans-unit>
+        <trans-unit id="optSpaceToTab2.Text" translate="yes" xml:space="preserve">
+          <source>2 Spaces To Tab</source>
+          <target state="translated">两个空格转为一个制表符</target>
+        </trans-unit>
+        <trans-unit id="optSpaceToTab4.Text" translate="yes" xml:space="preserve">
+          <source>4 Spaces To Tab</source>
+          <target state="translated">四个空格转为一个制表符</target>
+        </trans-unit>
+        <trans-unit id="optSpaceToTab8.Text" translate="yes" xml:space="preserve">
+          <source>8 Spaces To Tab</source>
+          <target state="translated">八个空格转为一个制表符</target>
+        </trans-unit>
+        <trans-unit id="optTabSpace.Text" translate="yes" xml:space="preserve">
+          <source>Tab <it id="1" pos="open">&lt;-&gt;</it> Space</source>
+          <target state="translated">制表符 <it id="1" pos="open">&lt;-&gt;</it> 空格</target>
+        </trans-unit>
+        <trans-unit id="optTabToSpace2.Text" translate="yes" xml:space="preserve">
+          <source>Tab To 2 Spaces</source>
+          <target state="translated">一个制表符转为两个空格</target>
+        </trans-unit>
+        <trans-unit id="optTabToSpace4.Text" translate="yes" xml:space="preserve">
+          <source>Tab To 4 Spaces</source>
+          <target state="translated">一个制表符转为四个空格</target>
+        </trans-unit>
+        <trans-unit id="optTabToSpace8.Text" translate="yes" xml:space="preserve">
+          <source>Tab To 8 Spaces</source>
+          <target state="translated">一个制表符转为八个空格</target>
+        </trans-unit>
+        <trans-unit id="optTailBlank.Text" translate="yes" xml:space="preserve">
+          <source>Remove Tail Blanks</source>
+          <target state="translated">删除行尾空白</target>
+        </trans-unit>
       </group>
     </body>
   </file>

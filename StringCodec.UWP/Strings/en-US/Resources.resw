@@ -1068,4 +1068,34 @@
   <data name="btnCaseConvert.Label" xml:space="preserve">
     <value>Convert</value>
   </data>
+  <data name="optMergeBlankLine.Text" xml:space="preserve">
+    <value>Merge Blank Lines</value>
+  </data>
+  <data name="optRemoveBlankLine.Text" xml:space="preserve">
+    <value>Remove Blank Lines</value>
+  </data>
+  <data name="optSpaceToTab2.Text" xml:space="preserve">
+    <value>2 Spaces To Tab</value>
+  </data>
+  <data name="optSpaceToTab4.Text" xml:space="preserve">
+    <value>4 Spaces To Tab</value>
+  </data>
+  <data name="optSpaceToTab8.Text" xml:space="preserve">
+    <value>8 Spaces To Tab</value>
+  </data>
+  <data name="optTabSpace.Text" xml:space="preserve">
+    <value>Tab &lt;-&gt; Space</value>
+  </data>
+  <data name="optTabToSpace2.Text" xml:space="preserve">
+    <value>Tab To 2 Spaces</value>
+  </data>
+  <data name="optTabToSpace4.Text" xml:space="preserve">
+    <value>Tab To 4 Spaces</value>
+  </data>
+  <data name="optTabToSpace8.Text" xml:space="preserve">
+    <value>Tab To 8 Spaces</value>
+  </data>
+  <data name="optTailBlank.Text" xml:space="preserve">
+    <value>Remove Tail Blanks</value>
+  </data>
 </root>

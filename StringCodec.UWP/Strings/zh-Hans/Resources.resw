@@ -963,4 +963,34 @@
   <data name="btnCaseConvert.Label" xml:space="preserve">
     <value>转换</value>
   </data>
+  <data name="optMergeBlankLine.Text" xml:space="preserve">
+    <value>合并空行</value>
+  </data>
+  <data name="optRemoveBlankLine.Text" xml:space="preserve">
+    <value>删除空行</value>
+  </data>
+  <data name="optSpaceToTab2.Text" xml:space="preserve">
+    <value>两个空格转为一个制表符</value>
+  </data>
+  <data name="optSpaceToTab4.Text" xml:space="preserve">
+    <value>四个空格转为一个制表符</value>
+  </data>
+  <data name="optSpaceToTab8.Text" xml:space="preserve">
+    <value>八个空格转为一个制表符</value>
+  </data>
+  <data name="optTabSpace.Text" xml:space="preserve">
+    <value>制表符 &lt;-&gt; 空格</value>
+  </data>
+  <data name="optTabToSpace2.Text" xml:space="preserve">
+    <value>一个制表符转为两个空格</value>
+  </data>
+  <data name="optTabToSpace4.Text" xml:space="preserve">
+    <value>一个制表符转为四个空格</value>
+  </data>
+  <data name="optTabToSpace8.Text" xml:space="preserve">
+    <value>一个制表符转为八个空格</value>
+  </data>
+  <data name="optTailBlank.Text" xml:space="preserve">
+    <value>删除行尾空白</value>
+  </data>
 </root>

@@ -1945,6 +1945,104 @@ namespace StringCodec.UWP.Common
         }
         #endregion
 
+        #region Text process
+        public static string TrimBlankTail(this string text)
+        {
+            var result = text;
+
+            var lines = text.Split(LINEBREAK, StringSplitOptions.None);
+            StringBuilder sb = new StringBuilder();
+            foreach(var line in lines)
+            {
+                sb.AppendLine(line.TrimEnd());
+            }
+            result = sb.ToString();
+
+            return (result);
+        }
+
+        public static string TrimBlanklLine(this string text, bool merge = true)
+        {
+            var result = text;
+
+            var lines = text.Split(LINEBREAK, StringSplitOptions.RemoveEmptyEntries);
+            List<string> ls = new List<string>();
+            foreach (var line in lines)
+            {
+                ls.Add(line.TrimEnd());
+            }
+            if (merge)
+                result = string.Join(Environment.NewLine + Environment.NewLine, ls);
+            else
+                result = string.Join(Environment.NewLine, ls);
+
+            return (result);
+        }
+
+        public static string TabToSpace(this string text, int size = 2)
+        {
+            var result = text;
+
+            var lines = text.Split(LINEBREAK, StringSplitOptions.None);
+            StringBuilder sb = new StringBuilder();
+            foreach (var line in lines)
+            {
+                var space = "  ";
+                switch (size)
+                {
+                    case 2:
+                        space = "  ";
+                        break;
+                    case 4:
+                        space = "    ";
+                        break;
+                    case 8:
+                        space = "        ";
+                        break;
+                    default:
+                        space = "  ";
+                        break;
+                }
+                sb.AppendLine(line.TrimEnd().Replace("\t", space));
+            }
+            result = sb.ToString();
+
+            return (result);
+        }
+
+        public static string SpaceToTab(this string text, int size = 2)
+        {
+            var result = text;
+
+            var lines = text.Split(LINEBREAK, StringSplitOptions.None);
+            StringBuilder sb = new StringBuilder();
+            foreach (var line in lines)
+            {
+                var space = "  ";
+                switch (size)
+                {
+                    case 2:
+                        space = "  ";
+                        break;
+                    case 4:
+                        space = "    ";
+                        break;
+                    case 8:
+                        space = "        ";
+                        break;
+                    default:
+                        space = "  ";
+                        break;
+                }
+                sb.AppendLine(line.TrimEnd().Replace(space, "\t"));
+            }
+            result = sb.ToString();
+
+            return (result);
+        }
+
+        #endregion
+
         #region System encoder helper routines
         public static byte[] GetBOM(this Encoding enc)
         {

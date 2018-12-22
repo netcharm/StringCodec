@@ -180,6 +180,26 @@ namespace StringCodec.UWP.Pages
                 else if (sender == optCaseJaFullKana)
                     result = text.KatakanaHalfToFull();
                 #endregion
+                #region Text process
+                else if (sender == optTrimBlankTail)
+                    result = text.TrimBlankTail();
+                else if (sender == optRemoveBlankLine)
+                    result = text.TrimBlanklLine(false);
+                else if (sender == optMergeBlankLine)
+                    result = text.TrimBlanklLine(true);
+                else if (sender == optSpaceToTab2)
+                    result = text.SpaceToTab(2);
+                else if (sender == optSpaceToTab4)
+                    result = text.SpaceToTab(4);
+                else if (sender == optSpaceToTab8)
+                    result = text.SpaceToTab(8);
+                else if (sender == optTabToSpace2)
+                    result = text.TabToSpace(2);
+                else if (sender == optTabToSpace4)
+                    result = text.TabToSpace(4);
+                else if (sender == optTabToSpace8)
+                    result = text.TabToSpace(8);
+                #endregion
             }
             catch (Exception ex)
             {

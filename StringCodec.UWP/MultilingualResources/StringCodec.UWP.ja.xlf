@@ -1274,6 +1274,46 @@
           <source>Convert</source>
           <target state="translated">変換</target>
         </trans-unit>
+        <trans-unit id="optMergeBlankLine.Text" translate="yes" xml:space="preserve">
+          <source>Merge Blank Lines</source>
+          <target state="translated">空白行の結合</target>
+        </trans-unit>
+        <trans-unit id="optRemoveBlankLine.Text" translate="yes" xml:space="preserve">
+          <source>Remove Blank Lines</source>
+          <target state="translated">空の行の削除</target>
+        </trans-unit>
+        <trans-unit id="optSpaceToTab2.Text" translate="yes" xml:space="preserve">
+          <source>2 Spaces To Tab</source>
+          <target state="translated">タブに変換された2つのスペース</target>
+        </trans-unit>
+        <trans-unit id="optSpaceToTab4.Text" translate="yes" xml:space="preserve">
+          <source>4 Spaces To Tab</source>
+          <target state="translated">タブに変換された4つのスペース</target>
+        </trans-unit>
+        <trans-unit id="optSpaceToTab8.Text" translate="yes" xml:space="preserve">
+          <source>8 Spaces To Tab</source>
+          <target state="translated">タブに変換された8つのスペース</target>
+        </trans-unit>
+        <trans-unit id="optTabSpace.Text" translate="yes" xml:space="preserve">
+          <source>Tab <it id="1" pos="open">&lt;-&gt;</it> Space</source>
+          <target state="translated">TAB <it id="1" pos="open">&lt;-&gt;</it> SPACE</target>
+        </trans-unit>
+        <trans-unit id="optTabToSpace2.Text" translate="yes" xml:space="preserve">
+          <source>Tab To 2 Spaces</source>
+          <target state="translated">タブを2つのスペースに変換する</target>
+        </trans-unit>
+        <trans-unit id="optTabToSpace4.Text" translate="yes" xml:space="preserve">
+          <source>Tab To 4 Spaces</source>
+          <target state="translated">タブを4つのスペースに変換する</target>
+        </trans-unit>
+        <trans-unit id="optTabToSpace8.Text" translate="yes" xml:space="preserve">
+          <source>Tab To 8 Spaces</source>
+          <target state="translated">タブを8つのスペースに変換する</target>
+        </trans-unit>
+        <trans-unit id="optTailBlank.Text" translate="yes" xml:space="preserve">
+          <source>Remove Tail Blanks</source>
+          <target state="translated">行の末尾の空白を削除</target>
+        </trans-unit>
       </group>
     </body>
   </file>

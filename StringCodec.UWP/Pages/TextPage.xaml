@@ -125,9 +125,11 @@
                 <AppBarButton.Icon>
                     <FontIcon Glyph="&#xE117;" FontFamily="Segoe MDL2 Assets"/>
                 </AppBarButton.Icon>
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="F4" />
+                </AppBarButton.KeyboardAccelerators>
                 <AppBarButton.Flyout>
                     <MenuFlyout>
-                        <MenuFlyoutItem x:Name="optReverse" x:Uid="optReverse" Text="Reverse" Click="Case_Click"/>
                         <MenuFlyoutSubItem x:Name="optCase" x:Uid="optCase" Text="Case Convert">
                             <MenuFlyoutItem x:Name="optCaseUp" x:Uid="optCaseUp" Text="Upper Case" Click="Case_Click">
                                 <MenuFlyoutItem.Icon>
@@ -167,11 +169,23 @@
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
                         </MenuFlyoutSubItem>
+                        <MenuFlyoutSubItem x:Name="optTabSpace" x:Uid="optTabSpace" Text="Tab &lt;=&gt; Space">
+                            <MenuFlyoutItem x:Name="optTabToSpace2" x:Uid="optTabToSpace2" Text="Tab To Space 2" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optTabToSpace4" x:Uid="optTabToSpace4" Text="Tab To Space 4" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optTabToSpace8" x:Uid="optTabToSpace8" Text="Tab To Space 8" Click="Case_Click"/>
+                            <MenuFlyoutSeparator/>
+                            <MenuFlyoutItem x:Name="optSpaceToTab2" x:Uid="optSpaceToTab2" Text="Space To Tab 2" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optSpaceToTab4" x:Uid="optSpaceToTab4" Text="Space To Tab 4" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optSpaceToTab8" x:Uid="optSpaceToTab8" Text="Space To Tab 8" Click="Case_Click"/>
+                        </MenuFlyoutSubItem>
+                        <MenuFlyoutSeparator/>
+                        <MenuFlyoutItem x:Name="optTrimBlankTail" x:Uid="optTailBlank" Text="Remove Tail Blanks" Click="Case_Click"/>
+                        <MenuFlyoutItem x:Name="optRemoveBlankLine" x:Uid="optRemoveBlankLine" Text="Remove Blank Lines" Click="Case_Click"/>
+                        <MenuFlyoutItem x:Name="optMergeBlankLine" x:Uid="optMergeBlankLine" Text="Merge Blank Lines" Click="Case_Click"/>
+                        <MenuFlyoutSeparator/>
+                        <MenuFlyoutItem x:Name="optReverse" x:Uid="optReverse" Text="Reverse" Click="Case_Click"/>
                     </MenuFlyout>
                 </AppBarButton.Flyout>
-                <AppBarButton.KeyboardAccelerators>
-                    <KeyboardAccelerator Key="F4" />
-                </AppBarButton.KeyboardAccelerators>
             </AppBarButton>
             <AppBarSeparator />
             <AppBarButton x:Name="btnSave" x:Uid="btnSave" Label="Save" Icon="Save" VerticalAlignment="Center" Click="AppBarButton_Click" />
