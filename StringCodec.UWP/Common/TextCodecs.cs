@@ -69,6 +69,61 @@ namespace StringCodec.UWP.Common
 
         static public class URL
         {
+            static private string Escape(string text, Encoding enc)
+            {
+                string result = string.Empty;
+
+                if (enc == Encoding.UTF8)
+                    result = Uri.EscapeDataString(text);
+                else
+                {
+                    char[] symbol = new char[]{ ' ', ':', ';', '<', '=', '>', '?', '@', '[', '\'', ']', '^', '_', '`',  '&', '#', '"', '%', '|' };
+                    var asciis = enc.GetBytes(text);
+                    List<string> ReturnString = new List<string>();
+                    for (int i = 0; i < asciis.Length; i++)
+                    {
+                        var ascii = asciis[i];
+                        if (ascii < 47 || symbol.Contains((char)ascii) || ascii > 122)
+                            ReturnString.Add($"%{Convert.ToInt32(ascii):X2}");
+                        else
+                            ReturnString.Add($"{(char)ascii}");
+                    }
+                    result = string.Join("", ReturnString);
+                }
+
+                return (result);
+            }
+
+            static private string Unescape(string text, Encoding enc)
+            {
+                string result = string.Empty;
+
+                if (enc == Encoding.UTF8)
+                    result = Uri.UnescapeDataString(text);//.Replace('+', ' ');
+                else
+                {
+                    var asciis = Encoding.Default.GetBytes(text);
+                    List<byte> ReturnString = new List<byte>();
+                    int i = 0;
+                    while (i < asciis.Length)
+                    {
+                        var ascii = asciis[i];
+                        if (ascii == '%')
+                        {
+                            var hex = $"{(char)asciis[i + 1]}{(char)asciis[i + 2]}";
+                            ReturnString.Add(byte.Parse(hex, System.Globalization.NumberStyles.HexNumber));
+                            i += 2;
+                        }
+                        else
+                            ReturnString.Add(ascii);
+                        i++;
+                    }
+                    result = enc.GetString(ReturnString.ToArray());
+                }
+
+                return (result);
+            }
+
             static public string Encode(string text, Encoding enc, bool LineBreak = false)
             {
                 string result = string.Empty;
@@ -76,14 +131,29 @@ namespace StringCodec.UWP.Common
                 try
                 {
                     var url = new Uri(text);
-                    var query =  Uri.UnescapeDataString(url.Query.TrimStart('?'));
+                    var uInfo = Escape(Uri.UnescapeDataString(url.UserInfo), enc).Replace("%3A", ":", StringComparison.CurrentCultureIgnoreCase);
+                    var uPath = Escape(Uri.UnescapeDataString(url.AbsolutePath), enc).Replace("%2F", "/", StringComparison.CurrentCultureIgnoreCase);
+
+                    var frag = string.Empty;
+                    var fragIdx = url.Fragment.LastIndexOf('#');
+                    var fragment = url.Fragment;
+                    if (fragIdx > 0)
+                    {
+                        frag = url.Fragment.Substring(0, fragIdx);
+                        fragment = Escape(Uri.UnescapeDataString(url.Fragment.Substring(fragIdx)), enc).Replace("%23", "#", StringComparison.CurrentCultureIgnoreCase);
+                    }
+                    else
+                        frag = url.Fragment.Contains('&') ? url.Fragment : string.Empty;
+
+
+                    var query = Uri.UnescapeDataString($"{url.Query.TrimStart('?')}{frag}");
 
                     try
                     {
-                        var kv = query.Split('&').Select(q => q.Split('=')).Select(o => o.Length>1 ? $"{o.First()}={Uri.EscapeDataString(string.Join("", o.Skip(1)))}" : $"{string.Join("", o)}");
+                        var kv = query.Split('&').Select(q => q.Split('=')).Select(o => o.Length>1 ? $"{Escape(o.First(), enc)}={Escape(string.Join("", o.Skip(1)), enc)}" : $"{Escape(string.Join("", o), enc)}");
                         var qSym = kv.Count()<=0  || string.IsNullOrEmpty(query) ? string.Empty : "?";
                         var uSym = string.IsNullOrEmpty(url.UserInfo) ? string.Empty : "@";
-                        result = $"{url.Scheme}://{url.UserInfo}{uSym}{url.DnsSafeHost}{url.AbsolutePath}{qSym}{string.Join("&", kv)}".Trim();
+                        result = $"{url.Scheme}://{uInfo}{uSym}{url.DnsSafeHost}{uPath}{qSym}{string.Join("&", kv)}{fragment}".Trim();
                     }
                     catch (Exception)
                     {
@@ -96,26 +166,23 @@ namespace StringCodec.UWP.Common
                                 if (param.Length < 1)
                                     continue;
                                 else if (param.Length == 1)
-                                    queryParamList.Add(param.First());
+                                    queryParamList.Add(Escape(param.First(), enc));
                                 else if (param.Length > 1)
-                                    queryParamList.Add($"{param.First()}={Uri.EscapeDataString(string.Join("", param.Skip(1)))}");
+                                    queryParamList.Add($"{Escape(param.First(), enc)}={Escape(string.Join("", param.Skip(1)), enc)}");
                             }
-                            var querySymbol = "?";
-                            if (queryParamList.Count() <= 0) querySymbol = string.Empty;
-                            var userSynbol = "@";
-                            if (string.IsNullOrEmpty(url.UserInfo)) userSynbol = string.Empty;
-                            result = $"{url.Scheme}://{url.UserInfo}{userSynbol}{url.DnsSafeHost}{url.AbsolutePath}{querySymbol}{string.Join("&", queryParamList)}".Trim();
+                            var qSym = queryParamList.Count()<=0  || string.IsNullOrEmpty(query) ? string.Empty : "?";
+                            var uSym = string.IsNullOrEmpty(url.UserInfo) ? string.Empty : "@";
+                            result = $"{url.Scheme}://{uInfo}{uSym}{url.DnsSafeHost}{uPath}{qSym}{string.Join("&", queryParamList)}{fragment}".Trim();
                         }
                         catch (Exception ex)
                         {
                             ex.Message.T().ShowException("ERROR".T());
                         }
-
                     }
                 }
                 catch (Exception)
                 {
-                    result = Uri.EscapeDataString(text);
+                    result = Escape(text, enc);
                 }
 
                 return (result);
@@ -130,7 +197,7 @@ namespace StringCodec.UWP.Common
             {
                 string result = string.Empty;
 
-                result = Uri.UnescapeDataString(text);//.Replace('+', ' ');
+                result = Unescape(text, enc);
 
                 return (result);
             }
@@ -1197,9 +1264,11 @@ namespace StringCodec.UWP.Common
             var result = string.Empty;
             try
             {
-                byte[] arr = Encoding.Default.GetBytes(text);
+                //byte[] arr = Encoding.Default.GetBytes(text);
+                byte[] arr = enc.GetBytes(text);
                 if (arr != null && arr.Length > 0)
-                    result = enc.GetString(arr);
+                    //result = enc.GetString(arr);
+                    result = Encoding.Default.GetString(arr);                    
             }
             catch (Exception ex)
             {
