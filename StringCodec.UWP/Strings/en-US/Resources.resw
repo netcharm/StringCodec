@@ -634,10 +634,10 @@
     <value>BASE64</value>
   </data>
   <data name="optUUE.Text" xml:space="preserve">
-    <value>UUE</value>
+    <value>UUEncode</value>
   </data>
   <data name="optXXE.Text" xml:space="preserve">
-    <value>XXE</value>
+    <value>XXEncode</value>
   </data>
   <data name="optQuoted.Text" xml:space="preserve">
     <value>Quoted Printable</value>

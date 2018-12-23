@@ -508,16 +508,16 @@
     <value>BASE64</value>
   </data>
   <data name="optUUE.Text" xml:space="preserve">
-    <value>UUE</value>
+    <value>UUEncode編碼</value>
   </data>
   <data name="optXXE.Text" xml:space="preserve">
-    <value>XXE</value>
+    <value>XXEncode編碼</value>
   </data>
   <data name="optQuoted.Text" xml:space="preserve">
     <value>可列印字符引用編碼</value>
   </data>
   <data name="optRaw.Text" xml:space="preserve">
-    <value>RAW</value>
+    <value>RAW (\xHH)</value>
   </data>
   <data name="optThunder.Text" xml:space="preserve">
     <value>迅雷連結</value>

@@ -12,31 +12,31 @@
         </trans-unit>
         <trans-unit id="ERROR" translate="yes" xml:space="preserve">
           <source>ERROR</source>
-          <target state="translated" state-qualifier="mt-suggestion">エラー</target>
+          <target state="translated">エラー</target>
         </trans-unit>
         <trans-unit id="nvItemQRCode.Content" translate="yes" xml:space="preserve">
           <source>QR Encode/Decode</source>
-          <target state="translated" state-qualifier="mt-suggestion">QR のエンコード/デコード</target>
+          <target state="translated">QR のエンコード/デコード</target>
         </trans-unit>
         <trans-unit id="nvItemText.Content" translate="yes" xml:space="preserve">
           <source>Text Encode/Decode</source>
-          <target state="translated" state-qualifier="mt-suggestion">テキストのエンコード/デコード</target>
+          <target state="translated">テキストのエンコード/デコード</target>
         </trans-unit>
         <trans-unit id="nvItemImage.Content" translate="yes" xml:space="preserve">
           <source>Image From/To BASE64</source>
-          <target state="translated" state-qualifier="mt-suggestion">イメージから/への BASE64</target>
+          <target state="translated">イメージから/への BASE64</target>
         </trans-unit>
         <trans-unit id="nvItemText.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Text Encode and Decode</source>
-          <target state="translated" state-qualifier="mt-suggestion">テキストのエンコードし、デコード</target>
+          <target state="translated">テキストのエンコードし、デコード</target>
         </trans-unit>
         <trans-unit id="nvItemQRCode.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Make QR Code or decode content from QR Code image</source>
-          <target state="translated" state-qualifier="mt-suggestion">QR コード、または QR コード画像からコンテンツをデコード</target>
+          <target state="translated">QR コード、または QR コード画像からコンテンツをデコード</target>
         </trans-unit>
         <trans-unit id="nvItemImage.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Convert image to BASE64 string or decode BASE64 string to image</source>
-          <target state="translated" state-qualifier="mt-suggestion">画像を BASE64 文字列に変換またはイメージに BASE64 文字列をデコード</target>
+          <target state="translated">画像を BASE64 文字列に変換またはイメージに BASE64 文字列をデコード</target>
         </trans-unit>
         <trans-unit id="nvItemCommonOneD.Content" translate="yes" xml:space="preserve">
           <source>Common 1D Barcode</source>
@@ -56,31 +56,31 @@
         </trans-unit>
         <trans-unit id="nvItemCharset.Content" translate="yes" xml:space="preserve">
           <source>Folder&amp;File Charset</source>
-          <target state="translated" state-qualifier="mt-suggestion">フォルダー&amp;ファイル文字セット</target>
+          <target state="translated">フォルダー&amp;ファイル文字セット</target>
         </trans-unit>
         <trans-unit id="nvItemCharset.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Converting folder/file names with specified character sets</source>
-          <target state="translated" state-qualifier="mt-suggestion">指定された文字セットのフォルダー/ファイル名を変換します。</target>
+          <target state="translated">指定された文字セットのフォルダー/ファイル名を変換します。</target>
         </trans-unit>
         <trans-unit id="nvAbout.Content" translate="yes" xml:space="preserve">
           <source>More info</source>
-          <target state="translated" state-qualifier="mt-suggestion">情報をもっと見る</target>
+          <target state="translated">情報をもっと見る</target>
         </trans-unit>
         <trans-unit id="nvAbout.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>About Me...</source>
-          <target state="translated" state-qualifier="mt-suggestion">私は. について</target>
+          <target state="translated">私は. について</target>
         </trans-unit>
         <trans-unit id="piLink.Header" translate="yes" xml:space="preserve">
           <source>Web Link</source>
-          <target state="translated" state-qualifier="mt-suggestion">Web リンク</target>
+          <target state="translated">Web リンク</target>
         </trans-unit>
         <trans-unit id="edLinkUrl.Header" translate="yes" xml:space="preserve">
           <source>Url</source>
-          <target state="translated" state-qualifier="mt-suggestion">Url</target>
+          <target state="translated">Url</target>
         </trans-unit>
         <trans-unit id="edLinkUrl.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Url address</source>
-          <target state="translated" state-qualifier="mt-suggestion">Url アドレス</target>
+          <target state="translated">Url アドレス</target>
         </trans-unit>
         <trans-unit id="edLinkContent.Header" translate="yes" xml:space="preserve">
           <source>Content</source>
@@ -88,19 +88,19 @@
         </trans-unit>
         <trans-unit id="edLinkContent.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Url Parameters</source>
-          <target state="translated" state-qualifier="mt-suggestion">Url パラメーター</target>
+          <target state="translated">Url パラメーター</target>
         </trans-unit>
         <trans-unit id="piWifi.Header" translate="yes" xml:space="preserve">
           <source>WIFI Infomation</source>
-          <target state="translated" state-qualifier="mt-suggestion">WIFI 情報</target>
+          <target state="translated">WIFI 情報</target>
         </trans-unit>
         <trans-unit id="edWifiSSID.Header" translate="yes" xml:space="preserve">
           <source>SSID</source>
-          <target state="translated" state-qualifier="mt-suggestion">SSID</target>
+          <target state="translated">SSID</target>
         </trans-unit>
         <trans-unit id="edWifiSSID.PlaceholderText" translate="yes" xml:space="preserve">
           <source>SSID/Network Name</source>
-          <target state="translated" state-qualifier="mt-suggestion">SSID またはネットワーク名</target>
+          <target state="translated">SSID またはネットワーク名</target>
         </trans-unit>
         <trans-unit id="edWifiPass.Header" translate="yes" xml:space="preserve">
           <source>Password</source>
@@ -108,23 +108,23 @@
         </trans-unit>
         <trans-unit id="edWifiPass.PlaceholderText" translate="yes" xml:space="preserve">
           <source>WIFI Password</source>
-          <target state="translated" state-qualifier="mt-suggestion">WIFI のパスワード</target>
+          <target state="translated">WIFI のパスワード</target>
         </trans-unit>
         <trans-unit id="edWifiEncypto.Header" translate="yes" xml:space="preserve">
           <source>Encrypt Type</source>
-          <target state="translated" state-qualifier="mt-suggestion">暗号化の種類</target>
+          <target state="translated">暗号化の種類</target>
         </trans-unit>
         <trans-unit id="edWifiEncypto.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Password Encrypt Type</source>
-          <target state="translated" state-qualifier="mt-suggestion">パスワードの暗号化の種類</target>
+          <target state="translated">パスワードの暗号化の種類</target>
         </trans-unit>
         <trans-unit id="edWifiHidden.Content" translate="yes" xml:space="preserve">
           <source>Hidden SSID</source>
-          <target state="translated" state-qualifier="mt-suggestion">非表示の SSID</target>
+          <target state="translated">非表示の SSID</target>
         </trans-unit>
         <trans-unit id="piMail.Header" translate="yes" xml:space="preserve">
           <source>Send Mail</source>
-          <target state="translated" state-qualifier="mt-suggestion">メールを送信します。</target>
+          <target state="translated">メールを送信します。</target>
         </trans-unit>
         <trans-unit id="edMailTo.Header" translate="yes" xml:space="preserve">
           <source>Sent To</source>
@@ -132,11 +132,11 @@
         </trans-unit>
         <trans-unit id="edMailTo.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Mail Address</source>
-          <target state="translated" state-qualifier="mt-suggestion">メール アドレス</target>
+          <target state="translated">メール アドレス</target>
         </trans-unit>
         <trans-unit id="edMailSubject.Header" translate="yes" xml:space="preserve">
           <source>Subjetc</source>
-          <target state="translated" state-qualifier="mt-suggestion">全訳</target>
+          <target state="translated">全訳</target>
         </trans-unit>
         <trans-unit id="edMailSubject.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Mail Subject</source>
@@ -148,11 +148,11 @@
         </trans-unit>
         <trans-unit id="edMailContent.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Mail Content</source>
-          <target state="translated" state-qualifier="mt-suggestion">メールの内容</target>
+          <target state="translated">メールの内容</target>
         </trans-unit>
         <trans-unit id="piGeo.Header" translate="yes" xml:space="preserve">
           <source>Geo Query</source>
-          <target state="translated" state-qualifier="mt-suggestion">ジオ クエリ</target>
+          <target state="translated">ジオ クエリ</target>
         </trans-unit>
         <trans-unit id="edGeoLat.Header" translate="yes" xml:space="preserve">
           <source>Latitude</source>
@@ -172,11 +172,11 @@
         </trans-unit>
         <trans-unit id="edGeoQuery.Header" translate="yes" xml:space="preserve">
           <source>Query Content</source>
-          <target state="translated" state-qualifier="mt-suggestion">クエリの内容</target>
+          <target state="translated">クエリの内容</target>
         </trans-unit>
         <trans-unit id="edGeoQuery.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Url Parameters</source>
-          <target state="translated" state-qualifier="mt-suggestion">Url パラメーター</target>
+          <target state="translated">Url パラメーター</target>
         </trans-unit>
         <trans-unit id="piContact.Header" translate="yes" xml:space="preserve">
           <source>Contact Info</source>
@@ -232,7 +232,7 @@
         </trans-unit>
         <trans-unit id="piEvent.Header" translate="yes" xml:space="preserve">
           <source>Time Event</source>
-          <target state="translated" state-qualifier="mt-suggestion">時間イベント</target>
+          <target state="translated">時間イベント</target>
         </trans-unit>
         <trans-unit id="edEventSummary.Header" translate="yes" xml:space="preserve">
           <source>Summary</source>
@@ -272,11 +272,11 @@
         </trans-unit>
         <trans-unit id="edEventAddress.Header" translate="yes" xml:space="preserve">
           <source>Address</source>
-          <target state="translated" state-qualifier="mt-suggestion">アドレス</target>
+          <target state="translated">アドレス</target>
         </trans-unit>
         <trans-unit id="edEventLink.Header" translate="yes" xml:space="preserve">
           <source>URL Link</source>
-          <target state="translated" state-qualifier="mt-suggestion">URL リンク</target>
+          <target state="translated">URL リンク</target>
         </trans-unit>
         <trans-unit id="edEventUid.Header" translate="yes" xml:space="preserve">
           <source>User</source>
@@ -296,111 +296,111 @@
         </trans-unit>
         <trans-unit id="btnOpenFolder.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Open Folder</source>
-          <target state="translated" state-qualifier="mt-suggestion">フォルダーを開く</target>
+          <target state="translated">フォルダーを開く</target>
         </trans-unit>
         <trans-unit id="btnOpenFile.Label" translate="yes" xml:space="preserve">
           <source>File</source>
-          <target state="translated" state-qualifier="mt-suggestion">ファイル</target>
+          <target state="translated">ファイル</target>
         </trans-unit>
         <trans-unit id="btnOpenFile.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Open File</source>
-          <target state="translated" state-qualifier="mt-suggestion">ファイルを開く</target>
+          <target state="translated">ファイルを開く</target>
         </trans-unit>
         <trans-unit id="btnOptSrc.Label" translate="yes" xml:space="preserve">
           <source>Source</source>
-          <target state="translated" state-qualifier="mt-suggestion">ソース</target>
+          <target state="translated">ソース</target>
         </trans-unit>
         <trans-unit id="btnRename.Label" translate="yes" xml:space="preserve">
           <source>Rename</source>
-          <target state="translated" state-qualifier="mt-suggestion">名前の変更</target>
+          <target state="translated">名前の変更</target>
         </trans-unit>
         <trans-unit id="btnRename.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Rename selected filename to current source charset</source>
-          <target state="translated" state-qualifier="mt-suggestion">選択したファイル名を現在のソース文字セットに変更します。</target>
+          <target state="translated">選択したファイル名を現在のソース文字セットに変更します。</target>
         </trans-unit>
         <trans-unit id="ActionRename.Text" translate="yes" xml:space="preserve">
           <source>Rename Selected Item</source>
-          <target state="translated" state-qualifier="mt-suggestion">選択した項目の名前を変更します。</target>
+          <target state="translated">選択した項目の名前を変更します。</target>
         </trans-unit>
         <trans-unit id="ActionRenameAll.Text" translate="yes" xml:space="preserve">
           <source>Rename All Items</source>
-          <target state="translated" state-qualifier="mt-suggestion">すべての項目の名前を変更します。</target>
+          <target state="translated">すべての項目の名前を変更します。</target>
         </trans-unit>
         <trans-unit id="optActionRename.Text" translate="yes" xml:space="preserve">
           <source>Replace Exists File</source>
-          <target state="translated" state-qualifier="mt-suggestion">置換ファイルが存在します。</target>
+          <target state="translated">置換ファイルが存在します。</target>
         </trans-unit>
         <trans-unit id="btnOptDst.Label" translate="yes" xml:space="preserve">
           <source>Target</source>
-          <target state="translated" state-qualifier="mt-suggestion">ターゲット</target>
+          <target state="translated">ターゲット</target>
         </trans-unit>
         <trans-unit id="btnConvert.Label" translate="yes" xml:space="preserve">
           <source>Convert</source>
-          <target state="translated" state-qualifier="mt-suggestion">変換</target>
+          <target state="translated">変換</target>
         </trans-unit>
         <trans-unit id="btnConvert.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Convert selected file content to selected target charset</source>
-          <target state="translated" state-qualifier="mt-suggestion">選択したファイルの内容を選択した文字に変換します。</target>
+          <target state="translated">選択したファイルの内容を選択した文字に変換します。</target>
         </trans-unit>
         <trans-unit id="ActionConvert.Text" translate="yes" xml:space="preserve">
           <source>Convert Selected File</source>
-          <target state="translated" state-qualifier="mt-suggestion">選択したファイルを変換します。</target>
+          <target state="translated">選択したファイルを変換します。</target>
         </trans-unit>
         <trans-unit id="ActionConvertAll.Text" translate="yes" xml:space="preserve">
           <source>Convert All Text File</source>
-          <target state="translated" state-qualifier="mt-suggestion">すべてのテキスト ファイルに変換します。</target>
+          <target state="translated">すべてのテキスト ファイルに変換します。</target>
         </trans-unit>
         <trans-unit id="optActionConvert.Text" translate="yes" xml:space="preserve">
           <source>Overwrite Original File</source>
-          <target state="translated" state-qualifier="mt-suggestion">元のファイルを上書き</target>
+          <target state="translated">元のファイルを上書き</target>
         </trans-unit>
         <trans-unit id="optFolderDeep.Label" translate="yes" xml:space="preserve">
           <source>Folder Deep</source>
-          <target state="translated" state-qualifier="mt-suggestion">フォルダー深い</target>
+          <target state="translated">フォルダー深い</target>
         </trans-unit>
         <trans-unit id="optFolderDeepF.Text" translate="yes" xml:space="preserve">
           <source>All Sub-Tree</source>
-          <target state="translated" state-qualifier="mt-suggestion">サブのすべてのツリーします。</target>
+          <target state="translated">サブのすべてのツリーします。</target>
         </trans-unit>
         <trans-unit id="optFolderDeep0.Text" translate="yes" xml:space="preserve">
           <source>Current Folder</source>
-          <target state="translated" state-qualifier="mt-suggestion">現在のフォルダー</target>
+          <target state="translated">現在のフォルダー</target>
         </trans-unit>
         <trans-unit id="optFolderDeep1.Text" translate="yes" xml:space="preserve">
           <source>Level 1</source>
-          <target state="translated" state-qualifier="mt-suggestion">レベル 1</target>
+          <target state="translated">レベル 1</target>
         </trans-unit>
         <trans-unit id="optFolderDeep2.Text" translate="yes" xml:space="preserve">
           <source>Level 2</source>
-          <target state="translated" state-qualifier="mt-suggestion">レベル 2</target>
+          <target state="translated">レベル 2</target>
         </trans-unit>
         <trans-unit id="optFolderDeep3.Text" translate="yes" xml:space="preserve">
           <source>Level 3</source>
-          <target state="translated" state-qualifier="mt-suggestion">レベル 3</target>
+          <target state="translated">レベル 3</target>
         </trans-unit>
         <trans-unit id="optFolderDeep4.Text" translate="yes" xml:space="preserve">
           <source>Level 4</source>
-          <target state="translated" state-qualifier="mt-suggestion">レベル 4</target>
+          <target state="translated">レベル 4</target>
         </trans-unit>
         <trans-unit id="optWrapText.Label" translate="yes" xml:space="preserve">
           <source>Wrap Text</source>
-          <target state="translated" state-qualifier="mt-suggestion">テキストを折り返す</target>
+          <target state="translated">テキストを折り返す</target>
         </trans-unit>
         <trans-unit id="edSrc.Header" translate="yes" xml:space="preserve">
           <source>Input</source>
-          <target state="translated" state-qualifier="mt-suggestion">入力</target>
+          <target state="translated">入力</target>
         </trans-unit>
         <trans-unit id="edSrc.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Input at here</source>
-          <target state="translated" state-qualifier="mt-suggestion">ここで入力します。</target>
+          <target state="translated">ここで入力します。</target>
         </trans-unit>
         <trans-unit id="btnOpt.Label" translate="yes" xml:space="preserve">
           <source>Options</source>
-          <target state="translated" state-qualifier="mt-suggestion">オプション</target>
+          <target state="translated">オプション</target>
         </trans-unit>
         <trans-unit id="optBarCodeExpress.Text" translate="yes" xml:space="preserve">
           <source>Express No.</source>
-          <target state="translated" state-qualifier="mt-suggestion">エクスプレス号</target>
+          <target state="translated">エクスプレス号</target>
         </trans-unit>
         <trans-unit id="optBarCodeISBN.Text" translate="yes" xml:space="preserve">
           <source>Book ISBN</source>
@@ -408,7 +408,7 @@
         </trans-unit>
         <trans-unit id="optBarCodeProduct.Text" translate="yes" xml:space="preserve">
           <source>Product</source>
-          <target state="translated" state-qualifier="mt-suggestion">製品</target>
+          <target state="translated">製品</target>
         </trans-unit>
         <trans-unit id="optBarCodeEAN13.Text" translate="yes" xml:space="preserve">
           <source>EAN-13</source>
@@ -444,55 +444,55 @@
         </trans-unit>
         <trans-unit id="optFgColor.Text" translate="yes" xml:space="preserve">
           <source>Foreground Color</source>
-          <target state="translated" state-qualifier="mt-suggestion">前景の色</target>
+          <target state="translated">前景の色</target>
         </trans-unit>
         <trans-unit id="optBgColor.Text" translate="yes" xml:space="preserve">
           <source>Background Color</source>
-          <target state="translated" state-qualifier="mt-suggestion">背景色</target>
+          <target state="translated">背景色</target>
         </trans-unit>
         <trans-unit id="optResetColor.Text" translate="yes" xml:space="preserve">
           <source>Reset Color</source>
-          <target state="translated" state-qualifier="mt-suggestion">リセット ・ カラー</target>
+          <target state="translated">リセット ・ カラー</target>
         </trans-unit>
         <trans-unit id="btnCopy.Label" translate="yes" xml:space="preserve">
           <source>Copy</source>
-          <target state="translated" state-qualifier="mt-suggestion">コピー</target>
+          <target state="translated">コピー</target>
         </trans-unit>
         <trans-unit id="btnPaste.Label" translate="yes" xml:space="preserve">
           <source>Paste</source>
-          <target state="translated" state-qualifier="mt-suggestion">ペースト</target>
+          <target state="translated">ペースト</target>
         </trans-unit>
         <trans-unit id="btnEncode.Label" translate="yes" xml:space="preserve">
           <source>Encode</source>
-          <target state="translated" state-qualifier="mt-suggestion">エンコード</target>
+          <target state="translated">エンコード</target>
         </trans-unit>
         <trans-unit id="btnDecode.Label" translate="yes" xml:space="preserve">
           <source>Decode</source>
-          <target state="translated" state-qualifier="mt-suggestion">デコード</target>
+          <target state="translated">デコード</target>
         </trans-unit>
         <trans-unit id="btnCapture.Label" translate="yes" xml:space="preserve">
           <source>Capture</source>
-          <target state="translated" state-qualifier="mt-suggestion">キャプチャ</target>
+          <target state="translated">キャプチャ</target>
         </trans-unit>
         <trans-unit id="btnSave.Label" translate="yes" xml:space="preserve">
           <source>Save</source>
-          <target state="translated" state-qualifier="mt-suggestion">保存</target>
+          <target state="translated">保存</target>
         </trans-unit>
         <trans-unit id="btnImageToBase64.Label" translate="yes" xml:space="preserve">
           <source>Image to BASE64</source>
-          <target state="translated" state-qualifier="mt-suggestion">BASE64 をイメージ</target>
+          <target state="translated">BASE64 をイメージ</target>
         </trans-unit>
         <trans-unit id="btnTextToDecode.Label" translate="yes" xml:space="preserve">
           <source>Text to String Decode</source>
-          <target state="translated" state-qualifier="mt-suggestion">テキスト文字列をデコードします。</target>
+          <target state="translated">テキスト文字列をデコードします。</target>
         </trans-unit>
         <trans-unit id="btnTextToQR.Label" translate="yes" xml:space="preserve">
           <source>Text to QRCode</source>
-          <target state="translated" state-qualifier="mt-suggestion">QR コードにテキスト</target>
+          <target state="translated">QR コードにテキスト</target>
         </trans-unit>
         <trans-unit id="optSaveSizeWindow.Label" translate="yes" xml:space="preserve">
           <source>Display Size</source>
-          <target state="translated" state-qualifier="mt-suggestion">表示サイズ</target>
+          <target state="translated">表示サイズ</target>
         </trans-unit>
         <trans-unit id="optSaveSizeL.Label" translate="yes" xml:space="preserve">
           <source>L: 1024x1024</source>
@@ -512,7 +512,7 @@
         </trans-unit>
         <trans-unit id="optBarcodeTextSize.Label" translate="yes" xml:space="preserve">
           <source>Barcode Text Size</source>
-          <target state="translated" state-qualifier="mt-suggestion">バーコードのテキスト サイズ</target>
+          <target state="translated">バーコードのテキスト サイズ</target>
         </trans-unit>
         <trans-unit id="optBarcodeTextSizeXL.Text" translate="yes" xml:space="preserve">
           <source>XL: Extra Large</source>
@@ -520,19 +520,19 @@
         </trans-unit>
         <trans-unit id="optBarcodeTextSizeL.Text" translate="yes" xml:space="preserve">
           <source>L: Large</source>
-          <target state="translated" state-qualifier="mt-suggestion">L: 大</target>
+          <target state="translated">L: 大</target>
         </trans-unit>
         <trans-unit id="optBarcodeTextSizeM.Text" translate="yes" xml:space="preserve">
           <source>M: Middle</source>
-          <target state="translated" state-qualifier="mt-suggestion">M: 中間</target>
+          <target state="translated">M: 中間</target>
         </trans-unit>
         <trans-unit id="optBarcodeTextSizeS.Text" translate="yes" xml:space="preserve">
           <source>S: Small</source>
-          <target state="translated" state-qualifier="mt-suggestion">S: 小</target>
+          <target state="translated">S: 小</target>
         </trans-unit>
         <trans-unit id="optBarcodeTextSizeXS.Text" translate="yes" xml:space="preserve">
           <source>XS: Extra Small</source>
-          <target state="translated" state-qualifier="mt-suggestion">XS: 余分な小</target>
+          <target state="translated">XS: 余分な小</target>
         </trans-unit>
         <trans-unit id="optBarcodeTextSizeNone.Text" translate="yes" xml:space="preserve">
           <source>None Text</source>
@@ -544,135 +544,135 @@
         </trans-unit>
         <trans-unit id="edBarcode.Header" translate="yes" xml:space="preserve">
           <source>Text</source>
-          <target state="translated" state-qualifier="mt-suggestion">テキスト</target>
+          <target state="translated">テキスト</target>
         </trans-unit>
         <trans-unit id="edBarcode.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Input text at here</source>
-          <target state="translated" state-qualifier="mt-suggestion">ここにテキストを入力</target>
+          <target state="translated">ここにテキストを入力</target>
         </trans-unit>
         <trans-unit id="btnCommonType.Label" translate="yes" xml:space="preserve">
           <source>Type</source>
-          <target state="translated" state-qualifier="mt-suggestion">タイプ</target>
+          <target state="translated">タイプ</target>
         </trans-unit>
         <trans-unit id="optCommonLink.Text" translate="yes" xml:space="preserve">
           <source>Web Link</source>
-          <target state="translated" state-qualifier="mt-suggestion">Web リンク</target>
+          <target state="translated">Web リンク</target>
         </trans-unit>
         <trans-unit id="optCommonWifi.Text" translate="yes" xml:space="preserve">
           <source>WIFI Infomation</source>
-          <target state="translated" state-qualifier="mt-suggestion">WIFI 情報</target>
+          <target state="translated">WIFI 情報</target>
         </trans-unit>
         <trans-unit id="optCommonMail.Text" translate="yes" xml:space="preserve">
           <source>E-Mail Send</source>
-          <target state="translated" state-qualifier="mt-suggestion">電子メール送信</target>
+          <target state="translated">電子メール送信</target>
         </trans-unit>
         <trans-unit id="optCommonGeo.Text" translate="yes" xml:space="preserve">
           <source>GEO Query</source>
-          <target state="translated" state-qualifier="mt-suggestion">ジオ クエリ</target>
+          <target state="translated">ジオ クエリ</target>
         </trans-unit>
         <trans-unit id="optCommonContact.Text" translate="yes" xml:space="preserve">
           <source>Contact Into</source>
-          <target state="translated" state-qualifier="mt-suggestion">お問い合わせください。</target>
+          <target state="translated">お問い合わせください。</target>
         </trans-unit>
         <trans-unit id="optCommonEvent.Text" translate="yes" xml:space="preserve">
           <source>Time Event</source>
-          <target state="translated" state-qualifier="mt-suggestion">時間イベント</target>
+          <target state="translated">時間イベント</target>
         </trans-unit>
         <trans-unit id="optECL_L.Text" translate="yes" xml:space="preserve">
           <source>ECC Level : L</source>
-          <target state="translated" state-qualifier="mt-suggestion">ECC のレベル: L</target>
+          <target state="translated">ECC のレベル: L</target>
         </trans-unit>
         <trans-unit id="optECL_M.Text" translate="yes" xml:space="preserve">
           <source>ECC Level : M</source>
-          <target state="translated" state-qualifier="mt-suggestion">ECC のレベル: M</target>
+          <target state="translated">ECC のレベル: M</target>
         </trans-unit>
         <trans-unit id="optECL_Q.Text" translate="yes" xml:space="preserve">
           <source>ECC Level : Q</source>
-          <target state="translated" state-qualifier="mt-suggestion">ECC のレベル: Q</target>
+          <target state="translated">ECC のレベル: Q</target>
         </trans-unit>
         <trans-unit id="optECL_H.Text" translate="yes" xml:space="preserve">
           <source>ECC Level : H</source>
-          <target state="translated" state-qualifier="mt-suggestion">ECC のレベル: H</target>
+          <target state="translated">ECC のレベル: H</target>
         </trans-unit>
         <trans-unit id="optUsingDialog.Label" translate="yes" xml:space="preserve">
           <source>Using Dialog</source>
-          <target state="translated" state-qualifier="mt-suggestion">ダイアログを使用してください。</target>
+          <target state="translated">ダイアログを使用してください。</target>
         </trans-unit>
         <trans-unit id="edQR.Header" translate="yes" xml:space="preserve">
           <source>Text [Max=984]:</source>
-          <target state="translated" state-qualifier="mt-suggestion">本文 [Max = 984]。</target>
+          <target state="translated">本文 [Max = 984]。</target>
         </trans-unit>
         <trans-unit id="edQR.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Input text at here</source>
-          <target state="translated" state-qualifier="mt-suggestion">ここにテキストを入力</target>
+          <target state="translated">ここにテキストを入力</target>
         </trans-unit>
         <trans-unit id="optPrefix.Text" translate="yes" xml:space="preserve">
           <source>Add Prefix to BASE64</source>
-          <target state="translated" state-qualifier="mt-suggestion">BASE64 にプレフィックスを追加します。</target>
+          <target state="translated">BASE64 にプレフィックスを追加します。</target>
         </trans-unit>
         <trans-unit id="optLineBreak.Text" translate="yes" xml:space="preserve">
           <source>Line Break</source>
-          <target state="translated" state-qualifier="mt-suggestion">改行</target>
+          <target state="translated">改行</target>
         </trans-unit>
         <trans-unit id="optFmtPng.Text" translate="yes" xml:space="preserve">
           <source>PNG Image File</source>
-          <target state="translated" state-qualifier="mt-suggestion">PNG 画像ファイル</target>
+          <target state="translated">PNG 画像ファイル</target>
         </trans-unit>
         <trans-unit id="optFmtJpg.Text" translate="yes" xml:space="preserve">
           <source>JPG Image File</source>
-          <target state="translated" state-qualifier="mt-suggestion">JPG 画像ファイル</target>
+          <target state="translated">JPG 画像ファイル</target>
         </trans-unit>
         <trans-unit id="optFmtBmp.Text" translate="yes" xml:space="preserve">
           <source>BMP Image File</source>
-          <target state="translated" state-qualifier="mt-suggestion">BMP イメージ ファイル</target>
+          <target state="translated">BMP イメージ ファイル</target>
         </trans-unit>
         <trans-unit id="optFmtGif.Text" translate="yes" xml:space="preserve">
           <source>GIF Image File</source>
-          <target state="translated" state-qualifier="mt-suggestion">GIF 画像ファイル</target>
+          <target state="translated">GIF 画像ファイル</target>
         </trans-unit>
         <trans-unit id="optFmtTif.Text" translate="yes" xml:space="preserve">
           <source>TIF Image File</source>
-          <target state="translated" state-qualifier="mt-suggestion">TIF イメージ ファイル</target>
+          <target state="translated">TIF イメージ ファイル</target>
         </trans-unit>
         <trans-unit id="btnImageQRCode.Label" translate="yes" xml:space="preserve">
           <source>Image to QRCode</source>
-          <target state="translated" state-qualifier="mt-suggestion">QR コードにイメージ</target>
+          <target state="translated">QR コードにイメージ</target>
         </trans-unit>
         <trans-unit id="btnImageOneD.Label" translate="yes" xml:space="preserve">
           <source>Image to 1D Barcode</source>
-          <target state="translated" state-qualifier="mt-suggestion">1D バーコード イメージ</target>
+          <target state="translated">1D バーコード イメージ</target>
         </trans-unit>
         <trans-unit id="edBase64.Header" translate="yes" xml:space="preserve">
           <source>BASE64</source>
-          <target state="translated" state-qualifier="mt-suggestion">BASE64</target>
+          <target state="translated">BASE64</target>
         </trans-unit>
         <trans-unit id="edBase64.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Input text at here</source>
-          <target state="translated" state-qualifier="mt-suggestion">ここにテキストを入力</target>
+          <target state="translated">ここにテキストを入力</target>
         </trans-unit>
         <trans-unit id="btnOk.Content" translate="yes" xml:space="preserve">
           <source>OK</source>
-          <target state="translated" state-qualifier="mt-suggestion">決定する</target>
+          <target state="translated">決定する</target>
         </trans-unit>
         <trans-unit id="btnCancel.Content" translate="yes" xml:space="preserve">
           <source>Cancel</source>
-          <target state="translated" state-qualifier="mt-suggestion">キャンセル</target>
+          <target state="translated">キャンセル</target>
         </trans-unit>
         <trans-unit id="optURL.Text" translate="yes" xml:space="preserve">
           <source>URL</source>
-          <target state="translated" state-qualifier="mt-suggestion">URL</target>
+          <target state="translated">URL</target>
         </trans-unit>
         <trans-unit id="optBase64.Text" translate="yes" xml:space="preserve">
           <source>BASE64</source>
-          <target state="translated" state-qualifier="mt-suggestion">BASE64</target>
+          <target state="translated">BASE64</target>
         </trans-unit>
         <trans-unit id="optUUE.Text" translate="yes" xml:space="preserve">
-          <source>UUE</source>
-          <target state="translated" state-qualifier="mt-suggestion">UUE</target>
+          <source>UUEncode</source>
+          <target state="translated">UUEncode</target>
         </trans-unit>
         <trans-unit id="optXXE.Text" translate="yes" xml:space="preserve">
-          <source>XXE</source>
-          <target state="translated" state-qualifier="mt-suggestion">XXE</target>
+          <source>XXEncode</source>
+          <target state="translated">XXEncode</target>
         </trans-unit>
         <trans-unit id="optQuoted.Text" translate="yes" xml:space="preserve">
           <source>Quoted Printable</source>
@@ -680,7 +680,7 @@
         </trans-unit>
         <trans-unit id="optRaw.Text" translate="yes" xml:space="preserve">
           <source>RAW</source>
-          <target state="translated">RAW</target>
+          <target state="translated">RAW (\xHH)</target>
         </trans-unit>
         <trans-unit id="optThunder.Text" translate="yes" xml:space="preserve">
           <source>Thunder</source>
@@ -688,7 +688,7 @@
         </trans-unit>
         <trans-unit id="optFlashGet.Text" translate="yes" xml:space="preserve">
           <source>FlashGet</source>
-          <target state="translated" state-qualifier="mt-suggestion">FlashGet</target>
+          <target state="translated">FlashGet</target>
         </trans-unit>
         <trans-unit id="optLangUTF8.Text" translate="yes" xml:space="preserve">
           <source>UTF-8</source>
@@ -716,103 +716,103 @@
         </trans-unit>
         <trans-unit id="btnSrcQRCode.Label" translate="yes" xml:space="preserve">
           <source>Input to QRCode</source>
-          <target state="translated" state-qualifier="mt-suggestion">QR コードを入力</target>
+          <target state="translated">QR コードを入力</target>
         </trans-unit>
         <trans-unit id="btnDstQRCode.Label" translate="yes" xml:space="preserve">
           <source>Output to QRCode</source>
-          <target state="translated" state-qualifier="mt-suggestion">QR コード出力</target>
+          <target state="translated">QR コード出力</target>
         </trans-unit>
         <trans-unit id="edDst.Header" translate="yes" xml:space="preserve">
           <source>Output</source>
-          <target state="translated" state-qualifier="mt-suggestion">出力</target>
+          <target state="translated">出力</target>
         </trans-unit>
         <trans-unit id="edDst.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Here is output</source>
-          <target state="translated" state-qualifier="mt-suggestion">ここでは、出力です。</target>
+          <target state="translated">ここでは、出力です。</target>
         </trans-unit>
         <trans-unit id="NvMainNavigationViewPaneTitle" translate="yes" xml:space="preserve">
           <source>String Encoding &amp; Decoding</source>
-          <target state="translated" state-qualifier="mt-suggestion">&amp;デコード エンコード文字列</target>
+          <target state="translated">&amp;デコード エンコード文字列</target>
         </trans-unit>
         <trans-unit id="btnShare.Label" translate="yes" xml:space="preserve">
           <source>Share</source>
-          <target state="translated" state-qualifier="mt-suggestion">共有</target>
+          <target state="translated">共有</target>
         </trans-unit>
         <trans-unit id="Count" translate="yes" xml:space="preserve">
           <source>Count</source>
-          <target state="translated" state-qualifier="mt-suggestion">カウント</target>
+          <target state="translated">カウント</target>
         </trans-unit>
         <trans-unit id="Image File" translate="yes" xml:space="preserve">
           <source>Image File</source>
-          <target state="translated" state-qualifier="mt-suggestion">イメージ ファイル</target>
+          <target state="translated">イメージ ファイル</target>
         </trans-unit>
         <trans-unit id="Text File" translate="yes" xml:space="preserve">
           <source>Text File</source>
-          <target state="translated" state-qualifier="mt-suggestion">テキスト ファイル</target>
+          <target state="translated">テキスト ファイル</target>
         </trans-unit>
         <trans-unit id="edContactTel.Header" translate="yes" xml:space="preserve">
           <source>Telephone</source>
-          <target state="translated" state-qualifier="mt-suggestion">電話</target>
+          <target state="translated">電話</target>
         </trans-unit>
         <trans-unit id="edContactAdr.Header" translate="yes" xml:space="preserve">
           <source>Address</source>
-          <target state="translated" state-qualifier="mt-suggestion">アドレス</target>
+          <target state="translated">アドレス</target>
         </trans-unit>
         <trans-unit id="edContactAdrPostal.Header" translate="yes" xml:space="preserve">
           <source>Postal</source>
-          <target state="translated" state-qualifier="mt-suggestion">郵便</target>
+          <target state="translated">郵便</target>
         </trans-unit>
         <trans-unit id="optLangDefault.Text" translate="yes" xml:space="preserve">
           <source>Default</source>
-          <target state="translated" state-qualifier="mt-suggestion">デフォルト</target>
+          <target state="translated">デフォルト</target>
         </trans-unit>
         <trans-unit id="UIThemeSwitch.Header" translate="yes" xml:space="preserve">
           <source>Theme Toggle</source>
-          <target state="translated" state-qualifier="mt-suggestion">テーマを選択</target>
+          <target state="translated">テーマを選択</target>
         </trans-unit>
         <trans-unit id="UILanguageSwitch.Header" translate="yes" xml:space="preserve">
           <source>Language Select</source>
-          <target state="translated" state-qualifier="mt-suggestion">言語の選択</target>
+          <target state="translated">言語の選択</target>
         </trans-unit>
         <trans-unit id="UIThemeSwitch.OffContent" translate="yes" xml:space="preserve">
           <source>Light Theme</source>
-          <target state="translated" state-qualifier="mt-suggestion">光のテーマ</target>
+          <target state="translated">光のテーマ</target>
         </trans-unit>
         <trans-unit id="UIThemeSwitch.OnContent" translate="yes" xml:space="preserve">
           <source>Dark Theme</source>
-          <target state="translated" state-qualifier="mt-suggestion">暗いテーマ</target>
+          <target state="translated">暗いテーマ</target>
         </trans-unit>
         <trans-unit id="edWifiEncyptoNONE.Content" translate="yes" xml:space="preserve">
           <source>No Pass</source>
-          <target state="translated" state-qualifier="mt-suggestion">いいえパスなし</target>
+          <target state="translated">いいえパスなし</target>
         </trans-unit>
         <trans-unit id="edWifiEncyptoWEP.Content" translate="yes" xml:space="preserve">
           <source>WEP</source>
-          <target state="translated" state-qualifier="mt-suggestion">WEP</target>
+          <target state="translated">WEP</target>
         </trans-unit>
         <trans-unit id="edWifiEncyptoWPA.Content" translate="yes" xml:space="preserve">
           <source>WPA/WPA2</source>
-          <target state="translated" state-qualifier="mt-suggestion">WPA/WPA2</target>
+          <target state="translated">WPA/WPA2</target>
         </trans-unit>
         <trans-unit id="UILanguageCHS.Content" translate="yes" xml:space="preserve">
           <source>Chinese Simplified</source>
-          <target state="translated" state-qualifier="mt-suggestion">簡体字中国語</target>
+          <target state="translated">簡体字中国語</target>
         </trans-unit>
         <trans-unit id="UILanguageCHT.Content" translate="yes" xml:space="preserve">
           <source>Chinese Traditional</source>
-          <target state="translated" state-qualifier="mt-suggestion">繁体字中国語</target>
+          <target state="translated">繁体字中国語</target>
         </trans-unit>
         <trans-unit id="UILanguageDefault.Content" translate="yes" xml:space="preserve">
           <source>Default</source>
-          <target state="translated" state-qualifier="mt-suggestion">デフォルト</target>
+          <target state="translated">デフォルト</target>
         </trans-unit>
         <trans-unit id="UILanguageEN.Content" translate="yes" xml:space="preserve">
           <source>English</source>
-          <target state="translated" state-qualifier="mt-suggestion">英語</target>
+          <target state="translated">英語</target>
         </trans-unit>
         <trans-unit id="UILanguageJA.Content" translate="yes" xml:space="preserve">
           <source>Japanese</source>
-          <target state="translated" state-qualifier="mt-suggestion">日本語</target>
+          <target state="translated">日本語</target>
         </trans-unit>
         <trans-unit id="edSrcContent.Header" translate="yes" xml:space="preserve">
           <source>Content</source>

@@ -667,12 +667,12 @@
           <target state="translated">BASE64</target>
         </trans-unit>
         <trans-unit id="optUUE.Text" translate="yes" xml:space="preserve">
-          <source>UUE</source>
-          <target state="translated">UUE</target>
+          <source>UUEncode</source>
+          <target state="translated">UUEncode編碼</target>
         </trans-unit>
         <trans-unit id="optXXE.Text" translate="yes" xml:space="preserve">
-          <source>XXE</source>
-          <target state="translated">XXE</target>
+          <source>XXEncode</source>
+          <target state="translated">XXEncode編碼</target>
         </trans-unit>
         <trans-unit id="optQuoted.Text" translate="yes" xml:space="preserve">
           <source>Quoted Printable</source>
@@ -680,7 +680,7 @@
         </trans-unit>
         <trans-unit id="optRaw.Text" translate="yes" xml:space="preserve">
           <source>RAW</source>
-          <target state="translated">RAW</target>
+          <target state="translated">RAW (\xHH)</target>
         </trans-unit>
         <trans-unit id="optThunder.Text" translate="yes" xml:space="preserve">
           <source>Thunder</source>

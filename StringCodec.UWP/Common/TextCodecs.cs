@@ -82,7 +82,6 @@ namespace StringCodec.UWP.Common
 
                 return (result);
             }
-
         }
 
         static public class URL
@@ -224,7 +223,6 @@ namespace StringCodec.UWP.Common
 
                 return (result);
             }
-
         }
 
         static public class HTML
@@ -345,8 +343,62 @@ namespace StringCodec.UWP.Common
             {
                 string result = string.Empty;
 
-                var contents = enc.GetString(text);
-                result = Uri.EscapeDataString(contents);
+                var contents = new List<char>();
+
+                var t = text.ToList();
+
+                var m = t.Count % 3;
+                if (m == 1)
+                    t.AddRange(new byte[2] { 0, 0 });
+                else if (m == 2)
+                    t.Add(0);
+
+                int i = 0;
+                while (i < t.Count)
+                {
+                    //var c = new byte[3]{ text[i], i+1<text.Length ? text[i+1] : (byte)'0', i + 2 < text.Length ? text[i+2] : (byte)'0' };
+                    var c = new byte[3]{ t[i], t[i+1], t[i+2] };
+                    //var ec = new char[4]
+                    //{
+                    //    (char)(c[0] / 4 + 32),
+                    //    (char)(c[0] % 4 * 16 + c[1] / 16 + 32),
+                    //    (char)(c[1] % 16 * 4 + c[2] / 64 + 32),
+                    //    (char)(c[2] % 64 + 32)
+                    //};
+                    var ec = new char[4]
+                    {
+                        (char)((c[0] >> 2) + 32),
+                        (char)((((c[0] << 6 & 0xFF) >> 2) | (c[1] >> 4)) + 32),
+                        (char)((((c[1] << 4 & 0xFF) >> 2) | (c[2] >> 6)) + 32),
+                        (char)(((c[2] << 2 & 0xFF) >> 2) + 32)
+                    };
+
+                    if (ec[0] == 32) ec[0] = (char)96;
+                    if (ec[1] == 32) ec[1] = (char)96;
+                    if (ec[2] == 32) ec[2] = (char)96;
+                    if (ec[3] == 32) ec[3] = (char)96;
+
+                    contents.AddRange(ec);
+
+                    i += 3;
+                }
+
+                var lines = new List<string>();
+                i = 0;
+                int total = contents.Count();
+                while (i < total)
+                {
+                    var line = contents.Skip(i).Take(60);
+                    var count = line.Count();
+                    if ( count == 60)
+                        lines.Add($"M{string.Join("", line)}");
+                    else
+                        lines.Add($"{(char)(count/4*3+32)}{string.Join("", line)}");
+
+                    i += 60;
+                }
+
+                result = string.Join(Environment.NewLine, lines);
 
                 return (result);
             }
@@ -355,7 +407,9 @@ namespace StringCodec.UWP.Common
             {
                 string result = string.Empty;
 
-                result = Uri.EscapeDataString(text);
+                var bytes = enc.GetBytes(text);
+                if (bytes is byte[] && bytes.Length > 0)
+                    result = Encode(bytes, enc, LineBreak);
 
                 return (result);
             }
@@ -369,11 +423,35 @@ namespace StringCodec.UWP.Common
             {
                 string result = string.Empty;
 
-                result = Uri.UnescapeDataString(text);
+                var t = new List<char>();
+                foreach (var l in text.Split(LINEBREAK, StringSplitOptions.None))
+                {
+                    if (l.Trim().StartsWith("begin", StringComparison.CurrentCultureIgnoreCase)) continue;
+                    else if (l.Trim().StartsWith("end", StringComparison.CurrentCultureIgnoreCase)) continue;
+                    t.AddRange(l.Substring(1).ToArray());
+                }
+                var dt = new List<byte>();
+                for (int i = 0; i < t.Count(); i += 4)
+                {
+                    var c = new byte[4]{ (byte)(t[i]-32), (byte)(t[i+1]-32), (byte)(t[i+2]-32), (byte)(t[i+3]-32) };
+                    if (c[0] == 64) c[0] = 0;
+                    if (c[1] == 64) c[1] = 0;
+                    if (c[2] == 64) c[2] = 0;
+                    if (c[3] == 64) c[3] = 0;
+
+                    var dc = new byte[3]
+                    {
+                        (byte)((c[0] << 2) | ((c[1] >> 4) & 0x03)),
+                        (byte)((c[1] << 4) | ((c[2] >> 2) & 0x0F)),
+                        (byte)((c[2] << 6) | (c[3]  & 0x3F))
+                    };
+
+                    dt.AddRange(dc);
+                }
+                result = enc.GetString(dt.ToArray()).TrimEnd('\0');
 
                 return (result);
             }
-
         }
 
         static public class XXE
@@ -571,7 +649,6 @@ namespace StringCodec.UWP.Common
                 result = Regex.Replace(url, @"^AA(.*?)ZZ$", "$1", RegexOptions.IgnoreCase | RegexOptions.Multiline);
                 return (result);
             }
-
         }
 
         static public class FLASHGET

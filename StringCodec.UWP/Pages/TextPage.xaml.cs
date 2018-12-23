@@ -50,10 +50,13 @@ namespace StringCodec.UWP.Pages
 
             optURL.IsChecked = true;
             optLangUTF8.IsChecked = true;
-            optWrapText.IsChecked = false;
 
-            optUUE.Visibility = Visibility.Collapsed;
-            optUUE.IsEnabled = false;
+            optWrapText.IsChecked = true;
+            edSrc.TextWrapping = TextWrapping.Wrap;
+            edDst.TextWrapping = TextWrapping.Wrap;
+
+            //optUUE.Visibility = Visibility.Collapsed;
+            //optUUE.IsEnabled = false;
             optXXE.Visibility = Visibility.Collapsed;
             optXXE.IsEnabled = false;
             //optQuoted.Visibility = Visibility.Collapsed;
