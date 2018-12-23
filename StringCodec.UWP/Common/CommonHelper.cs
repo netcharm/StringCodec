@@ -2176,6 +2176,8 @@ namespace StringCodec.UWP.Common
 
                 // 在用户完成更改并调用CompleteUpdatesAsync之前，阻止对文件的更新
                 CachedFileManager.DeferUpdates(TargetFile);
+                if (ext.Equals(".uue", StringComparison.CurrentCultureIgnoreCase) || ext.Equals(".xxe", StringComparison.CurrentCultureIgnoreCase))
+                    content = $"begin 644 {TargetFile.Name}{Environment.NewLine}{content}{Environment.NewLine}end";
                 await FileIO.WriteBytesAsync(TargetFile, enc.GetBytes(content));
                 //await FileIO.WriteTextAsync(TargetFile, content);
                 FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(TargetFile);
@@ -2185,7 +2187,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        public static async Task<string> ShowSaveDialog(byte[] content, string ext)
+        public static async Task<string> ShowSaveDialog(byte[] content, string ext, Encoding enc)
         {
             string result = string.Empty;
 
@@ -2205,8 +2207,19 @@ namespace StringCodec.UWP.Common
                 StorageApplicationPermissions.FutureAccessList.Add(TargetFile, TargetFile.Name);
 
                 // 在用户完成更改并调用CompleteUpdatesAsync之前，阻止对文件的更新
+                byte[] header;
+                byte[] footer;
+                byte[] body;
+                if (ext.Equals(".uue", StringComparison.CurrentCultureIgnoreCase) || ext.Equals(".xxe", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    header = enc.GetBytes($"begin 644 {TargetFile.Name}{Environment.NewLine}");
+                    footer = enc.GetBytes($"{Environment.NewLine}end");
+                    body = header.Concat(content).Concat(footer).ToArray();
+                }
+                else body = content;
+
                 CachedFileManager.DeferUpdates(TargetFile);
-                await FileIO.WriteBytesAsync(TargetFile, content);
+                await FileIO.WriteBytesAsync(TargetFile, body);
                 FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(TargetFile);
 
                 result = TargetFile.Name;
