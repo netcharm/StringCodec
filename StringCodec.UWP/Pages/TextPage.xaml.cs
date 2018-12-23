@@ -57,8 +57,8 @@ namespace StringCodec.UWP.Pages
 
             //optUUE.Visibility = Visibility.Collapsed;
             //optUUE.IsEnabled = false;
-            optXXE.Visibility = Visibility.Collapsed;
-            optXXE.IsEnabled = false;
+            //optXXE.Visibility = Visibility.Collapsed;
+            //optXXE.IsEnabled = false;
             //optQuoted.Visibility = Visibility.Collapsed;
             //optQuoted.IsEnabled = false;
 

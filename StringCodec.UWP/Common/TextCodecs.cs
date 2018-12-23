@@ -456,14 +456,26 @@ namespace StringCodec.UWP.Common
 
         static public class XXE
         {
+            static private string maps = "+-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            static private Dictionary<char, byte> rmaps = new Dictionary<char, byte>();
+
             static public string Encode(byte[] text, Encoding enc, bool LineBreak = false)
             {
                 string result = string.Empty;
 
-                if (text is byte[] && text.Length > 0)
+                var uue = UUE.Encode(text, enc, LineBreak);
+
+                if (!string.IsNullOrEmpty(uue))
                 {
-                    var contents = enc.GetString(text);
-                    result = Uri.EscapeDataString(contents);
+                    var xxe = uue.ToArray();
+                    for (int i = 0; i< xxe.Length; i++)
+                    {
+                        if (xxe[i] == '\r' || xxe[i] == '\n') continue;
+                        xxe[i] = (char)(xxe[i] - 32);
+                        if (xxe[i] == 64) xxe[i] = (char)0;
+                        xxe[i] = (char)(maps[xxe[i]]);
+                    }
+                    result = string.Join("", xxe);
                 }
 
                 return (result);
@@ -473,7 +485,9 @@ namespace StringCodec.UWP.Common
             {
                 string result = string.Empty;
 
-                result = Uri.EscapeDataString(text);
+                var bytes = enc.GetBytes(text);
+                if (bytes is byte[] && bytes.Length > 0)
+                    result = Encode(bytes, enc, LineBreak);
 
                 return (result);
             }
@@ -487,7 +501,35 @@ namespace StringCodec.UWP.Common
             {
                 string result = string.Empty;
 
-                result = Uri.UnescapeDataString(text);
+                if (!string.IsNullOrEmpty(text))
+                {
+                    if (rmaps.Count() == 0)
+                    {
+                        for (int i = 0; i < maps.Length; i++)
+                        {
+                            rmaps.Add(maps[i], (byte)i);
+                        }
+                    }
+
+                    var lines = text.Split(LINEBREAK, StringSplitOptions.None);
+                    var t = new List<string>();
+                    foreach(var l in lines)
+                    {
+                        if (l.Trim().StartsWith("begin", StringComparison.CurrentCultureIgnoreCase)) continue;
+                        else if (l.Trim().StartsWith("end", StringComparison.CurrentCultureIgnoreCase)) continue;
+                        t.Add(l);
+                    }
+
+                    var xxe = string.Join(Environment.NewLine, t).ToArray();
+                    for (int i = 0; i < xxe.Length; i++)
+                    {
+                        if (xxe[i] == '\r' || xxe[i] == '\n') continue;
+                        xxe[i] = (char)(rmaps[xxe[i]]);
+                        if (xxe[i] == 0) xxe[i] = (char)64;
+                        xxe[i] = (char)(xxe[i] + 32);
+                    }
+                    result = UUE.Decode(string.Join("", xxe), enc);
+                }
 
                 return (result);
             }
