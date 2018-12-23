@@ -1427,7 +1427,7 @@ namespace StringCodec.UWP.Common
         #endregion
 
         #region Helper Routines
-        public static int LoadUILanguage(string lang)
+        private static KeyValuePair<int, string> DetectLanguage(string lang)
         {
             var LanguageIndex = 0;
 
@@ -1453,15 +1453,34 @@ namespace StringCodec.UWP.Common
                     LanguageIndex = 0;
                     break;
             }
+
             var langs = GlobalizationPreferences.Languages;
             var cl = langs.First().Split("-");
 
-            if (LanguageIndex == 0)
-                lang = $"{cl[0]}-{cl[1]}";
+            if (LanguageIndex == 0 && cl.Length > 0)
+                lang = cl.Length > 1 ? $"{cl[0]}-{cl[1]}" : $"{cl[0]}";
 
-            ApplicationLanguages.PrimaryLanguageOverride = lang;
+            return (new KeyValuePair<int, string>(LanguageIndex, lang));
+        }
 
-            return (LanguageIndex);
+        public static int LoadUILanguage(string lang)
+        {
+            try
+            {
+                var syslang = DetectLanguage(lang);
+
+                var LanguageIndex = syslang.Key;
+                var LanguageValue = syslang.Value;
+
+                ApplicationLanguages.PrimaryLanguageOverride = LanguageValue;
+
+                return (LanguageIndex);
+            }
+            catch(Exception)
+            {
+                ApplicationLanguages.PrimaryLanguageOverride = GlobalizationPreferences.Languages.First();
+                return (0);
+            }
         }
 
         public static async Task<int> SaveUILanguage(string lang)
@@ -1471,43 +1490,28 @@ namespace StringCodec.UWP.Common
 
         public static async Task<int> SetUILanguage(string lang, bool save = false)
         {
-            var LanguageIndex = 0;
-            switch (lang.ToLower())
+            try
             {
-                case "default":
-                    LanguageIndex = 0;
-                    break;
-                case "en-us":
-                    LanguageIndex = 1;
-                    break;
-                case "zh-hans":
-                    LanguageIndex = 2;
-                    break;
-                case "zh-hant":
-                    LanguageIndex = 3;
-                    break;
-                case "ja":
-                    LanguageIndex = 4;
-                    break;
-                default:
-                    LanguageIndex = 0;
-                    break;
+                var syslang = DetectLanguage(lang);
+
+                var LanguageIndex = syslang.Key;
+                var LanguageValue = syslang.Value;
+
+                ApplicationLanguages.PrimaryLanguageOverride = LanguageValue;
+
+                if (save)
+                {
+                    Set("UILanguage", lang);
+                    await new MessageDialog("Language will be changed on next startup".T(), "INFO".T()).ShowAsync();
+                }
+
+                return (LanguageIndex);
             }
-            var langs = GlobalizationPreferences.Languages;
-            var cl = langs.First().Split("-");
-
-            if (LanguageIndex == 0)
-                lang = $"{cl[0]}-{cl[1]}";
-
-            ApplicationLanguages.PrimaryLanguageOverride = lang;
-
-            if (save)
+            catch(Exception)
             {
-                Set("UILanguage", lang);
-                await new MessageDialog("Language will be changed on next startup".T(), "INFO".T()).ShowAsync();
+                ApplicationLanguages.PrimaryLanguageOverride = GlobalizationPreferences.Languages.First();
+                return (0);
             }
-
-            return (LanguageIndex);
         }
 
         public static string GetUILanguage()
