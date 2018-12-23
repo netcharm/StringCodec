@@ -115,11 +115,27 @@
                 <AppBarButton.KeyboardAccelerators>
                     <KeyboardAccelerator Key="F2" />
                 </AppBarButton.KeyboardAccelerators>
+                <AppBarButton.ContextFlyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem x:Name="MenuEncodeLoadFile" x:Uid="menuSrcLoadFile" Text="Load From File" Icon="OpenLocal" Click="AppBarButton_Click"/>
+                        <MenuFlyoutSeparator/>
+                        <MenuFlyoutItem x:Name="MenuEncodeFromFile" x:Uid="menuEncodeFromFile" Text="Encode From File" Icon="OpenFile" Click="AppBarButton_Click"/>
+                        <MenuFlyoutItem x:Name="MenuEncodeToFile" x:Uid="menuEncodeToFile" Text="Encode To File" Icon="SaveLocal" Click="AppBarButton_Click"/>
+                    </MenuFlyout>
+                </AppBarButton.ContextFlyout>
             </AppBarButton>
             <AppBarButton x:Name="btnDecode" x:Uid="btnDecode" Label="Decode" Icon="Read" VerticalAlignment="Center" Click="AppBarButton_Click" >
                 <AppBarButton.KeyboardAccelerators>
                     <KeyboardAccelerator Key="F3" />
                 </AppBarButton.KeyboardAccelerators>
+                <AppBarButton.ContextFlyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem x:Name="MenuDecodeLoadFile" x:Uid="menuSrcLoadFile" Text="Load From File" Icon="OpenLocal" Click="AppBarButton_Click"/>
+                        <MenuFlyoutSeparator/>
+                        <MenuFlyoutItem x:Name="MenuDecodeFromFile" x:Uid="menuDecodeFromFile" Text="Decode From File" Icon="OpenFile" Click="AppBarButton_Click"/>
+                        <MenuFlyoutItem x:Name="MenuDecodeToFile" x:Uid="menuDecodeToFile" Text="Decode To File" Icon="SaveLocal" Click="AppBarButton_Click"/>
+                    </MenuFlyout>
+                </AppBarButton.ContextFlyout>
             </AppBarButton>
             <AppBarButton x:Name="btnCaseConvert" x:Uid="btnCaseConvert" Label="Convert" VerticalAlignment="Center" >
                 <AppBarButton.Icon>
@@ -216,6 +232,14 @@
                         <FontIcon Glyph="&#xF029;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
                     </AppBarButton.Icon>
                 </AppBarButton>
+                <AppBarSeparator />
+                <AppBarButton x:Name="btnEncodeLoadFile" x:Uid="btnSrcLoadFile" Label="Load From File" Icon="OpenLocal" Click="AppBarButton_Click"/>
+                <AppBarSeparator />
+                <AppBarButton x:Name="btnEncodeFromFile" x:Uid="btnEncodeFromFile" Label="Encode From File" Icon="OpenFile" Click="AppBarButton_Click"/>
+                <AppBarButton x:Name="btnEncodeToFile" x:Uid="btnEncodeToFile" Label="Encode To File" Icon="SaveLocal" Click="AppBarButton_Click"/>
+                <AppBarSeparator />
+                <AppBarButton x:Name="btnDecodeFromFile" x:Uid="btnDecodeFromFile" Label="Decode From File" Icon="OpenFile" Click="AppBarButton_Click"/>
+                <AppBarButton x:Name="btnDecodeToFile" x:Uid="btnDecodeToFile" Label="Decode To File" Icon="SaveLocal" Click="AppBarButton_Click"/>
                 <AppBarSeparator />
                 <AppBarToggleButton x:Name="optWrapText" x:Uid="optWrapText" Label="Wrap Text" Click="OptWrap_Click" >
                     <AppBarToggleButton.KeyboardAccelerators>

@@ -1098,4 +1098,34 @@
   <data name="optTailBlank.Text" xml:space="preserve">
     <value>Remove Tail Blanks</value>
   </data>
+  <data name="btnDecodeFromFile.Label" xml:space="preserve">
+    <value>Decode From File</value>
+  </data>
+  <data name="btnDecodeToFile.Label" xml:space="preserve">
+    <value>Decode To File</value>
+  </data>
+  <data name="btnEncodeFromFile.Label" xml:space="preserve">
+    <value>Encode From File</value>
+  </data>
+  <data name="btnEncodeToFile.Label" xml:space="preserve">
+    <value>Encode To File</value>
+  </data>
+  <data name="btnSrcLoadFile.Label" xml:space="preserve">
+    <value>Load From File</value>
+  </data>
+  <data name="menuDecodeFromFile.Text" xml:space="preserve">
+    <value>Decode From File</value>
+  </data>
+  <data name="menuDecodeToFile.Text" xml:space="preserve">
+    <value>Decode To File</value>
+  </data>
+  <data name="menuEncodeFromFile.Text" xml:space="preserve">
+    <value>Encode From File</value>
+  </data>
+  <data name="menuEncodeToFile.Text" xml:space="preserve">
+    <value>Encode To File</value>
+  </data>
+  <data name="menuSrcLoadFile.Text" xml:space="preserve">
+    <value>Load From File</value>
+  </data>
 </root>

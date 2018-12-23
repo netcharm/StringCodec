@@ -2111,7 +2111,51 @@ namespace StringCodec.UWP.Common
             return 0;
         }
 
+        public static async Task<string> ShowOpenDialog(Encoding enc, string ext)
+        {
+            string result = string.Empty;
+
+            var bytes = await ShowOpenDialog(ext);
+            if (bytes is byte[] && bytes.Length > 0)
+                result = enc.GetString(bytes);
+
+            return (result);
+        }
+
+        public static async Task<byte[]> ShowOpenDialog(string ext)
+        {
+            byte[] result = null;
+
+            var now = DateTime.Now;
+            FileOpenPicker fp = new FileOpenPicker();
+            fp.SuggestedStartLocation = PickerLocationId.Desktop;
+            fp.FileTypeFilter.Add(ext);
+            fp.FileTypeFilter.Add(".txt");
+
+            StorageFile TargetFile = await fp.PickSingleFileAsync();
+            if (TargetFile != null)
+            {
+                StorageApplicationPermissions.MostRecentlyUsedList.Add(TargetFile, TargetFile.Name);
+                if (StorageApplicationPermissions.FutureAccessList.Entries.Count >= 1000)
+                    StorageApplicationPermissions.FutureAccessList.Remove(StorageApplicationPermissions.FutureAccessList.Entries.Last().Token);
+                StorageApplicationPermissions.FutureAccessList.Add(TargetFile, TargetFile.Name);
+
+                // 在用户完成更改并调用CompleteUpdatesAsync之前，阻止对文件的更新
+                CachedFileManager.DeferUpdates(TargetFile);
+                var content = await FileIO.ReadBufferAsync(TargetFile);
+                result = content.ToArray();
+                //await FileIO.WriteTextAsync(TargetFile, content);
+                FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(TargetFile);
+            }
+            return (result);
+        }
+
         public static async Task<string> ShowSaveDialog(string content)
+        {
+            return (await ShowSaveDialog(content, Encoding.Default, ".txt"));
+        }
+
+        public static async Task<string> ShowSaveDialog(string content, Encoding enc, string ext)
         {
             string result = string.Empty;
 
@@ -2120,8 +2164,8 @@ namespace StringCodec.UWP.Common
             var now = DateTime.Now;
             FileSavePicker fp = new FileSavePicker();
             fp.SuggestedStartLocation = PickerLocationId.Desktop;
-            fp.FileTypeChoices.Add("Text File".T(), new List<string>() { ".txt" });
-            fp.SuggestedFileName = $"{now.ToString("yyyyMMddHHmmssff")}.txt";
+            fp.FileTypeChoices.Add("Text File".T(), new List<string>() { ext });
+            fp.SuggestedFileName = $"{now.ToString("yyyyMMddHHmmssff")}{ext}";
             StorageFile TargetFile = await fp.PickSaveFileAsync();
             if (TargetFile != null)
             {
@@ -2132,7 +2176,37 @@ namespace StringCodec.UWP.Common
 
                 // 在用户完成更改并调用CompleteUpdatesAsync之前，阻止对文件的更新
                 CachedFileManager.DeferUpdates(TargetFile);
-                await FileIO.WriteTextAsync(TargetFile, content);
+                await FileIO.WriteBytesAsync(TargetFile, enc.GetBytes(content));
+                //await FileIO.WriteTextAsync(TargetFile, content);
+                FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(TargetFile);
+
+                result = TargetFile.Name;
+            }
+            return (result);
+        }
+
+        public static async Task<string> ShowSaveDialog(byte[] content, string ext)
+        {
+            string result = string.Empty;
+
+            if (content.Length <= 0) return (result);
+
+            var now = DateTime.Now;
+            FileSavePicker fp = new FileSavePicker();
+            fp.SuggestedStartLocation = PickerLocationId.Desktop;
+            fp.FileTypeChoices.Add("Text File".T(), new List<string>() { ext });
+            fp.SuggestedFileName = $"{now.ToString("yyyyMMddHHmmssff")}{ext}";
+            StorageFile TargetFile = await fp.PickSaveFileAsync();
+            if (TargetFile != null)
+            {
+                StorageApplicationPermissions.MostRecentlyUsedList.Add(TargetFile, TargetFile.Name);
+                if (StorageApplicationPermissions.FutureAccessList.Entries.Count >= 1000)
+                    StorageApplicationPermissions.FutureAccessList.Remove(StorageApplicationPermissions.FutureAccessList.Entries.Last().Token);
+                StorageApplicationPermissions.FutureAccessList.Add(TargetFile, TargetFile.Name);
+
+                // 在用户完成更改并调用CompleteUpdatesAsync之前，阻止对文件的更新
+                CachedFileManager.DeferUpdates(TargetFile);
+                await FileIO.WriteBytesAsync(TargetFile, content);
                 FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(TargetFile);
 
                 result = TargetFile.Name;

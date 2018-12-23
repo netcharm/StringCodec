@@ -1314,6 +1314,46 @@
           <source>Remove Tail Blanks</source>
           <target state="translated">删除行尾空白</target>
         </trans-unit>
+        <trans-unit id="btnDecodeFromFile.Label" translate="yes" xml:space="preserve">
+          <source>Decode From File</source>
+          <target state="translated">从文件解码</target>
+        </trans-unit>
+        <trans-unit id="btnDecodeToFile.Label" translate="yes" xml:space="preserve">
+          <source>Decode To File</source>
+          <target state="translated">解码到文件</target>
+        </trans-unit>
+        <trans-unit id="btnEncodeFromFile.Label" translate="yes" xml:space="preserve">
+          <source>Encode From File</source>
+          <target state="translated">从文件编码</target>
+        </trans-unit>
+        <trans-unit id="btnEncodeToFile.Label" translate="yes" xml:space="preserve">
+          <source>Encode To File</source>
+          <target state="translated">编码到文件</target>
+        </trans-unit>
+        <trans-unit id="btnSrcLoadFile.Label" translate="yes" xml:space="preserve">
+          <source>Load From File</source>
+          <target state="translated">载入文件</target>
+        </trans-unit>
+        <trans-unit id="menuDecodeFromFile.Text" translate="yes" xml:space="preserve">
+          <source>Decode From File</source>
+          <target state="translated">从文件解码</target>
+        </trans-unit>
+        <trans-unit id="menuDecodeToFile.Text" translate="yes" xml:space="preserve">
+          <source>Decode To File</source>
+          <target state="translated">解码到文件</target>
+        </trans-unit>
+        <trans-unit id="menuEncodeFromFile.Text" translate="yes" xml:space="preserve">
+          <source>Encode From File</source>
+          <target state="translated">从文件编码</target>
+        </trans-unit>
+        <trans-unit id="menuEncodeToFile.Text" translate="yes" xml:space="preserve">
+          <source>Encode To File</source>
+          <target state="translated">编码到文件</target>
+        </trans-unit>
+        <trans-unit id="menuSrcLoadFile.Text" translate="yes" xml:space="preserve">
+          <source>Load From File</source>
+          <target state="translated">载入文件</target>
+        </trans-unit>
       </group>
     </body>
   </file>

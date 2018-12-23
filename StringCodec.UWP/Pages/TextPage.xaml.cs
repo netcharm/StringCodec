@@ -320,6 +320,9 @@ namespace StringCodec.UWP.Pages
 
         private async void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
+            string text = string.Empty;
+            byte[] bytes = null;
+
             if (sender is AppBarButton)
             {
                 var btn = sender as AppBarButton;
@@ -357,6 +360,31 @@ namespace StringCodec.UWP.Pages
                             edDst.Text = await TextCodecs.Decode(edSrc.Text, CURRENT_CODEC, CURRENT_ENC);
                         text_src = edDst.Text;
                         break;
+
+                    case "btnEncodeLoadFile":
+                    case "btnDecodeLoadFile":
+                        //var codecs = new TextCodecs.CODEC[] { TextCodecs.CODEC.BASE64, TextCodecs.CODEC.UUE };
+                        edSrc.Text = await Utils.ShowOpenDialog(CURRENT_ENC, $".{CURRENT_CODEC.ToString().ToLower()}");
+                        break;
+                    case "btnEncodeFromFile":
+                        bytes = await Utils.ShowOpenDialog($".{CURRENT_CODEC.ToString().ToLower()}");
+                        if(bytes is byte[] && bytes.Length>0)
+                            edDst.Text = await TextCodecs.Encode(bytes, CURRENT_CODEC, CURRENT_ENC);
+                        break;
+                    case "btnEncodeToFile":
+                        text = await TextCodecs.Encode(edSrc.Text, CURRENT_CODEC, CURRENT_ENC);
+                        await Utils.ShowSaveDialog(text, CURRENT_ENC, $".{CURRENT_CODEC.ToString().ToLower()}");
+                        break;
+
+                    case "btnDecodeFromFile":
+                        text = await Utils.ShowOpenDialog(Encoding.Default, $".{CURRENT_CODEC.ToString().ToLower()}");
+                        edDst.Text = await TextCodecs.Decode(text, CURRENT_CODEC, CURRENT_ENC);
+                        break;
+                    case "btnDecodeToFile":
+                        text = await TextCodecs.Decode(edSrc.Text, CURRENT_CODEC, CURRENT_ENC);
+                        await Utils.ShowSaveDialog(text, CURRENT_ENC, $".{CURRENT_CODEC.ToString().ToLower()}");
+                        break;
+
                     case "btnCopy":
                         Utils.SetClipboard(edDst.Text);
                         break;
@@ -373,8 +401,36 @@ namespace StringCodec.UWP.Pages
                         break;
                 }
             }
-        }
+            else if (sender is MenuFlyoutItem)
+            {                   
+                var btn = sender as MenuFlyoutItem;
+                switch (btn.Name)
+                {
+                    case "MenuEncodeLoadFile":
+                    case "MenuDecodeLoadFile":
+                        edSrc.Text = await Utils.ShowOpenDialog(CURRENT_ENC, $".{CURRENT_CODEC.ToString().ToLower()}");
+                        break;
+                    case "MenuEncodeFromFile":
+                        bytes = await Utils.ShowOpenDialog($".{CURRENT_CODEC.ToString().ToLower()}");
+                        if (bytes is byte[] && bytes.Length > 0)
+                            edDst.Text = await TextCodecs.Encode(bytes, CURRENT_CODEC, CURRENT_ENC);
+                        break;
+                    case "MenuEncodeToFile":
+                        text = await TextCodecs.Encode(edSrc.Text, CURRENT_CODEC, CURRENT_ENC);
+                        await Utils.ShowSaveDialog(text, CURRENT_ENC, $".{CURRENT_CODEC.ToString().ToLower()}");
+                        break;
 
+                    case "MenuDecodeFromFile":
+                        text = await Utils.ShowOpenDialog(Encoding.Default, $".{CURRENT_CODEC.ToString().ToLower()}");
+                        edDst.Text = await TextCodecs.Decode(text, CURRENT_CODEC, CURRENT_ENC);
+                        break;
+                    case "MenuDecodeToFile":
+                        text = await TextCodecs.Decode(edSrc.Text, CURRENT_CODEC, CURRENT_ENC);
+                        await Utils.ShowSaveDialog(text, CURRENT_ENC, $".{CURRENT_CODEC.ToString().ToLower()}");
+                        break;
+                }
+            }
+        }
         #region Drag/Drop routines
         private bool canDrop = true;
         private async void OnDragEnter(object sender, DragEventArgs e)

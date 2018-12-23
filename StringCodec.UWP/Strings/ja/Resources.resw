@@ -993,4 +993,34 @@
   <data name="optTailBlank.Text" xml:space="preserve">
     <value>行の末尾の空白を削除</value>
   </data>
+  <data name="btnDecodeFromFile.Label" xml:space="preserve">
+    <value>ファイルからデコード</value>
+  </data>
+  <data name="btnDecodeToFile.Label" xml:space="preserve">
+    <value>ファイルへのデコード</value>
+  </data>
+  <data name="btnEncodeFromFile.Label" xml:space="preserve">
+    <value>ファイルからエンコード</value>
+  </data>
+  <data name="btnEncodeToFile.Label" xml:space="preserve">
+    <value>ファイルにエンコード</value>
+  </data>
+  <data name="btnSrcLoadFile.Label" xml:space="preserve">
+    <value>ファイルから読み込む</value>
+  </data>
+  <data name="menuDecodeFromFile.Text" xml:space="preserve">
+    <value>ファイルからデコード</value>
+  </data>
+  <data name="menuDecodeToFile.Text" xml:space="preserve">
+    <value>ファイルへのデコード</value>
+  </data>
+  <data name="menuEncodeFromFile.Text" xml:space="preserve">
+    <value>ファイルからエンコード</value>
+  </data>
+  <data name="menuEncodeToFile.Text" xml:space="preserve">
+    <value>ファイルにエンコード</value>
+  </data>
+  <data name="menuSrcLoadFile.Text" xml:space="preserve">
+    <value>ファイルから読み込む</value>
+  </data>
 </root>
