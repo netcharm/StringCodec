@@ -163,6 +163,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <Content Include="Assets\Fonts\FontAwesome.otf" />
     <None Include="Readme.md" />
     <None Include="StringCodec.UWP_StoreKey.pfx" />
     <None Include="StringCodec.UWP_TemporaryKey.pfx" />
