@@ -1388,6 +1388,7 @@ namespace StringCodec.UWP.Common
 
         public static async void ShowException(this string content, string title)
         {
+            if (string.IsNullOrEmpty(content) || string.IsNullOrEmpty(title)) return;
             await new MessageDialog(content, title).ShowAsync();
         }
     }
@@ -1398,11 +1399,12 @@ namespace StringCodec.UWP.Common
         #region Local Setting Helper
         public static object Get(string key, object value = null)
         {
-            if (AppSetting.ContainsKey(key) && AppSetting[key] != null) return (AppSetting[key]);
+            object result = null;
+
+            if (AppSetting.ContainsKey(key) && AppSetting[key] != null)
+                result = AppSetting[key];
             else if (ApplicationData.Current.LocalSettings.Values.ContainsKey(key))
-            {
-                return ApplicationData.Current.LocalSettings.Values[key];
-            }
+                result = ApplicationData.Current.LocalSettings.Values[key];
             else
             {
                 if (value != null)
@@ -1411,8 +1413,10 @@ namespace StringCodec.UWP.Common
                     //ApplicationData.Current.LocalSettings.Values[key] = value;
                     AppSetting[key] = value;
                 }
-                return (value);
+                result = value;
             }
+
+            return (result);
         }
 
         public static bool Set(string key, object value)
@@ -1520,6 +1524,7 @@ namespace StringCodec.UWP.Common
         }
 
         private static Page rootPage = null;
+
         public static void SetTheme(ElementTheme theme, Page page, bool save = true)
         {
             if (rootPage == null && page == null) return;

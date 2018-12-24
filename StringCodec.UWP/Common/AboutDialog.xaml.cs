@@ -73,9 +73,13 @@ namespace StringCodec.UWP.Common
                 try
                 {
                     // Load the background image and create an image brush from it
-                    logoImage = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Square71x71Logo.scale-150.png"));
+                    //var asset = new Uri("ms-appx:///Assets/Square71x71Logo.scale-150.png");
+                    Uri asset = new Uri("ms-appx:///Assets/AppLogo.png");
+                    if (asset != null && asset is Uri)
+                        logoImage = await CanvasBitmap.LoadAsync(sender, asset);
+                    else logoImage = null;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     ex.Message.T().ShowException("ERROR".T());
                 }
@@ -86,7 +90,7 @@ namespace StringCodec.UWP.Common
         {
             var session = args.DrawingSession;
 
-            if (logoImage is CanvasBitmap)
+            if (logoImage is CanvasBitmap && session is CanvasDrawingSession)
             {
                 try
                 {
