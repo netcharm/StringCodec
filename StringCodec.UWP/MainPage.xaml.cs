@@ -429,7 +429,14 @@ namespace StringCodec.UWP
 
         private void NvMore_Click(object sender, RoutedEventArgs e)
         {
-            Utils.ShowAboutDialog();
+            try
+            {
+                Utils.ShowAboutDialog();
+            }
+            catch(Exception ex)
+            {
+                ex.Message.T().ShowException("ERROR".T());
+            }            
         }
 
         private void NvTheme_Click(object sender, TappedRoutedEventArgs e)
