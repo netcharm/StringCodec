@@ -2127,15 +2127,55 @@ namespace StringCodec.UWP.Common
             return 0;
         }
 
+        public static async Task<StorageFolder> SelectFolder(string folder = "")
+        {
+            StorageFolder result = null;
+
+            try
+            {
+                FolderPicker fp = new FolderPicker();
+                fp.SuggestedStartLocation = PickerLocationId.Desktop;
+                fp.FileTypeFilter.Add("*");
+
+                result = await fp.PickSingleFolderAsync();
+                if (!(result is StorageFolder))
+                {
+                    result = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.Message.T().ShowException("ERROR".T());
+            }
+
+            return (result);
+        }
+
         public static async Task<IReadOnlyList<StorageFile>> OpenFiles(string[] exts)
         {
-            FileOpenPicker fp = new FileOpenPicker();
-            fp.SuggestedStartLocation = PickerLocationId.Desktop;
-            foreach (var ext in exts)
-                fp.FileTypeFilter.Add(ext);
-            //fp.FileTypeFilter.Add(".*");
+            IReadOnlyList<StorageFile> result = null;
 
-            return (await fp.PickMultipleFilesAsync());
+            try
+            {
+                FileOpenPicker fp = new FileOpenPicker();
+                fp.SuggestedStartLocation = PickerLocationId.Desktop;
+                foreach (var ext in exts)
+                    fp.FileTypeFilter.Add(ext);
+                fp.FileTypeFilter.Add("*");
+
+                result = await fp.PickMultipleFilesAsync();
+                if (!(result is IReadOnlyList<StorageFile>))
+                {
+                    result = new List<StorageFile>();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                ex.Message.T().ShowException("ERROR".T());
+            }
+
+            return (result);
         }
 
         public static async Task<string> ShowOpenDialog(Encoding enc, string ext)

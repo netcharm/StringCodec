@@ -269,6 +269,7 @@
                         <FontIcon Glyph="&#xE751;" FontFamily="Segoe MDL2 Assets"/>
                     </AppBarToggleButton.Icon>
                 </AppBarToggleButton>
+                <AppBarToggleButton x:Name="optOverwriteFiles" x:Uid="optOverwriteFiles" Label="Overwrite File(s)" Click="OptOverwrite_Click" />
                 <!--<AppBarButton Label="About"/>-->
             </CommandBar.SecondaryCommands>
 

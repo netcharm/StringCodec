@@ -1035,4 +1035,7 @@
   <data name="btnEncodeFile.Label" xml:space="preserve">
     <value>ファイルのエンコード</value>
   </data>
+  <data name="optOverwriteFiles.Label" xml:space="preserve">
+    <value>ファイルを上書きする</value>
+  </data>
 </root>

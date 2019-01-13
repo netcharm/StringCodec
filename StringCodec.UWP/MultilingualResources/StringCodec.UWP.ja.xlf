@@ -1370,6 +1370,10 @@
           <source>Encode File(s)</source>
           <target state="translated">ファイルのエンコード</target>
         </trans-unit>
+        <trans-unit id="optOverwriteFiles.Label" translate="yes" xml:space="preserve">
+          <source>Overwrite Exists File(s)</source>
+          <target state="translated">ファイルを上書きする</target>
+        </trans-unit>
       </group>
     </body>
   </file>

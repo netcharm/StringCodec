@@ -1140,4 +1140,7 @@
   <data name="MenuEncodeFile.Text" xml:space="preserve">
     <value>Encode File(s)</value>
   </data>
+  <data name="optOverwriteFiles.Label" xml:space="preserve">
+    <value>Overwrite Exists File(s)</value>
+  </data>
 </root>

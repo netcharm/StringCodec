@@ -1035,4 +1035,7 @@
   <data name="btnEncodeFile.Label" xml:space="preserve">
     <value>编码文件</value>
   </data>
+  <data name="optOverwriteFiles.Label" xml:space="preserve">
+    <value>覆盖现有文件</value>
+  </data>
 </root>

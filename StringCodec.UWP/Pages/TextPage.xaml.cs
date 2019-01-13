@@ -34,6 +34,7 @@ namespace StringCodec.UWP.Pages
         private Encoding CURRENT_ENC = Encoding.UTF8;
         private System.Globalization.CultureInfo CURRENT_CULTURE = System.Globalization.CultureInfo.CurrentCulture;
         private bool CURRENT_LINEBREAK = false;
+        private bool OVERWRITE_FILE = false;
 
         static private string text_src = string.Empty;
         static public string Text
@@ -71,12 +72,8 @@ namespace StringCodec.UWP.Pages
             edSrc.TextWrapping = TextWrapping.Wrap;
             edDst.TextWrapping = TextWrapping.Wrap;
 
-            //optUUE.Visibility = Visibility.Collapsed;
-            //optUUE.IsEnabled = false;
-            //optXXE.Visibility = Visibility.Collapsed;
-            //optXXE.IsEnabled = false;
-            //optQuoted.Visibility = Visibility.Collapsed;
-            //optQuoted.IsEnabled = false;
+            optOverwriteFiles.IsChecked = true;
+            OVERWRITE_FILE = optOverwriteFiles.IsChecked.Value;
 
             ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] {
                 optLangAscii,
@@ -274,6 +271,14 @@ namespace StringCodec.UWP.Pages
             }
         }
 
+        private void OptOverwrite_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender == optOverwriteFiles)
+            {
+                OVERWRITE_FILE = optOverwriteFiles.IsChecked.Value;
+            }
+        }
+
         private void QRCode_Click(object sender, RoutedEventArgs e)
         {
             if (sender == btnSrcQRCode)
@@ -341,6 +346,7 @@ namespace StringCodec.UWP.Pages
         {
             string text = string.Empty;
             byte[] bytes = null;
+            StorageFolder targetFolder = null;
 
             if (sender is AppBarButton)
             {
@@ -383,22 +389,48 @@ namespace StringCodec.UWP.Pages
                     case "btnEncodeFile":
                         var encFiles = await Utils.OpenFiles(Utils.text_ext);
                         BatchProcessNotification(true);
+                        if (!OVERWRITE_FILE) targetFolder = await Utils.SelectFolder();
                         foreach (var file in encFiles)
                         {
                             var content = await FileIO.ReadTextAsync(file);
                             var target = await TextCodecs.Encode(content, CURRENT_CODEC, CURRENT_ENC, CURRENT_LINEBREAK);
-                            await FileIO.WriteTextAsync(file, target);
+                            if (OVERWRITE_FILE)
+                            {
+                                await FileIO.WriteTextAsync(file, target);
+                            }
+                            else
+                            {
+                                if (targetFolder is StorageFolder)
+                                {
+                                    var targetFile = await file.CopyAsync(targetFolder, file.Name, NameCollisionOption.GenerateUniqueName);
+                                    await FileIO.WriteTextAsync(targetFile, target);
+                                }
+                            }
                         }
                         BatchProcessNotification(false);
                         break;
                     case "btnDecodeFile":
                         var decFiles = await Utils.OpenFiles(Utils.text_ext);
                         BatchProcessNotification(true);
+                        if(!OVERWRITE_FILE) targetFolder = await Utils.SelectFolder();
                         foreach (var file in decFiles)
                         {
                             var content = await FileIO.ReadTextAsync(file);
                             var target = await TextCodecs.Decode(content, CURRENT_CODEC, CURRENT_ENC);
-                            await FileIO.WriteTextAsync(file, target);
+                            if (OVERWRITE_FILE)
+                            {
+                                await FileIO.WriteTextAsync(file, target);
+                            }
+                            else
+                            {
+                                //var folder = await file.GetParentAsync();
+                                //var folder = await StorageApplicationPermissions.FutureAccessList.GetFolderAsync(file.FolderRelativeId.Replace(Path.GetFileName(file.Name), "").TrimEnd('\\'));
+                                if (targetFolder is StorageFolder)
+                                {
+                                    var targetFile = await file.CopyAsync(targetFolder, file.Name, NameCollisionOption.GenerateUniqueName);
+                                    await FileIO.WriteTextAsync(targetFile, target);
+                                }
+                            }
                         }
                         BatchProcessNotification(false);
                         break;
@@ -454,22 +486,47 @@ namespace StringCodec.UWP.Pages
                     case "MenuEncodeFile":
                         var encFiles = await Utils.OpenFiles(Utils.text_ext);
                         BatchProcessNotification(true);
+                        if (!OVERWRITE_FILE) targetFolder = await Utils.SelectFolder();
                         foreach (var file in encFiles)
                         {
                             var content = await FileIO.ReadTextAsync(file);
                             var target = await TextCodecs.Encode(content, CURRENT_CODEC, CURRENT_ENC, CURRENT_LINEBREAK);
-                            await FileIO.WriteTextAsync(file, target);
+                            if (OVERWRITE_FILE)
+                            {
+                                await FileIO.WriteTextAsync(file, target);
+                            }                                
+                            else
+                            {
+                                if (targetFolder is StorageFolder)
+                                {
+                                    var targetFile = await file.CopyAsync(targetFolder, file.Name, NameCollisionOption.GenerateUniqueName);
+                                    await FileIO.WriteTextAsync(targetFile, target);
+                                }
+                            }
+
                         }
                         BatchProcessNotification(false);
                         break;
                     case "MenuDecodeFile":
                         var decFiles = await Utils.OpenFiles(Utils.text_ext);
                         BatchProcessNotification(true);
+                        if (!OVERWRITE_FILE) targetFolder = await Utils.SelectFolder();
                         foreach (var file in decFiles)
                         {
                             var content = await FileIO.ReadTextAsync(file);
                             var target = await TextCodecs.Decode(content, CURRENT_CODEC, CURRENT_ENC);
-                            await FileIO.WriteTextAsync(file, target);
+                            if (OVERWRITE_FILE)
+                            {
+                                await FileIO.WriteTextAsync(file, target);
+                            }
+                            else
+                            {
+                                if (targetFolder is StorageFolder)
+                                {
+                                    var targetFile = await file.CopyAsync(targetFolder, file.Name, NameCollisionOption.GenerateUniqueName);
+                                    await FileIO.WriteTextAsync(targetFile, target);
+                                }
+                            }
                         }
                         BatchProcessNotification(false);
                         break;
@@ -607,8 +664,8 @@ namespace StringCodec.UWP.Pages
             //def.Complete();
         }
 
-        #endregion
 
+        #endregion
 
     }
 }

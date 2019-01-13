@@ -1370,6 +1370,10 @@
           <source>Encode File(s)</source>
           <target state="translated">编码文件</target>
         </trans-unit>
+        <trans-unit id="optOverwriteFiles.Label" translate="yes" xml:space="preserve">
+          <source>Overwrite Exists File(s)</source>
+          <target state="translated">覆盖现有文件</target>
+        </trans-unit>
       </group>
     </body>
   </file>
