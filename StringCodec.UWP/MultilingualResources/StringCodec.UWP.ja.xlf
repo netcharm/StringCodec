@@ -1354,6 +1354,22 @@
           <source>Load From File</source>
           <target state="translated">ファイルから読み込む</target>
         </trans-unit>
+        <trans-unit id="btnDecodeFile.Label" translate="yes" xml:space="preserve">
+          <source>Decode File(s)</source>
+          <target state="translated">ファイルのデコード</target>
+        </trans-unit>
+        <trans-unit id="MenuDecodeFile.Text" translate="yes" xml:space="preserve">
+          <source>Decode File(s)</source>
+          <target state="translated">ファイルのデコード</target>
+        </trans-unit>
+        <trans-unit id="MenuEncodeFile.Text" translate="yes" xml:space="preserve">
+          <source>Encode File(s)</source>
+          <target state="translated">ファイルのエンコード</target>
+        </trans-unit>
+        <trans-unit id="btnEncodeFile.Label" translate="yes" xml:space="preserve">
+          <source>Encode File(s)</source>
+          <target state="translated">ファイルのエンコード</target>
+        </trans-unit>
       </group>
     </body>
   </file>

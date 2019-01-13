@@ -1023,4 +1023,16 @@
   <data name="menuSrcLoadFile.Text" xml:space="preserve">
     <value>ファイルから読み込む</value>
   </data>
+  <data name="btnDecodeFile.Label" xml:space="preserve">
+    <value>ファイルのデコード</value>
+  </data>
+  <data name="MenuDecodeFile.Text" xml:space="preserve">
+    <value>ファイルのデコード</value>
+  </data>
+  <data name="MenuEncodeFile.Text" xml:space="preserve">
+    <value>ファイルのエンコード</value>
+  </data>
+  <data name="btnEncodeFile.Label" xml:space="preserve">
+    <value>ファイルのエンコード</value>
+  </data>
 </root>

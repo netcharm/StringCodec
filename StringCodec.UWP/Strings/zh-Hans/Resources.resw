@@ -1023,4 +1023,16 @@
   <data name="menuSrcLoadFile.Text" xml:space="preserve">
     <value>载入文件</value>
   </data>
+  <data name="btnDecodeFile.Label" xml:space="preserve">
+    <value>解码文件</value>
+  </data>
+  <data name="MenuDecodeFile.Text" xml:space="preserve">
+    <value>解码文件</value>
+  </data>
+  <data name="MenuEncodeFile.Text" xml:space="preserve">
+    <value>编码文件</value>
+  </data>
+  <data name="btnEncodeFile.Label" xml:space="preserve">
+    <value>编码文件</value>
+  </data>
 </root>

@@ -118,6 +118,11 @@
                 <AppBarButton.ContextFlyout>
                     <MenuFlyout>
                         <MenuFlyoutItem x:Name="MenuEncodeLoadFile" x:Uid="menuSrcLoadFile" Text="Load From File" Icon="OpenLocal" Click="AppBarButton_Click"/>
+                        <MenuFlyoutItem x:Name="MenuEncodeFile" x:Uid="menuEncodeFile" Text="Encode File(s)" Click="AppBarButton_Click">
+                            <MenuFlyoutItem.Icon>
+                                <FontIcon Glyph="&#xED25;" FontFamily="Segoe MDL2 Assets"/>
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>                            
                         <MenuFlyoutSeparator/>
                         <MenuFlyoutItem x:Name="MenuEncodeFromFile" x:Uid="menuEncodeFromFile" Text="Encode From File" Icon="OpenFile" Click="AppBarButton_Click"/>
                         <MenuFlyoutItem x:Name="MenuEncodeToFile" x:Uid="menuEncodeToFile" Text="Encode To File" Icon="SaveLocal" Click="AppBarButton_Click"/>
@@ -131,6 +136,11 @@
                 <AppBarButton.ContextFlyout>
                     <MenuFlyout>
                         <MenuFlyoutItem x:Name="MenuDecodeLoadFile" x:Uid="menuSrcLoadFile" Text="Load From File" Icon="OpenLocal" Click="AppBarButton_Click"/>
+                        <MenuFlyoutItem x:Name="MenuDecodeFile" x:Uid="menuDecodeFile" Text="Decode File(s)" Click="AppBarButton_Click">
+                            <MenuFlyoutItem.Icon>
+                                <FontIcon Glyph="&#xED25;" FontFamily="Segoe MDL2 Assets"/>
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
                         <MenuFlyoutSeparator/>
                         <MenuFlyoutItem x:Name="MenuDecodeFromFile" x:Uid="menuDecodeFromFile" Text="Decode From File" Icon="OpenFile" Click="AppBarButton_Click"/>
                         <MenuFlyoutItem x:Name="MenuDecodeToFile" x:Uid="menuDecodeToFile" Text="Decode To File" Icon="SaveLocal" Click="AppBarButton_Click"/>
@@ -235,9 +245,19 @@
                 <AppBarSeparator />
                 <AppBarButton x:Name="btnEncodeLoadFile" x:Uid="btnSrcLoadFile" Label="Load From File" Icon="OpenLocal" Click="AppBarButton_Click"/>
                 <AppBarSeparator />
+                <AppBarButton x:Name="btnEncodeFile" x:Uid="btnEncodeFile" Label="Encode File(s)" Click="AppBarButton_Click">
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xED25;" FontFamily="Segoe MDL2 Assets"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
                 <AppBarButton x:Name="btnEncodeFromFile" x:Uid="btnEncodeFromFile" Label="Encode From File" Icon="OpenFile" Click="AppBarButton_Click"/>
                 <AppBarButton x:Name="btnEncodeToFile" x:Uid="btnEncodeToFile" Label="Encode To File" Icon="SaveLocal" Click="AppBarButton_Click"/>
                 <AppBarSeparator />
+                <AppBarButton x:Name="btnDecodeFile" x:Uid="btnDecodeFile" Label="Decode File(s)" Click="AppBarButton_Click">
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xED25;" FontFamily="Segoe MDL2 Assets"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
                 <AppBarButton x:Name="btnDecodeFromFile" x:Uid="btnDecodeFromFile" Label="Decode From File" Icon="OpenFile" Click="AppBarButton_Click"/>
                 <AppBarButton x:Name="btnDecodeToFile" x:Uid="btnDecodeToFile" Label="Decode To File" Icon="SaveLocal" Click="AppBarButton_Click"/>
                 <AppBarSeparator />
@@ -283,5 +303,7 @@
                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
                  PreviewKeyDown="edSrc_PreviewKeyDown" />
 
+        <ProgressRing Grid.RowSpan="3" x:Name="progress" Width="96" Height="96" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
+        <MediaElement x:Name="mediaPlayer" AutoPlay="False" Source="ms-winsoundevent:Notification.Default" Width="0" Height="0" Visibility="Collapsed"/>
     </Grid>
 </Page>

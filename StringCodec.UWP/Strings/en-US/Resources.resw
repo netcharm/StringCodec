@@ -1128,4 +1128,16 @@
   <data name="menuSrcLoadFile.Text" xml:space="preserve">
     <value>Load From File</value>
   </data>
+  <data name="btnDecodeFile.Label" xml:space="preserve">
+    <value>Decode File(s)</value>
+  </data>
+  <data name="btnEncodeFile.Label" xml:space="preserve">
+    <value>Encode File(s)</value>
+  </data>
+  <data name="MenuDecodeFile.Text" xml:space="preserve">
+    <value>Decode File(s)</value>
+  </data>
+  <data name="MenuEncodeFile.Text" xml:space="preserve">
+    <value>Encode File(s)</value>
+  </data>
 </root>

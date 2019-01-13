@@ -227,11 +227,11 @@ namespace StringCodec.UWP.Common
 
         static public class HTML
         {
-            static private string EntityToUnicode(string html)
+            static private string EntityToUnicode(string html, Encoding enc)
             {
                 var replacements = new Dictionary<string, string>();
-                var regex = new Regex("(&[a-zA-Z]{2,7};)");
-                foreach (Match match in regex.Matches(html))
+                var regexText = new Regex("(&[a-zA-Z]{2,7};)");
+                foreach (Match match in regexText.Matches(html))
                 {
                     if (!replacements.ContainsKey(match.Value))
                     {
@@ -244,23 +244,34 @@ namespace StringCodec.UWP.Common
                 }
 
                 var entryPattenDec = new Regex("&\\#([0-9]{1,6});", RegexOptions.IgnoreCase);
-                //entryPatten.Replace(html, Convert.ToChar(Convert.ToInt32("$1")).ToString());
                 foreach (Match match in entryPattenDec.Matches(html))
                 {
                     if (!replacements.ContainsKey(match.Value))
                     {
                         if (match.Groups.Count > 1)
-                            replacements.Add(match.Value, $"{Convert.ToChar(Convert.ToInt32(match.Groups[1].Value))}");
+                        {
+                            var v = Convert.ToInt32(match.Groups[1].Value);
+                            if(128 <= v && v <= 256)
+                                replacements.Add(match.Value, $"\\x{Convert.ToInt32(match.Groups[1].Value):X2}");
+                            else
+                                replacements.Add(match.Value, $"{Convert.ToChar(Convert.ToInt32(match.Groups[1].Value))}");                            
+                        }
                     }
                 }
 
                 var entryPattenHex = new Regex("&\\#x([a-fA-F0-9]{1,6});", RegexOptions.IgnoreCase);
-                foreach (Match match in entryPattenDec.Matches(html))
+                foreach (Match match in entryPattenHex.Matches(html))
                 {
                     if (!replacements.ContainsKey(match.Value))
                     {
-                        if (match.Groups.Count > 1 && !replacements.ContainsKey(match.Value))
-                            replacements.Add(match.Value, $"{Convert.ToChar(Convert.ToInt32(match.Groups[1].Value, 16))}");
+                        if (match.Groups.Count > 1)
+                        {
+                            var v = Convert.ToInt32(match.Groups[1].Value, 16);
+                            if (128 <= v && v <= 256)
+                                replacements.Add(match.Value, $"\\x{match.Groups[1].Value}");
+                            else
+                                replacements.Add(match.Value, $"{Convert.ToChar(Convert.ToInt32(match.Groups[1].Value, 16))}");
+                        }
                     }
                 }
 
@@ -268,6 +279,9 @@ namespace StringCodec.UWP.Common
                 {
                     html = html.Replace(replacement.Key, replacement.Value);
                 }
+
+                html = RAW.Decode(html, enc);
+
                 return html;
             }
 
@@ -324,9 +338,9 @@ namespace StringCodec.UWP.Common
 
                 try
                 {
-                    //result = System.Web.HttpUtility.HtmlDecode(result);
-                    result = EntityToUnicode(System.Net.WebUtility.HtmlDecode(result));
-                    result = result.ConvertFrom(enc);
+                    result = EntityToUnicode(result, enc);
+                    //result = EntityToUnicode(System.Net.WebUtility.HtmlDecode(result), enc);
+                    //result = result.ConvertFrom(enc);
                 }
                 catch (Exception ex)
                 {
@@ -546,11 +560,11 @@ namespace StringCodec.UWP.Common
                 int count = 0;
                 foreach(var c in text)
                 {
-                    asciis.Add($"{(char)c:X2}");
-                    if (LineBreak && count % 72 == 0) asciis.Add(Environment.NewLine);
+                    asciis.Add($"\\x{c:X2}");
+                    if (LineBreak && count % 18 == 0) asciis.Add(Environment.NewLine);
                     count++;
                 }
-                result = string.Join("\\x", asciis);;
+                result = string.Join("", asciis);;
 
                 return (result);
             }
@@ -575,7 +589,33 @@ namespace StringCodec.UWP.Common
             {
                 string result = string.Empty;
 
-                result = Uri.UnescapeDataString(text.Replace("\\x", "%")).ConvertFrom(enc);
+                //result = Uri.UnescapeDataString(text.Replace("\\x", "%")).ConvertFrom(enc);
+
+                var raws = new Dictionary<string, string>();
+                var entryPattenRaw = new Regex(@"(\\x([a-fA-F0-9]){2})+", RegexOptions.IgnoreCase);
+                foreach (Match match in entryPattenRaw.Matches(text))
+                {
+                    if (!raws.ContainsKey(match.Value))
+                    {
+                        if (match.Groups.Count > 1)
+                        {
+                            List<byte> byteList = new List<byte>();                            
+                            foreach(Capture c in match.Groups[1].Captures)
+                            {
+                                byteList.Add((byte)Convert.ToInt32(c.Value.Replace("\\x", ""), 16));
+                            }
+                            var decoded = enc.GetString(byteList.ToArray());
+                            raws.Add(match.Value, decoded);
+                        }
+                    }
+                }
+
+                foreach (var raw in raws)
+                {
+                    text = text.Replace(raw.Key, raw.Value);
+                }
+
+                result = text;
 
                 return (result);
             }

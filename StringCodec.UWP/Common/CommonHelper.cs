@@ -1580,6 +1580,13 @@ namespace StringCodec.UWP.Common
         };
         public static string[] url_ext = new string[] { ".url" };
 
+        public static void Beep()
+        {
+            var player = new MediaElement(){ AutoPlay = false };
+            player.Source = new Uri("ms-winsoundevent:Notification.Default");
+            player.Play();
+        }
+
         #region Share Extentions
         private static DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
         private static StorageFile _tempExportFile;
@@ -2118,6 +2125,17 @@ namespace StringCodec.UWP.Common
             await dlgProgress.ShowAsync();
 
             return 0;
+        }
+
+        public static async Task<IReadOnlyList<StorageFile>> OpenFiles(string[] exts)
+        {
+            FileOpenPicker fp = new FileOpenPicker();
+            fp.SuggestedStartLocation = PickerLocationId.Desktop;
+            foreach (var ext in exts)
+                fp.FileTypeFilter.Add(ext);
+            //fp.FileTypeFilter.Add(".*");
+
+            return (await fp.PickMultipleFilesAsync());
         }
 
         public static async Task<string> ShowOpenDialog(Encoding enc, string ext)

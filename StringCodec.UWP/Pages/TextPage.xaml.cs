@@ -42,6 +42,22 @@ namespace StringCodec.UWP.Pages
             set { text_src = value; }
         }
 
+        private void BatchProcessNotification(bool show)
+        {
+            if (show)
+            {
+                progress.Visibility = Visibility.Visible;
+                mediaPlayer.Visibility = Visibility.Visible;
+                mediaPlayer.Play();
+            }
+            else
+            {
+                mediaPlayer.Stop();
+                progress.Visibility = Visibility.Collapsed;
+                mediaPlayer.Visibility = Visibility.Collapsed;
+            }
+        }
+
         public TextPage()
         {
             this.InitializeComponent();
@@ -364,6 +380,28 @@ namespace StringCodec.UWP.Pages
                         text_src = edDst.Text;
                         break;
 
+                    case "btnEncodeFile":
+                        var encFiles = await Utils.OpenFiles(Utils.text_ext);
+                        BatchProcessNotification(true);
+                        foreach (var file in encFiles)
+                        {
+                            var content = await FileIO.ReadTextAsync(file);
+                            var target = await TextCodecs.Encode(content, CURRENT_CODEC, CURRENT_ENC, CURRENT_LINEBREAK);
+                            await FileIO.WriteTextAsync(file, target);
+                        }
+                        BatchProcessNotification(false);
+                        break;
+                    case "btnDecodeFile":
+                        var decFiles = await Utils.OpenFiles(Utils.text_ext);
+                        BatchProcessNotification(true);
+                        foreach (var file in decFiles)
+                        {
+                            var content = await FileIO.ReadTextAsync(file);
+                            var target = await TextCodecs.Decode(content, CURRENT_CODEC, CURRENT_ENC);
+                            await FileIO.WriteTextAsync(file, target);
+                        }
+                        BatchProcessNotification(false);
+                        break;
                     case "btnEncodeLoadFile":
                     case "btnDecodeLoadFile":
                         //var codecs = new TextCodecs.CODEC[] { TextCodecs.CODEC.BASE64, TextCodecs.CODEC.UUE };
@@ -412,6 +450,28 @@ namespace StringCodec.UWP.Pages
                     case "MenuEncodeLoadFile":
                     case "MenuDecodeLoadFile":
                         edSrc.Text = await Utils.ShowOpenDialog(CURRENT_ENC, $".{CURRENT_CODEC.ToString().ToLower()}");
+                        break;
+                    case "MenuEncodeFile":
+                        var encFiles = await Utils.OpenFiles(Utils.text_ext);
+                        BatchProcessNotification(true);
+                        foreach (var file in encFiles)
+                        {
+                            var content = await FileIO.ReadTextAsync(file);
+                            var target = await TextCodecs.Encode(content, CURRENT_CODEC, CURRENT_ENC, CURRENT_LINEBREAK);
+                            await FileIO.WriteTextAsync(file, target);
+                        }
+                        BatchProcessNotification(false);
+                        break;
+                    case "MenuDecodeFile":
+                        var decFiles = await Utils.OpenFiles(Utils.text_ext);
+                        BatchProcessNotification(true);
+                        foreach (var file in decFiles)
+                        {
+                            var content = await FileIO.ReadTextAsync(file);
+                            var target = await TextCodecs.Decode(content, CURRENT_CODEC, CURRENT_ENC);
+                            await FileIO.WriteTextAsync(file, target);
+                        }
+                        BatchProcessNotification(false);
                         break;
                     case "MenuEncodeFromFile":
                         bytes = await Utils.ShowOpenDialog($".{CURRENT_CODEC.ToString().ToLower()}");
