@@ -1038,4 +1038,10 @@
   <data name="optOverwriteFiles.Label" xml:space="preserve">
     <value>覆蓋現有檔案</value>
   </data>
+  <data name="optUnicodeGlyph.Text" xml:space="preserve">
+    <value>Unicode (&amp;#xHHHH;)</value>
+  </data>
+  <data name="optUnicodeValue.Text" xml:space="preserve">
+    <value>Unicode (\uHHHH)</value>
+  </data>
 </root>

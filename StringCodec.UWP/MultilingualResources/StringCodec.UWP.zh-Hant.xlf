@@ -1374,6 +1374,14 @@
           <source>Overwrite Exists File(s)</source>
           <target state="translated">覆蓋現有檔案</target>
         </trans-unit>
+        <trans-unit id="optUnicodeGlyph.Text" translate="yes" xml:space="preserve">
+          <source>Unicode (&amp;#xHHHH;)</source>
+          <target state="translated">Unicode (&amp;#xHHHH;)</target>
+        </trans-unit>
+        <trans-unit id="optUnicodeValue.Text" translate="yes" xml:space="preserve">
+          <source>Unicode (\uHHHH)</source>
+          <target state="translated">Unicode (\uHHHH)</target>
+        </trans-unit>
       </group>
     </body>
   </file>

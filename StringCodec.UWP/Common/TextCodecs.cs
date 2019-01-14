@@ -20,7 +20,7 @@ namespace StringCodec.UWP.Common
     {
         public static string[] LINEBREAK = new string[]{ "\r\n", "\n\r", "\r", "\n", Environment.NewLine };
 
-        public enum CODEC { URL, HTML, BASE64, UUE, XXE, RAW, QUOTED, THUNDER, FLASHGET, UUID, GUID, MORSE, MORSEABBR };
+        public enum CODEC { URL, HTML, BASE64, UUE, XXE, RAW, UNICODEVALUE, UNICODEGLYPH, QUOTED, THUNDER, FLASHGET, UUID, GUID, MORSE, MORSEABBR };
 
         #region Basic Encoder/Decoder
         static public class BASE64
@@ -251,7 +251,7 @@ namespace StringCodec.UWP.Common
                         if (match.Groups.Count > 1)
                         {
                             var v = Convert.ToInt32(match.Groups[1].Value);
-                            if(128 <= v && v <= 256)
+                            if(127 <= v && v <= 256)
                                 replacements.Add(match.Value, $"\\x{Convert.ToInt32(match.Groups[1].Value):X2}");
                             else
                                 replacements.Add(match.Value, $"{Convert.ToChar(Convert.ToInt32(match.Groups[1].Value))}");                            
@@ -267,7 +267,7 @@ namespace StringCodec.UWP.Common
                         if (match.Groups.Count > 1)
                         {
                             var v = Convert.ToInt32(match.Groups[1].Value, 16);
-                            if (128 <= v && v <= 256)
+                            if (127 <= v && v <= 256)
                                 replacements.Add(match.Value, $"\\x{match.Groups[1].Value}");
                             else
                                 replacements.Add(match.Value, $"{Convert.ToChar(Convert.ToInt32(match.Groups[1].Value, 16))}");
@@ -616,6 +616,146 @@ namespace StringCodec.UWP.Common
                 }
 
                 result = text;
+
+                return (result);
+            }
+        }
+
+        static public class UnicodeValue
+        {
+            static public string Encode(byte[] text, Encoding enc, bool LineBreak = false)
+            {
+                var content = enc.GetString(text);
+                return (Encode(content, enc, LineBreak));
+            }
+
+            static public string Encode(string text, Encoding enc, bool LineBreak = false)
+            {
+                string result = text;
+
+                var replacements = new Dictionary<string, string>();
+                foreach (Match match in Regex.Matches(text, @"([^\u000D\u000A\u0020-\u007E])"))
+                {
+                    if (match.Groups.Count > 1 && !replacements.ContainsKey(match.Value))
+                    {
+                        var v = Convert.ToInt32(match.Groups[1].Value[0]);
+                        //if (v == 0x0D || v == 0x0A) continue;
+                        replacements.Add(match.Value, $"\\u{v:X4}");
+                    }
+                }
+
+                foreach (var replacement in replacements)
+                {
+                    result = result.Replace(replacement.Key, replacement.Value);
+                }
+
+                return (result);
+            }
+
+            static public string Encode(string text, bool LineBreak = false)
+            {
+                return (Encode(text, Encoding.Default, LineBreak));
+            }
+
+            static public string Decode(string text, Encoding enc)
+            {
+                string result = text;
+
+                var replacements = new Dictionary<string, string>();
+                var entryPattenHex = new Regex(@"(\\u([a-fA-F0-9]){4,6})", RegexOptions.IgnoreCase);
+                foreach (Match match in entryPattenHex.Matches(text))
+                {
+                    if (!replacements.ContainsKey(match.Value))
+                    {
+                        if (match.Groups.Count > 1)
+                        {
+                            var v = Convert.ToInt32(match.Value.Replace("\\u", ""), 16);
+                            replacements.Add(match.Value, $"{Convert.ToChar(v)}");
+                        }
+                    }
+                }
+
+                foreach (var replacement in replacements)
+                {
+                    result = result.Replace(replacement.Key, replacement.Value);
+                }
+
+                return (result);
+            }
+        }
+
+        static public class UnicodeGlyph
+        {
+            static public string Encode(byte[] text, Encoding enc, bool LineBreak = false)
+            {
+                var content = enc.GetString(text);
+                return (Encode(content, enc, LineBreak));
+            }
+
+            static public string Encode(string text, Encoding enc, bool LineBreak = false)
+            {
+                string result = text;
+
+                var replacements = new Dictionary<string, string>();
+                foreach (Match match in Regex.Matches(text, @"([^\u000D\u000A\u0020-\u007E])"))
+                {
+                    if (match.Groups.Count > 1 && !replacements.ContainsKey(match.Value))
+                    {
+                        var v = Convert.ToInt32(match.Groups[1].Value[0]);
+                        //if (v == 0x0D || v == 0x0A) continue;
+                        replacements.Add(match.Value, $"&#x{v:X4};");
+                    }
+                }
+
+                foreach (var replacement in replacements)
+                {
+                    result = result.Replace(replacement.Key, replacement.Value);
+                }
+
+                return (result);
+            }
+
+            static public string Encode(string text, bool LineBreak = false)
+            {
+                return (Encode(text, Encoding.Default, LineBreak));
+            }
+
+            static public string Decode(string text, Encoding enc)
+            {
+                string result = text;
+
+                var replacements = new Dictionary<string, string>();
+
+                var entryPattenDec = new Regex("&\\#([0-9]{1,6});", RegexOptions.IgnoreCase);
+                foreach (Match match in entryPattenDec.Matches(text))
+                {
+                    if (!replacements.ContainsKey(match.Value))
+                    {
+                        if (match.Groups.Count > 1)
+                        {
+                            var v = Convert.ToInt32(match.Groups[1].Value);
+                            replacements.Add(match.Value, $"{Convert.ToChar(v)}");
+                        }
+                    }
+                }
+
+                var entryPattenHex = new Regex("&\\#x([a-fA-F0-9]{1,6});", RegexOptions.IgnoreCase);
+                foreach (Match match in entryPattenHex.Matches(text))
+                {
+                    if (!replacements.ContainsKey(match.Value))
+                    {
+                        if (match.Groups.Count > 1)
+                        {
+                            var v = Convert.ToInt32(match.Groups[1].Value, 16);
+                            replacements.Add(match.Value, $"{Convert.ToChar(v)}");
+                        }
+                    }
+                }
+
+                foreach (var replacement in replacements)
+                {
+                    result = result.Replace(replacement.Key, replacement.Value);
+                }
 
                 return (result);
             }
@@ -1094,6 +1234,12 @@ namespace StringCodec.UWP.Common
                     case CODEC.RAW:
                         result = RAW.Encode(content, enc);
                         break;
+                    case CODEC.UNICODEVALUE:
+                        result = UnicodeValue.Encode(content, enc);
+                        break;
+                    case CODEC.UNICODEGLYPH:
+                        result = UnicodeGlyph.Encode(content, enc);
+                        break;
                     case CODEC.QUOTED:
                         result = QUOTED.Encode(content, enc);
                         break;
@@ -1148,6 +1294,12 @@ namespace StringCodec.UWP.Common
                         break;
                     case CODEC.RAW:
                         result = RAW.Encode(content, enc);
+                        break;
+                    case CODEC.UNICODEVALUE:
+                        result = UnicodeValue.Encode(content, enc);
+                        break;
+                    case CODEC.UNICODEGLYPH:
+                        result = UnicodeGlyph.Encode(content, enc);
                         break;
                     case CODEC.QUOTED:
                         result = QUOTED.Encode(content, enc);
@@ -1431,6 +1583,12 @@ namespace StringCodec.UWP.Common
                         break;
                     case CODEC.RAW:
                         result = RAW.Decode(content, enc);
+                        break;
+                    case CODEC.UNICODEVALUE:
+                        result = UnicodeValue.Decode(content, enc);
+                        break;
+                    case CODEC.UNICODEGLYPH:
+                        result = UnicodeGlyph.Decode(content, enc);
                         break;
                     case CODEC.QUOTED:
                         result = QUOTED.Decode(content, enc);

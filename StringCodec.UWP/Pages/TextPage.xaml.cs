@@ -117,30 +117,38 @@ namespace StringCodec.UWP.Pages
 
         private void Codec_Click(object sender, RoutedEventArgs e)
         {
-            if (sender == optLineBreak)
+            try
             {
-                CURRENT_LINEBREAK = (sender as ToggleMenuFlyoutItem).IsChecked;
-                return;
-            }
-
-            ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] {
-                optBase64, optUUE, optXXE, optQuoted,
-                optURL, optHtml, optRaw,
-                optThunder, optFlashGet,
-                optMorse, optMorseAbbr
-            };
-
-            var btn = sender as ToggleMenuFlyoutItem;
-
-            foreach (ToggleMenuFlyoutItem opt in opts)
-            {
-                if (string.Equals(opt.Name, btn.Name, StringComparison.CurrentCultureIgnoreCase))
+                if (sender == optLineBreak)
                 {
-                    opt.IsChecked = true;
+                    CURRENT_LINEBREAK = (sender as ToggleMenuFlyoutItem).IsChecked;
+                    return;
                 }
-                else opt.IsChecked = false;
+
+                ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] {
+                    optBase64, optUUE, optXXE, optQuoted,
+                    optURL, optHtml, optRaw,
+                    optUnicodeValue, optUnicodeGlyph,
+                    optThunder, optFlashGet,
+                    optMorse, optMorseAbbr
+                };
+
+                var btn = sender as ToggleMenuFlyoutItem;
+
+                foreach (ToggleMenuFlyoutItem opt in opts)
+                {
+                    if (string.Equals(opt.Name, btn.Name, StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        opt.IsChecked = true;
+                    }
+                    else opt.IsChecked = false;
+                }
+                CURRENT_CODEC = (TextCodecs.CODEC)Enum.Parse(typeof(TextCodecs.CODEC), btn.Name.ToUpper().Substring(3));
             }
-            CURRENT_CODEC = (TextCodecs.CODEC)Enum.Parse(typeof(TextCodecs.CODEC), btn.Name.ToUpper().Substring(3));
+            catch (Exception ex)
+            {
+                ex.Message.ShowException("ERROR".T());
+            }
         }
 
         private async void Case_Click(object sender, RoutedEventArgs e)
@@ -348,207 +356,210 @@ namespace StringCodec.UWP.Pages
             byte[] bytes = null;
             StorageFolder targetFolder = null;
 
-            if (sender is AppBarButton)
+            try
             {
-                var btn = sender as AppBarButton;
-                switch (btn.Name)
+                if (sender is AppBarButton)
                 {
-                    case "btnEncode":
-                        if (CURRENT_CODEC == TextCodecs.CODEC.UUID)
-                        {
-                            StringBuilder sb = new StringBuilder();
-                            string guid = TextCodecs.GUID.Encode(edSrc.Text);
-                            sb.AppendLine(TextCodecs.GUID.Encode(guid, "N"));
-                            sb.AppendLine(TextCodecs.GUID.Encode(guid, "D"));
-                            sb.AppendLine(TextCodecs.GUID.Encode(guid, "B"));
-                            sb.AppendLine(TextCodecs.GUID.Encode(guid, "P"));
-                            sb.AppendLine(TextCodecs.GUID.Encode(guid, "X"));
-                            edDst.Text = sb.ToString();
-                        }
-                        else
-                            edDst.Text = await TextCodecs.Encode(edSrc.Text, CURRENT_CODEC, CURRENT_ENC, CURRENT_LINEBREAK);
-                        text_src = edDst.Text;
-                        break;
-                    case "btnDecode":
-                        if (CURRENT_CODEC == TextCodecs.CODEC.UUID)
-                        {
-                            StringBuilder sb = new StringBuilder();
-                            string guid = TextCodecs.GUID.Decode(edSrc.Text);
-                            sb.AppendLine(TextCodecs.GUID.Decode(guid, "N"));
-                            sb.AppendLine(TextCodecs.GUID.Decode(guid, "D"));
-                            sb.AppendLine(TextCodecs.GUID.Decode(guid, "B"));
-                            sb.AppendLine(TextCodecs.GUID.Decode(guid, "P"));
-                            sb.AppendLine(TextCodecs.GUID.Decode(guid, "X"));
-                            edDst.Text = sb.ToString();
-                        }
-                        else
-                            edDst.Text = await TextCodecs.Decode(edSrc.Text, CURRENT_CODEC, CURRENT_ENC);
-                        text_src = edDst.Text;
-                        break;
-
-                    case "btnEncodeFile":
-                        var encFiles = await Utils.OpenFiles(Utils.text_ext);
-                        BatchProcessNotification(true);
-                        if (!OVERWRITE_FILE) targetFolder = await Utils.SelectFolder();
-                        foreach (var file in encFiles)
-                        {
-                            var content = await FileIO.ReadTextAsync(file);
-                            var target = await TextCodecs.Encode(content, CURRENT_CODEC, CURRENT_ENC, CURRENT_LINEBREAK);
-                            if (OVERWRITE_FILE)
+                    var btn = sender as AppBarButton;
+                    switch (btn.Name)
+                    {
+                        case "btnEncode":
+                            if (CURRENT_CODEC == TextCodecs.CODEC.UUID)
                             {
-                                await FileIO.WriteTextAsync(file, target);
+                                StringBuilder sb = new StringBuilder();
+                                string guid = TextCodecs.GUID.Encode(edSrc.Text);
+                                sb.AppendLine(TextCodecs.GUID.Encode(guid, "N"));
+                                sb.AppendLine(TextCodecs.GUID.Encode(guid, "D"));
+                                sb.AppendLine(TextCodecs.GUID.Encode(guid, "B"));
+                                sb.AppendLine(TextCodecs.GUID.Encode(guid, "P"));
+                                sb.AppendLine(TextCodecs.GUID.Encode(guid, "X"));
+                                edDst.Text = sb.ToString();
                             }
                             else
+                                edDst.Text = await TextCodecs.Encode(edSrc.Text, CURRENT_CODEC, CURRENT_ENC, CURRENT_LINEBREAK);
+                            text_src = edDst.Text;
+                            break;
+                        case "btnDecode":
+                            if (CURRENT_CODEC == TextCodecs.CODEC.UUID)
                             {
-                                if (targetFolder is StorageFolder)
-                                {
-                                    var targetFile = await file.CopyAsync(targetFolder, file.Name, NameCollisionOption.GenerateUniqueName);
-                                    await FileIO.WriteTextAsync(targetFile, target);
-                                }
-                            }
-                        }
-                        BatchProcessNotification(false);
-                        break;
-                    case "btnDecodeFile":
-                        var decFiles = await Utils.OpenFiles(Utils.text_ext);
-                        BatchProcessNotification(true);
-                        if(!OVERWRITE_FILE) targetFolder = await Utils.SelectFolder();
-                        foreach (var file in decFiles)
-                        {
-                            var content = await FileIO.ReadTextAsync(file);
-                            var target = await TextCodecs.Decode(content, CURRENT_CODEC, CURRENT_ENC);
-                            if (OVERWRITE_FILE)
-                            {
-                                await FileIO.WriteTextAsync(file, target);
+                                StringBuilder sb = new StringBuilder();
+                                string guid = TextCodecs.GUID.Decode(edSrc.Text);
+                                sb.AppendLine(TextCodecs.GUID.Decode(guid, "N"));
+                                sb.AppendLine(TextCodecs.GUID.Decode(guid, "D"));
+                                sb.AppendLine(TextCodecs.GUID.Decode(guid, "B"));
+                                sb.AppendLine(TextCodecs.GUID.Decode(guid, "P"));
+                                sb.AppendLine(TextCodecs.GUID.Decode(guid, "X"));
+                                edDst.Text = sb.ToString();
                             }
                             else
+                                edDst.Text = await TextCodecs.Decode(edSrc.Text, CURRENT_CODEC, CURRENT_ENC);
+                            text_src = edDst.Text;
+                            break;
+
+                        case "btnEncodeFile":
+                            var encFiles = await Utils.OpenFiles(Utils.text_ext);
+                            BatchProcessNotification(true);
+                            if (!OVERWRITE_FILE) targetFolder = await Utils.SelectFolder();
+                            foreach (var file in encFiles)
                             {
-                                //var folder = await file.GetParentAsync();
-                                //var folder = await StorageApplicationPermissions.FutureAccessList.GetFolderAsync(file.FolderRelativeId.Replace(Path.GetFileName(file.Name), "").TrimEnd('\\'));
-                                if (targetFolder is StorageFolder)
+                                var content = await FileIO.ReadTextAsync(file);
+                                var target = await TextCodecs.Encode(content, CURRENT_CODEC, CURRENT_ENC, CURRENT_LINEBREAK);
+                                if (OVERWRITE_FILE)
                                 {
-                                    var targetFile = await file.CopyAsync(targetFolder, file.Name, NameCollisionOption.GenerateUniqueName);
-                                    await FileIO.WriteTextAsync(targetFile, target);
+                                    await FileIO.WriteTextAsync(file, target);
+                                }
+                                else
+                                {
+                                    if (targetFolder is StorageFolder)
+                                    {
+                                        var targetFile = await file.CopyAsync(targetFolder, file.Name, NameCollisionOption.GenerateUniqueName);
+                                        await FileIO.WriteTextAsync(targetFile, target);
+                                    }
                                 }
                             }
-                        }
-                        BatchProcessNotification(false);
-                        break;
-                    case "btnEncodeLoadFile":
-                    case "btnDecodeLoadFile":
-                        //var codecs = new TextCodecs.CODEC[] { TextCodecs.CODEC.BASE64, TextCodecs.CODEC.UUE };
-                        edSrc.Text = await Utils.ShowOpenDialog(CURRENT_ENC, $".{CURRENT_CODEC.ToString().ToLower()}");
-                        break;
-                    case "btnEncodeFromFile":
-                        bytes = await Utils.ShowOpenDialog($".{CURRENT_CODEC.ToString().ToLower()}");
-                        if(bytes is byte[] && bytes.Length>0)
-                            edDst.Text = await TextCodecs.Encode(bytes, CURRENT_CODEC, CURRENT_ENC);
-                        break;
-                    case "btnEncodeToFile":
-                        text = await TextCodecs.Encode(edSrc.Text, CURRENT_CODEC, CURRENT_ENC);
-                        await Utils.ShowSaveDialog(text, CURRENT_ENC, $".{CURRENT_CODEC.ToString().ToLower()}");
-                        break;
+                            BatchProcessNotification(false);
+                            break;
+                        case "btnDecodeFile":
+                            var decFiles = await Utils.OpenFiles(Utils.text_ext);
+                            BatchProcessNotification(true);
+                            if (!OVERWRITE_FILE) targetFolder = await Utils.SelectFolder();
+                            foreach (var file in decFiles)
+                            {
+                                var content = await FileIO.ReadTextAsync(file);
+                                var target = await TextCodecs.Decode(content, CURRENT_CODEC, CURRENT_ENC);
+                                if (OVERWRITE_FILE)
+                                {
+                                    await FileIO.WriteTextAsync(file, target);
+                                }
+                                else
+                                {
+                                    if (targetFolder is StorageFolder)
+                                    {
+                                        var targetFile = await file.CopyAsync(targetFolder, file.Name, NameCollisionOption.GenerateUniqueName);
+                                        await FileIO.WriteTextAsync(targetFile, target);
+                                    }
+                                }
+                            }
+                            BatchProcessNotification(false);
+                            break;
+                        case "btnEncodeLoadFile":
+                        case "btnDecodeLoadFile":
+                            //var codecs = new TextCodecs.CODEC[] { TextCodecs.CODEC.BASE64, TextCodecs.CODEC.UUE };
+                            edSrc.Text = await Utils.ShowOpenDialog(CURRENT_ENC, $".{CURRENT_CODEC.ToString().ToLower()}");
+                            break;
+                        case "btnEncodeFromFile":
+                            bytes = await Utils.ShowOpenDialog($".{CURRENT_CODEC.ToString().ToLower()}");
+                            if (bytes is byte[] && bytes.Length > 0)
+                                edDst.Text = await TextCodecs.Encode(bytes, CURRENT_CODEC, CURRENT_ENC);
+                            break;
+                        case "btnEncodeToFile":
+                            text = await TextCodecs.Encode(edSrc.Text, CURRENT_CODEC, CURRENT_ENC);
+                            await Utils.ShowSaveDialog(text, CURRENT_ENC, $".{CURRENT_CODEC.ToString().ToLower()}");
+                            break;
 
-                    case "btnDecodeFromFile":
-                        text = await Utils.ShowOpenDialog(Encoding.Default, $".{CURRENT_CODEC.ToString().ToLower()}");
-                        edDst.Text = await TextCodecs.Decode(text, CURRENT_CODEC, CURRENT_ENC);
-                        break;
-                    case "btnDecodeToFile":
-                        text = await TextCodecs.Decode(edSrc.Text, CURRENT_CODEC, CURRENT_ENC);
-                        await Utils.ShowSaveDialog(text, CURRENT_ENC, $".{CURRENT_CODEC.ToString().ToLower()}");
-                        break;
+                        case "btnDecodeFromFile":
+                            text = await Utils.ShowOpenDialog(Encoding.Default, $".{CURRENT_CODEC.ToString().ToLower()}");
+                            edDst.Text = await TextCodecs.Decode(text, CURRENT_CODEC, CURRENT_ENC);
+                            break;
+                        case "btnDecodeToFile":
+                            text = await TextCodecs.Decode(edSrc.Text, CURRENT_CODEC, CURRENT_ENC);
+                            await Utils.ShowSaveDialog(text, CURRENT_ENC, $".{CURRENT_CODEC.ToString().ToLower()}");
+                            break;
 
-                    case "btnCopy":
-                        Utils.SetClipboard(edDst.Text);
-                        break;
-                    case "btnPaste":
-                        edSrc.Text = await Utils.GetClipboard(edSrc.Text);
-                        break;
-                    case "btnSave":
-                        await Utils.ShowSaveDialog(edDst.Text);
-                        break;
-                    case "btnShare":
-                        //Utils.Share(edSrc.Text);
-                        break;
-                    default:
-                        break;
+                        case "btnCopy":
+                            Utils.SetClipboard(edDst.Text);
+                            break;
+                        case "btnPaste":
+                            edSrc.Text = await Utils.GetClipboard(edSrc.Text);
+                            break;
+                        case "btnSave":
+                            await Utils.ShowSaveDialog(edDst.Text);
+                            break;
+                        case "btnShare":
+                            //Utils.Share(edSrc.Text);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else if (sender is MenuFlyoutItem)
+                {
+                    var btn = sender as MenuFlyoutItem;
+                    switch (btn.Name)
+                    {
+                        case "MenuEncodeLoadFile":
+                        case "MenuDecodeLoadFile":
+                            edSrc.Text = await Utils.ShowOpenDialog(CURRENT_ENC, $".{CURRENT_CODEC.ToString().ToLower()}");
+                            break;
+                        case "MenuEncodeFile":
+                            var encFiles = await Utils.OpenFiles(Utils.text_ext);
+                            BatchProcessNotification(true);
+                            if (!OVERWRITE_FILE) targetFolder = await Utils.SelectFolder();
+                            foreach (var file in encFiles)
+                            {
+                                var content = await FileIO.ReadTextAsync(file);
+                                var target = await TextCodecs.Encode(content, CURRENT_CODEC, CURRENT_ENC, CURRENT_LINEBREAK);
+                                if (OVERWRITE_FILE)
+                                {
+                                    await FileIO.WriteTextAsync(file, target);
+                                }
+                                else
+                                {
+                                    if (targetFolder is StorageFolder)
+                                    {
+                                        var targetFile = await file.CopyAsync(targetFolder, file.Name, NameCollisionOption.GenerateUniqueName);
+                                        await FileIO.WriteTextAsync(targetFile, target);
+                                    }
+                                }
+                            }
+                            BatchProcessNotification(false);
+                            break;
+                        case "MenuDecodeFile":
+                            var decFiles = await Utils.OpenFiles(Utils.text_ext);
+                            BatchProcessNotification(true);
+                            if (!OVERWRITE_FILE) targetFolder = await Utils.SelectFolder();
+                            foreach (var file in decFiles)
+                            {
+                                var content = await FileIO.ReadTextAsync(file);
+                                var target = await TextCodecs.Decode(content, CURRENT_CODEC, CURRENT_ENC);
+                                if (OVERWRITE_FILE)
+                                {
+                                    await FileIO.WriteTextAsync(file, target);
+                                }
+                                else
+                                {
+                                    if (targetFolder is StorageFolder)
+                                    {
+                                        var targetFile = await file.CopyAsync(targetFolder, file.Name, NameCollisionOption.GenerateUniqueName);
+                                        await FileIO.WriteTextAsync(targetFile, target);
+                                    }
+                                }
+                            }
+                            BatchProcessNotification(false);
+                            break;
+                        case "MenuEncodeFromFile":
+                            bytes = await Utils.ShowOpenDialog($".{CURRENT_CODEC.ToString().ToLower()}");
+                            if (bytes is byte[] && bytes.Length > 0)
+                                edDst.Text = await TextCodecs.Encode(bytes, CURRENT_CODEC, CURRENT_ENC);
+                            break;
+                        case "MenuEncodeToFile":
+                            text = await TextCodecs.Encode(edSrc.Text, CURRENT_CODEC, CURRENT_ENC);
+                            await Utils.ShowSaveDialog(text, CURRENT_ENC, $".{CURRENT_CODEC.ToString().ToLower()}");
+                            break;
+                        case "MenuDecodeFromFile":
+                            text = await Utils.ShowOpenDialog(Encoding.Default, $".{CURRENT_CODEC.ToString().ToLower()}");
+                            edDst.Text = await TextCodecs.Decode(text, CURRENT_CODEC, CURRENT_ENC);
+                            break;
+                        case "MenuDecodeToFile":
+                            text = await TextCodecs.Decode(edSrc.Text, CURRENT_CODEC, CURRENT_ENC);
+                            await Utils.ShowSaveDialog(text, CURRENT_ENC, $".{CURRENT_CODEC.ToString().ToLower()}");
+                            break;
+                    }
                 }
             }
-            else if (sender is MenuFlyoutItem)
-            {                   
-                var btn = sender as MenuFlyoutItem;
-                switch (btn.Name)
-                {
-                    case "MenuEncodeLoadFile":
-                    case "MenuDecodeLoadFile":
-                        edSrc.Text = await Utils.ShowOpenDialog(CURRENT_ENC, $".{CURRENT_CODEC.ToString().ToLower()}");
-                        break;
-                    case "MenuEncodeFile":
-                        var encFiles = await Utils.OpenFiles(Utils.text_ext);
-                        BatchProcessNotification(true);
-                        if (!OVERWRITE_FILE) targetFolder = await Utils.SelectFolder();
-                        foreach (var file in encFiles)
-                        {
-                            var content = await FileIO.ReadTextAsync(file);
-                            var target = await TextCodecs.Encode(content, CURRENT_CODEC, CURRENT_ENC, CURRENT_LINEBREAK);
-                            if (OVERWRITE_FILE)
-                            {
-                                await FileIO.WriteTextAsync(file, target);
-                            }                                
-                            else
-                            {
-                                if (targetFolder is StorageFolder)
-                                {
-                                    var targetFile = await file.CopyAsync(targetFolder, file.Name, NameCollisionOption.GenerateUniqueName);
-                                    await FileIO.WriteTextAsync(targetFile, target);
-                                }
-                            }
-
-                        }
-                        BatchProcessNotification(false);
-                        break;
-                    case "MenuDecodeFile":
-                        var decFiles = await Utils.OpenFiles(Utils.text_ext);
-                        BatchProcessNotification(true);
-                        if (!OVERWRITE_FILE) targetFolder = await Utils.SelectFolder();
-                        foreach (var file in decFiles)
-                        {
-                            var content = await FileIO.ReadTextAsync(file);
-                            var target = await TextCodecs.Decode(content, CURRENT_CODEC, CURRENT_ENC);
-                            if (OVERWRITE_FILE)
-                            {
-                                await FileIO.WriteTextAsync(file, target);
-                            }
-                            else
-                            {
-                                if (targetFolder is StorageFolder)
-                                {
-                                    var targetFile = await file.CopyAsync(targetFolder, file.Name, NameCollisionOption.GenerateUniqueName);
-                                    await FileIO.WriteTextAsync(targetFile, target);
-                                }
-                            }
-                        }
-                        BatchProcessNotification(false);
-                        break;
-                    case "MenuEncodeFromFile":
-                        bytes = await Utils.ShowOpenDialog($".{CURRENT_CODEC.ToString().ToLower()}");
-                        if (bytes is byte[] && bytes.Length > 0)
-                            edDst.Text = await TextCodecs.Encode(bytes, CURRENT_CODEC, CURRENT_ENC);
-                        break;
-                    case "MenuEncodeToFile":
-                        text = await TextCodecs.Encode(edSrc.Text, CURRENT_CODEC, CURRENT_ENC);
-                        await Utils.ShowSaveDialog(text, CURRENT_ENC, $".{CURRENT_CODEC.ToString().ToLower()}");
-                        break;
-
-                    case "MenuDecodeFromFile":
-                        text = await Utils.ShowOpenDialog(Encoding.Default, $".{CURRENT_CODEC.ToString().ToLower()}");
-                        edDst.Text = await TextCodecs.Decode(text, CURRENT_CODEC, CURRENT_ENC);
-                        break;
-                    case "MenuDecodeToFile":
-                        text = await TextCodecs.Decode(edSrc.Text, CURRENT_CODEC, CURRENT_ENC);
-                        await Utils.ShowSaveDialog(text, CURRENT_ENC, $".{CURRENT_CODEC.ToString().ToLower()}");
-                        break;
-                }
+            catch (Exception ex)
+            {
+                ex.Message.T().ShowException("ERROR".T());
             }
         }
         #region Drag/Drop routines

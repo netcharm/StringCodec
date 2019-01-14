@@ -27,6 +27,10 @@
                         <ToggleMenuFlyoutItem x:Name="optXXE" x:Uid="optXXE" Text="XXEncode" Click="Codec_Click"/>
                         <ToggleMenuFlyoutItem x:Name="optQuoted" x:Uid="optQuoted" Text="Quoted" Click="Codec_Click"/>
                         <ToggleMenuFlyoutItem x:Name="optRaw" x:Uid="optRaw" Text="RAW" Click="Codec_Click"/>
+                        <MenuFlyoutSeparator />
+                        <ToggleMenuFlyoutItem x:Name="optUnicodeValue" x:Uid="optUnicodeValue" Text="Unicode Value" Click="Codec_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optUnicodeGlyph" x:Uid="optUnicodeGlyph" Text="Unicode Glyph" Click="Codec_Click"/>
+                        <MenuFlyoutSeparator />
                         <ToggleMenuFlyoutItem x:Name="optThunder" x:Uid="optThunder" Text="Thunder" Click="Codec_Click"/>
                         <ToggleMenuFlyoutItem x:Name="optFlashGet" x:Uid="optFlashGet" Text="FlashGet" Click="Codec_Click"/>
                         <MenuFlyoutSeparator />

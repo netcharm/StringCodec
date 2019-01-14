@@ -15,6 +15,7 @@ This application is text string encode and decode tool.
 1. HTML Entries Encode/Decode
 1. UUID/GUID Generator
 1. Text case converting routines
+1. Batch process text encode/decode
 
 ## Bugs
 
