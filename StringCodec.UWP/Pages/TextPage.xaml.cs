@@ -72,7 +72,7 @@ namespace StringCodec.UWP.Pages
             edSrc.TextWrapping = TextWrapping.Wrap;
             edDst.TextWrapping = TextWrapping.Wrap;
 
-            optOverwriteFiles.IsChecked = true;
+            optOverwriteFiles.IsChecked = false;
             OVERWRITE_FILE = optOverwriteFiles.IsChecked.Value;
 
             ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] {
