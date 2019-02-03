@@ -386,17 +386,26 @@ namespace StringCodec.UWP.Pages
 
                 if (target is TreeViewNode)
                 {
+                    var parent = target.Parent;
+
                     if (flist.ContainsKey(target))
                     {
                         var f = flist[target];
 
                         if (CURRENT_RENAME_REPLACE)
+                        {
                             await f.RenameAsync(f.Name.ConvertFrom(CURRENT_SRCENC, true), NameCollisionOption.ReplaceExisting);
+                            target.Content = f.Name;
+                        }
                         else
+                        {
+                            parent.Children.Remove(target);
                             await f.RenameAsync(f.Name.ConvertFrom(CURRENT_SRCENC, true), NameCollisionOption.GenerateUniqueName);
+                            await AddTo(parent, f);
+                            target = parent.Children.Last();
+                        }
 
-                        target.Content = f.Name;
-                        if (target.HasChildren)
+                        if (target is TreeViewNode && target.HasChildren)
                             await RefreshFolder(target);
 
                         result = true;
@@ -406,6 +415,7 @@ namespace StringCodec.UWP.Pages
                 {
                     foreach(var cnode in TreeFiles.SelectedNodes)
                     {
+                        var parent = cnode.Parent;
                         if (flist.ContainsKey(cnode))
                         {
                             var f = flist[cnode];
@@ -414,12 +424,18 @@ namespace StringCodec.UWP.Pages
                             if(!fn.Equals(f.Name, StringComparison.CurrentCultureIgnoreCase))
                             {
                                 if (CURRENT_RENAME_REPLACE)
+                                {
                                     await f.RenameAsync(fn, NameCollisionOption.ReplaceExisting);
+                                    cnode.Content = f.Name;
+                                }
                                 else
+                                {
+                                    parent.Children.Remove(cnode);
                                     await f.RenameAsync(fn, NameCollisionOption.GenerateUniqueName);
+                                    await AddTo(parent, f);
+                                }
 
-                                cnode.Content = f.Name;
-                                if (cnode.HasChildren)
+                                if (cnode is TreeViewNode && cnode.HasChildren)
                                     await RefreshFolder(cnode);
                             }
                         }
@@ -670,12 +686,12 @@ namespace StringCodec.UWP.Pages
 
         private async void TreeView_ItemInvoked(TreeView sender, TreeViewItemInvokedEventArgs args)
         {
-            TreeViewNode item = args.InvokedItem as TreeViewNode;
+            MyTreeViewNode item = args.InvokedItem as MyTreeViewNode;
             if(TreeFiles.SelectionMode == TreeViewSelectionMode.Single)
             {
-                //if (!Window.Current.CoreWindow.GetKeyState(Windows.System.VirtualKey.Control).HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down))
-                    TreeFiles.SelectedNodes.Clear();
+                TreeFiles.SelectedNodes.Clear();
                 TreeFiles.SelectedNodes.Add(item);
+                target = item;
             }
             if (flist.ContainsKey(item))
             {
