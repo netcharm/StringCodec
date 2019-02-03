@@ -151,7 +151,7 @@ namespace StringCodec.UWP.Pages
         {
         }
 
-        private void edBase64_TextChanged(object sender, TextChangedEventArgs e)
+        private void EdBase64_TextChanged(object sender, TextChangedEventArgs e)
         {
             //text_src = edBase64.Text;
         }

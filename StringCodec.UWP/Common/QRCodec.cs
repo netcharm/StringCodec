@@ -22,7 +22,7 @@ namespace StringCodec.UWP.Common
         #region Older codes
         #endregion
 
-        private static string monofontname = "Consolas";
+        private static readonly string monofontname = "Consolas";
         #region Calc ISBN checksum
         private static string CalcISBN_10(string text)
         {
@@ -31,8 +31,7 @@ namespace StringCodec.UWP.Common
             if (text.Length < 9) return (string.Empty);
             else if (text.Length > 9) text = text.Substring(0, 9);
 
-            long value = 0;
-            if (!long.TryParse(text, out value)) return (string.Empty);
+            if (!long.TryParse(text, out long value)) return (string.Empty);
             if (text.Length != 9 && text.Length != 10)
             {
                 if (text.Length == 12 || text.Length == 13)
@@ -64,8 +63,7 @@ namespace StringCodec.UWP.Common
             if (text.Length < 12) return (string.Empty);
             else if (text.Length > 12) text = text.Substring(0, 12);
 
-            long value = 0;
-            if (!long.TryParse(text, out value)) return (string.Empty);
+            if (!long.TryParse(text, out long value)) return (string.Empty);
             if (text.Length != 12 && text.Length != 13) return (string.Empty);
 
             int[] w = { 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3 };

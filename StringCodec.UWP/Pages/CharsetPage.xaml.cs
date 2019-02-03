@@ -965,10 +965,13 @@ namespace StringCodec.UWP.Pages
 #endif
                     }
                 }
+
+#if DEBUG
                 catch (Exception ex)
                 {
-#if DEBUG
                     System.Diagnostics.Debug.WriteLine(ex.Message);
+#else
+                catch (Exception) {
 #endif
                 }
                 deferral.Complete();

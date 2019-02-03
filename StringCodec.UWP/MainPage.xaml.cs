@@ -170,9 +170,8 @@ namespace StringCodec.UWP
         {
             try
             {
-                if (e.Parameter is ShareOperation)
+                if (e.Parameter is ShareOperation operation)
                 {
-                    ShareOperation operation = (ShareOperation)e.Parameter;
                     //Get text data 
                     if (operation.Data.Contains(StandardDataFormats.Text))
                     {
@@ -229,7 +228,7 @@ namespace StringCodec.UWP
                                         ContentFrame.Navigate(typeof(Pages.QRCodePage), bitmapImage);
                                     }
                                 }
-                                else if(ext.Equals(".txt", StringComparison.CurrentCultureIgnoreCase))
+                                else if (ext.Equals(".txt", StringComparison.CurrentCultureIgnoreCase))
                                 {
                                     var txt = await FileIO.ReadTextAsync(storageFile);
                                     ContentFrame.Navigate(typeof(Pages.TextPage), txt);

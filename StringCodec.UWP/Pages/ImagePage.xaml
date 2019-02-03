@@ -97,7 +97,7 @@
                  FontFamily="Consolas" FontSize="16" 
                  ScrollViewer.VerticalScrollBarVisibility="Auto" 
                  ScrollViewer.HorizontalScrollBarVisibility="Auto" 
-                 TextChanged="edBase64_TextChanged"
+                 TextChanged="EdBase64_TextChanged"
                  AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" />
         <Rectangle Grid.Row="1" Grid.Column="1" x:Name="rectDrop" Fill="Transparent" Stretch="Fill" Margin="12, 28, 0, 0"
             AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" >

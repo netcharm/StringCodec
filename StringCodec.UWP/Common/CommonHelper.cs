@@ -1784,8 +1784,10 @@ namespace StringCodec.UWP.Common
         #region Clipboard Extentions
         public static void SetClipboard(string text)
         {
-            DataPackage dataPackage = new DataPackage();
-            dataPackage.RequestedOperation = DataPackageOperation.Copy;
+            DataPackage dataPackage = new DataPackage
+            {
+                RequestedOperation = DataPackageOperation.Copy
+            };
             dataPackage.SetText(text);
             Clipboard.SetContent(dataPackage);
         }
@@ -1799,8 +1801,10 @@ namespace StringCodec.UWP.Common
         {
             if (image.Source == null) return;
 
-            DataPackage dataPackage = new DataPackage();
-            dataPackage.RequestedOperation = DataPackageOperation.Copy;
+            DataPackage dataPackage = new DataPackage
+            {
+                RequestedOperation = DataPackageOperation.Copy
+            };
 
             try
             {
@@ -2133,8 +2137,10 @@ namespace StringCodec.UWP.Common
 
             try
             {
-                FolderPicker fp = new FolderPicker();
-                fp.SuggestedStartLocation = PickerLocationId.Desktop;
+                FolderPicker fp = new FolderPicker
+                {
+                    SuggestedStartLocation = PickerLocationId.Desktop
+                };
                 fp.FileTypeFilter.Add("*");
 
                 result = await fp.PickSingleFolderAsync();
@@ -2157,8 +2163,10 @@ namespace StringCodec.UWP.Common
 
             try
             {
-                FileOpenPicker fp = new FileOpenPicker();
-                fp.SuggestedStartLocation = PickerLocationId.Desktop;
+                FileOpenPicker fp = new FileOpenPicker
+                {
+                    SuggestedStartLocation = PickerLocationId.Desktop
+                };
                 foreach (var ext in exts)
                     fp.FileTypeFilter.Add(ext);
                 fp.FileTypeFilter.Add("*");
@@ -2194,8 +2202,10 @@ namespace StringCodec.UWP.Common
             byte[] result = null;
 
             var now = DateTime.Now;
-            FileOpenPicker fp = new FileOpenPicker();
-            fp.SuggestedStartLocation = PickerLocationId.Desktop;
+            FileOpenPicker fp = new FileOpenPicker
+            {
+                SuggestedStartLocation = PickerLocationId.Desktop
+            };
             fp.FileTypeFilter.Add(ext);
             fp.FileTypeFilter.Add(".txt");
 
@@ -2229,10 +2239,12 @@ namespace StringCodec.UWP.Common
             if (content.Length <= 0) return (result);
 
             var now = DateTime.Now;
-            FileSavePicker fp = new FileSavePicker();
-            fp.SuggestedStartLocation = PickerLocationId.Desktop;
+            FileSavePicker fp = new FileSavePicker
+            {
+                SuggestedStartLocation = PickerLocationId.Desktop,
+                SuggestedFileName = $"{now.ToString("yyyyMMddHHmmssff")}{ext}"
+            };
             fp.FileTypeChoices.Add("Text File".T(), new List<string>() { ext });
-            fp.SuggestedFileName = $"{now.ToString("yyyyMMddHHmmssff")}{ext}";
             StorageFile TargetFile = await fp.PickSaveFileAsync();
             if (TargetFile != null)
             {
@@ -2261,10 +2273,12 @@ namespace StringCodec.UWP.Common
             if (content.Length <= 0) return (result);
 
             var now = DateTime.Now;
-            FileSavePicker fp = new FileSavePicker();
-            fp.SuggestedStartLocation = PickerLocationId.Desktop;
+            FileSavePicker fp = new FileSavePicker
+            {
+                SuggestedStartLocation = PickerLocationId.Desktop,
+                SuggestedFileName = $"{now.ToString("yyyyMMddHHmmssff")}{ext}"
+            };
             fp.FileTypeChoices.Add("Text File".T(), new List<string>() { ext });
-            fp.SuggestedFileName = $"{now.ToString("yyyyMMddHHmmssff")}{ext}";
             StorageFile TargetFile = await fp.PickSaveFileAsync();
             if (TargetFile != null)
             {
@@ -2324,14 +2338,17 @@ namespace StringCodec.UWP.Common
             if (image.Source == null) return (string.Empty);
             string result = string.Empty;
 
-            var now = DateTime.Now;
-            FileSavePicker fp = new FileSavePicker();
-            fp.SuggestedStartLocation = PickerLocationId.Desktop;
-            //fp.FileTypeChoices.Add("Image File", new List<string>() { ".png", ".jpg", ".jpeg", ".tif", ".tiff", ".gif", ".bmp" });
-            fp.FileTypeChoices.Add("Image File", image_ext);
             if (!string.IsNullOrEmpty(prefix)) prefix = $"{prefix}_";
             if (!string.IsNullOrEmpty(suffix)) suffix = $"_{suffix}";
-            fp.SuggestedFileName = $"{prefix}{now.ToString("yyyyMMddHHmmssff")}{suffix}.png";
+
+            var now = DateTime.Now;
+            FileSavePicker fp = new FileSavePicker
+            {
+                SuggestedStartLocation = PickerLocationId.Desktop,
+                SuggestedFileName = $"{prefix}{now.ToString("yyyyMMddHHmmssff")}{suffix}.png"
+            };
+            //fp.FileTypeChoices.Add("Image File", new List<string>() { ".png", ".jpg", ".jpeg", ".tif", ".tiff", ".gif", ".bmp" });
+            fp.FileTypeChoices.Add("Image File", image_ext);
             StorageFile TargetFile = await fp.PickSaveFileAsync();
             if (TargetFile != null)
             {
@@ -2544,10 +2561,12 @@ namespace StringCodec.UWP.Common
                     }
                     else
                     {
-                        FileSavePicker fsp = new FileSavePicker();
-                        fsp.SuggestedStartLocation = PickerLocationId.Unspecified;
-                        fsp.SuggestedFileName = file.Name;
-                        fsp.SuggestedSaveFile = file;
+                        FileSavePicker fsp = new FileSavePicker
+                        {
+                            SuggestedStartLocation = PickerLocationId.Unspecified,
+                            SuggestedFileName = file.Name,
+                            SuggestedSaveFile = file
+                        };
                         StorageFile TargetFile = await fsp.PickSaveFileAsync();
                         if (TargetFile != null)
                         {
@@ -2652,8 +2671,10 @@ namespace StringCodec.UWP.Common
         {
             bool result = false;
 
-            var queryOptions = new QueryOptions();
-            queryOptions.FolderDepth = FolderDepth.Shallow;
+            var queryOptions = new QueryOptions
+            {
+                FolderDepth = FolderDepth.Shallow
+            };
             var queryFolders =  ApplicationData.Current.TemporaryFolder.CreateItemQueryWithOptions(queryOptions);
             var sItems = await queryFolders.GetItemsAsync();
             List<string> flist = new List<string>();

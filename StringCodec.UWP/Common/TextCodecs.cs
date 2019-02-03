@@ -12,7 +12,6 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
-using Microsoft.International.Converters.TraditionalChineseToSimplifiedConverter;
 
 namespace StringCodec.UWP.Common
 {
@@ -1149,8 +1148,7 @@ namespace StringCodec.UWP.Common
             {
                 string result = string.Empty;
 
-                Guid guid;
-                if (!Guid.TryParse(text, out guid)) guid = Guid.NewGuid();
+                if (!Guid.TryParse(text, out Guid guid)) guid = Guid.NewGuid();
 
                 if (string.IsNullOrEmpty(fmt)) fmt = "D";
 
@@ -2547,12 +2545,14 @@ namespace StringCodec.UWP.Common
 
         public static string ChinaS2T(this string text)
         {
-            return (ChineseConverter.Convert(text, ChineseConversionDirection.SimplifiedToTraditional));
+            return (TongWen.Core.Convert(text, TongWen.ChineseConversionDirection.SimplifiedToTraditional));
+            //return (ChineseConverter.Convert(text, ChineseConversionDirection.SimplifiedToTraditional));
         }
 
         public static string ChinaT2S(this string text)
         {
-            return(ChineseConverter.Convert(text, ChineseConversionDirection.TraditionalToSimplified));
+            return (TongWen.Core.Convert(text, TongWen.ChineseConversionDirection.TraditionalToSimplified));
+            //return (ChineseConverter.Convert(text, ChineseConversionDirection.TraditionalToSimplified));
         }
         #endregion
 
