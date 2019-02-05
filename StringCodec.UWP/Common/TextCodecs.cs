@@ -197,7 +197,7 @@ namespace StringCodec.UWP.Common
                         }
                         catch (Exception ex)
                         {
-                            ex.Message.T().ShowException("ERROR".T());
+                            ex.Message.T().ShowMessage("ERROR".T());
                         }
                     }
                 }
@@ -1727,7 +1727,7 @@ namespace StringCodec.UWP.Common
                 var size = wb.PixelWidth * wb.PixelHeight;
                 if (size > 196608)
                 {
-                    var dlgMessage = new MessageDialog("Image is big, it's maybe too slower to encoding & filling textbox. \n Continued?".T(), "Confirm".T()) { Options = MessageDialogOptions.AcceptUserInputAfterDelay };
+                    var dlgMessage = new MessageDialog("EncodingBigImageConfirm".T(), "Confirm".T()) { Options = MessageDialogOptions.AcceptUserInputAfterDelay };
                     dlgMessage.Commands.Add(new UICommand("OK".T()) { Id = 0 });
                     dlgMessage.Commands.Add(new UICommand("Cancel".T()) { Id = 1 });
                     // Set the command that will be invoked by default
@@ -1747,7 +1747,7 @@ namespace StringCodec.UWP.Common
             }
             catch(Exception ex)
             {
-                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
+                ex.Message.T().ShowMessage("ERROR".T());
             }
             return (result);
         }
@@ -1767,7 +1767,7 @@ namespace StringCodec.UWP.Common
             }
             catch (Exception ex)
             {
-                ex.Message.T().ShowException("ERROR".T());
+                ex.Message.T().ShowMessage("ERROR".T());
             }
             return (result);
         }
@@ -1785,7 +1785,7 @@ namespace StringCodec.UWP.Common
             }
             catch (Exception ex)
             {
-                ex.Message.T().ShowException("ERROR".T());
+                ex.Message.T().ShowMessage("ERROR".T());
             }
             return (result);
         }
@@ -1902,7 +1902,7 @@ namespace StringCodec.UWP.Common
             }
             catch (Exception ex)
             {
-                ex.Message.T().ShowException("ERROR".T());
+                ex.Message.T().ShowMessage("ERROR".T());
             }
             return (result);
         }
@@ -1944,7 +1944,7 @@ namespace StringCodec.UWP.Common
             }
             catch (Exception ex)
             {
-                ex.Message.T().ShowException("ERROR".T());
+                ex.Message.T().ShowMessage("ERROR".T());
             }
             return (result);
         }

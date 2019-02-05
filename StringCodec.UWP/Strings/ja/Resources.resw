@@ -654,7 +654,7 @@
   <data name="file(s)" xml:space="preserve">
     <value>ファイル</value>
   </data>
-  <data name="Can't save to SVG file, will be saved as PNG file like" xml:space="preserve">
+  <data name="SaveSvgToPngConfirm" xml:space="preserve">
     <value>現在のイメージをSVGファイルとして保存することはできず、PNGファイルとして保存されます。</value>
   </data>
   <data name="optFmtSvg.Text" xml:space="preserve">
@@ -669,7 +669,7 @@
   <data name="Confirm" xml:space="preserve">
     <value>確認しますか？</value>
   </data>
-  <data name="Image is big, it's maybe too slower to encoding &amp; filling textbox. \n Continued?" xml:space="preserve">
+  <data name="EncodingBigImageConfirm" xml:space="preserve">
     <value>画像を拡大し、テキストボックスをエンコードして埋め込むのが非常に遅くなる可能性があります。 \ n続行しますか？</value>
   </data>
   <data name="nvItemSvg.Content" xml:space="preserve">
@@ -739,7 +739,7 @@
     <value>バージョン</value>
   </data>
   <data name="AboutCopyrightValue.Text" xml:space="preserve">
-    <value>netcharm @ 2018, すべての権利はによって予約済みです</value>
+    <value>netcharm @ 2018, すべての権利はによって予約済みです, 第3側のコード著作権は第三者に帰属する。</value>
   </data>
   <data name="AboutDialog.PrimaryButtonText" xml:space="preserve">
     <value>決定する</value>
@@ -1043,5 +1043,59 @@
   </data>
   <data name="optUnicodeValue.Text" xml:space="preserve">
     <value>Unicode (\uHHHH)</value>
+  </data>
+  <data name="CustomPhraseAdd.Content" xml:space="preserve">
+    <value>新しいフレーズ</value>
+  </data>
+  <data name="CustomPhraseAfter.Header" xml:space="preserve">
+    <value>変換後</value>
+  </data>
+  <data name="CustomPhraseAfter.PlaceholderText" xml:space="preserve">
+    <value>変換されたフレーズ</value>
+  </data>
+  <data name="CustomPhraseBefore.Header" xml:space="preserve">
+    <value>変換前</value>
+  </data>
+  <data name="CustomPhraseBefore.PlaceholderText" xml:space="preserve">
+    <value>変換前の語句</value>
+  </data>
+  <data name="CustomPhraseClear.Content" xml:space="preserve">
+    <value>変換リストをクリアする</value>
+  </data>
+  <data name="CustomPhraseEdit.Content" xml:space="preserve">
+    <value>選択したフレーズの変更</value>
+  </data>
+  <data name="CustomPhraseExport.Content" xml:space="preserve">
+    <value>変換リストのエクスポート...</value>
+  </data>
+  <data name="CustomPhraseFrom.Text" xml:space="preserve">
+    <value>変換前</value>
+  </data>
+  <data name="CustomPhraseHeader.Text" xml:space="preserve">
+    <value>変換するフレーズをカスタマイズする</value>
+  </data>
+  <data name="CustomPhraseImport.Content" xml:space="preserve">
+    <value>変換リストのインポート...</value>
+  </data>
+  <data name="CustomPhraseListS2T.Header" xml:space="preserve">
+    <value>中国語 (簡体字から繁体字)</value>
+  </data>
+  <data name="CustomPhraseListT2S.Header" xml:space="preserve">
+    <value>中国語 (繁体字から簡体字)</value>
+  </data>
+  <data name="CustomPhraseRemove.Content" xml:space="preserve">
+    <value>選択したフレーズの削除</value>
+  </data>
+  <data name="CustomPhraseTo.Text" xml:space="preserve">
+    <value>変換後</value>
+  </data>
+  <data name="PhraseExistsConfirm" xml:space="preserve">
+    <value>フレーズが既に存在し、フレーズを変更していますか?</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>うん</value>
   </data>
 </root>

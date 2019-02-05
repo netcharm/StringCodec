@@ -654,7 +654,7 @@
   <data name="file(s)" xml:space="preserve">
     <value>檔案</value>
   </data>
-  <data name="Can't save to SVG file, will be saved as PNG file like" xml:space="preserve">
+  <data name="SaveSvgToPngConfirm" xml:space="preserve">
     <value>當前圖像不能保存為SVG格式的檔案, 將會保存為PNG格式檔案, 類似於</value>
   </data>
   <data name="optFmtSvg.Text" xml:space="preserve">
@@ -669,7 +669,7 @@
   <data name="Confirm" xml:space="preserve">
     <value>確認?</value>
   </data>
-  <data name="Image is big, it's maybe too slower to encoding &amp; filling textbox. \n Continued?" xml:space="preserve">
+  <data name="EncodingBigImageConfirm" xml:space="preserve">
     <value>圖像較大，編碼和填充文本框可能會非常慢。\n繼續？</value>
   </data>
   <data name="nvItemSvg.Content" xml:space="preserve">
@@ -739,7 +739,7 @@
     <value>版本</value>
   </data>
   <data name="AboutCopyrightValue.Text" xml:space="preserve">
-    <value>netcharm @ 2018, 保留所有权利</value>
+    <value>netcharm @ 2018, 保留所有权利, 第三方代碼版權歸屬第三方。</value>
   </data>
   <data name="AboutDialog.PrimaryButtonText" xml:space="preserve">
     <value>確定</value>
@@ -1043,5 +1043,59 @@
   </data>
   <data name="optUnicodeValue.Text" xml:space="preserve">
     <value>Unicode (\uHHHH)</value>
+  </data>
+  <data name="CustomPhraseAdd.Content" xml:space="preserve">
+    <value>新增短語</value>
+  </data>
+  <data name="CustomPhraseAfter.Header" xml:space="preserve">
+    <value>轉換後</value>
+  </data>
+  <data name="CustomPhraseAfter.PlaceholderText" xml:space="preserve">
+    <value>轉換後的短語</value>
+  </data>
+  <data name="CustomPhraseBefore.Header" xml:space="preserve">
+    <value>轉換前</value>
+  </data>
+  <data name="CustomPhraseBefore.PlaceholderText" xml:space="preserve">
+    <value>轉換前的短語</value>
+  </data>
+  <data name="CustomPhraseClear.Content" xml:space="preserve">
+    <value>清除轉換列表</value>
+  </data>
+  <data name="CustomPhraseEdit.Content" xml:space="preserve">
+    <value>修改選擇的短語</value>
+  </data>
+  <data name="CustomPhraseExport.Content" xml:space="preserve">
+    <value>導出轉換列表...</value>
+  </data>
+  <data name="CustomPhraseFrom.Text" xml:space="preserve">
+    <value>轉換前</value>
+  </data>
+  <data name="CustomPhraseHeader.Text" xml:space="preserve">
+    <value>自訂要轉換的短語</value>
+  </data>
+  <data name="CustomPhraseImport.Content" xml:space="preserve">
+    <value>導入轉換列表...</value>
+  </data>
+  <data name="CustomPhraseListS2T.Header" xml:space="preserve">
+    <value>簡體轉繁體</value>
+  </data>
+  <data name="CustomPhraseListT2S.Header" xml:space="preserve">
+    <value>繁體轉簡體</value>
+  </data>
+  <data name="CustomPhraseRemove.Content" xml:space="preserve">
+    <value>刪除選擇的短語</value>
+  </data>
+  <data name="CustomPhraseTo.Text" xml:space="preserve">
+    <value>轉換後</value>
+  </data>
+  <data name="PhraseExistsConfirm" xml:space="preserve">
+    <value>短語已存在, 修改短語?</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>否</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>是</value>
   </data>
 </root>

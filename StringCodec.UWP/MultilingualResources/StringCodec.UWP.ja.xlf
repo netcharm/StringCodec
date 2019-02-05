@@ -862,7 +862,7 @@
           <source>file(s)</source>
           <target state="translated">ファイル</target>
         </trans-unit>
-        <trans-unit id="Can't save to SVG file, will be saved as PNG file like" translate="yes" xml:space="preserve">
+        <trans-unit id="SaveSvgToPngConfirm" translate="yes" xml:space="preserve">
           <source>Can't save to SVG file, will be saved as PNG file like</source>
           <target state="translated">現在のイメージをSVGファイルとして保存することはできず、PNGファイルとして保存されます。</target>
         </trans-unit>
@@ -882,7 +882,7 @@
           <source>Confirm</source>
           <target state="translated">確認しますか？</target>
         </trans-unit>
-        <trans-unit id="Image is big, it's maybe too slower to encoding &amp;amp; filling textbox. \n Continued?" translate="yes" xml:space="preserve">
+        <trans-unit id="EncodingBigImageConfirm" translate="yes" xml:space="preserve">
           <source>Image is big, it's maybe too slower to encoding &amp; filling textbox. \n Continued?</source>
           <target state="translated">画像を拡大し、テキストボックスをエンコードして埋め込むのが非常に遅くなる可能性があります。 \ n続行しますか？</target>
         </trans-unit>
@@ -975,8 +975,8 @@
           <target state="translated">バージョン</target>
         </trans-unit>
         <trans-unit id="AboutCopyrightValue.Text" translate="yes" xml:space="preserve">
-          <source>All rights reserved by netcharm @ 2018</source>
-          <target state="translated">netcharm @ 2018, すべての権利はによって予約済みです</target>
+          <source>All rights reserved by netcharm @ 2018, and the third party's code copyright belongs to the third party.</source>
+          <target state="translated">netcharm @ 2018, すべての権利はによって予約済みです, 第3側のコード著作権は第三者に帰属する。</target>
         </trans-unit>
         <trans-unit id="AboutDialog.PrimaryButtonText" translate="yes" xml:space="preserve">
           <source>OK</source>
@@ -1381,6 +1381,78 @@
         <trans-unit id="optUnicodeValue.Text" translate="yes" xml:space="preserve">
           <source>Unicode (\uHHHH)</source>
           <target state="translated">Unicode (\uHHHH)</target>
+        </trans-unit>
+        <trans-unit id="CustomPhraseAdd.Content" translate="yes" xml:space="preserve">
+          <source>Add New</source>
+          <target state="translated">新しいフレーズ</target>
+        </trans-unit>
+        <trans-unit id="CustomPhraseAfter.Header" translate="yes" xml:space="preserve">
+          <source>After</source>
+          <target state="translated">変換後</target>
+        </trans-unit>
+        <trans-unit id="CustomPhraseAfter.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>After Phrase</source>
+          <target state="translated">変換されたフレーズ</target>
+        </trans-unit>
+        <trans-unit id="CustomPhraseBefore.Header" translate="yes" xml:space="preserve">
+          <source>Before</source>
+          <target state="translated">変換前</target>
+        </trans-unit>
+        <trans-unit id="CustomPhraseBefore.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Before Phrase</source>
+          <target state="translated">変換前の語句</target>
+        </trans-unit>
+        <trans-unit id="CustomPhraseClear.Content" translate="yes" xml:space="preserve">
+          <source>Clear List</source>
+          <target state="translated">変換リストをクリアする</target>
+        </trans-unit>
+        <trans-unit id="CustomPhraseEdit.Content" translate="yes" xml:space="preserve">
+          <source>Edit Selected</source>
+          <target state="translated">選択したフレーズの変更</target>
+        </trans-unit>
+        <trans-unit id="CustomPhraseExport.Content" translate="yes" xml:space="preserve">
+          <source>Export ...</source>
+          <target state="translated">変換リストのエクスポート...</target>
+        </trans-unit>
+        <trans-unit id="CustomPhraseFrom.Text" translate="yes" xml:space="preserve">
+          <source>From</source>
+          <target state="translated">変換前</target>
+        </trans-unit>
+        <trans-unit id="CustomPhraseHeader.Text" translate="yes" xml:space="preserve">
+          <source>Custom Phrases</source>
+          <target state="translated">変換するフレーズをカスタマイズする</target>
+        </trans-unit>
+        <trans-unit id="CustomPhraseImport.Content" translate="yes" xml:space="preserve">
+          <source>Import ...</source>
+          <target state="translated">変換リストのインポート...</target>
+        </trans-unit>
+        <trans-unit id="CustomPhraseListS2T.Header" translate="yes" xml:space="preserve">
+          <source>Simplified To Traditional</source>
+          <target state="translated">中国語 (簡体字から繁体字)</target>
+        </trans-unit>
+        <trans-unit id="CustomPhraseListT2S.Header" translate="yes" xml:space="preserve">
+          <source>Traditional To Simplified</source>
+          <target state="translated">中国語 (繁体字から簡体字)</target>
+        </trans-unit>
+        <trans-unit id="CustomPhraseRemove.Content" translate="yes" xml:space="preserve">
+          <source>Remove Selected</source>
+          <target state="translated">選択したフレーズの削除</target>
+        </trans-unit>
+        <trans-unit id="CustomPhraseTo.Text" translate="yes" xml:space="preserve">
+          <source>To</source>
+          <target state="translated">変換後</target>
+        </trans-unit>
+        <trans-unit id="PhraseExistsConfirm" translate="yes" xml:space="preserve">
+          <source>Phrase exists, overwrite it?</source>
+          <target state="translated">フレーズが既に存在し、フレーズを変更していますか?</target>
+        </trans-unit>
+        <trans-unit id="No" translate="yes" xml:space="preserve">
+          <source>No</source>
+          <target state="translated">キャンセル</target>
+        </trans-unit>
+        <trans-unit id="Yes" translate="yes" xml:space="preserve">
+          <source>Yes</source>
+          <target state="translated">うん</target>
         </trans-unit>
       </group>
     </body>

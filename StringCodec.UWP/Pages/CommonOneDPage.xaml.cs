@@ -74,7 +74,7 @@ namespace StringCodec.UWP.Pages
             }
             catch(Exception ex)
             {
-                ex.Message.T().ShowException("ERROR".T());
+                ex.Message.T().ShowMessage("ERROR".T());
             }
 #endif
             #endregion
@@ -103,7 +103,7 @@ namespace StringCodec.UWP.Pages
         {
         }
 
-        private void edBarcode_TextChanged(object sender, TextChangedEventArgs e)
+        private void EdBarcode_TextChanged(object sender, TextChangedEventArgs e)
         {
             lblInfo.Text = $"{"Count".T()}: {edBarcode.Text.Length}";
             text_src = edBarcode.Text;

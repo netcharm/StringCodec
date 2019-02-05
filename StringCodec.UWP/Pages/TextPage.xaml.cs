@@ -147,7 +147,7 @@ namespace StringCodec.UWP.Pages
             }
             catch (Exception ex)
             {
-                ex.Message.ShowException("ERROR".T());
+                ex.Message.ShowMessage("ERROR".T());
             }
         }
 
@@ -559,7 +559,7 @@ namespace StringCodec.UWP.Pages
             }
             catch (Exception ex)
             {
-                ex.Message.T().ShowException("ERROR".T());
+                ex.Message.T().ShowMessage("ERROR".T());
             }
         }
         #region Drag/Drop routines

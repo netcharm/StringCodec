@@ -1362,6 +1362,7 @@ namespace StringCodec.UWP.Common
         #endregion
     }
 
+    public enum DialogResult { YES=1, NO=2, CANCEL=3};
     public static class TextExtentions
     {
         #region I18N
@@ -1386,11 +1387,30 @@ namespace StringCodec.UWP.Common
         }
         #endregion
 
-        public static async void ShowException(this string content, string title)
+        public static async void ShowMessage(this string content, string title)
         {
             if (string.IsNullOrEmpty(content) || string.IsNullOrEmpty(title)) return;
             await new MessageDialog(content, title).ShowAsync();
         }
+
+        public static async Task<DialogResult> ShowConfirm(this string content, string title)
+        {
+            DialogResult result = DialogResult.CANCEL;
+
+            if (string.IsNullOrEmpty(content) || string.IsNullOrEmpty(title)) return(result);
+
+            var dlg = new MessageDialog(content, title);
+            dlg.Commands.Add(new UICommand { Label = "Yes".T(), Id = DialogResult.YES });
+            dlg.Commands.Add(new UICommand { Label = "No".T(), Id = DialogResult.NO });
+
+            var selected = await dlg.ShowAsync();
+
+            //Enum.TryParse(typeof(DialogResult), (int)selected?.Id, result);
+            result = (DialogResult)((int)selected?.Id);
+
+            return (result);
+        }
+
     }
 
     class Settings
@@ -1487,12 +1507,12 @@ namespace StringCodec.UWP.Common
             }
         }
 
-        public static async Task<int> SaveUILanguage(string lang)
+        public static int SaveUILanguage(string lang)
         {
-            return(await SetUILanguage(lang, true));
+            return(SetUILanguage(lang, true));
         }
 
-        public static async Task<int> SetUILanguage(string lang, bool save = false)
+        public static int SetUILanguage(string lang, bool save = false)
         {
             try
             {
@@ -1506,7 +1526,7 @@ namespace StringCodec.UWP.Common
                 if (save)
                 {
                     Set("UILanguage", lang);
-                    await new MessageDialog("Language will be changed on next startup".T(), "INFO".T()).ShowAsync();
+                    "Language will be changed on next startup".T().ShowMessage("INFO".T());
                 }
 
                 return (LanguageIndex);
@@ -2151,7 +2171,7 @@ namespace StringCodec.UWP.Common
             }
             catch (Exception ex)
             {
-                ex.Message.T().ShowException("ERROR".T());
+                ex.Message.T().ShowMessage("ERROR".T());
             }
 
             return (result);
@@ -2180,7 +2200,7 @@ namespace StringCodec.UWP.Common
             }
             catch (Exception ex)
             {
-                ex.Message.T().ShowException("ERROR".T());
+                ex.Message.T().ShowMessage("ERROR".T());
             }
 
             return (result);
@@ -2387,7 +2407,7 @@ namespace StringCodec.UWP.Common
                         if (wb != null)
                         {
                             var targetName = $"{ TargetFile.Name }.png";
-                            await new MessageDialog($"{"Can't save to SVG file, will be saved as PNG file like".T()} :\n  {targetName}", "INFO".T()).ShowAsync();
+                            await new MessageDialog($"{"SaveSvgToPngConfirm".T()} :\n  {targetName}", "INFO".T()).ShowAsync();
                             await TargetFile.RenameAsync($"{targetName}", NameCollisionOption.GenerateUniqueName);
                             wb.SaveAsync(TargetFile, width, height);
                         }
@@ -2399,7 +2419,7 @@ namespace StringCodec.UWP.Common
                     if (wb != null)
                     {
                         var targetName = $"{ TargetFile.Name }.png";
-                        await new MessageDialog($"{"Can't save to SVG file, will be saved as PNG file like".T()} :\n  {targetName}", "INFO".T()).ShowAsync();
+                        await new MessageDialog($"{"SaveSvgToPngConfirm".T()} :\n  {targetName}", "INFO".T()).ShowAsync();
                         await TargetFile.RenameAsync($"{targetName}", NameCollisionOption.GenerateUniqueName);
                         wb.SaveAsync(TargetFile, width, height);
                     }
@@ -2773,7 +2793,7 @@ namespace StringCodec.UWP.Common
 
         public UWPLogos()
         {
-
+            if(logolist is List<Logo> ) logolist.Clear();
         }
 
         public static UWPLogos Create()

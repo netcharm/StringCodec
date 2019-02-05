@@ -97,7 +97,7 @@ namespace StringCodec.UWP
             }
             catch (Exception ex)
             {
-                ex.Message.T().ShowException("ERROR".T());
+                ex.Message.T().ShowMessage("ERROR".T());
             }
 
             #region Extented the supported string charsets
@@ -111,7 +111,7 @@ namespace StringCodec.UWP
             }
             catch(Exception ex)
             {
-                ex.Message.T().ShowException("ERROR".T());
+                ex.Message.T().ShowMessage("ERROR".T());
             }
             #endregion
 
@@ -130,6 +130,10 @@ namespace StringCodec.UWP
             //AltLeft.Modifiers = VirtualKeyModifiers.Menu;
             #endregion
 
+            #region Load Custom Simplified <=> Traditional Phrases
+            Common.TongWen.Core.LoadCustomPhrase();
+            #endregion
+
             #region 将应用扩展到标题栏
             try
             {
@@ -143,7 +147,7 @@ namespace StringCodec.UWP
             }
             catch(Exception ex)
             {
-                ex.Message.T().ShowException("ERROR".T());
+                ex.Message.T().ShowMessage("ERROR".T());
             }
             #endregion
 
@@ -157,7 +161,7 @@ namespace StringCodec.UWP
             }
             catch(Exception ex)
             {
-                ex.Message.T().ShowException("ERROR".T());
+                ex.Message.T().ShowMessage("ERROR".T());
             }
         }
 
@@ -246,7 +250,7 @@ namespace StringCodec.UWP
             }
             catch (Exception ex)
             {
-                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
+                ex.Message.T().ShowMessage("ERROR".T());
             }
         }
 
@@ -330,7 +334,7 @@ namespace StringCodec.UWP
             }
             catch (Exception ex)
             {
-                ex.Message.T().ShowException("ERROR".T());
+                ex.Message.T().ShowMessage("ERROR".T());
             }
         }
 
@@ -390,7 +394,7 @@ namespace StringCodec.UWP
                     }
                     catch (Exception ex)
                     {
-                        ex.Message.T().ShowException("ERROR".T());
+                        ex.Message.T().ShowMessage("ERROR".T());
                     }
                 }
             }
@@ -434,7 +438,7 @@ namespace StringCodec.UWP
             }
             catch(Exception ex)
             {
-                ex.Message.T().ShowException("ERROR".T());
+                ex.Message.T().ShowMessage("ERROR".T());
             }            
         }
 

@@ -51,7 +51,7 @@
         </StackPanel>
 
         <TextBlock Grid.Row="5" Grid.Column="1" x:Name="AboutCopyright" x:Uid="AboutCopyright" Text="Copyright" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <TextBlock Grid.Row="5" Grid.Column="2" x:Name="AboutCopyrightValue" x:Uid="AboutCopyrightValue" Text="netcharm @ 2018"/>
+        <TextBlock Grid.Row="5" Grid.Column="2" x:Name="AboutCopyrightValue" x:Uid="AboutCopyrightValue" TextWrapping="Wrap" Height="Auto" Text="netcharm @ 2018"/>
 
         <TextBlock Grid.Row="6" Grid.Column="1" x:Name="AboutSite" x:Uid="AboutSite" Text="Site" HorizontalAlignment="Left" VerticalAlignment="Center"/>
         <HyperlinkButton Grid.Row="6" Grid.Column="2" x:Name="AboutSiteValue" x:Uid="AboutSiteValue" Content="My Github Repositories" Click="Site_Click" HorizontalAlignment="Left" VerticalAlignment="Center" />

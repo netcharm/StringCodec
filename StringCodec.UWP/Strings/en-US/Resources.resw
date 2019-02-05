@@ -756,7 +756,7 @@
   <data name="has been deleted" xml:space="preserve">
     <value>has been deleted</value>
   </data>
-  <data name="Can't save to SVG file, will be saved as PNG file like" xml:space="preserve">
+  <data name="SaveSvgToPngConfirm" xml:space="preserve">
     <value>Can't save to SVG file, will be saved as PNG file like</value>
   </data>
   <data name="optFmtSvg.Text" xml:space="preserve">
@@ -771,7 +771,7 @@
   <data name="Confirm" xml:space="preserve">
     <value>Confirm</value>
   </data>
-  <data name="Image is big, it's maybe too slower to encoding &amp; filling textbox. \n Continued?" xml:space="preserve">
+  <data name="EncodingBigImageConfirm" xml:space="preserve">
     <value>Image is big, it's maybe too slower to encoding &amp; filling textbox. \n Continued?</value>
   </data>
   <data name="nvItemSvg.Content" xml:space="preserve">
@@ -841,7 +841,7 @@
     <value>Converting SVG to Image</value>
   </data>
   <data name="AboutCopyrightValue.Text" xml:space="preserve">
-    <value>All rights reserved by netcharm @ 2018</value>
+    <value>All rights reserved by netcharm @ 2018, and the third party's code copyright belongs to the third party.</value>
   </data>
   <data name="AboutDialog.PrimaryButtonText" xml:space="preserve">
     <value>OK</value>
@@ -1148,5 +1148,59 @@
   </data>
   <data name="optUnicodeValue.Text" xml:space="preserve">
     <value>Unicode (\uHHHH)</value>
+  </data>
+  <data name="CustomPhraseAdd.Content" xml:space="preserve">
+    <value>Add New</value>
+  </data>
+  <data name="CustomPhraseAfter.Header" xml:space="preserve">
+    <value>After</value>
+  </data>
+  <data name="CustomPhraseAfter.PlaceholderText" xml:space="preserve">
+    <value>After Phrase</value>
+  </data>
+  <data name="CustomPhraseBefore.Header" xml:space="preserve">
+    <value>Before</value>
+  </data>
+  <data name="CustomPhraseBefore.PlaceholderText" xml:space="preserve">
+    <value>Before Phrase</value>
+  </data>
+  <data name="CustomPhraseClear.Content" xml:space="preserve">
+    <value>Clear List</value>
+  </data>
+  <data name="CustomPhraseEdit.Content" xml:space="preserve">
+    <value>Edit Selected</value>
+  </data>
+  <data name="CustomPhraseExport.Content" xml:space="preserve">
+    <value>Export ...</value>
+  </data>
+  <data name="CustomPhraseFrom.Text" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="CustomPhraseHeader.Text" xml:space="preserve">
+    <value>Custom Phrases</value>
+  </data>
+  <data name="CustomPhraseImport.Content" xml:space="preserve">
+    <value>Import ...</value>
+  </data>
+  <data name="CustomPhraseListS2T.Header" xml:space="preserve">
+    <value>Simplified To Traditional</value>
+  </data>
+  <data name="CustomPhraseListT2S.Header" xml:space="preserve">
+    <value>Traditional To Simplified</value>
+  </data>
+  <data name="CustomPhraseRemove.Content" xml:space="preserve">
+    <value>Remove Selected</value>
+  </data>
+  <data name="CustomPhraseTo.Text" xml:space="preserve">
+    <value>To</value>
+  </data>
+  <data name="PhraseExistsConfirm" xml:space="preserve">
+    <value>Phrase exists, overwrite it?</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
   </data>
 </root>

@@ -48,7 +48,7 @@ namespace StringCodec.UWP.Common
             }
             catch(Exception ex)
             {
-                ex.Message.T().ShowException("ERROR".T());
+                ex.Message.T().ShowMessage("ERROR".T());
             }
         }
 
@@ -81,7 +81,7 @@ namespace StringCodec.UWP.Common
                 }
                 catch (Exception ex)
                 {
-                    ex.Message.T().ShowException("ERROR".T());
+                    ex.Message.T().ShowMessage("ERROR".T());
                 }
             }).AsAsyncAction());
         }
@@ -107,7 +107,7 @@ namespace StringCodec.UWP.Common
                 }
                 catch (Exception ex)
                 {
-                    ex.Message.T().ShowException("ERROR".T());
+                    ex.Message.T().ShowMessage("ERROR".T());
                 }
             }
         }

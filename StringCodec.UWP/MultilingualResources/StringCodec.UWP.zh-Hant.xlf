@@ -862,7 +862,7 @@
           <source>file(s)</source>
           <target state="translated">檔案</target>
         </trans-unit>
-        <trans-unit id="Can't save to SVG file, will be saved as PNG file like" translate="yes" xml:space="preserve">
+        <trans-unit id="SaveSvgToPngConfirm" translate="yes" xml:space="preserve">
           <source>Can't save to SVG file, will be saved as PNG file like</source>
           <target state="translated">當前圖像不能保存為SVG格式的檔案, 將會保存為PNG格式檔案, 類似於</target>
         </trans-unit>
@@ -882,7 +882,7 @@
           <source>Confirm</source>
           <target state="translated">確認?</target>
         </trans-unit>
-        <trans-unit id="Image is big, it's maybe too slower to encoding &amp;amp; filling textbox. \n Continued?" translate="yes" xml:space="preserve">
+        <trans-unit id="EncodingBigImageConfirm" translate="yes" xml:space="preserve">
           <source>Image is big, it's maybe too slower to encoding &amp; filling textbox. \n Continued?</source>
           <target state="translated">圖像較大，編碼和填充文本框可能會非常慢。\n繼續？</target>
         </trans-unit>
@@ -975,8 +975,8 @@
           <target state="translated">版本</target>
         </trans-unit>
         <trans-unit id="AboutCopyrightValue.Text" translate="yes" xml:space="preserve">
-          <source>All rights reserved by netcharm @ 2018</source>
-          <target state="translated">netcharm @ 2018, 保留所有权利</target>
+          <source>All rights reserved by netcharm @ 2018, and the third party's code copyright belongs to the third party.</source>
+          <target state="translated">netcharm @ 2018, 保留所有权利, 第三方代碼版權歸屬第三方。</target>
         </trans-unit>
         <trans-unit id="AboutDialog.PrimaryButtonText" translate="yes" xml:space="preserve">
           <source>OK</source>
@@ -1381,6 +1381,78 @@
         <trans-unit id="optUnicodeValue.Text" translate="yes" xml:space="preserve">
           <source>Unicode (\uHHHH)</source>
           <target state="translated">Unicode (\uHHHH)</target>
+        </trans-unit>
+        <trans-unit id="CustomPhraseAdd.Content" translate="yes" xml:space="preserve">
+          <source>Add New</source>
+          <target state="translated">新增短語</target>
+        </trans-unit>
+        <trans-unit id="CustomPhraseAfter.Header" translate="yes" xml:space="preserve">
+          <source>After</source>
+          <target state="translated">轉換後</target>
+        </trans-unit>
+        <trans-unit id="CustomPhraseAfter.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>After Phrase</source>
+          <target state="translated">轉換後的短語</target>
+        </trans-unit>
+        <trans-unit id="CustomPhraseBefore.Header" translate="yes" xml:space="preserve">
+          <source>Before</source>
+          <target state="translated">轉換前</target>
+        </trans-unit>
+        <trans-unit id="CustomPhraseBefore.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Before Phrase</source>
+          <target state="translated">轉換前的短語</target>
+        </trans-unit>
+        <trans-unit id="CustomPhraseClear.Content" translate="yes" xml:space="preserve">
+          <source>Clear List</source>
+          <target state="translated">清除轉換列表</target>
+        </trans-unit>
+        <trans-unit id="CustomPhraseEdit.Content" translate="yes" xml:space="preserve">
+          <source>Edit Selected</source>
+          <target state="translated">修改選擇的短語</target>
+        </trans-unit>
+        <trans-unit id="CustomPhraseExport.Content" translate="yes" xml:space="preserve">
+          <source>Export ...</source>
+          <target state="translated">導出轉換列表...</target>
+        </trans-unit>
+        <trans-unit id="CustomPhraseFrom.Text" translate="yes" xml:space="preserve">
+          <source>From</source>
+          <target state="translated">轉換前</target>
+        </trans-unit>
+        <trans-unit id="CustomPhraseHeader.Text" translate="yes" xml:space="preserve">
+          <source>Custom Phrases</source>
+          <target state="translated">自訂要轉換的短語</target>
+        </trans-unit>
+        <trans-unit id="CustomPhraseImport.Content" translate="yes" xml:space="preserve">
+          <source>Import ...</source>
+          <target state="translated">導入轉換列表...</target>
+        </trans-unit>
+        <trans-unit id="CustomPhraseListS2T.Header" translate="yes" xml:space="preserve">
+          <source>Simplified To Traditional</source>
+          <target state="translated">簡體轉繁體</target>
+        </trans-unit>
+        <trans-unit id="CustomPhraseListT2S.Header" translate="yes" xml:space="preserve">
+          <source>Traditional To Simplified</source>
+          <target state="translated">繁體轉簡體</target>
+        </trans-unit>
+        <trans-unit id="CustomPhraseRemove.Content" translate="yes" xml:space="preserve">
+          <source>Remove Selected</source>
+          <target state="translated">刪除選擇的短語</target>
+        </trans-unit>
+        <trans-unit id="CustomPhraseTo.Text" translate="yes" xml:space="preserve">
+          <source>To</source>
+          <target state="translated">轉換後</target>
+        </trans-unit>
+        <trans-unit id="PhraseExistsConfirm" translate="yes" xml:space="preserve">
+          <source>Phrase exists, overwrite it?</source>
+          <target state="translated">短語已存在, 修改短語?</target>
+        </trans-unit>
+        <trans-unit id="No" translate="yes" xml:space="preserve">
+          <source>No</source>
+          <target state="translated">否</target>
+        </trans-unit>
+        <trans-unit id="Yes" translate="yes" xml:space="preserve">
+          <source>Yes</source>
+          <target state="translated">是</target>
         </trans-unit>
       </group>
     </body>
