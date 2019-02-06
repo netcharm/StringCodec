@@ -18,15 +18,15 @@ namespace StringCodec.UWP.Common.TongWen
         TraditionalToSimplified = 1
     }
 
-    static public class Core
+    public static class Core
     {
-        static public Dictionary<string, string> CustomPS2T { get; set; } = new Dictionary<string, string>();
-        static public Dictionary<string, string> CustomPT2S { get; set; } = new Dictionary<string, string>();
+        public static Dictionary<string, string> CustomPS2T { get; set; } = new Dictionary<string, string>();
+        public static Dictionary<string, string> CustomPT2S { get; set; } = new Dictionary<string, string>();
 
         private static readonly string S2T_FILE = "CustomPhraseS2T.csv";
         private static readonly string T2S_FILE = "CustomPhraseT2S.csv";
 
-        static public string ConvertPhrase(string text, ChineseConversionDirection direction)
+        public static string ConvertPhrase(string text, ChineseConversionDirection direction)
         {
             string result = string.Empty;
 
@@ -53,7 +53,7 @@ namespace StringCodec.UWP.Common.TongWen
             return (result);
         }
 
-        static public string Convert(string text, ChineseConversionDirection direction)
+        public static string Convert(string text, ChineseConversionDirection direction)
         {
             string result = string.Empty;
 
@@ -132,7 +132,7 @@ namespace StringCodec.UWP.Common.TongWen
             return (result);
         }
 
-        static public async void LoadCustomPhrase()
+        public static async void LoadCustomPhrase()
         {
             Windows.Storage.StorageFolder localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
 
@@ -165,7 +165,7 @@ namespace StringCodec.UWP.Common.TongWen
             }
         }
 
-        static public async void SaveCustomPhrase()
+        public static async void SaveCustomPhrase()
         {
             Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
 
@@ -186,10 +186,32 @@ namespace StringCodec.UWP.Common.TongWen
             await Windows.Storage.FileIO.WriteLinesAsync(ft2s, t2s);
         }
 
-        static public void Import(string text)
+        public static void Import(string text)
         {
 
         }
-        
+
+        public static void Export(string text)
+        {
+
+        }
+
+        public static string ToTraditional(this string text, bool simple = false)
+        {
+            if (simple)
+                return (ConvertPhrase(text, ChineseConversionDirection.SimplifiedToTraditional));
+            else
+                return (Convert(text, ChineseConversionDirection.SimplifiedToTraditional));
+        }
+
+        public static string ToSimplified(this string text, bool simple = false)
+        {
+            if (simple)
+                return (ConvertPhrase(text, ChineseConversionDirection.TraditionalToSimplified));
+            else
+                return (Convert(text, ChineseConversionDirection.TraditionalToSimplified));
+        }
+
+
     }
 }

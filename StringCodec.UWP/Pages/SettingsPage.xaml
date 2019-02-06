@@ -69,7 +69,7 @@
             <Line Margin="0,12,0,0" Stroke="{ThemeResource SystemControlAcrylicWindowBrush}" StrokeThickness="2" X2="10" Stretch="Fill" VerticalAlignment="Bottom"/>
             <ToggleSwitch x:Name="UIThemeSwitch" x:Uid="UIThemeSwitch" Header="Theme Toggle" OffContent="Light Theme" OnContent="Dark Theme" IsOn="False" IsTapEnabled="True" Toggled="UITheme_Toggled" />
             <Line Margin="0,12,0,0" Stroke="{ThemeResource SystemControlAcrylicWindowBrush}" StrokeThickness="2" X2="10" Stretch="Fill" VerticalAlignment="Bottom"/>
-            <Grid Margin="0">
+            <Grid Margin="0" MaxHeight="400">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
@@ -83,8 +83,23 @@
                 <Pivot Grid.Column="0" Grid.Row="1" x:Name="CustomPhraseList" x:Uid="CustomPhraseList" SelectionChanged="CustomPhraseList_SelectionChanged">
                     <PivotItem x:Name="CustomPhraseListS2T" x:Uid="CustomPhraseListS2T" Header="Simplified To Traditional">
                         <Grid>
-                            <ListView x:Name="lvS2T" x:Uid="S2T" SelectionChanged="PhraseList_SelectionChanged"
-                                HeaderTemplate="{StaticResource ListViewHeaderTemplate}" 
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0" HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock x:Uid="CustomPhraseFrom" 
+                                   Grid.Column="0" 
+                                   Text="From" />
+                                        <TextBlock x:Uid="CustomPhraseTo" 
+                                   Grid.Column="1" 
+                                   Text="To" />
+                            </Grid>
+                            <ListView Grid.Row="1" x:Name="lvS2T" x:Uid="S2T" SelectionChanged="PhraseList_SelectionChanged"
                                 ItemTemplate="{StaticResource ListViewItemTemplate}"
                                 ItemContainerStyle="{StaticResource ListViewItemStyle}" >
                             </ListView>
@@ -92,8 +107,23 @@
                     </PivotItem>
                     <PivotItem x:Name="CustomPhraseListT2S" x:Uid="CustomPhraseListT2S" Header="Traditional To Simplified">
                         <Grid>
-                            <ListView x:Name="lvT2S" x:Uid="T2S" SelectionChanged="PhraseList_SelectionChanged"
-                                HeaderTemplate="{StaticResource ListViewHeaderTemplate}" 
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0" HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock x:Uid="CustomPhraseFrom" 
+                                   Grid.Column="0" 
+                                   Text="From" />
+                                <TextBlock x:Uid="CustomPhraseTo" 
+                                   Grid.Column="1" 
+                                   Text="To" />
+                            </Grid>
+                            <ListView Grid.Row="1" x:Name="lvT2S" x:Uid="T2S" SelectionChanged="PhraseList_SelectionChanged"
                                 ItemTemplate="{StaticResource ListViewItemTemplate}"
                                 ItemContainerStyle="{StaticResource ListViewItemStyle}" >
                             </ListView>

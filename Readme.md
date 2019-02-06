@@ -16,6 +16,7 @@ This application is text string encode and decode tool.
 1. UUID/GUID Generator
 1. Text case converting routines
 1. Batch process text encode/decode
+1. Supported import/export utf8 encoding csv custom phrases list to chinese simplified/traditional converting
 
 ## Bugs
 
@@ -23,9 +24,20 @@ This application is text string encode and decode tool.
 
 ## To-Do
 
+## The third's lib
 
+1. [ZXing.Net](https://github.com/micjahn/ZXing.Net/) for QRCode/Barcode
+1. [Win2D](http://microsoft.github.io/Win2D/html/Introduction.htm) for Canvas Bitmap Drawing
+1. [WriteableBitmapEx](https://github.com/reneschulte/WriteableBitmapEx) for WriteableBitmap functions
 
 ## Note
+
+1. Chinese simplified/traditional phrases got from [New TongWenTang](https://github.com/tongwentang/New-Tongwentang-for-Firefox)
+
+## Copyright
+
+1. Mine codes all right reserved belong me
+1. The thirds codes all right reserved belong the third codes owner
 
 ## Privacy Policy
 

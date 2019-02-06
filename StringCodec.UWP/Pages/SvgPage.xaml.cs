@@ -416,8 +416,10 @@ namespace StringCodec.UWP.Pages
                 }
                 if (icon_valid)
                 {
-                    FolderPicker fdp = new FolderPicker();
-                    fdp.SuggestedStartLocation = PickerLocationId.Desktop;
+                    FolderPicker fdp = new FolderPicker
+                    {
+                        SuggestedStartLocation = PickerLocationId.Desktop
+                    };
                     fdp.FileTypeFilter.Add("*");
                     var folder = await fdp.PickSingleFolderAsync();
                     if (folder != null)
@@ -504,8 +506,10 @@ namespace StringCodec.UWP.Pages
             switch (btn.Name)
             {
                 case "btnOpenFile":
-                    FileOpenPicker fop = new FileOpenPicker();
-                    fop.SuggestedStartLocation = PickerLocationId.Desktop;
+                    FileOpenPicker fop = new FileOpenPicker
+                    {
+                        SuggestedStartLocation = PickerLocationId.Desktop
+                    };
                     foreach (var ext in Utils.image_ext)
                     {
                         fop.FileTypeFilter.Add(ext);

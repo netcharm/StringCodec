@@ -1,4 +1,5 @@
 ﻿using StringCodec.UWP.Common;
+using StringCodec.UWP.Common.TongWen;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -57,13 +58,254 @@ namespace StringCodec.UWP.Pages
             #endregion
         }
 
-        public SettingsPage()
+        #region Custom Phrase helper routines
+        private async void CustomPhrase_Add(string k, string v, ChineseConversionDirection direction, bool confirm = false)
         {
-            this.InitializeComponent();
-            NavigationCacheMode = NavigationCacheMode.Enabled;
+            try
+            {
+                var kv = new KeyValuePair<string, string>(k, v);
+
+                if (direction == ChineseConversionDirection.SimplifiedToTraditional)
+                {
+                    var kn = kv.Key.ToTraditional(true);
+                    if (Common.TongWen.Core.CustomPS2T.ContainsKey(kn))
+                    {
+                        var result = DialogResult.YES;
+                        if (confirm)
+                            result = await "PhraseExistsConfirm".T().ShowConfirm("CONFIRM".T());
+                        IEnumerable<KeyValuePair<string, string>> items = TableS2T.Where(o => o.Key == k);
+                        if (items.Count() > 0)
+                        {
+                            var idx = TableS2T.IndexOf(items.First());
+                            lvS2T.SelectedIndex = idx;
+                            lvS2T.ScrollIntoView(items.First());
+
+                            if (result == DialogResult.YES)
+                            {
+                                TableS2T.Insert(lvS2T.SelectedIndex, kv);
+                                TableS2T.RemoveAt(lvS2T.SelectedIndex);
+                                Common.TongWen.Core.CustomPS2T[kn] = v;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        TableS2T.Add(kv);
+                        Common.TongWen.Core.CustomPS2T.Add(kn, kv.Value);
+                    }
+                }
+                else if (direction == ChineseConversionDirection.TraditionalToSimplified)
+                {
+                    var kn = kv.Key.ToSimplified(true);
+                    if (Common.TongWen.Core.CustomPT2S.ContainsKey(kn))
+                    {
+                        var result = DialogResult.YES;
+                        if (confirm)
+                            result = await "PhraseExistsConfirm".T().ShowConfirm("CONFIRM".T());
+                        IEnumerable<KeyValuePair<string, string>> items = TableT2S.Where(o => o.Key == k);
+                        if (items.Count() > 0)
+                        {
+                            var idx = TableT2S.IndexOf(items.First());
+                            lvT2S.SelectedIndex = idx;
+                            lvT2S.ScrollIntoView(items.First());
+
+                            if (result == DialogResult.YES)
+                            {
+                                TableT2S.Insert(lvT2S.SelectedIndex, kv);
+                                TableT2S.RemoveAt(lvT2S.SelectedIndex);
+                                Common.TongWen.Core.CustomPT2S[kn] = v;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        TableT2S.Add(kv);
+                        Common.TongWen.Core.CustomPT2S.Add(kn, kv.Value);
+                    }
+                }
+                Common.TongWen.Core.SaveCustomPhrase();
+            }
+            catch (Exception ex)
+            {
+                ex.Message.ShowMessage("ERROR".T());
+            }
         }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        private async void CustomPhrase_Add(List<KeyValuePair<string, string>> kvs, ChineseConversionDirection direction, bool confirm = false)
+        {
+            try
+            {
+                foreach (var kv in kvs)
+                {
+                    if (direction == ChineseConversionDirection.SimplifiedToTraditional)
+                    {
+                        var kn = kv.Key.ToTraditional(true);
+                        if (Common.TongWen.Core.CustomPS2T.ContainsKey(kn))
+                        {
+                            var result = DialogResult.YES;
+                            if (confirm)
+                                result = await "PhraseExistsConfirm".T().ShowConfirm("CONFIRM".T());
+                            IEnumerable<KeyValuePair<string, string>> items = TableS2T.Where(o => o.Key == kv.Key);
+                            if (items.Count() > 0)
+                            {
+                                var idx = TableS2T.IndexOf(items.First());
+
+                                if (result == DialogResult.YES)
+                                {
+                                    TableS2T.Insert(idx, kv);
+                                    TableS2T.RemoveAt(idx);
+                                    Common.TongWen.Core.CustomPS2T[kn] = kv.Value;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            TableS2T.Add(kv);
+                            Common.TongWen.Core.CustomPS2T.Add(kn, kv.Value);
+                        }
+                    }
+                    else if (direction == ChineseConversionDirection.TraditionalToSimplified)
+                    {
+                        var kn = kv.Key.ToSimplified(true);
+                        if (Common.TongWen.Core.CustomPT2S.ContainsKey(kn))
+                        {
+                            var result = DialogResult.YES;
+                            if (confirm)
+                                result = await "PhraseExistsConfirm".T().ShowConfirm("CONFIRM".T());
+                            IEnumerable<KeyValuePair<string, string>> items = TableT2S.Where(o => o.Key == kv.Key);
+                            if (items.Count() > 0)
+                            {
+                                var idx = TableT2S.IndexOf(items.First());
+                                if (result == DialogResult.YES)
+                                {
+                                    TableT2S.Insert(idx, kv);
+                                    TableT2S.RemoveAt(idx);
+                                    Common.TongWen.Core.CustomPT2S[kn] = kv.Value;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            TableT2S.Add(kv);
+                            Common.TongWen.Core.CustomPT2S.Add(kn, kv.Value);
+                        }
+                    }
+                }
+                Common.TongWen.Core.SaveCustomPhrase();
+            }
+            catch (Exception ex)
+            {
+                ex.Message.ShowMessage("ERROR".T());
+            }
+        }
+
+        private void CustomPhrase_Edit(string k, string v, ChineseConversionDirection direction)
+        {
+            try
+            {
+                if (direction == ChineseConversionDirection.SimplifiedToTraditional)
+                {
+                    var kv = new KeyValuePair<string, string>(k, v);
+
+                    var items = TableS2T.Where(o => o.Key == k);
+                    if (items.Count() > 0)
+                    {
+                        var idx = TableS2T.IndexOf(items.First());
+                        TableS2T.Insert(idx, kv);
+                        TableS2T.RemoveAt(idx);
+                    }
+
+                    var ko = TableS2T[lvS2T.SelectedIndex].Key.ToTraditional(true);
+                    var kn = k.ToTraditional(true);
+
+
+                    if (Common.TongWen.Core.CustomPS2T.ContainsKey(kn))
+                        Common.TongWen.Core.CustomPS2T[kn] = v;
+                    else
+                    {
+                        if (Common.TongWen.Core.CustomPS2T.ContainsKey(ko))
+                            Common.TongWen.Core.CustomPS2T.Remove(ko);
+                        Common.TongWen.Core.CustomPS2T.TryAdd(kn, v);
+                    }
+
+                }
+                else if (direction == ChineseConversionDirection.TraditionalToSimplified)
+                {
+                    if (lvT2S.SelectedItem != null)
+                    {
+                        var kv = new KeyValuePair<string, string>(k, v);
+
+                        var items = TableT2S.Where(o => o.Key == k);
+                        if (items.Count() > 0)
+                        {
+                            var idx = TableT2S.IndexOf(items.First());
+                            TableT2S.Insert(idx, kv);
+                            TableT2S.RemoveAt(idx);
+                        }
+
+                        var ko = TableT2S[lvT2S.SelectedIndex].Key.ToSimplified(true);
+                        var kn = k.ToSimplified(true);
+
+                        if (Common.TongWen.Core.CustomPT2S.ContainsKey(kn))
+                            Common.TongWen.Core.CustomPT2S[kn] = v;
+                        else
+                        {
+                            if (Common.TongWen.Core.CustomPT2S.ContainsKey(ko))
+                                Common.TongWen.Core.CustomPT2S.Remove(ko);
+                            Common.TongWen.Core.CustomPT2S.TryAdd(kn, v);
+                        }
+                    }
+                }
+                Common.TongWen.Core.SaveCustomPhrase();
+            }
+            catch (Exception ex)
+            {
+                ex.Message.ShowMessage("ERROR".T());
+            }
+        }
+
+        private void CustomPhrase_Remove(string k, string v, ChineseConversionDirection direction)
+        {
+            try
+            {
+                if (direction == ChineseConversionDirection.SimplifiedToTraditional)
+                {
+                    var items = TableS2T.Where(o => o.Key == k);
+                    if (items.Count() > 0)
+                        TableS2T.Remove(items.First());
+
+                    var kn = k.ToTraditional(true);
+                    if (Common.TongWen.Core.CustomPS2T.ContainsKey(kn))
+                        Common.TongWen.Core.CustomPS2T.Remove(kn);
+
+                    CustomPhraseBefore.Text = string.Empty;
+                    CustomPhraseAfter.Text = string.Empty;
+                }
+                else if (direction == ChineseConversionDirection.TraditionalToSimplified)
+                {
+                    if (lvT2S.SelectedItem != null)
+                    {
+                        var items = TableT2S.Where(o => o.Key == k);
+                        if (items.Count() > 0)
+                            TableT2S.Remove(items.First());
+
+                        var kn = k.ToSimplified(true);
+                        if (Common.TongWen.Core.CustomPT2S.ContainsKey(kn))
+                            Common.TongWen.Core.CustomPT2S.Remove(kn);
+
+                        CustomPhraseBefore.Text = string.Empty;
+                        CustomPhraseAfter.Text = string.Empty;
+                    }
+                }
+                Common.TongWen.Core.SaveCustomPhrase();
+            }
+            catch (Exception ex)
+            {
+                ex.Message.ShowMessage("ERROR".T());
+            }
+        }
+
+        private void CustomPhrase_Refresh()
         {
             try
             {
@@ -73,7 +315,7 @@ namespace StringCodec.UWP.Pages
                     TableS2T = new ObservableCollection<KeyValuePair<string, string>>();
                 foreach (var kv in Common.TongWen.Core.CustomPS2T)
                 {
-                    var k = Common.TongWen.Core.ConvertPhrase(kv.Key, Common.TongWen.ChineseConversionDirection.TraditionalToSimplified);
+                    var k = kv.Key.ToSimplified(true);
                     TableS2T.Add(new KeyValuePair<string, string>(k, kv.Value));
                 }
                 lvS2T.ItemsSource = TableS2T;
@@ -84,10 +326,29 @@ namespace StringCodec.UWP.Pages
                     TableT2S = new ObservableCollection<KeyValuePair<string, string>>();
                 foreach (var kv in Common.TongWen.Core.CustomPT2S)
                 {
-                    var k = Common.TongWen.Core.ConvertPhrase(kv.Key, Common.TongWen.ChineseConversionDirection.SimplifiedToTraditional);
+                    var k = kv.Key.ToTraditional(true);
                     TableT2S.Add(new KeyValuePair<string, string>(k, kv.Value));
                 }
                 lvT2S.ItemsSource = TableT2S;
+            }
+            catch (Exception ex)
+            {
+                ex.Message.ShowMessage("ERROR".T());
+            }
+        }
+        #endregion
+
+        public SettingsPage()
+        {
+            this.InitializeComponent();
+            NavigationCacheMode = NavigationCacheMode.Enabled;
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                CustomPhrase_Refresh();
             }
             catch (Exception ex)
             {
@@ -226,69 +487,21 @@ namespace StringCodec.UWP.Pages
         }
 
         #region Custom Phrase routines
-        private async void CustomPhraseAdd_Click(object sender, RoutedEventArgs e)
+        private void CustomPhraseAdd_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 var k = CustomPhraseBefore.Text.Trim();
                 var v = CustomPhraseAfter.Text.Trim();
-                var kv = new KeyValuePair<string, string>(k, v);
 
                 if (CustomPhraseList.SelectedItem == CustomPhraseListS2T)
                 {
-                    var kn = Common.TongWen.Core.ConvertPhrase(kv.Key, Common.TongWen.ChineseConversionDirection.SimplifiedToTraditional);
-                    if (Common.TongWen.Core.CustomPS2T.ContainsKey(kn))
-                    {
-                        var result = await "PhraseExistsConfirm".T().ShowConfirm("CONFIRM".T());
-                        IEnumerable<KeyValuePair<string, string>> items = TableS2T.Where(o => o.Key == k);
-                        if (items.Count() > 0)
-                        {
-                            var idx = TableS2T.IndexOf(items.First());
-                            lvS2T.SelectedIndex = idx;
-                            lvS2T.ScrollIntoView(items.First());
-
-                            if(result == DialogResult.YES)
-                            {
-                                TableS2T.Insert(lvS2T.SelectedIndex, kv);
-                                TableS2T.RemoveAt(lvS2T.SelectedIndex);
-                                Common.TongWen.Core.CustomPS2T[kn] = v;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        TableS2T.Add(kv);
-                        Common.TongWen.Core.CustomPS2T.Add(kn, kv.Value);
-                    }
+                    CustomPhrase_Add(k, v, ChineseConversionDirection.SimplifiedToTraditional, true);
                 }
                 else if (CustomPhraseList.SelectedItem == CustomPhraseListT2S)
                 {
-                    var kn = Common.TongWen.Core.ConvertPhrase(kv.Key, Common.TongWen.ChineseConversionDirection.TraditionalToSimplified);
-                    if (Common.TongWen.Core.CustomPT2S.ContainsKey(kn))
-                    {
-                        var result = await "PhraseExistsConfirm".T().ShowConfirm("CONFIRM".T());
-                        IEnumerable<KeyValuePair<string, string>> items = TableT2S.Where(o => o.Key == k);
-                        if (items.Count() > 0)
-                        {
-                            var idx = TableT2S.IndexOf(items.First());
-                            lvT2S.SelectedIndex = idx;
-                            lvT2S.ScrollIntoView(items.First());
-
-                            if (result == DialogResult.YES)
-                            {
-                                TableT2S.Insert(lvT2S.SelectedIndex, kv);
-                                TableT2S.RemoveAt(lvT2S.SelectedIndex);
-                                Common.TongWen.Core.CustomPT2S[kn] = v;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        TableT2S.Add(kv);
-                        Common.TongWen.Core.CustomPT2S.Add(kn, kv.Value);
-                    }
+                    CustomPhrase_Add(k, v, ChineseConversionDirection.TraditionalToSimplified, true);
                 }
-                Common.TongWen.Core.SaveCustomPhrase();
             }
             catch (Exception ex)
             {
@@ -300,55 +513,23 @@ namespace StringCodec.UWP.Pages
         {
             try
             {
+                var k = CustomPhraseBefore.Text.Trim();
+                var v = CustomPhraseAfter.Text.Trim();
+
                 if (CustomPhraseList.SelectedItem == CustomPhraseListS2T)
                 {
                     if (lvS2T.SelectedItem != null)
                     {
-                        var k = CustomPhraseBefore.Text.Trim();
-                        var v = CustomPhraseAfter.Text.Trim();
-                        var kv = new KeyValuePair<string, string>(k, v);
-
-                        var ko = Common.TongWen.Core.ConvertPhrase(TableS2T[lvS2T.SelectedIndex].Key, Common.TongWen.ChineseConversionDirection.SimplifiedToTraditional);
-                        var kn = Common.TongWen.Core.ConvertPhrase(k, Common.TongWen.ChineseConversionDirection.SimplifiedToTraditional);
-
-                        TableS2T.Insert(lvS2T.SelectedIndex, kv);
-                        TableS2T.RemoveAt(lvS2T.SelectedIndex);
-
-                        if (Common.TongWen.Core.CustomPS2T.ContainsKey(kn))
-                            Common.TongWen.Core.CustomPS2T[kn] = v;
-                        else
-                        {
-                            if (Common.TongWen.Core.CustomPS2T.ContainsKey(ko))
-                                Common.TongWen.Core.CustomPS2T.Remove(ko);
-                            Common.TongWen.Core.CustomPS2T.TryAdd(kn, v);
-                        }
+                        CustomPhrase_Edit(k, v, ChineseConversionDirection.SimplifiedToTraditional);
                     }
                 }
                 else if (CustomPhraseList.SelectedItem == CustomPhraseListT2S)
                 {
                     if (lvT2S.SelectedItem != null)
                     {
-                        var k = CustomPhraseBefore.Text.Trim();
-                        var v = CustomPhraseAfter.Text.Trim();
-                        var kv = new KeyValuePair<string, string>(k, v);
-
-                        var ko = Common.TongWen.Core.ConvertPhrase(TableT2S[lvT2S.SelectedIndex].Key, Common.TongWen.ChineseConversionDirection.TraditionalToSimplified);
-                        var kn = Common.TongWen.Core.ConvertPhrase(k, Common.TongWen.ChineseConversionDirection.TraditionalToSimplified);
-
-                        TableT2S.Insert(lvT2S.SelectedIndex, kv);
-                        TableT2S.RemoveAt(lvT2S.SelectedIndex);
-
-                        if (Common.TongWen.Core.CustomPT2S.ContainsKey(kn))
-                            Common.TongWen.Core.CustomPT2S[kn] = v;
-                        else
-                        {
-                            if(Common.TongWen.Core.CustomPT2S.ContainsKey(ko))
-                                Common.TongWen.Core.CustomPT2S.Remove(ko);
-                            Common.TongWen.Core.CustomPT2S.TryAdd(kn, v);
-                        }
+                        CustomPhrase_Edit(k, v, ChineseConversionDirection.TraditionalToSimplified);
                     }
                 }
-                Common.TongWen.Core.SaveCustomPhrase();
             }
             catch (Exception ex)
             {
@@ -364,31 +545,20 @@ namespace StringCodec.UWP.Pages
                 {
                     if (lvS2T.SelectedItem != null)
                     {
-                        var k = Common.TongWen.Core.ConvertPhrase(TableS2T[lvS2T.SelectedIndex].Key, Common.TongWen.ChineseConversionDirection.TraditionalToSimplified);
-
-                        TableS2T.RemoveAt(lvS2T.SelectedIndex);
-                        if (Common.TongWen.Core.CustomPS2T.ContainsKey(k))
-                            Common.TongWen.Core.CustomPS2T.Remove(k);
-
-                        CustomPhraseBefore.Text = string.Empty;
-                        CustomPhraseAfter.Text = string.Empty;
+                        var k = TableS2T[lvS2T.SelectedIndex].Key;
+                        var v = TableS2T[lvS2T.SelectedIndex].Value;
+                        CustomPhrase_Remove(k, v, ChineseConversionDirection.SimplifiedToTraditional);
                     }
                 }
                 else if (CustomPhraseList.SelectedItem == CustomPhraseListT2S)
                 {
                     if (lvT2S.SelectedItem != null)
                     {
-                        var k = Common.TongWen.Core.ConvertPhrase(TableT2S[lvT2S.SelectedIndex].Key, Common.TongWen.ChineseConversionDirection.TraditionalToSimplified);
-
-                        TableT2S.RemoveAt(lvT2S.SelectedIndex);
-                        if(Common.TongWen.Core.CustomPT2S.ContainsKey(k))
-                            Common.TongWen.Core.CustomPT2S.Remove(k);
-
-                        CustomPhraseBefore.Text = string.Empty;
-                        CustomPhraseAfter.Text = string.Empty;
+                        var k = TableT2S[lvT2S.SelectedIndex].Key;
+                        var v = TableT2S[lvT2S.SelectedIndex].Value;
+                        CustomPhrase_Remove(k, v, ChineseConversionDirection.TraditionalToSimplified);
                     }
                 }
-                Common.TongWen.Core.SaveCustomPhrase();
             }
             catch (Exception ex)
             {
@@ -424,15 +594,57 @@ namespace StringCodec.UWP.Pages
             }
         }
 
-        private void CustomPhraseImport_Click(object sender, RoutedEventArgs e)
+        private async void CustomPhraseImport_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (CustomPhraseList.SelectedItem == CustomPhraseListS2T)
                 {
+                    var importItems = await Utils.OpenFiles(new string[] { ".csv" });
+                    if (importItems.Count > 0)
+                    {
+                        List<KeyValuePair<string, string>> kvs = new List<KeyValuePair<string, string>>();
+                        foreach (var item in importItems)
+                        {
+                            var lines = await Windows.Storage.FileIO.ReadLinesAsync(item);
+                            foreach (var line in lines)
+                            {
+                                if (line.Trim().StartsWith("//") || line.StartsWith("#") || line.StartsWith(";")) continue;
+
+                                var words = line.Trim().Split(",");
+                                if (words.Length == 2)
+                                {
+                                    kvs.Add(new KeyValuePair<string, string>(words[0].Trim(), words[1].Trim()));
+                                }
+                            }
+                        }
+                        CustomPhrase_Add(kvs, ChineseConversionDirection.SimplifiedToTraditional, false);
+                        lvS2T.ScrollIntoView(TableS2T.Last());
+                    }
                 }
                 else if (CustomPhraseList.SelectedItem == CustomPhraseListT2S)
                 {
+                    var importItems = await Utils.OpenFiles(new string[] { ".csv" });
+                    if (importItems.Count > 0)
+                    {
+                        List<KeyValuePair<string, string>> kvs = new List<KeyValuePair<string, string>>();
+                        foreach (var item in importItems)
+                        {
+                            var lines = await Windows.Storage.FileIO.ReadLinesAsync(item);
+                            foreach (var line in lines)
+                            {
+                                if (line.Trim().StartsWith("//") || line.StartsWith("#") || line.StartsWith(";")) continue;
+
+                                var words = line.Trim().Split(",");
+                                if (words.Length == 2)
+                                {
+                                    kvs.Add(new KeyValuePair<string, string>(words[0].Trim(), words[1].Trim()));
+                                }
+                            }
+                        }
+                        CustomPhrase_Add(kvs, ChineseConversionDirection.TraditionalToSimplified, false);
+                        lvS2T.ScrollIntoView(TableT2S.Last());
+                    }
                 }
             }
             catch (Exception ex)
@@ -441,15 +653,27 @@ namespace StringCodec.UWP.Pages
             }
         }
 
-        private void CustomPhraseExport_Click(object sender, RoutedEventArgs e)
+        private async void CustomPhraseExport_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (CustomPhraseList.SelectedItem == CustomPhraseListS2T)
                 {
+                    List<string> contents = new List<string>();
+                    foreach (var p in TableS2T)
+                    {
+                        contents.Add($"{p.Key}, {p.Value}");
+                    }
+                    var result = await Utils.ShowSaveDialog(string.Join(Environment.NewLine, contents), System.Text.Encoding.UTF8, ".csv");
                 }
                 else if (CustomPhraseList.SelectedItem == CustomPhraseListT2S)
                 {
+                    List<string> contents = new List<string>();
+                    foreach (var p in TableT2S)
+                    {
+                        contents.Add($"{p.Key}, {p.Value}");
+                    }
+                    var result = await Utils.ShowSaveDialog(string.Join(Environment.NewLine, contents), System.Text.Encoding.UTF8, ".csv");
                 }
             }
             catch (Exception ex)
