@@ -1946,7 +1946,7 @@ namespace StringCodec.UWP.Common
                 // To output the text from this example, you need a TextBlock control
                 return (content);
             }
-            else if (dataPackageView.Contains(StandardDataFormats.Bitmap))
+            else if (dataPackageView.Contains(StandardDataFormats.Bitmap) || dataPackageView.Contains("PNG") || dataPackageView.Contains("image/png"))
             {
                 try
                 {
@@ -1986,7 +1986,7 @@ namespace StringCodec.UWP.Common
                             bb[3] = bsb[1];
                             bb[4] = bsb[2];
                             bb[5] = bsb[3];
-                            var bh = WindowsRuntimeBufferExtensions.AsBuffer(bb, 0, bb.Length);                           
+                            var bh = WindowsRuntimeBufferExtensions.AsBuffer(bb, 0, bb.Length);
                             await fileStream.WriteAsync(bh);
                             await fileStream.FlushAsync();
 
