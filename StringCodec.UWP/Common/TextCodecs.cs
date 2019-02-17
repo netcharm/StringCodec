@@ -2153,28 +2153,28 @@ namespace StringCodec.UWP.Common
             // General
             static public Dictionary<char, string> Number = new Dictionary<char, string>()
             {
-                { '0', "零" }, { '1', "一" }, { '2', "二" }, { '3', "三" }, { '4', "四" },
+                { '0', "零" }, { '1', "壱" }, { '2', "弐" }, { '3', "参" }, { '4', "四" },
                 { '5', "五" }, { '6', "六" }, { '7', "七" }, { '8', "八" }, { '9', "九" }
             };
             static public Dictionary<int, string> Digit = new Dictionary<int, string>()
             {
-                { 1, "十" }, { 2, "百" }, { 3, "千" }, { 4, "万" },
-                { 5, "十" }, { 6, "百" }, { 7, "千" }, { 8, "億" },
-                { 9, "十" }, { 10, "百" }, { 11, "千" }, { 12, "兆" },
-                { 13, "十" }, { 14, "百" }, { 15, "千" }, { 16, "京" },
-                { 17, "十" }, { 18, "百" }, { 19, "千" }, { 20, "垓" },
-                { 21, "十" }, { 22, "百" }, { 23, "千" }, { 24, "秭" },
-                { 25, "十" }, { 26, "百" }, { 27, "千" }, { 28, "穰" },
-                { 29, "十" }, { 30, "百" }, { 31, "千" }, { 32, "溝" },
-                { 33, "十" }, { 34, "百" }, { 35, "千" }, { 36, "澗" },
-                { 37, "十" }, { 38, "百" }, { 39, "千" }, { 40, "正" },
-                { 41, "十" }, { 42, "百" }, { 43, "千" }, { 44, "載" },
-                { 45, "十" }, { 46, "百" }, { 47, "千" }, { 48, "極" },
-                { 49, "十" }, { 50, "百" }, { 51, "千" }, { 52, "恒河沙" },
-                { 53, "十" }, { 54, "百" }, { 55, "千" }, { 56, "阿僧祇" },
-                { 57, "十" }, { 58, "百" }, { 59, "千" }, { 60, "那由他" },
-                { 61, "十" }, { 62, "百" }, { 63, "千" }, { 64, "不可思議" },
-                { 65, "十" }, { 66, "百" }, { 67, "千" }, { 0, "無量大数" }
+                { 1, "拾" }, { 2, "百" }, { 3, "千" }, { 4, "万" },
+                { 5, "拾" }, { 6, "百" }, { 7, "千" }, { 8, "億" },
+                { 9, "拾" }, { 10, "百" }, { 11, "千" }, { 12, "兆" },
+                { 13, "拾" }, { 14, "百" }, { 15, "千" }, { 16, "京" },
+                { 17, "拾" }, { 18, "百" }, { 19, "千" }, { 20, "垓" },
+                { 21, "拾" }, { 22, "百" }, { 23, "千" }, { 24, "秭" },
+                { 25, "拾" }, { 26, "百" }, { 27, "千" }, { 28, "穰" },
+                { 29, "拾" }, { 30, "百" }, { 31, "千" }, { 32, "溝" },
+                { 33, "拾" }, { 34, "百" }, { 35, "千" }, { 36, "澗" },
+                { 37, "拾" }, { 38, "百" }, { 39, "千" }, { 40, "正" },
+                { 41, "拾" }, { 42, "百" }, { 43, "千" }, { 44, "載" },
+                { 45, "拾" }, { 46, "百" }, { 47, "千" }, { 48, "極" },
+                { 49, "拾" }, { 50, "百" }, { 51, "千" }, { 52, "恒河沙" },
+                { 53, "拾" }, { 54, "百" }, { 55, "千" }, { 56, "阿僧祇" },
+                { 57, "拾" }, { 58, "百" }, { 59, "千" }, { 60, "那由他" },
+                { 61, "拾" }, { 62, "百" }, { 63, "千" }, { 64, "不可思議" },
+                { 65, "拾" }, { 66, "百" }, { 67, "千" }, { 0, "無量大数" }
             };
             static public Dictionary<string, string> Sign = new Dictionary<string, string>()
             {
@@ -2191,21 +2191,21 @@ namespace StringCodec.UWP.Common
             {
                 { 1, "拾" }, { 2, "佰" }, { 3, "仟" }, { 4, "萬" },
                 { 5, "拾" }, { 6, "佰" }, { 7, "仟" }, { 8, "億" },
-                { 9, "十" }, { 10, "百" }, { 11, "千" }, { 12, "兆" },
-                { 13, "十" }, { 14, "百" }, { 15, "千" }, { 16, "京" },
-                { 17, "十" }, { 18, "百" }, { 19, "千" }, { 20, "垓" },
-                { 21, "十" }, { 22, "百" }, { 23, "千" }, { 24, "秭" },
-                { 25, "十" }, { 26, "百" }, { 27, "千" }, { 28, "穰" },
-                { 29, "十" }, { 30, "百" }, { 31, "千" }, { 32, "溝" },
-                { 33, "十" }, { 34, "百" }, { 35, "千" }, { 36, "澗" },
-                { 37, "十" }, { 38, "百" }, { 39, "千" }, { 40, "正" },
-                { 41, "十" }, { 42, "百" }, { 43, "千" }, { 44, "載" },
-                { 45, "十" }, { 46, "百" }, { 47, "千" }, { 48, "極" },
-                { 49, "十" }, { 50, "百" }, { 51, "千" }, { 52, "恒河沙" },
-                { 53, "十" }, { 54, "百" }, { 55, "千" }, { 56, "阿僧祇" },
-                { 57, "十" }, { 58, "百" }, { 59, "千" }, { 60, "那由他" },
-                { 61, "十" }, { 62, "百" }, { 63, "千" }, { 64, "不可思議" },
-                { 65, "十" }, { 66, "百" }, { 67, "千" }, { 0, "無量大数" }
+                { 9, "拾" }, { 10, "百" }, { 11, "千" }, { 12, "兆" },
+                { 13, "拾" }, { 14, "百" }, { 15, "千" }, { 16, "京" },
+                { 17, "拾" }, { 18, "百" }, { 19, "千" }, { 20, "垓" },
+                { 21, "拾" }, { 22, "百" }, { 23, "千" }, { 24, "秭" },
+                { 25, "拾" }, { 26, "百" }, { 27, "千" }, { 28, "穰" },
+                { 29, "拾" }, { 30, "百" }, { 31, "千" }, { 32, "溝" },
+                { 33, "拾" }, { 34, "百" }, { 35, "千" }, { 36, "澗" },
+                { 37, "拾" }, { 38, "百" }, { 39, "千" }, { 40, "正" },
+                { 41, "拾" }, { 42, "百" }, { 43, "千" }, { 44, "載" },
+                { 45, "拾" }, { 46, "百" }, { 47, "千" }, { 48, "極" },
+                { 49, "拾" }, { 50, "百" }, { 51, "千" }, { 52, "恒河沙" },
+                { 53, "拾" }, { 54, "百" }, { 55, "千" }, { 56, "阿僧祇" },
+                { 57, "拾" }, { 58, "百" }, { 59, "千" }, { 60, "那由他" },
+                { 61, "拾" }, { 62, "百" }, { 63, "千" }, { 64, "不可思議" },
+                { 65, "拾" }, { 66, "百" }, { 67, "千" }, { 0, "無量大数" }
             };
             static public Dictionary<int, string> CurrencyUnit = new Dictionary<int, string>()
             {
@@ -2221,7 +2221,7 @@ namespace StringCodec.UWP.Common
         {
             string result = text;
 
-            var pat = @"(([+-]){0,1}(\d+)(\.\d+){0,1})";
+            var pat = @"(([+-]){0,1}(\d+)((,\d{3,3})*)(\.\d+){0,1})";
             Dictionary<string, string> replist = new Dictionary<string, string>();
             foreach (Match m in Regex.Matches(text, pat))
             {
@@ -2231,8 +2231,8 @@ namespace StringCodec.UWP.Common
                     var tu = t;
 
                     var s = m.Groups[2].Value;
-                    var i = m.Groups[3].Value.TrimStart('0');
-                    var f = m.Groups[4].Value.TrimEnd('0');
+                    var i = $"{m.Groups[3].Value}{m.Groups[4].Value}".Replace(",", "").TrimStart('0');
+                    var f = m.Groups[6].Value.TrimEnd('0');
 
                     var su = s;
                     var iu = i;
@@ -2260,6 +2260,19 @@ namespace StringCodec.UWP.Common
                                 vil.Add(JapanDigital.CurrencyDigit[cn % 68]);
                             else
                                 vil.Add(JapanDigital.Digit[cn % 68]);
+                        }
+                        else if (cn > 1 && cn % 4 == 0 && i[c].Equals('0'))
+                        {
+                            for (int ic = vil.Count - 1; ic >= 0; ic--)
+                            {
+                                if (vil[ic].Equals("零"))
+                                    vil.RemoveAt(ic);
+                                else break;
+                            }
+                            if (IsCurrency)
+                                vil.Add(ChinaDigital.CurrencyDigit[cn % 68]);
+                            else
+                                vil.Add(ChinaDigital.Digit[cn % 68]);
                         }
                     }
 
@@ -2294,13 +2307,12 @@ namespace StringCodec.UWP.Common
                         fu = string.Join("", vfl);
                     }
 
+                    tu = $"{su}{iu.TrimEnd('零')}{fu}";
                     if (IsCurrency)
                         tu = $"{su}{iu}{fu}整";
-                    else
-                        tu = $"{su}{iu}{fu}";
 
                     if (!replist.ContainsKey(t))
-                        replist[t] = tu;
+                        replist[t] = Regex.Replace(tu, @"零+", "零", RegexOptions.IgnoreCase);
                 }
             }
 
@@ -2387,7 +2399,7 @@ namespace StringCodec.UWP.Common
 
             var zh = System.Globalization.CultureInfo.GetCultureInfo("zh-Hans");
 
-            var pat = @"(([+-]){0,1}(\d+)(\.\d+){0,1})";
+            var pat = @"(([+-]){0,1}(\d+)((,\d{3,3})*)(\.\d+){0,1})";
             Dictionary<string, string> replist = new Dictionary<string, string>();
             foreach(Match m in Regex.Matches(text, pat))
             {
@@ -2396,9 +2408,9 @@ namespace StringCodec.UWP.Common
                     var t = m.Value;
                     var tu = t;
 
-                    var s = m.Groups[2].Value;
-                    var i = m.Groups[3].Value.TrimStart('0');
-                    var f = m.Groups[4].Value.TrimEnd('0');
+                    var s = m.Groups[2].Value.TrimStart('0');
+                    var i = $"{m.Groups[3].Value}{m.Groups[4].Value}".Replace(",", "").TrimStart('0');
+                    var f = m.Groups[6].Value.TrimEnd('0');
 
                     var su = s;
                     var iu = i;
@@ -2421,7 +2433,20 @@ namespace StringCodec.UWP.Common
                         }
 
                         if (cn > 0 && !i[c].Equals('0'))
+                        { 
+                            if (IsCurrency)
+                                vil.Add(ChinaDigital.CurrencyDigit[cn % 44]);
+                            else
+                                vil.Add(ChinaDigital.Digit[cn % 44]);
+                        }
+                        else if (cn > 1 && cn % 4 == 0 && i[c].Equals('0'))
                         {
+                            for (int ic = vil.Count - 1; ic >= 0; ic--)
+                            {
+                                if (vil[ic].Equals("零"))
+                                    vil.RemoveAt(ic);
+                                else break;
+                            }
                             if (IsCurrency)
                                 vil.Add(ChinaDigital.CurrencyDigit[cn % 44]);
                             else
@@ -2461,13 +2486,12 @@ namespace StringCodec.UWP.Common
                         fu = string.Join("", vfl);
                     }
 
+                    tu = $"{su}{iu.TrimEnd('零')}{fu}";
                     if (IsCurrency)
-                        tu = $"{su}{iu}{fu}整";
-                    else
-                        tu = $"{su}{iu}{fu}";
+                        tu = $"{tu}整";
 
                     if (!replist.ContainsKey(t))
-                        replist[t] = tu;
+                        replist[t] = Regex.Replace(tu, @"零+", "零", RegexOptions.IgnoreCase);
                 }
             }
 
