@@ -1708,9 +1708,13 @@ namespace StringCodec.UWP.Common
             StringBuilder sb = new StringBuilder();
             foreach(var sentence in sentences.Reverse())
             {
-                //var chars = sentence.Split();
-                //sb.AppendLine(string.Join("", chars.Reverse()));
-                sb.AppendLine(string.Join("", sentence.Reverse()));
+                var l = sentence.Reverse().ToList();
+                for(var i = 0; i < l.Count; i++)
+                {
+                    if (l[i].Equals('“')) l[i] = '”';
+                    else if (l[i].Equals('”')) l[i] = '“';
+                }
+                sb.AppendLine(string.Join("", l));
             }
             result = sb.ToString();
 
@@ -2702,18 +2706,35 @@ namespace StringCodec.UWP.Common
 
         public static System.Globalization.CultureInfo GetCulture(string cultureTag)
         {
+            System.Globalization.CultureInfo result = System.Globalization.CultureInfo.CurrentCulture;
+
             if (Cultures.Count <= 0)
             {
+                int[] europe = new int[]{ 1250, 1251, 1252, 1253, 1254, 1255, 1256, 1257, 1258, 1259 };
                 var cultures = System.Globalization.CultureInfo.GetCultures(System.Globalization.CultureTypes.AllCultures);
+                Cultures.TryAdd("1252", System.Globalization.CultureInfo.GetCultureInfoByIetfLanguageTag("en"));
                 foreach (var culture in cultures)
                 {
-                    if (!culture.IetfLanguageTag.Contains("-"))
+                    if (!string.IsNullOrEmpty(culture.IetfLanguageTag))
+                    {
                         Cultures.TryAdd(culture.IetfLanguageTag.ToLower(), culture);
+                        if (europe.Contains(culture.TextInfo.ANSICodePage))
+                            Cultures.TryAdd($"{culture.TextInfo.ANSICodePage}", culture);
+                    }
                 }
+                Cultures.TryAdd("gbk", System.Globalization.CultureInfo.GetCultureInfoByIetfLanguageTag("zh-hans"));
+                Cultures.TryAdd("big5", System.Globalization.CultureInfo.GetCultureInfoByIetfLanguageTag("zh-hant"));
+                Cultures.TryAdd("jis", System.Globalization.CultureInfo.GetCultureInfoByIetfLanguageTag("ja"));
+                Cultures.TryAdd("eucjp", System.Globalization.CultureInfo.GetCultureInfoByIetfLanguageTag("ja"));
+                Cultures.TryAdd("korean", System.Globalization.CultureInfo.GetCultureInfoByIetfLanguageTag("ko"));
+                Cultures.TryAdd("euckr", System.Globalization.CultureInfo.GetCultureInfoByIetfLanguageTag("ko"));
+                Cultures.TryAdd("ascii", System.Globalization.CultureInfo.GetCultureInfoByIetfLanguageTag("en"));
+                Cultures.TryAdd("thai", System.Globalization.CultureInfo.GetCultureInfoByIetfLanguageTag("th"));
             }
             var tag = cultureTag.ToLower();
-            if (Cultures.ContainsKey(tag)) return (Cultures[tag]);
-            else return (System.Globalization.CultureInfo.CurrentCulture);
+            if (Cultures.ContainsKey(tag)) result = Cultures[tag];
+
+            return (result);
         }
 
         public static System.Globalization.CultureInfo GetCodePageInfo(int codepage)

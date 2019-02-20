@@ -235,7 +235,7 @@ namespace StringCodec.UWP.Pages
 
         private void OptLang_Click(object sender, RoutedEventArgs e)
         {
-            ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] {
+            ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] { optLangAuto,
                 optLangAscii,
                 optLang1250, optLang1251, optLang1252, optLang1253, optLang1254, optLang1255, optLang1256, optLang1257, optLang1258,
                 optLangEn, optLangFr, optLangDe, optLangEs, optLangPt, optLangNl, optLangRu, optLangIt, optLangGr, optLangDa, optLangCz,
@@ -258,8 +258,11 @@ namespace StringCodec.UWP.Pages
             CURRENT_ENC = TextCodecs.GetTextEncoder(ENC_NAME);
             CURRENT_CULTURE = TextCodecs.GetCulture(ENC_NAME);
 
-            edSrc.Language = CURRENT_CULTURE.IetfLanguageTag;
-            edDst.Language = CURRENT_CULTURE.IetfLanguageTag;
+            if (CURRENT_CULTURE is System.Globalization.CultureInfo && !string.IsNullOrEmpty(CURRENT_CULTURE.IetfLanguageTag))
+            {
+                edSrc.Language = CURRENT_CULTURE.IetfLanguageTag;
+                edDst.Language = CURRENT_CULTURE.IetfLanguageTag;
+            }
         }
         
         private void OptWrap_Click(object sender, RoutedEventArgs e)
@@ -562,6 +565,7 @@ namespace StringCodec.UWP.Pages
                 ex.Message.T().ShowMessage("ERROR".T());
             }
         }
+        
         #region Drag/Drop routines
         private bool canDrop = true;
         private async void OnDragEnter(object sender, DragEventArgs e)

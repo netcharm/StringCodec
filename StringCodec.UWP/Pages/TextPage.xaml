@@ -78,20 +78,20 @@
                         <ToggleMenuFlyoutItem x:Name="optLangUnicode" x:Uid="optLangUnicode" Text="Unicode" Click="OptLang_Click"/>
                         <MenuFlyoutSeparator/>
                         <MenuFlyoutSubItem x:Name="optLangGeneral" x:Uid="optLangGeneral" Text="General Languages">
-                            <ToggleMenuFlyoutItem x:Name="optLangEUCJP" x:Uid="optLangEUCJP" Text="Japanese(EUC)" Click="OptLang_Click"/>
-                            <ToggleMenuFlyoutItem x:Name="optLangEUCKR" x:Uid="optLangEUCKR" Text="Korean(EUC)" Click="OptLang_Click"/>
-                            <MenuFlyoutSeparator/>
                             <ToggleMenuFlyoutItem x:Name="optLangEn" x:Uid="optLangEn" Text="English" Click="OptLang_Click"/>
                             <ToggleMenuFlyoutItem x:Name="optLangFr" x:Uid="optLangFr" Text="French" Click="OptLang_Click"/>
                             <ToggleMenuFlyoutItem x:Name="optLangDe" x:Uid="optLangDe" Text="German" Click="OptLang_Click"/>
-                            <ToggleMenuFlyoutItem x:Name="optLangEs" x:Uid="optLangEs" Text="Spanish" Click="OptLang_Click" Visibility="Collapsed"/>
-                            <ToggleMenuFlyoutItem x:Name="optLangPt" x:Uid="optLangPt" Text="Portuguese" Click="OptLang_Click" Visibility="Collapsed"/>
-                            <ToggleMenuFlyoutItem x:Name="optLangNl" x:Uid="optLangNl" Text="Dutch" Click="OptLang_Click" Visibility="Collapsed"/>
                             <ToggleMenuFlyoutItem x:Name="optLangRu" x:Uid="optLangRu" Text="Russian" Click="OptLang_Click"/>
-                            <ToggleMenuFlyoutItem x:Name="optLangIt" x:Uid="optLangIt" Text="Italian" Click="OptLang_Click"/>
-                            <ToggleMenuFlyoutItem x:Name="optLangGr" x:Uid="optLangGr" Text="Greek" Click="OptLang_Click" Visibility="Collapsed"/>
+                            <ToggleMenuFlyoutItem x:Name="optLangNl" x:Uid="optLangNl" Text="Dutch" Click="OptLang_Click" Visibility="Collapsed"/>
                             <ToggleMenuFlyoutItem x:Name="optLangDa" x:Uid="optLangDa" Text="Danish" Click="OptLang_Click" Visibility="Collapsed"/>
+                            <ToggleMenuFlyoutItem x:Name="optLangIt" x:Uid="optLangIt" Text="Italian" Click="OptLang_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optLangEs" x:Uid="optLangEs" Text="Spanish" Click="OptLang_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optLangPt" x:Uid="optLangPt" Text="Portuguese" Click="OptLang_Click" Visibility="Collapsed"/>
+                            <ToggleMenuFlyoutItem x:Name="optLangGr" x:Uid="optLangGr" Text="Greek" Click="OptLang_Click" Visibility="Collapsed"/>
                             <ToggleMenuFlyoutItem x:Name="optLangCz" x:Uid="optLangCz" Text="Czech" Click="OptLang_Click" Visibility="Collapsed"/>
+                            <MenuFlyoutSeparator/>
+                            <ToggleMenuFlyoutItem x:Name="optLangEUCJP" x:Uid="optLangEUCJP" Text="Japanese(EUC)" Click="OptLang_Click"/>
+                            <ToggleMenuFlyoutItem x:Name="optLangEUCKR" x:Uid="optLangEUCKR" Text="Korean(EUC)" Click="OptLang_Click"/>
                         </MenuFlyoutSubItem>
                         <MenuFlyoutSubItem x:Name="optLangOther" x:Uid="optLangOther" Text="Other Languages">
                             <ToggleMenuFlyoutItem x:Name="optLang1252" x:Uid="optLang1252" Text="Western European" Click="OptLang_Click"/>
@@ -108,6 +108,8 @@
                             <MenuFlyoutSeparator/>
                             <ToggleMenuFlyoutItem x:Name="optLangThai" x:Uid="optLangThai" Text="Thai" Click="OptLang_Click"/>
                         </MenuFlyoutSubItem>
+                        <MenuFlyoutSeparator />
+                        <ToggleMenuFlyoutItem x:Name="optLangAuto" x:Uid="optLangDefault" Text="Default" MinWidth="100" Click="OptLang_Click" />
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
