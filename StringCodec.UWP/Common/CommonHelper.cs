@@ -98,7 +98,11 @@ namespace StringCodec.UWP.Common
 
             string xmlHeader = "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
             if (!xmlsrc.StartsWith(xmlHeader, StringComparison.CurrentCultureIgnoreCase))
-                xmlsrc = $"{xmlHeader}{xmlsrc}";
+            {
+                string patternSvg = @"<svg.*?\n*\r*.*?>(\n*\r*.*?)*</svg>";
+                string nodeSvg = Regex.Match(xmlsrc, patternSvg, RegexOptions.IgnoreCase | RegexOptions.Multiline).Value;
+                xmlsrc = $"{xmlHeader}{nodeSvg}";
+            }
             XmlDocument xml = new XmlDocument();
             xml.LoadXml(xmlsrc);
 
