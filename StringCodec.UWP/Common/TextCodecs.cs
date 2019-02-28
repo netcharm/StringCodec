@@ -2160,6 +2160,10 @@ namespace StringCodec.UWP.Common
                 { '0', "零" }, { '1', "壱" }, { '2', "弐" }, { '3', "参" }, { '4', "四" },
                 { '5', "五" }, { '6', "六" }, { '7', "七" }, { '8', "八" }, { '9', "九" }
             };
+            static public Dictionary<int, string> DigitBase = new Dictionary<int, string>()
+            {
+                { 1, "拾" }, { 2, "百" }, { 3, "千" },
+            };
             static public Dictionary<int, string> Digit = new Dictionary<int, string>()
             {
                 { 1, "拾" }, { 2, "百" }, { 3, "千" }, { 4, "万" },
@@ -2190,6 +2194,10 @@ namespace StringCodec.UWP.Common
             {
                 { '0', "零" }, { '1', "壱" }, { '2', "弐" }, { '3', "参" }, { '4', "四" },
                 { '5', "五" }, { '6', "六" }, { '7', "七" }, { '8', "八" }, { '9', "九" }
+            };
+            static public Dictionary<int, string> CurrencyDigitBase = new Dictionary<int, string>()
+            {
+                { 1, "拾" }, { 2, "佰" }, { 3, "仟" },
             };
             static public Dictionary<int, string> CurrencyDigit = new Dictionary<int, string>()
             {
@@ -2274,9 +2282,15 @@ namespace StringCodec.UWP.Common
                                 else break;
                             }
                             if (IsCurrency)
-                                vil.Add(ChinaDigital.CurrencyDigit[cn % 68]);
+                            {
+                                if (JapanDigital.CurrencyNumber.ContainsValue(vil.Last()) || JapanDigital.CurrencyDigitBase.ContainsValue(vil.Last()))
+                                    vil.Add(JapanDigital.CurrencyDigit[cn % 68]);
+                            }
                             else
-                                vil.Add(ChinaDigital.Digit[cn % 68]);
+                            {
+                                if (JapanDigital.Number.ContainsValue(vil.Last()) || JapanDigital.DigitBase.ContainsValue(vil.Last()))
+                                    vil.Add(JapanDigital.Digit[cn % 68]);
+                            }
                         }
                     }
 
@@ -2348,6 +2362,10 @@ namespace StringCodec.UWP.Common
                 { '0', "零" }, { '1', "一" }, { '2', "二" }, { '3', "三" }, { '4', "四" },
                 { '5', "五" }, { '6', "六" }, { '7', "七" }, { '8', "八" }, { '9', "九" }
             };
+            static public Dictionary<int, string> DigitBase = new Dictionary<int, string>()
+            {
+                { 1, "十" }, { 2, "百" }, { 3, "千" },
+            };
             static public Dictionary<int, string> Digit = new Dictionary<int, string>()
             {
                 { 1, "十" }, { 2, "百" }, { 3, "千" }, { 4, "万" },
@@ -2372,6 +2390,11 @@ namespace StringCodec.UWP.Common
             {
                 { '0', "零" }, { '1', "壹" }, { '2', "贰" }, { '3', "叁" }, { '4', "肆" },
                 { '5', "伍" }, { '6', "陆" }, { '7', "染" }, { '8', "捌" }, { '9', "玖" }
+            };
+
+            static public Dictionary<int, string> CurrencyDigitBase = new Dictionary<int, string>()
+            {
+                { 1, "拾" }, { 2, "佰" }, { 3, "仟" },
             };
             static public Dictionary<int, string> CurrencyDigit = new Dictionary<int, string>()
             {
@@ -2452,9 +2475,15 @@ namespace StringCodec.UWP.Common
                                 else break;
                             }
                             if (IsCurrency)
-                                vil.Add(ChinaDigital.CurrencyDigit[cn % 44]);
+                            {
+                                if (ChinaDigital.CurrencyNumber.ContainsValue(vil.Last()) || ChinaDigital.CurrencyDigitBase.ContainsValue(vil.Last()))
+                                    vil.Add(ChinaDigital.CurrencyDigit[cn % 44]);
+                            }
                             else
-                                vil.Add(ChinaDigital.Digit[cn % 44]);
+                            {
+                                if (ChinaDigital.Number.ContainsValue(vil.Last()) || ChinaDigital.DigitBase.ContainsValue(vil.Last()))
+                                    vil.Add(ChinaDigital.Digit[cn % 44]);
+                            }
                         }
                     }
 
