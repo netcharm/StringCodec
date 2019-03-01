@@ -2093,65 +2093,6 @@ namespace StringCodec.UWP.Common
             { '\uFF9F', '\u309C' }, // 'ﾟ' : '゜'
         };
 
-        public static string KatakanaHalfToFull(this string text)
-        {
-            var result = string.Empty;
-            for (var i = 0; i < text.Length; i++)
-            {               
-                if (text[i] == 32)
-                {
-                    result += (char)12288;
-                }
-                if (text[i] < 127)
-                {
-                    result += (char)(text[i] + 65248);
-                }
-            }
-
-            if (string.IsNullOrEmpty(result))
-                result = text;
-            return result;
-        }
-
-        public static string KatakanaFullToHalf(this string text)
-        {
-            var result = string.Empty;
-            for (var i = 0; i < text.Length; i++)
-            {
-                if (text[i] > 65248 && text[i] < 65375)
-                {
-                    result += (char)(text[i] - 65248);
-                }
-                else
-                {
-                    result += (char)text[i];
-                }
-            }
-            return result;
-        }
-
-        public static string KanaToUpper(this string text)
-        {
-            var result = string.Empty;
-            for (var i = 0; i < text.Length; i++)
-            {
-                if (KanaCaseMap.ContainsKey(text[i])) result += KanaCaseMap[text[i]];
-                else result += text[i];
-            }
-            return (result);
-        }
-
-        public static string KanaToLower(this string text)
-        {
-            var result = string.Empty;
-            for (var i = 0; i < text.Length; i++)
-            {                
-                if (KanaCaseMap.ContainsValue(text[i])) result += KanaCaseMap.FirstOrDefault(x => x.Value == text[i]).Key;
-                else result += text[i];
-            }
-            return (result);
-        }
-
         private static class JapanDigital
         {
             // General
@@ -2162,27 +2103,27 @@ namespace StringCodec.UWP.Common
             };
             static public Dictionary<int, string> DigitBase = new Dictionary<int, string>()
             {
-                { 1, "拾" }, { 2, "百" }, { 3, "千" },
+                { 1, "十" }, { 2, "百" }, { 3, "千" },
             };
             static public Dictionary<int, string> Digit = new Dictionary<int, string>()
             {
-                { 1, "拾" }, { 2, "百" }, { 3, "千" }, { 4, "万" },
-                { 5, "拾" }, { 6, "百" }, { 7, "千" }, { 8, "億" },
-                { 9, "拾" }, { 10, "百" }, { 11, "千" }, { 12, "兆" },
-                { 13, "拾" }, { 14, "百" }, { 15, "千" }, { 16, "京" },
-                { 17, "拾" }, { 18, "百" }, { 19, "千" }, { 20, "垓" },
-                { 21, "拾" }, { 22, "百" }, { 23, "千" }, { 24, "秭" },
-                { 25, "拾" }, { 26, "百" }, { 27, "千" }, { 28, "穰" },
-                { 29, "拾" }, { 30, "百" }, { 31, "千" }, { 32, "溝" },
-                { 33, "拾" }, { 34, "百" }, { 35, "千" }, { 36, "澗" },
-                { 37, "拾" }, { 38, "百" }, { 39, "千" }, { 40, "正" },
-                { 41, "拾" }, { 42, "百" }, { 43, "千" }, { 44, "載" },
-                { 45, "拾" }, { 46, "百" }, { 47, "千" }, { 48, "極" },
-                { 49, "拾" }, { 50, "百" }, { 51, "千" }, { 52, "恒河沙" },
-                { 53, "拾" }, { 54, "百" }, { 55, "千" }, { 56, "阿僧祇" },
-                { 57, "拾" }, { 58, "百" }, { 59, "千" }, { 60, "那由他" },
-                { 61, "拾" }, { 62, "百" }, { 63, "千" }, { 64, "不可思議" },
-                { 65, "拾" }, { 66, "百" }, { 67, "千" }, { 0, "無量大数" }
+                { 1, "十" }, { 2, "百" }, { 3, "千" }, { 4, "万" },
+                { 5, "十" }, { 6, "百" }, { 7, "千" }, { 8, "億" },
+                { 9, "十" }, { 10, "百" }, { 11, "千" }, { 12, "兆" },
+                { 13, "十" }, { 14, "百" }, { 15, "千" }, { 16, "京" },
+                { 17, "十" }, { 18, "百" }, { 19, "千" }, { 20, "垓" },
+                { 21, "十" }, { 22, "百" }, { 23, "千" }, { 24, "秭" },
+                { 25, "十" }, { 26, "百" }, { 27, "千" }, { 28, "穰" },
+                { 29, "十" }, { 30, "百" }, { 31, "千" }, { 32, "溝" },
+                { 33, "十" }, { 34, "百" }, { 35, "千" }, { 36, "澗" },
+                { 37, "十" }, { 38, "百" }, { 39, "千" }, { 40, "正" },
+                { 41, "十" }, { 42, "百" }, { 43, "千" }, { 44, "載" },
+                { 45, "十" }, { 46, "百" }, { 47, "千" }, { 48, "極" },
+                { 49, "十" }, { 50, "百" }, { 51, "千" }, { 52, "恒河沙" },
+                { 53, "十" }, { 54, "百" }, { 55, "千" }, { 56, "阿僧祇" },
+                { 57, "十" }, { 58, "百" }, { 59, "千" }, { 60, "那由他" },
+                { 61, "十" }, { 62, "百" }, { 63, "千" }, { 64, "不可思議" },
+                { 65, "十" }, { 66, "百" }, { 67, "千" }, { 0, "無量大数" }
             };
             static public Dictionary<string, string> Sign = new Dictionary<string, string>()
             {
@@ -2197,27 +2138,27 @@ namespace StringCodec.UWP.Common
             };
             static public Dictionary<int, string> CurrencyDigitBase = new Dictionary<int, string>()
             {
-                { 1, "拾" }, { 2, "佰" }, { 3, "仟" },
+                { 1, "十" }, { 2, "百" }, { 3, "千" },
             };
             static public Dictionary<int, string> CurrencyDigit = new Dictionary<int, string>()
             {
-                { 1, "拾" }, { 2, "佰" }, { 3, "仟" }, { 4, "萬" },
-                { 5, "拾" }, { 6, "佰" }, { 7, "仟" }, { 8, "億" },
-                { 9, "拾" }, { 10, "百" }, { 11, "千" }, { 12, "兆" },
-                { 13, "拾" }, { 14, "百" }, { 15, "千" }, { 16, "京" },
-                { 17, "拾" }, { 18, "百" }, { 19, "千" }, { 20, "垓" },
-                { 21, "拾" }, { 22, "百" }, { 23, "千" }, { 24, "秭" },
-                { 25, "拾" }, { 26, "百" }, { 27, "千" }, { 28, "穰" },
-                { 29, "拾" }, { 30, "百" }, { 31, "千" }, { 32, "溝" },
-                { 33, "拾" }, { 34, "百" }, { 35, "千" }, { 36, "澗" },
-                { 37, "拾" }, { 38, "百" }, { 39, "千" }, { 40, "正" },
-                { 41, "拾" }, { 42, "百" }, { 43, "千" }, { 44, "載" },
-                { 45, "拾" }, { 46, "百" }, { 47, "千" }, { 48, "極" },
-                { 49, "拾" }, { 50, "百" }, { 51, "千" }, { 52, "恒河沙" },
-                { 53, "拾" }, { 54, "百" }, { 55, "千" }, { 56, "阿僧祇" },
-                { 57, "拾" }, { 58, "百" }, { 59, "千" }, { 60, "那由他" },
-                { 61, "拾" }, { 62, "百" }, { 63, "千" }, { 64, "不可思議" },
-                { 65, "拾" }, { 66, "百" }, { 67, "千" }, { 0, "無量大数" }
+                { 1, "十" }, { 2, "百" }, { 3, "千" }, { 4, "萬" },
+                { 5, "十" }, { 6, "百" }, { 7, "千" }, { 8, "億" },
+                { 9, "十" }, { 10, "百" }, { 11, "千" }, { 12, "兆" },
+                { 13, "十" }, { 14, "百" }, { 15, "千" }, { 16, "京" },
+                { 17, "十" }, { 18, "百" }, { 19, "千" }, { 20, "垓" },
+                { 21, "十" }, { 22, "百" }, { 23, "千" }, { 24, "秭" },
+                { 25, "十" }, { 26, "百" }, { 27, "千" }, { 28, "穰" },
+                { 29, "十" }, { 30, "百" }, { 31, "千" }, { 32, "溝" },
+                { 33, "十" }, { 34, "百" }, { 35, "千" }, { 36, "澗" },
+                { 37, "十" }, { 38, "百" }, { 39, "千" }, { 40, "正" },
+                { 41, "十" }, { 42, "百" }, { 43, "千" }, { 44, "載" },
+                { 45, "十" }, { 46, "百" }, { 47, "千" }, { 48, "極" },
+                { 49, "十" }, { 50, "百" }, { 51, "千" }, { 52, "恒河沙" },
+                { 53, "十" }, { 54, "百" }, { 55, "千" }, { 56, "阿僧祇" },
+                { 57, "十" }, { 58, "百" }, { 59, "千" }, { 60, "那由他" },
+                { 61, "十" }, { 62, "百" }, { 63, "千" }, { 64, "不可思議" },
+                { 65, "十" }, { 66, "百" }, { 67, "千" }, { 0, "無量大数" }
             };
             static public Dictionary<int, string> CurrencyUnit = new Dictionary<int, string>()
             {
@@ -2232,6 +2173,8 @@ namespace StringCodec.UWP.Common
         public static string JapanNumToUpper(this string text, bool IsCurrency = false)
         {
             string result = text;
+
+            var ja = System.Globalization.CultureInfo.GetCultureInfo("ja");
 
             var pat = @"(([+-]){0,1}(\d+)((,\d{3,3})*)(\.\d+){0,1})";
             Dictionary<string, string> replist = new Dictionary<string, string>();
@@ -2294,10 +2237,7 @@ namespace StringCodec.UWP.Common
                         }
                     }
 
-                    if (IsCurrency)
-                        iu = $"{string.Join("", vil)}{JapanDigital.CurrencyUnit[0]}";
-                    else
-                        iu = string.Join("", vil);
+                    iu = string.Join("", vil);
 
                     if (!string.IsNullOrEmpty(f))
                     {
@@ -2309,7 +2249,8 @@ namespace StringCodec.UWP.Common
                             {
                                 if (c == 6)
                                     vfl.Add(JapanDigital.Sign["."]);
-                                if (c <= 4)
+
+                                if (c == 1 || c == 2)
                                 {
                                     vfl.Add(JapanDigital.CurrencyNumber[f[c]]);
                                     vfl.Add(JapanDigital.CurrencyUnit[c]);
@@ -2325,9 +2266,11 @@ namespace StringCodec.UWP.Common
                         fu = string.Join("", vfl);
                     }
 
-                    tu = $"{su}{iu.TrimEnd('零')}{fu}";
                     if (IsCurrency)
-                        tu = $"{su}{iu}{fu}整";
+                        tu = $"{su}{iu.TrimEnd(JapanDigital.CurrencyNumber['0'][0])}{fu}{JapanDigital.CurrencyUnit[0]}整";
+                    else
+                        tu = $"{su}{iu.TrimEnd(JapanDigital.Number['0'][0])}{fu}";
+
 
                     if (!replist.ContainsKey(t))
                         replist[t] = Regex.Replace(tu, @"零+", "零", RegexOptions.IgnoreCase);
@@ -2351,6 +2294,66 @@ namespace StringCodec.UWP.Common
 
             return (result);
         }
+
+        public static string KatakanaHalfToFull(this string text)
+        {
+            var result = string.Empty;
+            for (var i = 0; i < text.Length; i++)
+            {               
+                if (text[i] == 32)
+                {
+                    result += (char)12288;
+                }
+                if (text[i] < 127)
+                {
+                    result += (char)(text[i] + 65248);
+                }
+            }
+
+            if (string.IsNullOrEmpty(result))
+                result = text;
+            return result;
+        }
+
+        public static string KatakanaFullToHalf(this string text)
+        {
+            var result = string.Empty;
+            for (var i = 0; i < text.Length; i++)
+            {
+                if (text[i] > 65248 && text[i] < 65375)
+                {
+                    result += (char)(text[i] - 65248);
+                }
+                else
+                {
+                    result += (char)text[i];
+                }
+            }
+            return result;
+        }
+
+        public static string KanaToUpper(this string text)
+        {
+            var result = string.Empty;
+            for (var i = 0; i < text.Length; i++)
+            {
+                if (KanaCaseMap.ContainsKey(text[i])) result += KanaCaseMap[text[i]];
+                else result += text[i];
+            }
+            return (result);
+        }
+
+        public static string KanaToLower(this string text)
+        {
+            var result = string.Empty;
+            for (var i = 0; i < text.Length; i++)
+            {                
+                if (KanaCaseMap.ContainsValue(text[i])) result += KanaCaseMap.FirstOrDefault(x => x.Value == text[i]).Key;
+                else result += text[i];
+            }
+            return (result);
+        }
+
         #endregion
 
         #region Chinese case converter
@@ -2487,10 +2490,7 @@ namespace StringCodec.UWP.Common
                         }
                     }
 
-                    if (IsCurrency)
-                        iu = $"{string.Join("", vil)}{ChinaDigital.CurrencyUnit[0]}";
-                    else
-                        iu = string.Join("", vil);
+                    iu = string.Join("", vil);
 
                     if (!string.IsNullOrEmpty(f))
                     {
@@ -2519,9 +2519,10 @@ namespace StringCodec.UWP.Common
                         fu = string.Join("", vfl);
                     }
 
-                    tu = $"{su}{iu.TrimEnd('零')}{fu}";
                     if (IsCurrency)
-                        tu = $"{tu}整";
+                        tu = $"{su}{iu.TrimEnd(ChinaDigital.CurrencyNumber['0'][0])}{fu}{ChinaDigital.CurrencyUnit[0]}整";
+                    else
+                        tu = $"{su}{iu.TrimEnd(ChinaDigital.Number['0'][0])}{fu}";
 
                     if (!replist.ContainsKey(t))
                         replist[t] = Regex.Replace(tu, @"零+", "零", RegexOptions.IgnoreCase);
