@@ -2267,7 +2267,7 @@ namespace StringCodec.UWP.Common
                     }
 
                     if (IsCurrency)
-                        tu = $"{su}{iu.TrimEnd(JapanDigital.CurrencyNumber['0'][0])}{fu}{JapanDigital.CurrencyUnit[0]}整";
+                        tu = $"{su}{iu.TrimEnd(JapanDigital.CurrencyNumber['0'][0])}{JapanDigital.CurrencyUnit[0]}{fu}整";
                     else
                         tu = $"{su}{iu.TrimEnd(JapanDigital.Number['0'][0])}{fu}";
 
@@ -2520,7 +2520,7 @@ namespace StringCodec.UWP.Common
                     }
 
                     if (IsCurrency)
-                        tu = $"{su}{iu.TrimEnd(ChinaDigital.CurrencyNumber['0'][0])}{fu}{ChinaDigital.CurrencyUnit[0]}整";
+                        tu = $"{su}{iu.TrimEnd(ChinaDigital.CurrencyNumber['0'][0])}{ChinaDigital.CurrencyUnit[0]}{fu}整";
                     else
                         tu = $"{su}{iu.TrimEnd(ChinaDigital.Number['0'][0])}{fu}";
 
