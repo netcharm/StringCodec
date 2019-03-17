@@ -19,6 +19,8 @@ namespace StringCodec.UWP.Common
     {
         public static string[] LINEBREAK = new string[]{ "\r\n", "\n\r", "\r", "\n", Environment.NewLine };
 
+        public static byte[] hexRange = Encoding.Default.GetBytes("0123456789abcdefABCDEF");
+
         public enum CODEC { URL, HTML, BASE64, UUE, XXE, RAW, UNICODEVALUE, UNICODEGLYPH, QUOTED, THUNDER, FLASHGET, UUID, GUID, MORSE, MORSEABBR };
 
         #region Basic Encoder/Decoder
@@ -812,22 +814,38 @@ namespace StringCodec.UWP.Common
                 string result = string.Empty;
 
                 var asciis = Encoding.Default.GetBytes(text);
-                List<byte> ReturnString = new List<byte>();
+                List<byte> retBytes = new List<byte>();
                 int i = 0;
                 while (i < asciis.Length)
                 {
                     var ascii = asciis[i];
-                    if (ascii == 61)
+                    if (ascii == 61 && hexRange.Contains(asciis[i + 1]) && hexRange.Contains(asciis[i + 2]))
                     {
                         var hex = $"{(char)asciis[i + 1]}{(char)asciis[i + 2]}";
-                        ReturnString.Add(byte.Parse(hex, System.Globalization.NumberStyles.HexNumber));
+                        retBytes.Add(byte.Parse(hex, System.Globalization.NumberStyles.HexNumber));
                         i += 2;
                     }
+                    else if (ascii == 61 && (asciis[i + 1] == '\r' || asciis[i + 1] == '\n'))
+                        i++;
                     else
-                        ReturnString.Add(ascii);
+                        retBytes.Add(ascii);
                     i++;
                 }
-                result = enc.GetString(ReturnString.ToArray());
+                var bom = enc.GetBOM();
+                var hasBOM = true;
+                for(i = 0; i<bom.Length;i++)
+                {
+                    if (retBytes[i] != bom[i])
+                    {
+                        hasBOM = false;
+                        break;
+                    }
+                }
+                if (hasBOM) retBytes.RemoveRange(0, bom.Length);
+
+                if (enc == Encoding.UTF8 && retBytes[0] == 0xEF && retBytes[1] == 0xBB & retBytes[2] == 0xBF)
+                    retBytes.RemoveRange(0, 3);
+                result = enc.GetString(retBytes.ToArray());
 
                 return (result);
             }
