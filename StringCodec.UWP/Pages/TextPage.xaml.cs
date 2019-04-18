@@ -130,7 +130,7 @@ namespace StringCodec.UWP.Pages
                     optURL, optHtml, optRaw,
                     optUnicodeValue, optUnicodeGlyph,
                     optThunder, optFlashGet,
-                    optMorse, optMorseAbbr
+                    optMorse, optMorseAbbr,
                 };
 
                 var btn = sender as ToggleMenuFlyoutItem;
@@ -167,6 +167,8 @@ namespace StringCodec.UWP.Pages
                     result = text.Lower(CURRENT_CULTURE);
                 else if (sender == optCaseCapsWord)
                     result = text.CapsWord(CURRENT_CULTURE);
+                else if (sender == optCaseCapsWordForce)
+                    result = text.CapsWordForce(CURRENT_CULTURE);
                 else if (sender == optCaseCapsSentence)
                     result = text.CapsSentence(CURRENT_CULTURE);
                 #endregion
@@ -230,6 +232,46 @@ namespace StringCodec.UWP.Pages
                 await new Windows.UI.Popups.MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
             }
 
+            edDst.Text = result.Trim();
+        }
+
+        private async void Checksum_Click(object sender, RoutedEventArgs e)
+        {
+            //optChecksumMD5, optChecksumSHA1, optChecksumCRC32,
+            var text = edSrc.Text;
+            var result = text;
+
+            try
+            {
+                if(sender == optChecksumMD5)
+                {
+                    result = result.CalcMD5(CURRENT_ENC);
+                }
+                else if(sender == optChecksumSHA1)
+                {
+                    result = result.CalcSHA1(CURRENT_ENC);
+                }
+                else if (sender == optChecksumSHA256)
+                {
+                    result = result.CalcSHA256(CURRENT_ENC);
+                }
+                else if (sender == optChecksumSHA384)
+                {
+                    result = result.CalcSHA384(CURRENT_ENC);
+                }
+                else if (sender == optChecksumSHA512)
+                {
+                    result = result.CalcSHA512(CURRENT_ENC);
+                }
+                else if (sender == optChecksumCRC32)
+                {
+                    result = result.CalcCRC32(CURRENT_ENC);
+                }
+            }
+            catch (Exception ex)
+            {
+                await new Windows.UI.Popups.MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
+            }
             edDst.Text = result.Trim();
         }
 
@@ -304,12 +346,12 @@ namespace StringCodec.UWP.Pages
             }
         }
 
-        private void edSrc_TextChanged(object sender, TextChangedEventArgs e)
+        private void TextSrc_TextChanged(object sender, TextChangedEventArgs e)
         {
             text_src = edSrc.Text;
         }
 
-        private void edSrc_PreviewKeyDown(object sender, KeyRoutedEventArgs e)
+        private void TextSrc_PreviewKeyDown(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key.HasFlag(Windows.System.VirtualKey.Control) && e.Key == Windows.System.VirtualKey.W)
             {

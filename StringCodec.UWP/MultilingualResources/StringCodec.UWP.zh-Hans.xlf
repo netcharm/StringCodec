@@ -1142,6 +1142,10 @@
           <source>Capitalized Word</source>
           <target state="translated">单词首字大写</target>
         </trans-unit>
+        <trans-unit id="optCaseCapsWordForce.Text" translate="yes" xml:space="preserve">
+          <source>Capitalized Word (Force)</source>
+          <target state="translated">单词首字大写(强制)</target>
+        </trans-unit>
         <trans-unit id="optCaseJaLowKana.Text" translate="yes" xml:space="preserve">
           <source>Japaness Lower Katakana</source>
           <target state="translated">日语小写片假名</target>
@@ -1453,6 +1457,10 @@
         <trans-unit id="Yes" translate="yes" xml:space="preserve">
           <source>Yes</source>
           <target state="translated">是</target>
+        </trans-unit>
+        <trans-unit id="optChecksum.Text" translate="yes" xml:space="preserve">
+          <source>Calculating Checksum</source>
+          <target state="translated">计算校验和</target>
         </trans-unit>
       </group>
     </body>

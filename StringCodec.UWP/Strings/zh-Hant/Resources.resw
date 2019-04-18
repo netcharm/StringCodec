@@ -864,6 +864,9 @@
   <data name="optCaseCapsWord.Text" xml:space="preserve">
     <value>單詞首字大寫</value>
   </data>
+  <data name="optCaseCapsWordForce.Text" xml:space="preserve">
+    <value>單詞首字大寫(強制)</value>
+  </data>
   <data name="optCaseJaLowKana.Text" xml:space="preserve">
     <value>日語小寫片假名</value>
   </data>
@@ -1097,5 +1100,8 @@
   </data>
   <data name="Yes" xml:space="preserve">
     <value>是</value>
+  </data>
+  <data name="optChecksum.Text" xml:space="preserve">
+    <value>計算校驗和</value>
   </data>
 </root>

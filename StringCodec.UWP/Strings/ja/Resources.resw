@@ -864,6 +864,9 @@
   <data name="optCaseCapsWord.Text" xml:space="preserve">
     <value>大文字の単語の先頭文字</value>
   </data>
+  <data name="optCaseCapsWordForce.Text" xml:space="preserve">
+    <value>大文字の単語の先頭文字(強制する)</value>
+  </data>
   <data name="optCaseJaLowKana.Text" xml:space="preserve">
     <value>日本語小文字カタカナ</value>
   </data>
@@ -1097,5 +1100,8 @@
   </data>
   <data name="Yes" xml:space="preserve">
     <value>うん</value>
+  </data>
+  <data name="optChecksum.Text" xml:space="preserve">
+    <value>チェックサムの計算</value>
   </data>
 </root>

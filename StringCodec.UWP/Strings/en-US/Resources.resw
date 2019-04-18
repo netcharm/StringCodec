@@ -1008,6 +1008,9 @@
   <data name="optCaseCapsWord.Text" xml:space="preserve">
     <value>Capitalized Word</value>
   </data>
+  <data name="optCaseCapsWordForce.Text" xml:space="preserve">
+    <value>Capitalized Word (Force)</value>
+  </data>
   <data name="optCaseJaFullKana.Text" xml:space="preserve">
     <value>Japaness Full-Width Katakana</value>
   </data>
@@ -1202,5 +1205,8 @@
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
+  </data>
+  <data name="optChecksum.Text" xml:space="preserve">
+    <value>Calculating Checksum</value>
   </data>
 </root>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -21,7 +22,17 @@ namespace StringCodec.UWP.Common
 
         public static byte[] hexRange = Encoding.Default.GetBytes("0123456789abcdefABCDEF");
 
-        public enum CODEC { URL, HTML, BASE64, UUE, XXE, RAW, UNICODEVALUE, UNICODEGLYPH, QUOTED, THUNDER, FLASHGET, UUID, GUID, MORSE, MORSEABBR };
+        public enum CODEC {
+            URL, HTML, BASE64, UUE, XXE, RAW, UNICODEVALUE, UNICODEGLYPH, QUOTED,
+            THUNDER, FLASHGET,
+            UUID, GUID,
+            MORSE, MORSEABBR,
+        };
+
+        public enum CHECKSUM
+        {
+            MD5, RC2, AES, DES, RSA, SHA1, SHA256, SHA384, SHA512, CRC32,
+        }
 
         #region Basic Encoder/Decoder
         static public class BASE64
@@ -1718,27 +1729,6 @@ namespace StringCodec.UWP.Common
         }
         #endregion
 
-        public static string ReverseOrder(this string text)
-        {
-            string result = text;
-
-            var sentences = text.Split(LINEBREAK, StringSplitOptions.None);
-            StringBuilder sb = new StringBuilder();
-            foreach(var sentence in sentences.Reverse())
-            {
-                var l = sentence.Reverse().ToList();
-                for(var i = 0; i < l.Count; i++)
-                {
-                    if (l[i].Equals('“')) l[i] = '”';
-                    else if (l[i].Equals('”')) l[i] = '“';
-                }
-                sb.AppendLine(string.Join("", l));
-            }
-            result = sb.ToString();
-
-            return (result);
-        }
-
         #region CodePage converters
         public static async Task<string> ToBase64(this WriteableBitmap wb, string format, bool prefix, bool linebreak)
         {
@@ -1972,34 +1962,57 @@ namespace StringCodec.UWP.Common
         }
         #endregion
 
+        public static string ReverseOrder(this string text)
+        {
+            string result = text;
+
+            var sentences = text.Split(LINEBREAK, StringSplitOptions.None);
+            StringBuilder sb = new StringBuilder();
+            foreach (var sentence in sentences.Reverse())
+            {
+                var l = sentence.Reverse().ToList();
+                for (var i = 0; i < l.Count; i++)
+                {
+                    if (l[i].Equals('“')) l[i] = '”';
+                    else if (l[i].Equals('”')) l[i] = '“';
+                }
+                sb.AppendLine(string.Join("", l));
+            }
+            result = sb.ToString();
+
+            return (result);
+        }
+
         #region Latin case converter
         public static string Upper(this string text, System.Globalization.CultureInfo enc = null)
         {
-            var culture = System.Globalization.CultureInfo.CurrentCulture;
-            if (enc is System.Globalization.CultureInfo) culture = enc;
+            var culture = enc is System.Globalization.CultureInfo ? enc : System.Globalization.CultureInfo.CurrentCulture;
             return (culture.TextInfo.ToUpper(text));
         }
 
         public static string Lower(this string text, System.Globalization.CultureInfo enc = null)
         {
-            var culture = System.Globalization.CultureInfo.CurrentCulture;
-            if (enc is System.Globalization.CultureInfo) culture = enc;
+            var culture = enc is System.Globalization.CultureInfo ? enc : System.Globalization.CultureInfo.CurrentCulture;
             return (culture.TextInfo.ToLower(text));
         }
 
         public static string CapsWord(this string text, System.Globalization.CultureInfo enc = null)
         {
-            var culture = System.Globalization.CultureInfo.CurrentCulture;
-            if (enc is System.Globalization.CultureInfo) culture = enc;
+            var culture = enc is System.Globalization.CultureInfo ? enc : System.Globalization.CultureInfo.CurrentCulture;
             return (culture.TextInfo.ToTitleCase(text));
+        }
+
+        public static string CapsWordForce(this string text, System.Globalization.CultureInfo enc = null)
+        {
+            var culture = enc is System.Globalization.CultureInfo ? enc : System.Globalization.CultureInfo.CurrentCulture;
+            return (culture.TextInfo.ToTitleCase(text.ToLower()));
         }
 
         public static string CapsSentence(this string text, System.Globalization.CultureInfo enc = null)
         {
             string result = text;
 
-            var culture = System.Globalization.CultureInfo.CurrentCulture;
-            if (enc is System.Globalization.CultureInfo) culture = enc;
+            var culture = enc is System.Globalization.CultureInfo ? enc : System.Globalization.CultureInfo.CurrentCulture;
 
             var paras = text.Split(LINEBREAK, StringSplitOptions.None);
             StringBuilder sb = new StringBuilder();
@@ -2630,6 +2643,226 @@ namespace StringCodec.UWP.Common
             return (TongWen.Core.Convert(text, TongWen.ChineseConversionDirection.TraditionalToSimplified));
             //return (ChineseConverter.Convert(text, ChineseConversionDirection.TraditionalToSimplified));
         }
+        #endregion
+
+        #region Checksum Calculator
+        class CRC32 : IDisposable
+        {
+            //public uint Polynomial { get; set; } = 0x04C11DB7u; //0xEDB88320u;
+            public uint Polynomial { get; set; } = 0xEDB88320u;
+            public uint Seed { get; set; } = 0xFFFFFFFFu;
+
+            protected uint[] Crc32Table;
+            //生成CRC32码表
+            protected void MakeCRC32Table()
+            {
+                Crc32Table = new uint[256];
+                for (uint i = 0; i < 256; i++)
+                {
+                    uint CRC = i;
+                    //for (j = 8; j > 0; j--)
+                    for (uint j = 0; j < 8; j++)
+                    {
+                        if ((CRC & 1) == 1)
+                            CRC = (CRC >> 1) ^ Polynomial;
+                        else
+                            CRC = CRC >> 1;
+                    }
+                    Crc32Table[i] = CRC;
+                }
+            }
+
+            public CRC32()
+            {
+                MakeCRC32Table();
+            }
+
+            public CRC32(uint polynomial)
+            {
+                Polynomial = polynomial;
+                MakeCRC32Table();
+            }
+
+            public CRC32(uint polynomial, uint seed)
+            {
+                Polynomial = polynomial;
+                Seed = seed;
+                MakeCRC32Table();
+            }
+
+            static public CRC32 Create()
+            {
+                return (new CRC32());
+            }
+
+            public byte[] ComputeHash(byte[] bytes)
+            {
+                uint value = Seed;
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    value = (value >> 8) ^ Crc32Table[bytes[i] ^ value & 0xFF];
+                }
+
+                value = value ^ 0xFFFFFFFFu;
+                byte[] result = new byte[4] {
+                    (byte)((value & 0xFF000000u) >> 24),
+                    (byte)((value & 0x00FF0000u) >> 16),
+                    (byte)((value & 0x0000FF00u) >> 8),
+                    (byte)((value & 0x000000FFu))
+                };
+                return (result);
+            }
+
+            public void Dispose()
+            {
+                return;
+            }
+        }
+
+        public static string CalcCRC32(this string text, Encoding enc = null)
+        {
+            string result = string.Empty;
+            var codec = enc is Encoding ? enc : Encoding.Default;
+            using (var hash = CRC32.Create())
+            {
+                // Convert the input string to a byte array and compute the hash.
+                byte[] data = hash.ComputeHash(codec.GetBytes(text));
+
+                // Create a new Stringbuilder to collect the bytes
+                // and create a string.
+                StringBuilder sb = new StringBuilder();
+
+                // Loop through each byte of the hashed data 
+                // and format each one as a hexadecimal string.
+                for (int i = 0; i < data.Length; i++)
+                {
+                    sb.Append(data[i].ToString("X2"));
+                }
+                result = sb.ToString();
+            }
+            return (result);
+        }
+
+        public static string CalcMD5(this string text, Encoding enc = null)
+        {
+            string result = string.Empty;
+            var codec = enc is Encoding ? enc : Encoding.Default;
+            using (var hash = MD5.Create())
+            {
+                // Convert the input string to a byte array and compute the hash.
+                byte[] data = hash.ComputeHash(codec.GetBytes(text));
+
+                // Create a new Stringbuilder to collect the bytes
+                // and create a string.
+                StringBuilder sb = new StringBuilder();
+
+                // Loop through each byte of the hashed data 
+                // and format each one as a hexadecimal string.
+                for (int i = 0; i < data.Length; i++)
+                {
+                    sb.Append(data[i].ToString("X2"));
+                }
+                result = sb.ToString();
+            }
+            return (result);
+        }
+
+        public static string CalcSHA1(this string text, Encoding enc = null)
+        {
+            string result = string.Empty;
+            var codec = enc is Encoding ? enc : Encoding.Default;
+            using (var hash = SHA1.Create())
+            {
+                // Convert the input string to a byte array and compute the hash.
+                byte[] data = hash.ComputeHash(codec.GetBytes(text));
+
+                // Create a new Stringbuilder to collect the bytes
+                // and create a string.
+                StringBuilder sb = new StringBuilder();
+
+                // Loop through each byte of the hashed data 
+                // and format each one as a hexadecimal string.
+                for (int i = 0; i < data.Length; i++)
+                {
+                    sb.Append(data[i].ToString("X2"));
+                }
+                result = sb.ToString();
+            }
+            return (result);
+        }
+
+        public static string CalcSHA256(this string text, Encoding enc = null)
+        {
+            string result = string.Empty;
+            var codec = enc is Encoding ? enc : Encoding.Default;
+            using (var hash = SHA256.Create())
+            {
+                // Convert the input string to a byte array and compute the hash.
+                byte[] data = hash.ComputeHash(codec.GetBytes(text));
+
+                // Create a new Stringbuilder to collect the bytes
+                // and create a string.
+                StringBuilder sb = new StringBuilder();
+
+                // Loop through each byte of the hashed data 
+                // and format each one as a hexadecimal string.
+                for (int i = 0; i < data.Length; i++)
+                {
+                    sb.Append(data[i].ToString("X2"));
+                }
+                result = sb.ToString();
+            }
+            return (result);
+        }
+
+        public static string CalcSHA384(this string text, Encoding enc = null)
+        {
+            string result = string.Empty;
+            var codec = enc is Encoding ? enc : Encoding.Default;
+            using (var hash = SHA384.Create())
+            {
+                // Convert the input string to a byte array and compute the hash.
+                byte[] data = hash.ComputeHash(codec.GetBytes(text));
+
+                // Create a new Stringbuilder to collect the bytes
+                // and create a string.
+                StringBuilder sb = new StringBuilder();
+
+                // Loop through each byte of the hashed data 
+                // and format each one as a hexadecimal string.
+                for (int i = 0; i < data.Length; i++)
+                {
+                    sb.Append(data[i].ToString("X2"));
+                }
+                result = sb.ToString();
+            }
+            return (result);
+        }
+
+        public static string CalcSHA512(this string text, Encoding enc = null)
+        {
+            string result = string.Empty;
+            var codec = enc is Encoding ? enc : Encoding.Default;
+            using (var hash = SHA512.Create())
+            {
+                // Convert the input string to a byte array and compute the hash.
+                byte[] data = hash.ComputeHash(codec.GetBytes(text));
+
+                // Create a new Stringbuilder to collect the bytes
+                // and create a string.
+                StringBuilder sb = new StringBuilder();
+
+                // Loop through each byte of the hashed data 
+                // and format each one as a hexadecimal string.
+                for (int i = 0; i < data.Length; i++)
+                {
+                    sb.Append(data[i].ToString("X2"));
+                }
+                result = sb.ToString();
+            }
+            return (result);
+        }
+
         #endregion
 
         #region Text process

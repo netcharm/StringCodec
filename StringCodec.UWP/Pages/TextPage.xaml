@@ -16,7 +16,7 @@
             <RowDefinition Height=".5*" />
         </Grid.RowDefinitions>
 
-        <CommandBar Grid.Row="0" x:Name="CmdBar" x:Uid="CmdBar" KeyboardAcceleratorPlacementMode="Auto" PreviewKeyDown="edSrc_PreviewKeyDown">
+        <CommandBar Grid.Row="0" x:Name="CmdBar" x:Uid="CmdBar" KeyboardAcceleratorPlacementMode="Auto" PreviewKeyDown="TextSrc_PreviewKeyDown">
             <AppBarButton x:Name="btnOpt" x:Uid="btnOpt" Icon="Bullets" Label="Options" VerticalAlignment="Center">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
@@ -174,6 +174,7 @@
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
                             <MenuFlyoutItem x:Name="optCaseCapsWord" x:Uid="optCaseCapsWord" Text="Capitalized Word" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optCaseCapsWordForce" x:Uid="optCaseCapsWordForce" Text="Capitalized Word (Force)" Click="Case_Click"/>
                             <MenuFlyoutItem x:Name="optCaseCapsSentence" x:Uid="optCaseCapsSentence" Text="Capitalized Sentence" Click="Case_Click"/>
                             <MenuFlyoutSeparator />
                             <MenuFlyoutItem x:Name="optCaseZhUpNum" x:Uid="optCaseZhUpNum" Text="Chinese Upper Number" Click="Case_Click"/>
@@ -216,6 +217,15 @@
                         <MenuFlyoutItem x:Name="optMergeBlankLine" x:Uid="optMergeBlankLine" Text="Merge Blank Lines" Click="Case_Click"/>
                         <MenuFlyoutSeparator/>
                         <MenuFlyoutItem x:Name="optReverse" x:Uid="optReverse" Text="Reverse" Click="Case_Click"/>
+                        <MenuFlyoutSeparator />
+                        <MenuFlyoutSubItem x:Name="optChecksum" x:Uid="optChecksum" Text="Calculating Checksum">
+                            <MenuFlyoutItem x:Name="optChecksumMD5" x:Uid="optChecksumMD5" Text="MD5" Click="Checksum_Click"/>
+                            <MenuFlyoutItem x:Name="optChecksumSHA1" x:Uid="optChecksumSHA1" Text="SHA1" Click="Checksum_Click"/>
+                            <MenuFlyoutItem x:Name="optChecksumSHA256" x:Uid="optChecksumSHA256" Text="SHA256" Click="Checksum_Click"/>
+                            <MenuFlyoutItem x:Name="optChecksumSHA384" x:Uid="optChecksumSHA384" Text="SHA384" Click="Checksum_Click"/>
+                            <MenuFlyoutItem x:Name="optChecksumSHA512" x:Uid="optChecksumSHA512" Text="SHA512" Click="Checksum_Click"/>
+                            <MenuFlyoutItem x:Name="optChecksumCRC32" x:Uid="optChecksumCRC32" Text="CRC32" Click="Checksum_Click"/>
+                        </MenuFlyoutSubItem>
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
@@ -298,8 +308,8 @@
                  SelectionHighlightColorWhenNotFocused="{ThemeResource ButtonBorderThemeBrush}"
                  ScrollViewer.VerticalScrollBarVisibility="Auto" 
                  ScrollViewer.HorizontalScrollBarVisibility="Auto" 
-                 PreviewKeyDown="edSrc_PreviewKeyDown"
-                 TextChanged="edSrc_TextChanged"
+                 PreviewKeyDown="TextSrc_PreviewKeyDown"
+                 TextChanged="TextSrc_TextChanged"
                  AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" />
         <TextBox Grid.Row="2" Margin="0 12 0 0" x:Name="edDst" x:Uid="edDst" 
                  Header="Output:" PlaceholderText="Here is output" 
@@ -308,7 +318,7 @@
                  SelectionHighlightColorWhenNotFocused="{ThemeResource ButtonBorderThemeBrush}"
                  ScrollViewer.VerticalScrollBarVisibility="Auto" 
                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                 PreviewKeyDown="edSrc_PreviewKeyDown" />
+                 PreviewKeyDown="TextSrc_PreviewKeyDown" />
 
         <ProgressRing Grid.RowSpan="3" x:Name="progress" Width="96" Height="96" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
         <MediaElement x:Name="mediaPlayer" AutoPlay="False" Source="ms-winsoundevent:Notification.Default" Width="0" Height="0" Visibility="Collapsed"/>
