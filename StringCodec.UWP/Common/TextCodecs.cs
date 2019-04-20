@@ -83,6 +83,26 @@ namespace StringCodec.UWP.Common
                 string result = string.Empty;
                 try
                 {
+                    if (text.Length > 512)
+                    {
+                        var lines = text.Split(new char[]{ '\r', '\n' });
+                        StringBuilder sb = new StringBuilder();
+                        foreach(var line in lines)
+                        {
+                            var l = string.IsNullOrEmpty(line) ? string.Empty : line.Trim();
+                            if (string.IsNullOrEmpty(l)) continue;
+                            if (l.StartsWith("--=")) continue;
+                            if (l.IndexOf("charset")>=0)
+                            {
+                                var charset = l.Substring(l.IndexOf("charset")).Split(new char[] { '=', ':' });
+                                if (charset.Length == 2) enc = GetTextEncoder(charset[1].Trim(new char[] { '"', ';' }));
+                                continue;
+                            }
+                            if(l.StartsWith("Content-", StringComparison.CurrentCultureIgnoreCase)) continue;
+                            sb.AppendLine(l);
+                        }
+                        text = sb.ToString();
+                    }
                     byte[] arr = Convert.FromBase64String(text);
                     //result = Encoding.UTF8.GetString(arr);
                     result = enc.GetString(arr);
