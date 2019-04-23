@@ -514,8 +514,7 @@ namespace StringCodec.UWP.Pages
                             await Utils.ShowSaveDialog(text, CURRENT_ENC, $".{CURRENT_CODEC.ToString().ToLower()}");
                             break;
                         case "btnHashFile":
-                            var hashDlg = new HashCalcDialog();
-                            await hashDlg.ShowAsync();
+                            Utils.ShowFileHashDialog();
                             break;
                         case "btnCopy":
                             Utils.SetClipboard(edDst.Text);
@@ -606,8 +605,7 @@ namespace StringCodec.UWP.Pages
                             await Utils.ShowSaveDialog(text, CURRENT_ENC, $".{CURRENT_CODEC.ToString().ToLower()}");
                             break;
                         case "MenuHashFile":
-                            var hashDlg = new HashCalcDialog();
-                            await hashDlg.ShowAsync();
+                            Utils.ShowFileHashDialog();
                             break;
                     }
                 }

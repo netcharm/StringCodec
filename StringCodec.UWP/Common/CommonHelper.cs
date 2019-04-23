@@ -2584,6 +2584,12 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
+        public static async void ShowFileHashDialog()
+        {
+            var hashDlg = new HashCalcDialog();
+            await hashDlg.ShowAsync();
+        }
+
         public static async Task<bool> ConvertFile(StorageFile file, Encoding SrcEnc, Encoding DstEnc, bool overwrite = false)
         {
             bool result = false;

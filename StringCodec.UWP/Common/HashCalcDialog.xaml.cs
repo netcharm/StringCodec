@@ -36,10 +36,11 @@ namespace StringCodec.UWP.Common
 
             try
             {
-                progressHashFile.Visibility = Visibility.Visible;
-
                 if (file is StorageFile)
                 {
+                    progressHashFile.Visibility = Visibility.Visible;
+                    progressHashFile.IsActive = true;
+
                     using (var ms = await file.OpenStreamForReadAsync())
                     {
                         ms.Seek(0, SeekOrigin.Begin);
