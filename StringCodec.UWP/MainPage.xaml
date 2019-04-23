@@ -77,6 +77,12 @@
                              Click="More_Click"
                              Margin="48,24"/>
                 <NavigationViewItemSeparator/>-->
+                <NavigationViewItem x:Name="nvItemHash" x:Uid="nvItemHash" Content="File Hash Calculating" Tag="PageHash" ToolTipService.ToolTip="File Hash Calculating" Tapped="NvItemHash_Tapped">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xF1EC;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItemSeparator/>
                 <NavigationViewItem x:Name="nvAbout" x:Uid="nvAbout" Content="More info" Tapped="NvMore_Click" ToolTipService.ToolTip="About Me...">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xE946;" FontFamily="Segoe MDL2 Assets"/>

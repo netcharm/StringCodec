@@ -1122,4 +1122,7 @@
   <data name="MenuHashFile.Text" xml:space="preserve">
     <value>文件散列值计算</value>
   </data>
+  <data name="nvItemHash.Content" xml:space="preserve">
+    <value>文件散列值计算</value>
+  </data>
 </root>

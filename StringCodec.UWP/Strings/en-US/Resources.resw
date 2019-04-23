@@ -1227,4 +1227,7 @@
   <data name="MenuHashFile.Text" xml:space="preserve">
     <value>File Hash Calculating</value>
   </data>
+  <data name="nvItemHash.Content" xml:space="preserve">
+    <value>File Hash Calculating</value>
+  </data>
 </root>

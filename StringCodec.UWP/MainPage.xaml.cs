@@ -453,5 +453,10 @@ namespace StringCodec.UWP
                 SetTheme(ElementTheme.Dark);
             }
         }
+
+        private void NvItemHash_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            Utils.ShowFileHashDialog();
+        }
     }
 }
