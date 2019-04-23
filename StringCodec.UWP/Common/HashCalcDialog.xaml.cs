@@ -45,6 +45,19 @@ namespace StringCodec.UWP.Common
             this.InitializeComponent();
             progressHashFile.Visibility = Visibility.Collapsed;
             this.RequestedTheme = Settings.GetTheme();
+
+            var opts = (Settings.Get("HashSelected") as string).Split(",");
+            var hashlist = opts.Select(o => (TextCodecs.HASH)Enum.Parse(typeof(TextCodecs.HASH), o));
+            foreach(var h in hashlist)
+            {
+                if (h == TextCodecs.HASH.CRC32) chkHashCRC32.IsChecked = true;
+                else if (h == TextCodecs.HASH.MD4) chkHashMD4.IsChecked = true;
+                else if (h == TextCodecs.HASH.MD5) chkHashMD5.IsChecked = true;
+                else if (h == TextCodecs.HASH.SHA1) chkHashSHA1.IsChecked = true;
+                else if (h == TextCodecs.HASH.SHA256) chkHashSHA256.IsChecked = true;
+                else if (h == TextCodecs.HASH.SHA384) chkHashSHA384.IsChecked = true;
+                else if (h == TextCodecs.HASH.SHA512) chkHashSHA512.IsChecked = true;
+            }
         }
 
         private async void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
@@ -55,6 +68,8 @@ namespace StringCodec.UWP.Common
             {
                 if (file is StorageFile)
                 {
+                    var hashlist = new List<TextCodecs.HASH>();
+
                     var props = await file.GetBasicPropertiesAsync();
                     if (props.Size > 1024 * 1024 * 5)
                     {
@@ -68,6 +83,7 @@ namespace StringCodec.UWP.Common
                         if (chkHashCRC32.IsChecked.Value)
                         {
                             edHashCRC32.Text = TextCodecs.CalcCRC32(ms);
+                            hashlist.Add(TextCodecs.HASH.CRC32);
                         }
                         else edHashCRC32.Text = string.Empty;
 
@@ -75,6 +91,7 @@ namespace StringCodec.UWP.Common
                         if (chkHashMD4.IsChecked.Value)
                         {
                             edHashMD4.Text = TextCodecs.CalcMD4(ms);
+                            hashlist.Add(TextCodecs.HASH.MD4);
                         }
                         else edHashMD4.Text = string.Empty;
 
@@ -82,6 +99,7 @@ namespace StringCodec.UWP.Common
                         if (chkHashMD5.IsChecked.Value)
                         {
                             edHashMD5.Text = TextCodecs.CalcMD5(ms);
+                            hashlist.Add(TextCodecs.HASH.MD5);
                         }
                         else edHashMD5.Text = string.Empty;
 
@@ -89,6 +107,7 @@ namespace StringCodec.UWP.Common
                         if (chkHashSHA1.IsChecked.Value)
                         {
                             edHashSHA1.Text = TextCodecs.CalcSHA1(ms);
+                            hashlist.Add(TextCodecs.HASH.SHA1);
                         }
                         else edHashSHA1.Text = string.Empty;
 
@@ -96,6 +115,7 @@ namespace StringCodec.UWP.Common
                         if (chkHashSHA256.IsChecked.Value)
                         {
                             edHashSHA256.Text = TextCodecs.CalcSHA256(ms);
+                            hashlist.Add(TextCodecs.HASH.SHA256);
                         }
                         else edHashSHA256.Text = string.Empty;
 
@@ -103,6 +123,7 @@ namespace StringCodec.UWP.Common
                         if (chkHashSHA384.IsChecked.Value)
                         {
                             edHashSHA384.Text = TextCodecs.CalcSHA384(ms);
+                            hashlist.Add(TextCodecs.HASH.SHA384);
                         }
                         else edHashSHA384.Text = string.Empty;
 
@@ -110,11 +131,16 @@ namespace StringCodec.UWP.Common
                         if (chkHashSHA512.IsChecked.Value)
                         {
                             edHashSHA512.Text = TextCodecs.CalcSHA512(ms);
+                            hashlist.Add(TextCodecs.HASH.SHA512);
                         }
                         else edHashSHA512.Text = string.Empty;
 
                     }
+
+                    var opts = hashlist.Select(h => h.ToString());
+                    Settings.Set("HashSelected", string.Join(",", opts));
                 }
+
             }
             catch(Exception ex)
             {
@@ -139,9 +165,9 @@ namespace StringCodec.UWP.Common
                 edFileName.Text = string.Empty;
         }
 
+#if DEBUG
         private async void OnDragEnter(object sender, DragEventArgs e)
         {
-#if DEBUG
             //System.Diagnostics.Debug.WriteLine("drag enter.." + DateTime.Now);
             if (e.DataView.Contains(StandardDataFormats.StorageItems))
             {
@@ -166,6 +192,9 @@ namespace StringCodec.UWP.Common
                 }
                 deferral.Complete();
             }
+#else
+        private void OnDragEnter(object sender, DragEventArgs e)
+        {
 #endif
         }
 
