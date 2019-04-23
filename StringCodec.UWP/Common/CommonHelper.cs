@@ -2584,9 +2584,9 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        public static async void ShowFileHashDialog()
+        public static async void ShowFileHashDialog(StorageFile file = null)
         {
-            var hashDlg = new HashCalcDialog();
+            var hashDlg = new HashCalcDialog(){ InputFile = file };
             await hashDlg.ShowAsync();
         }
 

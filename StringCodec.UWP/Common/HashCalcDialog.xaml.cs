@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
@@ -21,7 +22,23 @@ namespace StringCodec.UWP.Common
 {
     public sealed partial class HashCalcDialog : ContentDialog
     {
-        StorageFile file = null;
+        private StorageFile file = null;
+        public StorageFile InputFile
+        {
+            get { return (file); }
+            set
+            {
+                file = value;
+                if (value is StorageFile)
+                {
+                    edFileName.Text = file.Name;
+                }
+                else
+                {
+                    edFileName.Text = string.Empty;
+                }
+            }
+        }
 
         public HashCalcDialog()
         {
@@ -38,8 +55,12 @@ namespace StringCodec.UWP.Common
             {
                 if (file is StorageFile)
                 {
-                    progressHashFile.Visibility = Visibility.Visible;
-                    progressHashFile.IsActive = true;
+                    var props = await file.GetBasicPropertiesAsync();
+                    if (props.Size > 1024 * 1024 * 5)
+                    {
+                        progressHashFile.Visibility = Visibility.Visible;
+                        progressHashFile.IsActive = true;
+                    }                    
 
                     using (var ms = await file.OpenStreamForReadAsync())
                     {
@@ -116,6 +137,71 @@ namespace StringCodec.UWP.Common
                 edFileName.Text = file.Name;
             else
                 edFileName.Text = string.Empty;
+        }
+
+        private async void OnDragEnter(object sender, DragEventArgs e)
+        {
+#if DEBUG
+            //System.Diagnostics.Debug.WriteLine("drag enter.." + DateTime.Now);
+            if (e.DataView.Contains(StandardDataFormats.StorageItems))
+            {
+                var deferral = e.GetDeferral(); // since the next line has 'await' we need to defer event processing while we wait
+                try
+                {
+                    var items = await e.DataView.GetStorageItemsAsync();
+                    if (items.Count > 0)
+                    {
+                        var item = items[0] as StorageFile;
+                        string filename = item.Name;
+                        string extension = item.FileType.ToLower();
+                        System.Diagnostics.Debug.WriteLine(filename);
+
+                        e.AcceptedOperation = DataPackageOperation.Copy;
+                        e.DragUIOverride.Caption = "File".T();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex.Message);
+                }
+                deferral.Complete();
+            }
+#endif
+        }
+
+        private void OnDragOver(object sender, DragEventArgs e)
+        {
+            if (e.DataView.Contains(StandardDataFormats.StorageItems))
+            {
+                e.AcceptedOperation = DataPackageOperation.Copy;
+                e.DragUIOverride.Caption = "File".T();
+                //e.DragUIOverride.IsGlyphVisible = true;
+                //e.DragUIOverride.IsCaptionVisible = false;
+                //e.DragUIOverride.IsContentVisible = false;
+            }
+        }
+
+        private async void OnDrop(object sender, DragEventArgs e)
+        {
+            // 记得获取Deferral对象
+            var deferral = e.GetDeferral();
+            if (e.DataView.Contains(StandardDataFormats.StorageItems))
+            {
+                var items = await e.DataView.GetStorageItemsAsync();
+                if (items.Count > 0)
+                {
+                    try
+                    {
+                        file = items[0] as StorageFile;
+                        edFileName.Text = file.Name;
+                    }
+                    catch(Exception ex)
+                    {
+                        ex.Message.T().ShowMessage("ERROR".T());
+                    }
+                }
+            }
+            deferral.Complete();
         }
 
     }
