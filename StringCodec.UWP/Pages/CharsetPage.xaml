@@ -24,6 +24,11 @@
                     <KeyboardAccelerator Key="F3" />
                 </MenuFlyoutItem.KeyboardAccelerators>
             </MenuFlyoutItem>
+            <MenuFlyoutItem x:Name="TreeNodeActionHashFile" x:Uid="MenuHashFile" Text="File Hash Calculating" Icon="OpenFile" Click="TreeFilesNodeFlyout_Click">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="F4" />
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
             <MenuFlyoutSeparator />
             <MenuFlyoutItem x:Name="TreeNodeActionClearAll" x:Uid="ActionClearAll" Text="Clear All Items" Icon="Clear" IsTapEnabled="True" Click="TreeFilesNodeFlyout_Click">
                 <MenuFlyoutItem.KeyboardAccelerators>
@@ -322,6 +327,12 @@
                     <AppBarButton.Icon>
                         <FontIcon Glyph="&#xF02A;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
                     </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarSeparator />
+                <AppBarButton x:Name="btnHashFile" x:Uid="btnHashFile" Label="File Hash Calculating" Icon="OpenFile" Click="AppBarButton_Click">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="F4" />
+                    </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
                 <AppBarSeparator />
                 <AppBarButton x:Name="optFolderDeep" x:Uid="optFolderDeep" Label="Folder Deep" IsEnabled="False">

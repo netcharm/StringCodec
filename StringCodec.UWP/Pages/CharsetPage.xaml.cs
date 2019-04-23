@@ -98,6 +98,12 @@ namespace StringCodec.UWP.Pages
                 TreeNodeActionConvert.IsEnabled = false;
             }
 
+            if((target is TreeViewNode && flist.ContainsKey(target) && flist[target] is StorageFile) || 
+               (IsSelected && (TreeFiles.SelectedNodes[0] as MyTreeViewNode).StorageItem is StorageFile))
+                TreeNodeActionHashFile.IsEnabled = true;
+            else
+                TreeNodeActionHashFile.IsEnabled = false;
+
             if (IsSelected)
             {
                 ActionRename.IsEnabled = true;
@@ -784,13 +790,14 @@ namespace StringCodec.UWP.Pages
                         TreeFiles.SelectedNodes.Add(target as TreeViewNode);
                     }
                 }
+                else target = null;
             }
             CheckFlyoutValid();
         }
 
         private void TreeFilesNodeContextFlyout_Closed(object sender, object e)
         {
-            target = null;
+            //target = null;
         }
 
         private async void TreeFilesNodeFlyout_Click(object sender, RoutedEventArgs e)
@@ -804,6 +811,34 @@ namespace StringCodec.UWP.Pages
                 else if (sender == ActionConvert || sender == TreeNodeActionConvert)
                 {
                     await ConvertFileContent();
+                }
+                else if(sender == TreeNodeActionHashFile)
+                {
+                    if (target is TreeViewNode)
+                    {
+                        if (flist.ContainsKey(target))
+                        {
+                            var f = flist[target];
+                            if (f is StorageFile)
+                                Utils.ShowFileHashDialog(f as StorageFile);
+                        }
+                        else if (TreeFiles.SelectedNodes.Count > 0)
+                        {
+                            foreach (var cnode in TreeFiles.SelectedNodes)
+                            {
+                                var parent = cnode.Parent;
+                                if (flist.ContainsKey(cnode))
+                                {
+                                    var f = flist[cnode];
+                                    if (f is StorageFile)
+                                    {
+                                        Utils.ShowFileHashDialog(f as StorageFile);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
                 else if (sender == TreeNodeActionClearAll)
                 {
@@ -935,6 +970,40 @@ namespace StringCodec.UWP.Pages
                                 Utils.Share(flist[f] as StorageFile);
                         }
                         //Utils.Share(edSrc.Text);
+                    }
+                    break;
+                case "btnHashFile":
+                    TreeNodeContextFlyout.Hide();
+                    if (target is TreeViewNode)
+                    {
+                        if (flist.ContainsKey(target))
+                        {
+                            var f = flist[target];
+                            if (f is StorageFile)
+                                Utils.ShowFileHashDialog(f as StorageFile);
+                            else
+                                Utils.ShowFileHashDialog();
+                        }
+                        else if (TreeFiles.SelectedNodes.Count > 0)
+                        {
+                            foreach (var cnode in TreeFiles.SelectedNodes)
+                            {
+                                var parent = cnode.Parent;
+                                if (flist.ContainsKey(cnode))
+                                {
+                                    var f = flist[cnode];
+                                    if (f is StorageFile)
+                                        Utils.ShowFileHashDialog(f as StorageFile);
+                                    else
+                                        Utils.ShowFileHashDialog();
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Utils.ShowFileHashDialog();
                     }
                     break;
                 default:
