@@ -125,6 +125,8 @@
     <Compile Include="Common\CommonQRDialog.xaml.cs">
       <DependentUpon>CommonQRDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\Hash\CRC32.cs" />
+    <Compile Include="Common\Hash\MD4.cs" />
     <Compile Include="Common\TongWen\Core.cs" />
     <Compile Include="Common\TongWen\table_s2t_custom.cs" />
     <Compile Include="Common\TongWen\table_s2t_phrase.cs" />
@@ -341,6 +343,7 @@
     <XliffResource Include="MultilingualResources\StringCodec.UWP.zh-Hans.xlf" />
     <XliffResource Include="MultilingualResources\StringCodec.UWP.zh-Hant.xlf" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

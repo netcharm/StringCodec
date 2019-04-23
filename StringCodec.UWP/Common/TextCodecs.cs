@@ -29,9 +29,13 @@ namespace StringCodec.UWP.Common
             MORSE, MORSEABBR,
         };
 
-        public enum CHECKSUM
+        public enum HASH
         {
-            MD5, RC2, AES, DES, RSA, SHA1, SHA256, SHA384, SHA512, CRC32,
+            MD5, MD4, eDonkey, eMule,
+            RC2,
+            AES, DES, RSA,
+            SHA1, SHA256, SHA384, SHA512,
+            CRC32,
         }
 
         #region Basic Encoder/Decoder
@@ -2665,85 +2669,36 @@ namespace StringCodec.UWP.Common
         }
         #endregion
 
-        #region Checksum Calculator
-        class CRC32 : IDisposable
-        {
-            //public uint Polynomial { get; set; } = 0x04C11DB7u; //0xEDB88320u;
-            public uint Polynomial { get; set; } = 0xEDB88320u;
-            public uint Seed { get; set; } = 0xFFFFFFFFu;
-
-            protected uint[] Crc32Table;
-            //生成CRC32码表
-            protected void MakeCRC32Table()
-            {
-                Crc32Table = new uint[256];
-                for (uint i = 0; i < 256; i++)
-                {
-                    uint CRC = i;
-                    //for (j = 8; j > 0; j--)
-                    for (uint j = 0; j < 8; j++)
-                    {
-                        if ((CRC & 1) == 1)
-                            CRC = (CRC >> 1) ^ Polynomial;
-                        else
-                            CRC = CRC >> 1;
-                    }
-                    Crc32Table[i] = CRC;
-                }
-            }
-
-            public CRC32()
-            {
-                MakeCRC32Table();
-            }
-
-            public CRC32(uint polynomial)
-            {
-                Polynomial = polynomial;
-                MakeCRC32Table();
-            }
-
-            public CRC32(uint polynomial, uint seed)
-            {
-                Polynomial = polynomial;
-                Seed = seed;
-                MakeCRC32Table();
-            }
-
-            static public CRC32 Create()
-            {
-                return (new CRC32());
-            }
-
-            public byte[] ComputeHash(byte[] bytes)
-            {
-                uint value = Seed;
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    value = (value >> 8) ^ Crc32Table[bytes[i] ^ value & 0xFF];
-                }
-
-                value = value ^ 0xFFFFFFFFu;
-                byte[] result = new byte[4] {
-                    (byte)((value & 0xFF000000u) >> 24),
-                    (byte)((value & 0x00FF0000u) >> 16),
-                    (byte)((value & 0x0000FF00u) >> 8),
-                    (byte)((value & 0x000000FFu))
-                };
-                return (result);
-            }
-
-            public void Dispose()
-            {
-                return;
-            }
-        }
-
+        #region Hash Calculator
         public static string CalcCRC32(this string text, Encoding enc = null)
         {
             string result = string.Empty;
             var codec = enc is Encoding ? enc : Encoding.Default;
             using (var hash = CRC32.Create())
+            {
+                // Convert the input string to a byte array and compute the hash.
+                byte[] data = hash.ComputeHash(codec.GetBytes(text));
+
+                // Create a new Stringbuilder to collect the bytes
+                // and create a string.
+                StringBuilder sb = new StringBuilder();
+
+                // Loop through each byte of the hashed data 
+                // and format each one as a hexadecimal string.
+                for (int i = 0; i < data.Length; i++)
+                {
+                    sb.Append(data[i].ToString("X2"));
+                }
+                result = sb.ToString();
+            }
+            return (result);
+        }
+
+        public static string CalcMD4(this string text, Encoding enc = null)
+        {
+            string result = string.Empty;
+            var codec = enc is Encoding ? enc : Encoding.Default;
+            using (var hash = MD4.Create())
             {
                 // Convert the input string to a byte array and compute the hash.
                 byte[] data = hash.ComputeHash(codec.GetBytes(text));
@@ -2784,6 +2739,30 @@ namespace StringCodec.UWP.Common
                 }
                 result = sb.ToString();
             }
+            return (result);
+        }
+
+        public static string CalcRIPE160(this string text, Encoding enc = null)
+        {
+            string result = string.Empty;
+            var codec = enc is Encoding ? enc : Encoding.Default;
+            //using (var hash = RIPEMD160.Create())
+            //{
+            //    // Convert the input string to a byte array and compute the hash.
+            //    byte[] data = hash.ComputeHash(codec.GetBytes(text));
+
+            //    // Create a new Stringbuilder to collect the bytes
+            //    // and create a string.
+            //    StringBuilder sb = new StringBuilder();
+
+            //    // Loop through each byte of the hashed data 
+            //    // and format each one as a hexadecimal string.
+            //    for (int i = 0; i < data.Length; i++)
+            //    {
+            //        sb.Append(data[i].ToString("X2"));
+            //    }
+            //    result = sb.ToString();
+            //}
             return (result);
         }
 

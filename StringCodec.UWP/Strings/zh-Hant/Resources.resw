@@ -1101,7 +1101,7 @@
   <data name="Yes" xml:space="preserve">
     <value>是</value>
   </data>
-  <data name="optChecksum.Text" xml:space="preserve">
-    <value>計算校驗和</value>
+  <data name="optHash.Text" xml:space="preserve">
+    <value>散列值計算</value>
   </data>
 </root>

@@ -235,35 +235,38 @@ namespace StringCodec.UWP.Pages
             edDst.Text = result.Trim();
         }
 
-        private async void Checksum_Click(object sender, RoutedEventArgs e)
+        private async void Hash_Click(object sender, RoutedEventArgs e)
         {
-            //optChecksumMD5, optChecksumSHA1, optChecksumCRC32,
             var text = edSrc.Text;
             var result = text;
 
             try
             {
-                if(sender == optChecksumMD5)
+                if(sender == optHashMD5)
                 {
                     result = result.CalcMD5(CURRENT_ENC);
                 }
-                else if(sender == optChecksumSHA1)
+                else if(sender == optHashMD4)
+                {
+                    result = result.CalcMD4(CURRENT_ENC);
+                }
+                else if (sender == optHashSHA1)
                 {
                     result = result.CalcSHA1(CURRENT_ENC);
                 }
-                else if (sender == optChecksumSHA256)
+                else if (sender == optHashSHA256)
                 {
                     result = result.CalcSHA256(CURRENT_ENC);
                 }
-                else if (sender == optChecksumSHA384)
+                else if (sender == optHashSHA384)
                 {
                     result = result.CalcSHA384(CURRENT_ENC);
                 }
-                else if (sender == optChecksumSHA512)
+                else if (sender == optHashSHA512)
                 {
                     result = result.CalcSHA512(CURRENT_ENC);
                 }
-                else if (sender == optChecksumCRC32)
+                else if (sender == optHashCRC32)
                 {
                     result = result.CalcCRC32(CURRENT_ENC);
                 }

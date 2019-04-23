@@ -1458,9 +1458,9 @@
           <source>Yes</source>
           <target state="translated">是</target>
         </trans-unit>
-        <trans-unit id="optChecksum.Text" translate="yes" xml:space="preserve">
-          <source>Calculating Checksum</source>
-          <target state="translated">计算校验和</target>
+        <trans-unit id="optHash.Text" translate="yes" xml:space="preserve">
+          <source>Hash Calculating</source>
+          <target state="translated">散列值计算</target>
         </trans-unit>
       </group>
     </body>

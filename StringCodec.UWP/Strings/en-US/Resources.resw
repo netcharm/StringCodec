@@ -1206,7 +1206,7 @@
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
   </data>
-  <data name="optChecksum.Text" xml:space="preserve">
-    <value>Calculating Checksum</value>
+  <data name="optHash.Text" xml:space="preserve">
+    <value>Hash Calculating</value>
   </data>
 </root>

@@ -218,13 +218,16 @@
                         <MenuFlyoutSeparator/>
                         <MenuFlyoutItem x:Name="optReverse" x:Uid="optReverse" Text="Reverse" Click="Case_Click"/>
                         <MenuFlyoutSeparator />
-                        <MenuFlyoutSubItem x:Name="optChecksum" x:Uid="optChecksum" Text="Calculating Checksum">
-                            <MenuFlyoutItem x:Name="optChecksumMD5" x:Uid="optChecksumMD5" Text="MD5" Click="Checksum_Click"/>
-                            <MenuFlyoutItem x:Name="optChecksumSHA1" x:Uid="optChecksumSHA1" Text="SHA1" Click="Checksum_Click"/>
-                            <MenuFlyoutItem x:Name="optChecksumSHA256" x:Uid="optChecksumSHA256" Text="SHA256" Click="Checksum_Click"/>
-                            <MenuFlyoutItem x:Name="optChecksumSHA384" x:Uid="optChecksumSHA384" Text="SHA384" Click="Checksum_Click"/>
-                            <MenuFlyoutItem x:Name="optChecksumSHA512" x:Uid="optChecksumSHA512" Text="SHA512" Click="Checksum_Click"/>
-                            <MenuFlyoutItem x:Name="optChecksumCRC32" x:Uid="optChecksumCRC32" Text="CRC32" Click="Checksum_Click"/>
+                        <MenuFlyoutSubItem x:Name="optHash" x:Uid="optHash" Text="Hash Calculating">
+                            <MenuFlyoutItem x:Name="optHashMD5" x:Uid="optHashMD5" Text="MD5" Click="Hash_Click"/>
+                            <MenuFlyoutItem x:Name="optHashMD4" x:Uid="optHashMD4" Text="MD4/eDonkey/eMule" Click="Hash_Click"/>
+                            <MenuFlyoutSeparator />
+                            <MenuFlyoutItem x:Name="optHashSHA1" x:Uid="optHashSHA1" Text="SHA1" Click="Hash_Click"/>
+                            <MenuFlyoutItem x:Name="optHashSHA256" x:Uid="optHashSHA256" Text="SHA256" Click="Hash_Click"/>
+                            <MenuFlyoutItem x:Name="optHashSHA384" x:Uid="optHashSHA384" Text="SHA384" Click="Hash_Click"/>
+                            <MenuFlyoutItem x:Name="optHashSHA512" x:Uid="optHashSHA512" Text="SHA512" Click="Hash_Click"/>
+                            <MenuFlyoutSeparator />
+                            <MenuFlyoutItem x:Name="optHashCRC32" x:Uid="optHashCRC32" Text="CRC32" Click="Hash_Click"/>
                         </MenuFlyoutSubItem>
                     </MenuFlyout>
                 </AppBarButton.Flyout>
