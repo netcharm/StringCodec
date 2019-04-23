@@ -1104,4 +1104,22 @@
   <data name="optHash.Text" xml:space="preserve">
     <value>ハッシュ計算</value>
   </data>
+  <data name="btnBrowseFile.Content" xml:space="preserve">
+    <value>閲覧...</value>
+  </data>
+  <data name="btnHashFile.Label" xml:space="preserve">
+    <value>ファイルハッシュ計算</value>
+  </data>
+  <data name="FileHashDialog.PrimaryButtonText" xml:space="preserve">
+    <value>計算</value>
+  </data>
+  <data name="FileHashDialog.SecondaryButtonText" xml:space="preserve">
+    <value>閉じる</value>
+  </data>
+  <data name="FileHashDialog.Title" xml:space="preserve">
+    <value>ファイルハッシュ計算</value>
+  </data>
+  <data name="MenuHashFile.Text" xml:space="preserve">
+    <value>ファイルハッシュ計算</value>
+  </data>
 </root>

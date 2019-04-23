@@ -24,7 +24,21 @@ namespace StringCodec.UWP.Common
             }
         }
 
-        public uint Seed { get; set; } = 0xFFFFFFFFu;
+        private uint seed = 0xFFFFFFFFu;
+        public uint Seed
+        {
+            get
+            {
+                return (seed);
+            }
+            set
+            {
+                seed = value;
+                hashvalue = value;
+            }
+        }
+
+        uint hashvalue = 0;
 
         protected uint[] Crc32Table = null;
         //生成CRC32码表
@@ -70,23 +84,23 @@ namespace StringCodec.UWP.Common
         {
             if (Crc32Table == null) MakeCRC32Table();
 
-            uint value = Seed;
-            for (int i = 0; i < array.Length; i++)
+            uint value = hashvalue;
+            for (int i = ibStart; i < cbSize; i++)
             {
                 value = (value >> 8) ^ Crc32Table[array[i] ^ value & 0xFF];
             }
-
-            value = value ^ 0xFFFFFFFFu;
-            HashValue = new byte[4] {
-                (byte)((value & 0xFF000000u) >> 24),
-                (byte)((value & 0x00FF0000u) >> 16),
-                (byte)((value & 0x0000FF00u) >> 8),
-                (byte)((value & 0x000000FFu))
-            };
+            hashvalue = value;
         }
 
         protected override byte[] HashFinal()
         {
+            hashvalue = hashvalue ^ 0xFFFFFFFFu;
+            HashValue = new byte[4] {
+                (byte)((hashvalue & 0xFF000000u) >> 24),
+                (byte)((hashvalue & 0x00FF0000u) >> 16),
+                (byte)((hashvalue & 0x0000FF00u) >> 8),
+                (byte)((hashvalue & 0x000000FFu))
+            };
             return (HashValue);
         }
 
@@ -94,6 +108,7 @@ namespace StringCodec.UWP.Common
         {
             if(Crc32Table ==  null) MakeCRC32Table();
             HashValue = null;
+            hashvalue = Seed;
         }
     }
 }

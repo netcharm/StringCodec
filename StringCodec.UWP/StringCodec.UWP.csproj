@@ -125,6 +125,9 @@
     <Compile Include="Common\CommonQRDialog.xaml.cs">
       <DependentUpon>CommonQRDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\HashCalcDialog.xaml.cs">
+      <DependentUpon>HashCalcDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Common\Hash\CRC32.cs" />
     <Compile Include="Common\Hash\MD4.cs" />
     <Compile Include="Common\TongWen\Core.cs" />
@@ -280,6 +283,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Common\CommonQRDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Common\HashCalcDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

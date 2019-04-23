@@ -2181,7 +2181,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        public static async Task<IReadOnlyList<StorageFile>> OpenFiles(string[] exts)
+        public static async Task<IReadOnlyList<StorageFile>> OpenFiles(string[] exts = null)
         {
             IReadOnlyList<StorageFile> result = null;
 
@@ -2191,8 +2191,11 @@ namespace StringCodec.UWP.Common
                 {
                     SuggestedStartLocation = PickerLocationId.Desktop
                 };
-                foreach (var ext in exts)
-                    fp.FileTypeFilter.Add(ext);
+                if (exts is string[])
+                {
+                    foreach (var ext in exts)
+                        fp.FileTypeFilter.Add(ext);
+                }
                 fp.FileTypeFilter.Add("*");
 
                 result = await fp.PickMultipleFilesAsync();
@@ -2201,6 +2204,33 @@ namespace StringCodec.UWP.Common
                     result = new List<StorageFile>();
                 }
 
+            }
+            catch (Exception ex)
+            {
+                ex.Message.T().ShowMessage("ERROR".T());
+            }
+
+            return (result);
+        }
+
+        public static async Task<StorageFile> OpenFile(string[] exts = null)
+        {
+            StorageFile result = null;
+
+            try
+            {
+                FileOpenPicker fp = new FileOpenPicker
+                {
+                    SuggestedStartLocation = PickerLocationId.Desktop,
+                };
+                if (exts is string[])
+                {
+                    foreach (var ext in exts)
+                        fp.FileTypeFilter.Add(ext);
+                }
+                fp.FileTypeFilter.Add("*");
+
+                result = await fp.PickSingleFileAsync();
             }
             catch (Exception ex)
             {

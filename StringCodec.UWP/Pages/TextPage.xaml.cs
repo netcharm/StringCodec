@@ -513,7 +513,10 @@ namespace StringCodec.UWP.Pages
                             text = await TextCodecs.Decode(edSrc.Text, CURRENT_CODEC, CURRENT_ENC);
                             await Utils.ShowSaveDialog(text, CURRENT_ENC, $".{CURRENT_CODEC.ToString().ToLower()}");
                             break;
-
+                        case "btnHashFile":
+                            var hashDlg = new HashCalcDialog();
+                            await hashDlg.ShowAsync();
+                            break;
                         case "btnCopy":
                             Utils.SetClipboard(edDst.Text);
                             break;
@@ -601,6 +604,10 @@ namespace StringCodec.UWP.Pages
                         case "MenuDecodeToFile":
                             text = await TextCodecs.Decode(edSrc.Text, CURRENT_CODEC, CURRENT_ENC);
                             await Utils.ShowSaveDialog(text, CURRENT_ENC, $".{CURRENT_CODEC.ToString().ToLower()}");
+                            break;
+                        case "MenuHashFile":
+                            var hashDlg = new HashCalcDialog();
+                            await hashDlg.ShowAsync();
                             break;
                     }
                 }

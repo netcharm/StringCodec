@@ -1462,6 +1462,30 @@
           <source>Hash Calculating</source>
           <target state="translated">散列值計算</target>
         </trans-unit>
+        <trans-unit id="btnBrowseFile.Content" translate="yes" xml:space="preserve">
+          <source>Browsing</source>
+          <target state="translated">瀏覽...</target>
+        </trans-unit>
+        <trans-unit id="btnHashFile.Label" translate="yes" xml:space="preserve">
+          <source>File Hash Calculating</source>
+          <target state="translated">檔案散列值計算</target>
+        </trans-unit>
+        <trans-unit id="FileHashDialog.PrimaryButtonText" translate="yes" xml:space="preserve">
+          <source>Calculating</source>
+          <target state="translated">計算</target>
+        </trans-unit>
+        <trans-unit id="FileHashDialog.SecondaryButtonText" translate="yes" xml:space="preserve">
+          <source>Close</source>
+          <target state="translated">關閉</target>
+        </trans-unit>
+        <trans-unit id="FileHashDialog.Title" translate="yes" xml:space="preserve">
+          <source>File Hash Calculating</source>
+          <target state="translated">檔案散列值計算</target>
+        </trans-unit>
+        <trans-unit id="MenuHashFile.Text" translate="yes" xml:space="preserve">
+          <source>File Hash Calculating</source>
+          <target state="translated">檔案散列值計算</target>
+        </trans-unit>
       </group>
     </body>
   </file>

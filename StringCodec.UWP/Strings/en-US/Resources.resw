@@ -1209,4 +1209,22 @@
   <data name="optHash.Text" xml:space="preserve">
     <value>Hash Calculating</value>
   </data>
+  <data name="btnBrowseFile.Content" xml:space="preserve">
+    <value>Browsing</value>
+  </data>
+  <data name="btnHashFile.Label" xml:space="preserve">
+    <value>File Hash Calculating</value>
+  </data>
+  <data name="FileHashDialog.PrimaryButtonText" xml:space="preserve">
+    <value>Calculating</value>
+  </data>
+  <data name="FileHashDialog.SecondaryButtonText" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="FileHashDialog.Title" xml:space="preserve">
+    <value>File Hash Calculating</value>
+  </data>
+  <data name="MenuHashFile.Text" xml:space="preserve">
+    <value>File Hash Calculating</value>
+  </data>
 </root>

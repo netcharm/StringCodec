@@ -1,0 +1,67 @@
+﻿<ContentDialog
+    x:Class="StringCodec.UWP.Common.HashCalcDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:StringCodec.UWP.Common"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    x:Name="FileHashDialog"
+    x:Uid="FileHashDialog"    
+    Title="File Hash Calculating"
+    MinWidth="480"
+    Width="640"
+    PrimaryButtonText="Calculating"
+    SecondaryButtonText="Close"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" MinWidth="64"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Button Grid.Row="0" Grid.Column="0" x:Name="btnBrowseFile" x:Uid="btnBrowseFile" Content="Browsing" Click="BtnBrowseFile_Click"/>
+        <TextBox Grid.Row="0" Grid.Column="1" x:Name="edFileName" x:Uid="edFileName"/>
+
+        <Line Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,0,16"/>
+
+        <CheckBox Grid.Row="2" Grid.Column="0" x:Name="chkHashMD5" x:Uid="chkHashMD5" Content="MD5"/>
+        <TextBox Grid.Row="2" Grid.Column="2" x:Name="edHashMD5" x:Uid="edHashMD5" IsReadOnly="True" Margin="0,0,0,4"/>
+
+        <CheckBox Grid.Row="3" Grid.Column="0" x:Name="chkHashMD4" x:Uid="chkHashMD4" Content="MD4"/>
+        <TextBox Grid.Row="3" Grid.Column="2" x:Name="edHashMD4" x:Uid="edHashMD4" IsReadOnly="True" Margin="0,0,0,4"/>
+
+        <CheckBox Grid.Row="4" Grid.Column="0" x:Name="chkHashSHA1" x:Uid="chkHashSHA1" Content="SHA1"/>
+        <TextBox Grid.Row="4" Grid.Column="2" x:Name="edHashSHA1" x:Uid="edHashSHA1" IsReadOnly="True" Margin="0,0,0,4"/>
+
+        <CheckBox Grid.Row="5" Grid.Column="0" x:Name="chkHashSHA256" x:Uid="chkHashSHA256" Content="SHA256"/>
+        <TextBox Grid.Row="5" Grid.Column="2" x:Name="edHashSHA256" x:Uid="edHashSHA256" IsReadOnly="True" Margin="0,0,0,4"/>
+
+        <CheckBox Grid.Row="6" Grid.Column="0" x:Name="chkHashSHA384" x:Uid="chkHashSHA384" Content="SHA384"/>
+        <TextBox Grid.Row="6" Grid.Column="2" x:Name="edHashSHA384" x:Uid="edHashSHA384" IsReadOnly="True" Margin="0,0,0,4"/>
+
+        <CheckBox Grid.Row="7" Grid.Column="0" x:Name="chkHashSHA512" x:Uid="chkHashSHA512" Content="SHA512"/>
+        <TextBox Grid.Row="7" Grid.Column="2" x:Name="edHashSHA512" x:Uid="edHashSHA512" IsReadOnly="True" Margin="0,0,0,4"/>
+
+        <CheckBox Grid.Row="8" Grid.Column="0" x:Name="chkHashCRC32" x:Uid="chkHashCRC32" Content="CRC32"/>
+        <TextBox Grid.Row="8" Grid.Column="2" x:Name="edHashCRC32" x:Uid="edHashCRC32" IsReadOnly="True" Margin="0,0,0,4"/>
+
+
+        <ProgressRing Grid.Row="10" Grid.ColumnSpan="2" x:Name="progressHashFile" FontSize="48" Visibility="Visible" Margin="11,20,4,4" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    </Grid>
+</ContentDialog>

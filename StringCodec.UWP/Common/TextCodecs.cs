@@ -2694,6 +2694,29 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
+        public static string CalcCRC32(this Stream content)
+        {
+            string result = string.Empty;
+            using (var hash = CRC32.Create())
+            {
+                // Convert the input string to a byte array and compute the hash.
+                byte[] data = hash.ComputeHash(content);
+
+                // Create a new Stringbuilder to collect the bytes
+                // and create a string.
+                StringBuilder sb = new StringBuilder();
+
+                // Loop through each byte of the hashed data 
+                // and format each one as a hexadecimal string.
+                for (int i = 0; i < data.Length; i++)
+                {
+                    sb.Append(data[i].ToString("X2"));
+                }
+                result = sb.ToString();
+            }
+            return (result);
+        }
+
         public static string CalcMD4(this string text, Encoding enc = null)
         {
             string result = string.Empty;
@@ -2718,6 +2741,29 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
+        public static string CalcMD4(this Stream content)
+        {
+            string result = string.Empty;
+            using (var hash = MD4.Create())
+            {
+                // Convert the input string to a byte array and compute the hash.
+                byte[] data = hash.ComputeHash(content);
+
+                // Create a new Stringbuilder to collect the bytes
+                // and create a string.
+                StringBuilder sb = new StringBuilder();
+
+                // Loop through each byte of the hashed data 
+                // and format each one as a hexadecimal string.
+                for (int i = 0; i < data.Length; i++)
+                {
+                    sb.Append(data[i].ToString("X2"));
+                }
+                result = sb.ToString();
+            }
+            return (result);
+        }
+
         public static string CalcMD5(this string text, Encoding enc = null)
         {
             string result = string.Empty;
@@ -2726,6 +2772,29 @@ namespace StringCodec.UWP.Common
             {
                 // Convert the input string to a byte array and compute the hash.
                 byte[] data = hash.ComputeHash(codec.GetBytes(text));
+
+                // Create a new Stringbuilder to collect the bytes
+                // and create a string.
+                StringBuilder sb = new StringBuilder();
+
+                // Loop through each byte of the hashed data 
+                // and format each one as a hexadecimal string.
+                for (int i = 0; i < data.Length; i++)
+                {
+                    sb.Append(data[i].ToString("X2"));
+                }
+                result = sb.ToString();
+            }
+            return (result);
+        }
+
+        public static string CalcMD5(this Stream content)
+        {
+            string result = string.Empty;
+            using (var hash = MD5.Create())
+            {
+                // Convert the input string to a byte array and compute the hash.
+                byte[] data = hash.ComputeHash(content);
 
                 // Create a new Stringbuilder to collect the bytes
                 // and create a string.
@@ -2790,6 +2859,29 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
+        public static string CalcSHA1(this Stream content)
+        {
+            string result = string.Empty;
+            using (var hash = SHA1.Create())
+            {
+                // Convert the input string to a byte array and compute the hash.
+                byte[] data = hash.ComputeHash(content);
+
+                // Create a new Stringbuilder to collect the bytes
+                // and create a string.
+                StringBuilder sb = new StringBuilder();
+
+                // Loop through each byte of the hashed data 
+                // and format each one as a hexadecimal string.
+                for (int i = 0; i < data.Length; i++)
+                {
+                    sb.Append(data[i].ToString("X2"));
+                }
+                result = sb.ToString();
+            }
+            return (result);
+        }
+
         public static string CalcSHA256(this string text, Encoding enc = null)
         {
             string result = string.Empty;
@@ -2798,6 +2890,29 @@ namespace StringCodec.UWP.Common
             {
                 // Convert the input string to a byte array and compute the hash.
                 byte[] data = hash.ComputeHash(codec.GetBytes(text));
+
+                // Create a new Stringbuilder to collect the bytes
+                // and create a string.
+                StringBuilder sb = new StringBuilder();
+
+                // Loop through each byte of the hashed data 
+                // and format each one as a hexadecimal string.
+                for (int i = 0; i < data.Length; i++)
+                {
+                    sb.Append(data[i].ToString("X2"));
+                }
+                result = sb.ToString();
+            }
+            return (result);
+        }
+
+        public static string CalcSHA256(this Stream content)
+        {
+            string result = string.Empty;
+            using (var hash = SHA256.Create())
+            {
+                // Convert the input string to a byte array and compute the hash.
+                byte[] data = hash.ComputeHash(content);
 
                 // Create a new Stringbuilder to collect the bytes
                 // and create a string.
@@ -2838,6 +2953,29 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
+        public static string CalcSHA384(this Stream content)
+        {
+            string result = string.Empty;
+            using (var hash = SHA384.Create())
+            {
+                // Convert the input string to a byte array and compute the hash.
+                byte[] data = hash.ComputeHash(content);
+
+                // Create a new Stringbuilder to collect the bytes
+                // and create a string.
+                StringBuilder sb = new StringBuilder();
+
+                // Loop through each byte of the hashed data 
+                // and format each one as a hexadecimal string.
+                for (int i = 0; i < data.Length; i++)
+                {
+                    sb.Append(data[i].ToString("X2"));
+                }
+                result = sb.ToString();
+            }
+            return (result);
+        }
+
         public static string CalcSHA512(this string text, Encoding enc = null)
         {
             string result = string.Empty;
@@ -2846,6 +2984,29 @@ namespace StringCodec.UWP.Common
             {
                 // Convert the input string to a byte array and compute the hash.
                 byte[] data = hash.ComputeHash(codec.GetBytes(text));
+
+                // Create a new Stringbuilder to collect the bytes
+                // and create a string.
+                StringBuilder sb = new StringBuilder();
+
+                // Loop through each byte of the hashed data 
+                // and format each one as a hexadecimal string.
+                for (int i = 0; i < data.Length; i++)
+                {
+                    sb.Append(data[i].ToString("X2"));
+                }
+                result = sb.ToString();
+            }
+            return (result);
+        }
+
+        public static string CalcSHA512(this Stream content)
+        {
+            string result = string.Empty;
+            using (var hash = SHA512.Create())
+            {
+                // Convert the input string to a byte array and compute the hash.
+                byte[] data = hash.ComputeHash(content);
 
                 // Create a new Stringbuilder to collect the bytes
                 // and create a string.
