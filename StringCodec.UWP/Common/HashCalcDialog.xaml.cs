@@ -46,17 +46,24 @@ namespace StringCodec.UWP.Common
             progressHashFile.Visibility = Visibility.Collapsed;
             this.RequestedTheme = Settings.GetTheme();
 
-            var opts = (Settings.Get("HashSelected") as string).Split(",");
-            var hashlist = opts.Select(o => (TextCodecs.HASH)Enum.Parse(typeof(TextCodecs.HASH), o));
-            foreach(var h in hashlist)
+            try
             {
-                if (h == TextCodecs.HASH.CRC32) chkHashCRC32.IsChecked = true;
-                else if (h == TextCodecs.HASH.MD4) chkHashMD4.IsChecked = true;
-                else if (h == TextCodecs.HASH.MD5) chkHashMD5.IsChecked = true;
-                else if (h == TextCodecs.HASH.SHA1) chkHashSHA1.IsChecked = true;
-                else if (h == TextCodecs.HASH.SHA256) chkHashSHA256.IsChecked = true;
-                else if (h == TextCodecs.HASH.SHA384) chkHashSHA384.IsChecked = true;
-                else if (h == TextCodecs.HASH.SHA512) chkHashSHA512.IsChecked = true;
+                var opts = (Settings.Get("HashSelected") as string).Split(",");
+                var hashlist = opts.Select(o => (TextCodecs.HASH)Enum.Parse(typeof(TextCodecs.HASH), o));
+                foreach (var h in hashlist)
+                {
+                    if (h == TextCodecs.HASH.CRC32) chkHashCRC32.IsChecked = true;
+                    else if (h == TextCodecs.HASH.MD4) chkHashMD4.IsChecked = true;
+                    else if (h == TextCodecs.HASH.MD5) chkHashMD5.IsChecked = true;
+                    else if (h == TextCodecs.HASH.SHA1) chkHashSHA1.IsChecked = true;
+                    else if (h == TextCodecs.HASH.SHA256) chkHashSHA256.IsChecked = true;
+                    else if (h == TextCodecs.HASH.SHA384) chkHashSHA384.IsChecked = true;
+                    else if (h == TextCodecs.HASH.SHA512) chkHashSHA512.IsChecked = true;
+                }
+            }
+            catch(Exception ex)
+            {
+                ex.Message.T().ShowMessage("ERROR".T());
             }
         }
 
@@ -140,7 +147,6 @@ namespace StringCodec.UWP.Common
                     var opts = hashlist.Select(h => h.ToString());
                     Settings.Set("HashSelected", string.Join(",", opts));
                 }
-
             }
             catch(Exception ex)
             {
@@ -192,11 +198,12 @@ namespace StringCodec.UWP.Common
                 }
                 deferral.Complete();
             }
+        }
 #else
         private void OnDragEnter(object sender, DragEventArgs e)
         {
-#endif
         }
+#endif
 
         private void OnDragOver(object sender, DragEventArgs e)
         {
