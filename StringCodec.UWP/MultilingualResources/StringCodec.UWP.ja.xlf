@@ -1490,6 +1490,10 @@
           <source>File Hash Calculating</source>
           <target state="translated">ファイルハッシュ計算</target>
         </trans-unit>
+        <trans-unit id="nvItemHash.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>File Hash Calculating</source>
+          <target state="translated">ファイルハッシュ計算</target>
+        </trans-unit>
       </group>
     </body>
   </file>

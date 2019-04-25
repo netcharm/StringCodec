@@ -1125,4 +1125,7 @@
   <data name="nvItemHash.Content" xml:space="preserve">
     <value>ファイルハッシュ計算</value>
   </data>
+  <data name="nvItemHash.ToolTipService.ToolTip" xml:space="preserve">
+    <value>ファイルハッシュ計算</value>
+  </data>
 </root>

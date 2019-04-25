@@ -1230,4 +1230,7 @@
   <data name="nvItemHash.Content" xml:space="preserve">
     <value>File Hash Calculating</value>
   </data>
+  <data name="nvItemHash.ToolTipService.ToolTip" xml:space="preserve">
+    <value>File Hash Calculating</value>
+  </data>
 </root>
