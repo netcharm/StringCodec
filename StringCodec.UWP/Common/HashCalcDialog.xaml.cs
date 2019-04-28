@@ -164,11 +164,14 @@ namespace StringCodec.UWP.Common
 
         private async void BtnBrowseFile_Click(object sender, RoutedEventArgs e)
         {
-            file = await Utils.OpenFile();
-            if (file is StorageFile)
+            var file_n = await Utils.OpenFile();
+            if (file_n is StorageFile)
+            {
+                file = file_n;
                 edFileName.Text = file.Name;
-            else
-                edFileName.Text = string.Empty;
+                edFileName.Focus(FocusState.Pointer);
+                //btnBrowseFile.Focus(FocusState.Unfocused);
+            }
         }
 
 #if DEBUG

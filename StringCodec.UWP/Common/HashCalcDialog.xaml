@@ -15,7 +15,7 @@
     PrimaryButtonText="Calculating"
     SecondaryButtonText="Close"
     PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
-    SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick" DefaultButton="Primary">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -37,7 +37,7 @@
         </Grid.RowDefinitions>
 
         <Button Grid.Row="0" Grid.Column="0" x:Name="btnBrowseFile" x:Uid="btnBrowseFile" Content="Browsing" Click="BtnBrowseFile_Click" FontFamily="Consolas"/>
-        <TextBox Grid.Row="0" Grid.Column="1" x:Name="edFileName" x:Uid="edFileName" FontFamily="Consolas"/>
+        <TextBox Grid.Row="0" Grid.Column="1" x:Name="edFileName" x:Uid="edFileName" IsReadOnly="True" FontFamily="Consolas"/>
 
         <Line Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,0,16"/>
 
@@ -51,13 +51,13 @@
         <TextBox Grid.Row="4" Grid.Column="2" x:Name="edHashSHA1" x:Uid="edHashSHA1" IsReadOnly="True" Margin="0,0,0,4" FontFamily="Consolas"/>
 
         <CheckBox Grid.Row="5" Grid.Column="0" x:Name="chkHashSHA256" x:Uid="chkHashSHA256" Content="SHA256" FontFamily="Consolas"/>
-        <TextBox Grid.Row="5" Grid.Column="2" x:Name="edHashSHA256" x:Uid="edHashSHA256" IsReadOnly="True" Margin="0,0,0,4" FontFamily="Consolas"/>
+        <TextBox Grid.Row="5" Grid.Column="2" x:Name="edHashSHA256" x:Uid="edHashSHA256" IsReadOnly="True" Margin="0,0,0,4" FontFamily="Consolas" TextWrapping="Wrap" Height="auto"/>
 
         <CheckBox Grid.Row="6" Grid.Column="0" x:Name="chkHashSHA384" x:Uid="chkHashSHA384" Content="SHA384" FontFamily="Consolas"/>
-        <TextBox Grid.Row="6" Grid.Column="2" x:Name="edHashSHA384" x:Uid="edHashSHA384" IsReadOnly="True" Margin="0,0,0,4" FontFamily="Consolas"/>
+        <TextBox Grid.Row="6" Grid.Column="2" x:Name="edHashSHA384" x:Uid="edHashSHA384" IsReadOnly="True" Margin="0,0,0,4" FontFamily="Consolas" TextWrapping="Wrap" Height="auto"/>
 
         <CheckBox Grid.Row="7" Grid.Column="0" x:Name="chkHashSHA512" x:Uid="chkHashSHA512" Content="SHA512" FontFamily="Consolas"/>
-        <TextBox Grid.Row="7" Grid.Column="2" x:Name="edHashSHA512" x:Uid="edHashSHA512" IsReadOnly="True" Margin="0,0,0,4" FontFamily="Consolas"/>
+        <TextBox Grid.Row="7" Grid.Column="2" x:Name="edHashSHA512" x:Uid="edHashSHA512" IsReadOnly="True" Margin="0,0,0,4" FontFamily="Consolas" TextWrapping="Wrap" Height="auto"/>
 
         <CheckBox Grid.Row="8" Grid.Column="0" x:Name="chkHashCRC32" x:Uid="chkHashCRC32" Content="CRC32" FontFamily="Consolas"/>
         <TextBox Grid.Row="8" Grid.Column="2" x:Name="edHashCRC32" x:Uid="edHashCRC32" IsReadOnly="True" Margin="0,0,0,4" FontFamily="Consolas"/>
