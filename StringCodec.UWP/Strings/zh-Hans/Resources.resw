@@ -1104,9 +1104,6 @@
   <data name="optHash.Text" xml:space="preserve">
     <value>散列值计算</value>
   </data>
-  <data name="btnBrowseFile.Content" xml:space="preserve">
-    <value>浏览...</value>
-  </data>
   <data name="btnHashFile.Label" xml:space="preserve">
     <value>文件散列值计算</value>
   </data>
@@ -1114,7 +1111,7 @@
     <value>计算</value>
   </data>
   <data name="FileHashDialog.SecondaryButtonText" xml:space="preserve">
-    <value>关闭</value>
+    <value>共享</value>
   </data>
   <data name="FileHashDialog.Title" xml:space="preserve">
     <value>文件散列值计算</value>
@@ -1127,5 +1124,26 @@
   </data>
   <data name="nvItemHash.ToolTipService.ToolTip" xml:space="preserve">
     <value>文件散列值计算</value>
+  </data>
+  <data name="FileHashDialog.CloseButtonText" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <data name="btnBrowseFile.Content" xml:space="preserve">
+    <value>浏览...</value>
+  </data>
+  <data name="Bytes" xml:space="preserve">
+    <value>字节</value>
+  </data>
+  <data name="HashCompare" xml:space="preserve">
+    <value>和给定的散列值比较</value>
+  </data>
+  <data name="HashCopy" xml:space="preserve">
+    <value>复制散列值到剪贴板</value>
+  </data>
+  <data name="HashPaste" xml:space="preserve">
+    <value>从剪贴板粘贴散列值</value>
+  </data>
+  <data name="lblHashCompare.Text" xml:space="preserve">
+    <value>比较</value>
   </data>
 </root>

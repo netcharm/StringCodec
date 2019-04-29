@@ -1209,9 +1209,6 @@
   <data name="optHash.Text" xml:space="preserve">
     <value>Hash Calculating</value>
   </data>
-  <data name="btnBrowseFile.Content" xml:space="preserve">
-    <value>Browsing</value>
-  </data>
   <data name="btnHashFile.Label" xml:space="preserve">
     <value>File Hash Calculating</value>
   </data>
@@ -1219,7 +1216,7 @@
     <value>Calculating</value>
   </data>
   <data name="FileHashDialog.SecondaryButtonText" xml:space="preserve">
-    <value>Close</value>
+    <value>Share</value>
   </data>
   <data name="FileHashDialog.Title" xml:space="preserve">
     <value>File Hash Calculating</value>
@@ -1232,5 +1229,26 @@
   </data>
   <data name="nvItemHash.ToolTipService.ToolTip" xml:space="preserve">
     <value>File Hash Calculating</value>
+  </data>
+  <data name="btnBrowseFile.Content" xml:space="preserve">
+    <value>Browsing</value>
+  </data>
+  <data name="FileHashDialog.CloseButtonText" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Bytes" xml:space="preserve">
+    <value>Byte(s)</value>
+  </data>
+  <data name="HashCompare" xml:space="preserve">
+    <value>Compare Hash Values</value>
+  </data>
+  <data name="HashCopy" xml:space="preserve">
+    <value>Copy Hash to Clipboard</value>
+  </data>
+  <data name="HashPaste" xml:space="preserve">
+    <value>Paste Hash from Clipboard</value>
+  </data>
+  <data name="lblHashCompare.Text" xml:space="preserve">
+    <value>Compare</value>
   </data>
 </root>

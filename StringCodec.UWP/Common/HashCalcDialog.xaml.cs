@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
@@ -43,8 +44,9 @@ namespace StringCodec.UWP.Common
         public HashCalcDialog()
         {
             this.InitializeComponent();
-            progressHashFile.Visibility = Visibility.Collapsed;
             this.RequestedTheme = Settings.GetTheme();
+
+            progressHashFile.Visibility = Visibility.Collapsed;
 
             try
             {
@@ -60,6 +62,18 @@ namespace StringCodec.UWP.Common
                     else if (h == TextCodecs.HASH.SHA384) chkHashSHA384.IsChecked = true;
                     else if (h == TextCodecs.HASH.SHA512) chkHashSHA512.IsChecked = true;
                 }
+
+                symHashCRC32.SetValue(ToolTipService.ToolTipProperty, "HashCopy".T());
+                symHashMD4.SetValue(ToolTipService.ToolTipProperty, "HashCopy".T());
+                symHashMD5.SetValue(ToolTipService.ToolTipProperty, "HashCopy".T());
+                symHashSHA1.SetValue(ToolTipService.ToolTipProperty, "HashCopy".T());
+                symHashSHA256.SetValue(ToolTipService.ToolTipProperty, "HashCopy".T());
+                symHashSHA384.SetValue(ToolTipService.ToolTipProperty, "HashCopy".T());
+                symHashSHA512.SetValue(ToolTipService.ToolTipProperty, "HashCopy".T());
+
+                symHashPaste.SetValue(ToolTipService.ToolTipProperty, "HashPaste".T());
+                symHashCompare.SetValue(ToolTipService.ToolTipProperty, "HashCompare".T());
+
             }
             catch(Exception ex)
             {
@@ -67,7 +81,7 @@ namespace StringCodec.UWP.Common
             }
         }
 
-        private async void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        private async void FileHashDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
             args.Cancel = true;
 
@@ -144,6 +158,8 @@ namespace StringCodec.UWP.Common
 
                     }
 
+                    Compare();
+
                     var opts = hashlist.Select(h => h.ToString());
                     Settings.Set("HashSelected", string.Join(",", opts));
                 }
@@ -158,8 +174,46 @@ namespace StringCodec.UWP.Common
             }            
         }
 
-        private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        private async void FileHashDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
+            args.Cancel = true;
+            try
+            {
+                if (file is StorageFile)
+                {
+                    var props = await file.GetBasicPropertiesAsync();
+
+                    StringBuilder sb = new StringBuilder();
+                    sb.AppendLine($"{"File".T()}  : {file.Name}");
+                    sb.AppendLine($"{"Size".T()}  : {props.Size} {"Bytes".T()}");
+                    if(!string.IsNullOrEmpty(edHashCRC32.Text))
+                        sb.AppendLine($"CRC32 : {edHashCRC32.Text}");
+                    if (!string.IsNullOrEmpty(edHashMD4.Text))
+                        sb.AppendLine($"MD4   : {edHashMD4.Text}");
+                    if (!string.IsNullOrEmpty(edHashMD5.Text))
+                        sb.AppendLine($"MD5   : {edHashMD5.Text}");
+                    if (!string.IsNullOrEmpty(edHashSHA1.Text))
+                        sb.AppendLine($"SHA1  : {edHashSHA1.Text}");
+                    if (!string.IsNullOrEmpty(edHashSHA256.Text))
+                        sb.AppendLine($"SHA256: {edHashSHA256.Text}");
+                    if (!string.IsNullOrEmpty(edHashSHA384.Text))
+                        sb.AppendLine($"SHA384: {edHashSHA384.Text}");
+                    if (!string.IsNullOrEmpty(edHashSHA512.Text))
+                        sb.AppendLine($"SHA512: {edHashSHA512.Text}");
+
+                    Utils.SetClipboard(sb.ToString());
+                    Utils.Share(sb.ToString());
+                }
+            }
+            catch(Exception ex)
+            {
+                ex.Message.T().ShowMessage("ERROR".T());
+            }
+        }
+
+        private void FileHashDialog_CloseButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        {
+
         }
 
         private async void BtnBrowseFile_Click(object sender, RoutedEventArgs e)
@@ -171,9 +225,110 @@ namespace StringCodec.UWP.Common
                 edFileName.Text = file.Name;
                 edFileName.Focus(FocusState.Pointer);
                 //btnBrowseFile.Focus(FocusState.Unfocused);
+
+                edHashCRC32.Text = string.Empty;
+                edHashMD4.Text = string.Empty;
+                edHashMD5.Text = string.Empty;
+                edHashSHA1.Text = string.Empty;
+                edHashSHA256.Text = string.Empty;
+                edHashSHA384.Text = string.Empty;
+                edHashSHA512.Text = string.Empty;
+
+                Compare();
             }
         }
 
+        private async void SymHash_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (sender == symHashMD4)
+            {
+                if (!string.IsNullOrEmpty(edHashMD4.Text)) Utils.SetClipboard(edHashMD4.Text);
+            }
+            else if (sender == symHashMD5)
+            {
+                if (!string.IsNullOrEmpty(edHashMD5.Text)) Utils.SetClipboard(edHashMD5.Text);
+            }
+            else if (sender == symHashSHA1)
+            {
+                if (!string.IsNullOrEmpty(edHashSHA1.Text)) Utils.SetClipboard(edHashSHA1.Text);
+            }
+            else if (sender == symHashSHA256)
+            {
+                if (!string.IsNullOrEmpty(edHashSHA256.Text)) Utils.SetClipboard(edHashSHA256.Text);
+            }
+            else if (sender == symHashSHA384)
+            {
+                if (!string.IsNullOrEmpty(edHashSHA384.Text)) Utils.SetClipboard(edHashSHA384.Text);
+            }
+            else if (sender == symHashSHA512)
+            {
+                if (!string.IsNullOrEmpty(edHashSHA512.Text)) Utils.SetClipboard(edHashSHA512.Text);
+            }
+            else if (sender == symHashCRC32)
+            {
+                if (!string.IsNullOrEmpty(edHashCRC32.Text)) Utils.SetClipboard(edHashCRC32.Text);
+            }
+            else if (sender == symHashPaste)
+            {
+                edHashCompare.Text = await Utils.GetClipboard(string.Empty);
+                Compare();
+            }
+            else if (sender == symHashCompare)
+            {
+                Compare();
+            }
+        }
+
+        private void SymHashCompare_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Compare();
+        }
+
+        private void Compare()
+        {
+            //edHashCompare.Text = await Utils.GetClipboard(string.Empty);
+            if (!string.IsNullOrEmpty(edHashCompare.Text))
+            {
+                var vs = edHashCompare.Text.Trim();
+
+                if (vs.Equals(edHashCRC32.Text.Trim(), StringComparison.CurrentCultureIgnoreCase)) symHashCRC32Compare.Visibility = Visibility.Visible;
+                else symHashCRC32Compare.Visibility = Visibility.Collapsed;
+
+                if (vs.Equals(edHashMD4.Text.Trim(), StringComparison.CurrentCultureIgnoreCase)) symHashMD4Compare.Visibility = Visibility.Visible;
+                else symHashMD4Compare.Visibility = Visibility.Collapsed;
+
+                if (vs.Equals(edHashMD5.Text.Trim(), StringComparison.CurrentCultureIgnoreCase)) symHashMD5Compare.Visibility = Visibility.Visible;
+                else symHashMD5Compare.Visibility = Visibility.Collapsed;
+
+
+                if (vs.Equals(edHashSHA1.Text.Trim(), StringComparison.CurrentCultureIgnoreCase)) symHashSHA1Compare.Visibility = Visibility.Visible;
+                else symHashSHA1Compare.Visibility = Visibility.Collapsed;
+
+
+                if (vs.Equals(edHashSHA256.Text.Trim(), StringComparison.CurrentCultureIgnoreCase)) symHashSHA256Compare.Visibility = Visibility.Visible;
+                else symHashSHA256Compare.Visibility = Visibility.Collapsed;
+
+
+                if (vs.Equals(edHashSHA384.Text.Trim(), StringComparison.CurrentCultureIgnoreCase)) symHashSHA384Compare.Visibility = Visibility.Visible;
+                else symHashSHA384Compare.Visibility = Visibility.Collapsed;
+
+
+                if (vs.Equals(edHashSHA512.Text.Trim(), StringComparison.CurrentCultureIgnoreCase)) symHashSHA512Compare.Visibility = Visibility.Visible;
+                else symHashSHA512Compare.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                symHashCRC32Compare.Visibility = Visibility.Collapsed;
+                symHashMD4Compare.Visibility = Visibility.Collapsed;
+                symHashMD5Compare.Visibility = Visibility.Collapsed;
+                symHashSHA1Compare.Visibility = Visibility.Collapsed;
+                symHashSHA256Compare.Visibility = Visibility.Collapsed;
+                symHashSHA384Compare.Visibility = Visibility.Collapsed;
+                symHashSHA512Compare.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        #region Drag/Drop events routines
 #if DEBUG
         private async void OnDragEnter(object sender, DragEventArgs e)
         {
@@ -242,6 +397,7 @@ namespace StringCodec.UWP.Common
             }
             deferral.Complete();
         }
+        #endregion
 
     }
 }

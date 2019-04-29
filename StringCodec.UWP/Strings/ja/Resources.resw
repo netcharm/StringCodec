@@ -1104,9 +1104,6 @@
   <data name="optHash.Text" xml:space="preserve">
     <value>ハッシュ計算</value>
   </data>
-  <data name="btnBrowseFile.Content" xml:space="preserve">
-    <value>閲覧...</value>
-  </data>
   <data name="btnHashFile.Label" xml:space="preserve">
     <value>ファイルハッシュ計算</value>
   </data>
@@ -1114,7 +1111,7 @@
     <value>計算</value>
   </data>
   <data name="FileHashDialog.SecondaryButtonText" xml:space="preserve">
-    <value>閉じる</value>
+    <value>共有</value>
   </data>
   <data name="FileHashDialog.Title" xml:space="preserve">
     <value>ファイルハッシュ計算</value>
@@ -1127,5 +1124,26 @@
   </data>
   <data name="nvItemHash.ToolTipService.ToolTip" xml:space="preserve">
     <value>ファイルハッシュ計算</value>
+  </data>
+  <data name="FileHashDialog.CloseButtonText" xml:space="preserve">
+    <value>閉じる</value>
+  </data>
+  <data name="btnBrowseFile.Content" xml:space="preserve">
+    <value>閲覧...</value>
+  </data>
+  <data name="Bytes" xml:space="preserve">
+    <value>バイト数</value>
+  </data>
+  <data name="HashCompare" xml:space="preserve">
+    <value>ハッシュ値を比較</value>
+  </data>
+  <data name="HashCopy" xml:space="preserve">
+    <value>ハッシュをクリップボードにコピー</value>
+  </data>
+  <data name="HashPaste" xml:space="preserve">
+    <value>クリップボードからハッシュを貼り付ける</value>
+  </data>
+  <data name="lblHashCompare.Text" xml:space="preserve">
+    <value>比較</value>
   </data>
 </root>

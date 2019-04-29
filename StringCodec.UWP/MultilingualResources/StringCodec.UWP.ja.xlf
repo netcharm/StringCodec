@@ -1462,10 +1462,6 @@
           <source>Hash Calculating</source>
           <target state="translated">ハッシュ計算</target>
         </trans-unit>
-        <trans-unit id="btnBrowseFile.Content" translate="yes" xml:space="preserve">
-          <source>Browsing</source>
-          <target state="translated">閲覧...</target>
-        </trans-unit>
         <trans-unit id="btnHashFile.Label" translate="yes" xml:space="preserve">
           <source>File Hash Calculating</source>
           <target state="translated">ファイルハッシュ計算</target>
@@ -1475,8 +1471,8 @@
           <target state="translated">計算</target>
         </trans-unit>
         <trans-unit id="FileHashDialog.SecondaryButtonText" translate="yes" xml:space="preserve">
-          <source>Close</source>
-          <target state="translated">閉じる</target>
+          <source>Share</source>
+          <target state="translated">共有</target>
         </trans-unit>
         <trans-unit id="FileHashDialog.Title" translate="yes" xml:space="preserve">
           <source>File Hash Calculating</source>
@@ -1493,6 +1489,34 @@
         <trans-unit id="nvItemHash.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>File Hash Calculating</source>
           <target state="translated">ファイルハッシュ計算</target>
+        </trans-unit>
+        <trans-unit id="FileHashDialog.CloseButtonText" translate="yes" xml:space="preserve">
+          <source>Close</source>
+          <target state="translated">閉じる</target>
+        </trans-unit>
+        <trans-unit id="btnBrowseFile.Content" translate="yes" xml:space="preserve">
+          <source>Browsing</source>
+          <target state="translated">閲覧...</target>
+        </trans-unit>
+        <trans-unit id="Bytes" translate="yes" xml:space="preserve">
+          <source>Byte(s)</source>
+          <target state="translated">バイト数</target>
+        </trans-unit>
+        <trans-unit id="HashCompare" translate="yes" xml:space="preserve">
+          <source>Compare Hash Values</source>
+          <target state="translated">ハッシュ値を比較</target>
+        </trans-unit>
+        <trans-unit id="HashCopy" translate="yes" xml:space="preserve">
+          <source>Copy Hash to Clipboard</source>
+          <target state="translated">ハッシュをクリップボードにコピー</target>
+        </trans-unit>
+        <trans-unit id="HashPaste" translate="yes" xml:space="preserve">
+          <source>Paste Hash from Clipboard</source>
+          <target state="translated">クリップボードからハッシュを貼り付ける</target>
+        </trans-unit>
+        <trans-unit id="lblHashCompare.Text" translate="yes" xml:space="preserve">
+          <source>Compare</source>
+          <target state="translated">比較</target>
         </trans-unit>
       </group>
     </body>

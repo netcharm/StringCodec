@@ -10,17 +10,22 @@
     x:Uid="FileHashDialog"
     AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" 
     Title="File Hash Calculating"
-    MinWidth="480"
-    Width="640"
+    MinWidth="680"
+    Width="680"
+    DefaultButton="Primary"
     PrimaryButtonText="Calculating"
-    SecondaryButtonText="Close"
-    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
-    SecondaryButtonClick="ContentDialog_SecondaryButtonClick" DefaultButton="Primary">
+    SecondaryButtonText="Share"
+    CloseButtonText="Close"
+    PrimaryButtonClick="FileHashDialog_PrimaryButtonClick"
+    SecondaryButtonClick="FileHashDialog_SecondaryButtonClick" 
+    CloseButtonClick="FileHashDialog_CloseButtonClick">
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto" MinWidth="64"/>
-            <ColumnDefinition Width="*" MinWidth="360"/>
+            <ColumnDefinition Width="96" MinWidth="64"/>
+            <ColumnDefinition Width="*" MinWidth="320"/>
+            <ColumnDefinition Width="32"/>
+            <ColumnDefinition Width="32"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -34,35 +39,60 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <Button Grid.Row="0" Grid.Column="0" x:Name="btnBrowseFile" x:Uid="btnBrowseFile" Content="Browsing" Click="BtnBrowseFile_Click" FontFamily="Consolas"/>
-        <TextBox Grid.Row="0" Grid.Column="1" x:Name="edFileName" x:Uid="edFileName" IsReadOnly="True" FontFamily="Consolas"/>
+        <Button Grid.Row="0" Grid.Column="0" x:Name="btnBrowseFile" x:Uid="btnBrowseFile" Content="Browsing" Click="BtnBrowseFile_Click" FontFamily="Consolas" />
+        <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" x:Name="edFileName" x:Uid="edFileName" IsReadOnly="True" FontFamily="Consolas" TextWrapping="Wrap" Height="auto"/>
 
-        <Line Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,0,16"/>
+        <Line Grid.Row="1" Grid.ColumnSpan="4" Margin="0,8,0,16"/>
 
         <CheckBox Grid.Row="2" Grid.Column="0" x:Name="chkHashMD5" x:Uid="chkHashMD5" Content="MD5" FontFamily="Consolas"/>
-        <TextBox Grid.Row="2" Grid.Column="2" x:Name="edHashMD5" x:Uid="edHashMD5" IsReadOnly="True" Margin="0,0,0,4" FontFamily="Consolas"/>
-
+        <TextBox Grid.Row="2" Grid.Column="1" x:Name="edHashMD5" x:Uid="edHashMD5" IsReadOnly="True" Margin="0,4,0,4" FontFamily="Consolas"/>
+        <SymbolIcon Grid.Row="2" Grid.Column="2" x:Name="symHashMD5" Symbol="Copy" Tapped="SymHash_Tapped"/>
+        <SymbolIcon Grid.Row="2" Grid.Column="3" x:Name="symHashMD5Compare" Symbol="Accept" Visibility="Collapsed"/>
+        
         <CheckBox Grid.Row="3" Grid.Column="0" x:Name="chkHashMD4" x:Uid="chkHashMD4" Content="MD4" FontFamily="Consolas"/>
-        <TextBox Grid.Row="3" Grid.Column="2" x:Name="edHashMD4" x:Uid="edHashMD4" IsReadOnly="True" Margin="0,0,0,4" FontFamily="Consolas"/>
+        <TextBox Grid.Row="3" Grid.Column="1" x:Name="edHashMD4" x:Uid="edHashMD4" IsReadOnly="True" Margin="0,4,0,4" FontFamily="Consolas"/>
+        <SymbolIcon Grid.Row="3" Grid.Column="2" x:Name="symHashMD4" Symbol="Copy" Tapped="SymHash_Tapped"/>
+        <SymbolIcon Grid.Row="3" Grid.Column="3" x:Name="symHashMD4Compare" Symbol="Accept" Visibility="Collapsed"/>
 
         <CheckBox Grid.Row="4" Grid.Column="0" x:Name="chkHashSHA1" x:Uid="chkHashSHA1" Content="SHA1" FontFamily="Consolas"/>
-        <TextBox Grid.Row="4" Grid.Column="2" x:Name="edHashSHA1" x:Uid="edHashSHA1" IsReadOnly="True" Margin="0,0,0,4" FontFamily="Consolas"/>
+        <TextBox Grid.Row="4" Grid.Column="1" x:Name="edHashSHA1" x:Uid="edHashSHA1" IsReadOnly="True" Margin="0,4,0,4" FontFamily="Consolas" TextWrapping="Wrap" Height="auto"/>
+        <SymbolIcon Grid.Row="4" Grid.Column="2" x:Name="symHashSHA1" Symbol="Copy" Tapped="SymHash_Tapped"/>
+        <SymbolIcon Grid.Row="4" Grid.Column="3" x:Name="symHashSHA1Compare" Symbol="Accept" Visibility="Collapsed"/>
 
         <CheckBox Grid.Row="5" Grid.Column="0" x:Name="chkHashSHA256" x:Uid="chkHashSHA256" Content="SHA256" FontFamily="Consolas"/>
-        <TextBox Grid.Row="5" Grid.Column="2" x:Name="edHashSHA256" x:Uid="edHashSHA256" IsReadOnly="True" Margin="0,0,0,4" FontFamily="Consolas" TextWrapping="Wrap" Height="auto"/>
+        <TextBox Grid.Row="5" Grid.Column="1" x:Name="edHashSHA256" x:Uid="edHashSHA256" IsReadOnly="True" Margin="0,4,0,4" FontFamily="Consolas" TextWrapping="Wrap" Height="auto"/>
+        <SymbolIcon Grid.Row="5" Grid.Column="2" x:Name="symHashSHA256" Symbol="Copy" Tapped="SymHash_Tapped"/>
+        <SymbolIcon Grid.Row="5" Grid.Column="3" x:Name="symHashSHA256Compare" Symbol="Accept" Visibility="Collapsed"/>
 
         <CheckBox Grid.Row="6" Grid.Column="0" x:Name="chkHashSHA384" x:Uid="chkHashSHA384" Content="SHA384" FontFamily="Consolas"/>
-        <TextBox Grid.Row="6" Grid.Column="2" x:Name="edHashSHA384" x:Uid="edHashSHA384" IsReadOnly="True" Margin="0,0,0,4" FontFamily="Consolas" TextWrapping="Wrap" Height="auto"/>
+        <TextBox Grid.Row="6" Grid.Column="1" x:Name="edHashSHA384" x:Uid="edHashSHA384" IsReadOnly="True" Margin="0,4,0,4" FontFamily="Segoe MDL2 Assets" TextWrapping="Wrap" Height="auto"/>
+        <SymbolIcon Grid.Row="6" Grid.Column="2" x:Name="symHashSHA384" Symbol="Copy" Tapped="SymHash_Tapped"/>
+        <SymbolIcon Grid.Row="6" Grid.Column="3" x:Name="symHashSHA384Compare" Symbol="Accept" Visibility="Collapsed"/>
 
         <CheckBox Grid.Row="7" Grid.Column="0" x:Name="chkHashSHA512" x:Uid="chkHashSHA512" Content="SHA512" FontFamily="Consolas"/>
-        <TextBox Grid.Row="7" Grid.Column="2" x:Name="edHashSHA512" x:Uid="edHashSHA512" IsReadOnly="True" Margin="0,0,0,4" FontFamily="Consolas" TextWrapping="Wrap" Height="auto"/>
+        <TextBox Grid.Row="7" Grid.Column="1" x:Name="edHashSHA512" x:Uid="edHashSHA512" IsReadOnly="True" Margin="0,4,0,4" FontFamily="Consolas" TextWrapping="Wrap" Height="auto"/>
+        <SymbolIcon Grid.Row="7" Grid.Column="2" x:Name="symHashSHA512" Symbol="Copy" Tapped="SymHash_Tapped"/>
+        <SymbolIcon Grid.Row="7" Grid.Column="3" x:Name="symHashSHA512Compare" Symbol="Accept" Visibility="Collapsed"/>
 
         <CheckBox Grid.Row="8" Grid.Column="0" x:Name="chkHashCRC32" x:Uid="chkHashCRC32" Content="CRC32" FontFamily="Consolas"/>
-        <TextBox Grid.Row="8" Grid.Column="2" x:Name="edHashCRC32" x:Uid="edHashCRC32" IsReadOnly="True" Margin="0,0,0,4" FontFamily="Consolas"/>
+        <TextBox Grid.Row="8" Grid.Column="1" x:Name="edHashCRC32" x:Uid="edHashCRC32" IsReadOnly="True" Margin="0,4,0,4" FontFamily="Consolas"/>
+        <SymbolIcon Grid.Row="8" Grid.Column="2" x:Name="symHashCRC32" Symbol="Copy" Tapped="SymHash_Tapped"/>
+        <SymbolIcon Grid.Row="8" Grid.Column="3" x:Name="symHashCRC32Compare" Symbol="Accept" Visibility="Collapsed"/>
+
+        <Line Grid.Row="10" Grid.ColumnSpan="4" Margin="0,8,0,16"/>
+
+        <ProgressRing Grid.Row="11" Grid.RowSpan="2" Grid.ColumnSpan="4" x:Name="progressHashFile" FontSize="72" Visibility="Visible" Margin="11,20,4,4" HorizontalAlignment="Center" VerticalAlignment="Center" IsActive="True"/>
+        
+        <TextBlock Grid.Row="13" Grid.Column="0" x:Name="lblHashCompare" x:Uid="lblHashCompare" Text="Compare" FontFamily="Consolas" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="13" Grid.Column="1" x:Name="edHashCompare" x:Uid="edHashCompare" IsReadOnly="False" Margin="0,4,0,4" FontFamily="Consolas" TextWrapping="Wrap" Height="auto" TextChanged="SymHashCompare_TextChanged"/>
+        <SymbolIcon Grid.Row="13" Grid.Column="2" x:Name="symHashPaste" Symbol="Paste" Tapped="SymHash_Tapped"/>
+        <SymbolIcon Grid.Row="13" Grid.Column="3" x:Name="symHashCompare" Symbol="Accept" Tapped="SymHash_Tapped"/>
 
 
-        <ProgressRing Grid.Row="10" Grid.ColumnSpan="2" x:Name="progressHashFile" FontSize="48" Visibility="Visible" Margin="11,20,4,4" HorizontalAlignment="Center" VerticalAlignment="Center"/>
     </Grid>
 </ContentDialog>

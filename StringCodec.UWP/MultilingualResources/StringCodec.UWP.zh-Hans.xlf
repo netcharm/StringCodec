@@ -1462,10 +1462,6 @@
           <source>Hash Calculating</source>
           <target state="translated">散列值计算</target>
         </trans-unit>
-        <trans-unit id="btnBrowseFile.Content" translate="yes" xml:space="preserve">
-          <source>Browsing</source>
-          <target state="translated">浏览...</target>
-        </trans-unit>
         <trans-unit id="btnHashFile.Label" translate="yes" xml:space="preserve">
           <source>File Hash Calculating</source>
           <target state="translated">文件散列值计算</target>
@@ -1475,8 +1471,8 @@
           <target state="translated">计算</target>
         </trans-unit>
         <trans-unit id="FileHashDialog.SecondaryButtonText" translate="yes" xml:space="preserve">
-          <source>Close</source>
-          <target state="translated">关闭</target>
+          <source>Share</source>
+          <target state="translated">共享</target>
         </trans-unit>
         <trans-unit id="FileHashDialog.Title" translate="yes" xml:space="preserve">
           <source>File Hash Calculating</source>
@@ -1493,6 +1489,34 @@
         <trans-unit id="nvItemHash.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>File Hash Calculating</source>
           <target state="translated">文件散列值计算</target>
+        </trans-unit>
+        <trans-unit id="FileHashDialog.CloseButtonText" translate="yes" xml:space="preserve">
+          <source>Close</source>
+          <target state="translated">关闭</target>
+        </trans-unit>
+        <trans-unit id="btnBrowseFile.Content" translate="yes" xml:space="preserve">
+          <source>Browsing</source>
+          <target state="translated">浏览...</target>
+        </trans-unit>
+        <trans-unit id="Bytes" translate="yes" xml:space="preserve">
+          <source>Byte(s)</source>
+          <target state="translated">字节</target>
+        </trans-unit>
+        <trans-unit id="HashCompare" translate="yes" xml:space="preserve">
+          <source>Compare Hash Values</source>
+          <target state="translated">和给定的散列值比较</target>
+        </trans-unit>
+        <trans-unit id="HashCopy" translate="yes" xml:space="preserve">
+          <source>Copy Hash to Clipboard</source>
+          <target state="translated">复制散列值到剪贴板</target>
+        </trans-unit>
+        <trans-unit id="HashPaste" translate="yes" xml:space="preserve">
+          <source>Paste Hash from Clipboard</source>
+          <target state="translated">从剪贴板粘贴散列值</target>
+        </trans-unit>
+        <trans-unit id="lblHashCompare.Text" translate="yes" xml:space="preserve">
+          <source>Compare</source>
+          <target state="translated">比较</target>
         </trans-unit>
       </group>
     </body>
