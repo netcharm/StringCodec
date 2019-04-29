@@ -42,10 +42,12 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
         <Button Grid.Row="0" Grid.Column="0" x:Name="btnBrowseFile" x:Uid="btnBrowseFile" Content="Browsing" Click="BtnBrowseFile_Click" FontFamily="Consolas" />
         <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" x:Name="edFileName" x:Uid="edFileName" IsReadOnly="True" FontFamily="Consolas" TextWrapping="Wrap" Height="auto"/>
+        <SymbolIcon Grid.Row="0" Grid.Column="2" x:Name="symHashCopy" Symbol="Copy" Tapped="SymHash_Tapped"/>
 
         <Line Grid.Row="1" Grid.ColumnSpan="4" Margin="0,8,0,16"/>
 
@@ -53,7 +55,7 @@
         <TextBox Grid.Row="2" Grid.Column="1" x:Name="edHashMD5" x:Uid="edHashMD5" IsReadOnly="True" Margin="0,4,0,4" FontFamily="Consolas"/>
         <SymbolIcon Grid.Row="2" Grid.Column="2" x:Name="symHashMD5" Symbol="Copy" Tapped="SymHash_Tapped"/>
         <SymbolIcon Grid.Row="2" Grid.Column="3" x:Name="symHashMD5Compare" Symbol="Accept" Visibility="Collapsed"/>
-        
+
         <CheckBox Grid.Row="3" Grid.Column="0" x:Name="chkHashMD4" x:Uid="chkHashMD4" Content="MD4" FontFamily="Consolas"/>
         <TextBox Grid.Row="3" Grid.Column="1" x:Name="edHashMD4" x:Uid="edHashMD4" IsReadOnly="True" Margin="0,4,0,4" FontFamily="Consolas"/>
         <SymbolIcon Grid.Row="3" Grid.Column="2" x:Name="symHashMD4" Symbol="Copy" Tapped="SymHash_Tapped"/>
@@ -84,14 +86,16 @@
         <SymbolIcon Grid.Row="8" Grid.Column="2" x:Name="symHashCRC32" Symbol="Copy" Tapped="SymHash_Tapped"/>
         <SymbolIcon Grid.Row="8" Grid.Column="3" x:Name="symHashCRC32Compare" Symbol="Accept" Visibility="Collapsed"/>
 
-        <Line Grid.Row="10" Grid.ColumnSpan="4" Margin="0,8,0,16"/>
+        <Line Grid.Row="10" Grid.ColumnSpan="4" Margin="0,4,0,4"/>
 
-        <ProgressRing Grid.Row="11" Grid.RowSpan="2" Grid.ColumnSpan="4" x:Name="progressHashFile" FontSize="72" Visibility="Visible" Margin="11,20,4,4" HorizontalAlignment="Center" VerticalAlignment="Center" IsActive="True"/>
-        
-        <TextBlock Grid.Row="13" Grid.Column="0" x:Name="lblHashCompare" x:Uid="lblHashCompare" Text="Compare" FontFamily="Consolas" VerticalAlignment="Center"/>
-        <TextBox Grid.Row="13" Grid.Column="1" x:Name="edHashCompare" x:Uid="edHashCompare" IsReadOnly="False" Margin="0,4,0,4" FontFamily="Consolas" TextWrapping="Wrap" Height="auto" TextChanged="SymHashCompare_TextChanged"/>
-        <SymbolIcon Grid.Row="13" Grid.Column="2" x:Name="symHashPaste" Symbol="Paste" Tapped="SymHash_Tapped"/>
-        <SymbolIcon Grid.Row="13" Grid.Column="3" x:Name="symHashCompare" Symbol="Accept" Tapped="SymHash_Tapped"/>
+        <ProgressRing Grid.Row="11" Grid.RowSpan="2" Grid.ColumnSpan="4" x:Name="progressHashFile" Visibility="Visible" HorizontalAlignment="Center" VerticalAlignment="Center" IsActive="True" Height="72" Width="72"/>
+
+        <Line Grid.Row="13" Grid.ColumnSpan="4" Margin="0,4,0,4"/>
+
+        <TextBlock Grid.Row="14" Grid.Column="0" x:Name="lblHashCompare" x:Uid="lblHashCompare" Text="Compare" FontFamily="Consolas" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="14" Grid.Column="1" x:Name="edHashCompare" x:Uid="edHashCompare" IsReadOnly="False" Margin="0,4,0,4" FontFamily="Consolas" TextWrapping="Wrap" Height="auto" TextChanged="SymHashCompare_TextChanged"/>
+        <SymbolIcon Grid.Row="14" Grid.Column="2" x:Name="symHashPaste" Symbol="Paste" Tapped="SymHash_Tapped"/>
+        <SymbolIcon Grid.Row="14" Grid.Column="3" x:Name="symHashCompare" Symbol="Accept" Tapped="SymHash_Tapped"/>
 
 
     </Grid>

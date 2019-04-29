@@ -1518,6 +1518,10 @@
           <source>Compare</source>
           <target state="translated">比较</target>
         </trans-unit>
+        <trans-unit id="HashCopyAll" translate="yes" xml:space="preserve">
+          <source>Copy All Hash to Clipboard</source>
+          <target state="translated">复制所有散列值到剪贴板</target>
+        </trans-unit>
       </group>
     </body>
   </file>

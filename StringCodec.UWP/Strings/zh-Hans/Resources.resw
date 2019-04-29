@@ -1146,4 +1146,7 @@
   <data name="lblHashCompare.Text" xml:space="preserve">
     <value>比较</value>
   </data>
+  <data name="HashCopyAll" xml:space="preserve">
+    <value>复制所有散列值到剪贴板</value>
+  </data>
 </root>

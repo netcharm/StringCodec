@@ -41,6 +41,82 @@ namespace StringCodec.UWP.Common
             }
         }
 
+        private async Task<string> GetShareText()
+        {
+            if (file is StorageFile)
+            {
+                var props = await file.GetBasicPropertiesAsync();
+
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine($"{"File".T()}  : {file.Name}");
+                sb.AppendLine($"{"Size".T()}  : {props.Size:N0} {"Bytes".T()}");
+                if (!string.IsNullOrEmpty(edHashCRC32.Text))
+                    sb.AppendLine($"CRC32 : {edHashCRC32.Text}");
+                if (!string.IsNullOrEmpty(edHashMD4.Text))
+                    sb.AppendLine($"MD4   : {edHashMD4.Text}");
+                if (!string.IsNullOrEmpty(edHashMD5.Text))
+                    sb.AppendLine($"MD5   : {edHashMD5.Text}");
+                if (!string.IsNullOrEmpty(edHashSHA1.Text))
+                    sb.AppendLine($"SHA1  : {edHashSHA1.Text}");
+                if (!string.IsNullOrEmpty(edHashSHA256.Text))
+                    sb.AppendLine($"SHA256: {edHashSHA256.Text}");
+                if (!string.IsNullOrEmpty(edHashSHA384.Text))
+                    sb.AppendLine($"SHA384: {edHashSHA384.Text}");
+                if (!string.IsNullOrEmpty(edHashSHA512.Text))
+                    sb.AppendLine($"SHA512: {edHashSHA512.Text}");
+
+                return (sb.ToString());
+            }
+            else
+                return (string.Empty);
+        }
+
+        private void Compare()
+        {
+            if (file is StorageFile)
+            {
+                if (!string.IsNullOrEmpty(edHashCompare.Text))
+                {
+                    var vs = edHashCompare.Text.Trim();
+
+                    if (vs.Equals(edHashCRC32.Text.Trim(), StringComparison.CurrentCultureIgnoreCase)) symHashCRC32Compare.Visibility = Visibility.Visible;
+                    else symHashCRC32Compare.Visibility = Visibility.Collapsed;
+
+                    if (vs.Equals(edHashMD4.Text.Trim(), StringComparison.CurrentCultureIgnoreCase)) symHashMD4Compare.Visibility = Visibility.Visible;
+                    else symHashMD4Compare.Visibility = Visibility.Collapsed;
+
+                    if (vs.Equals(edHashMD5.Text.Trim(), StringComparison.CurrentCultureIgnoreCase)) symHashMD5Compare.Visibility = Visibility.Visible;
+                    else symHashMD5Compare.Visibility = Visibility.Collapsed;
+
+
+                    if (vs.Equals(edHashSHA1.Text.Trim(), StringComparison.CurrentCultureIgnoreCase)) symHashSHA1Compare.Visibility = Visibility.Visible;
+                    else symHashSHA1Compare.Visibility = Visibility.Collapsed;
+
+
+                    if (vs.Equals(edHashSHA256.Text.Trim(), StringComparison.CurrentCultureIgnoreCase)) symHashSHA256Compare.Visibility = Visibility.Visible;
+                    else symHashSHA256Compare.Visibility = Visibility.Collapsed;
+
+
+                    if (vs.Equals(edHashSHA384.Text.Trim(), StringComparison.CurrentCultureIgnoreCase)) symHashSHA384Compare.Visibility = Visibility.Visible;
+                    else symHashSHA384Compare.Visibility = Visibility.Collapsed;
+
+
+                    if (vs.Equals(edHashSHA512.Text.Trim(), StringComparison.CurrentCultureIgnoreCase)) symHashSHA512Compare.Visibility = Visibility.Visible;
+                    else symHashSHA512Compare.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    symHashCRC32Compare.Visibility = Visibility.Collapsed;
+                    symHashMD4Compare.Visibility = Visibility.Collapsed;
+                    symHashMD5Compare.Visibility = Visibility.Collapsed;
+                    symHashSHA1Compare.Visibility = Visibility.Collapsed;
+                    symHashSHA256Compare.Visibility = Visibility.Collapsed;
+                    symHashSHA384Compare.Visibility = Visibility.Collapsed;
+                    symHashSHA512Compare.Visibility = Visibility.Collapsed;
+                }
+            }
+        }
+
         public HashCalcDialog()
         {
             this.InitializeComponent();
@@ -71,9 +147,9 @@ namespace StringCodec.UWP.Common
                 symHashSHA384.SetValue(ToolTipService.ToolTipProperty, "HashCopy".T());
                 symHashSHA512.SetValue(ToolTipService.ToolTipProperty, "HashCopy".T());
 
+                symHashCopy.SetValue(ToolTipService.ToolTipProperty, "HashCopyAll".T());
                 symHashPaste.SetValue(ToolTipService.ToolTipProperty, "HashPaste".T());
                 symHashCompare.SetValue(ToolTipService.ToolTipProperty, "HashCompare".T());
-
             }
             catch(Exception ex)
             {
@@ -181,28 +257,7 @@ namespace StringCodec.UWP.Common
             {
                 if (file is StorageFile)
                 {
-                    var props = await file.GetBasicPropertiesAsync();
-
-                    StringBuilder sb = new StringBuilder();
-                    sb.AppendLine($"{"File".T()}  : {file.Name}");
-                    sb.AppendLine($"{"Size".T()}  : {props.Size} {"Bytes".T()}");
-                    if(!string.IsNullOrEmpty(edHashCRC32.Text))
-                        sb.AppendLine($"CRC32 : {edHashCRC32.Text}");
-                    if (!string.IsNullOrEmpty(edHashMD4.Text))
-                        sb.AppendLine($"MD4   : {edHashMD4.Text}");
-                    if (!string.IsNullOrEmpty(edHashMD5.Text))
-                        sb.AppendLine($"MD5   : {edHashMD5.Text}");
-                    if (!string.IsNullOrEmpty(edHashSHA1.Text))
-                        sb.AppendLine($"SHA1  : {edHashSHA1.Text}");
-                    if (!string.IsNullOrEmpty(edHashSHA256.Text))
-                        sb.AppendLine($"SHA256: {edHashSHA256.Text}");
-                    if (!string.IsNullOrEmpty(edHashSHA384.Text))
-                        sb.AppendLine($"SHA384: {edHashSHA384.Text}");
-                    if (!string.IsNullOrEmpty(edHashSHA512.Text))
-                        sb.AppendLine($"SHA512: {edHashSHA512.Text}");
-
-                    Utils.SetClipboard(sb.ToString());
-                    Utils.Share(sb.ToString());
+                    Utils.Share(await GetShareText());
                 }
             }
             catch(Exception ex)
@@ -268,6 +323,13 @@ namespace StringCodec.UWP.Common
             {
                 if (!string.IsNullOrEmpty(edHashCRC32.Text)) Utils.SetClipboard(edHashCRC32.Text);
             }
+            else if (sender == symHashCopy)
+            {
+                if (file is StorageFile)
+                {
+                    Utils.SetClipboard(await GetShareText());
+                }
+            }
             else if (sender == symHashPaste)
             {
                 edHashCompare.Text = await Utils.GetClipboard(string.Empty);
@@ -282,50 +344,6 @@ namespace StringCodec.UWP.Common
         private void SymHashCompare_TextChanged(object sender, TextChangedEventArgs e)
         {
             Compare();
-        }
-
-        private void Compare()
-        {
-            //edHashCompare.Text = await Utils.GetClipboard(string.Empty);
-            if (!string.IsNullOrEmpty(edHashCompare.Text))
-            {
-                var vs = edHashCompare.Text.Trim();
-
-                if (vs.Equals(edHashCRC32.Text.Trim(), StringComparison.CurrentCultureIgnoreCase)) symHashCRC32Compare.Visibility = Visibility.Visible;
-                else symHashCRC32Compare.Visibility = Visibility.Collapsed;
-
-                if (vs.Equals(edHashMD4.Text.Trim(), StringComparison.CurrentCultureIgnoreCase)) symHashMD4Compare.Visibility = Visibility.Visible;
-                else symHashMD4Compare.Visibility = Visibility.Collapsed;
-
-                if (vs.Equals(edHashMD5.Text.Trim(), StringComparison.CurrentCultureIgnoreCase)) symHashMD5Compare.Visibility = Visibility.Visible;
-                else symHashMD5Compare.Visibility = Visibility.Collapsed;
-
-
-                if (vs.Equals(edHashSHA1.Text.Trim(), StringComparison.CurrentCultureIgnoreCase)) symHashSHA1Compare.Visibility = Visibility.Visible;
-                else symHashSHA1Compare.Visibility = Visibility.Collapsed;
-
-
-                if (vs.Equals(edHashSHA256.Text.Trim(), StringComparison.CurrentCultureIgnoreCase)) symHashSHA256Compare.Visibility = Visibility.Visible;
-                else symHashSHA256Compare.Visibility = Visibility.Collapsed;
-
-
-                if (vs.Equals(edHashSHA384.Text.Trim(), StringComparison.CurrentCultureIgnoreCase)) symHashSHA384Compare.Visibility = Visibility.Visible;
-                else symHashSHA384Compare.Visibility = Visibility.Collapsed;
-
-
-                if (vs.Equals(edHashSHA512.Text.Trim(), StringComparison.CurrentCultureIgnoreCase)) symHashSHA512Compare.Visibility = Visibility.Visible;
-                else symHashSHA512Compare.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                symHashCRC32Compare.Visibility = Visibility.Collapsed;
-                symHashMD4Compare.Visibility = Visibility.Collapsed;
-                symHashMD5Compare.Visibility = Visibility.Collapsed;
-                symHashSHA1Compare.Visibility = Visibility.Collapsed;
-                symHashSHA256Compare.Visibility = Visibility.Collapsed;
-                symHashSHA384Compare.Visibility = Visibility.Collapsed;
-                symHashSHA512Compare.Visibility = Visibility.Collapsed;
-            }
         }
 
         #region Drag/Drop events routines
@@ -361,17 +379,14 @@ namespace StringCodec.UWP.Common
         private void OnDragEnter(object sender, DragEventArgs e)
         {
         }
-#endif
 
+#endif
         private void OnDragOver(object sender, DragEventArgs e)
         {
             if (e.DataView.Contains(StandardDataFormats.StorageItems))
             {
                 e.AcceptedOperation = DataPackageOperation.Copy;
                 e.DragUIOverride.Caption = "File".T();
-                //e.DragUIOverride.IsGlyphVisible = true;
-                //e.DragUIOverride.IsCaptionVisible = false;
-                //e.DragUIOverride.IsContentVisible = false;
             }
         }
 

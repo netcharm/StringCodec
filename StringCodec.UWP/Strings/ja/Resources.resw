@@ -1138,12 +1138,15 @@
     <value>ハッシュ値を比較</value>
   </data>
   <data name="HashCopy" xml:space="preserve">
-    <value>ハッシュをクリップボードにコピー</value>
+    <value>ハッシュ値をクリップボードにコピーする</value>
   </data>
   <data name="HashPaste" xml:space="preserve">
-    <value>クリップボードからハッシュを貼り付ける</value>
+    <value>クリップボードからハッシュ値を貼り付けます</value>
   </data>
   <data name="lblHashCompare.Text" xml:space="preserve">
     <value>比較</value>
+  </data>
+  <data name="HashCopyAll" xml:space="preserve">
+    <value>すべてのハッシュ値をクリップボードにコピーする</value>
   </data>
 </root>

@@ -1251,4 +1251,7 @@
   <data name="lblHashCompare.Text" xml:space="preserve">
     <value>Compare</value>
   </data>
+  <data name="HashCopyAll" xml:space="preserve">
+    <value>Copy All Hash to Clipboard</value>
+  </data>
 </root>

@@ -1508,15 +1508,19 @@
         </trans-unit>
         <trans-unit id="HashCopy" translate="yes" xml:space="preserve">
           <source>Copy Hash to Clipboard</source>
-          <target state="translated">ハッシュをクリップボードにコピー</target>
+          <target state="translated">ハッシュ値をクリップボードにコピーする</target>
         </trans-unit>
         <trans-unit id="HashPaste" translate="yes" xml:space="preserve">
           <source>Paste Hash from Clipboard</source>
-          <target state="translated">クリップボードからハッシュを貼り付ける</target>
+          <target state="translated">クリップボードからハッシュ値を貼り付けます</target>
         </trans-unit>
         <trans-unit id="lblHashCompare.Text" translate="yes" xml:space="preserve">
           <source>Compare</source>
           <target state="translated">比較</target>
+        </trans-unit>
+        <trans-unit id="HashCopyAll" translate="yes" xml:space="preserve">
+          <source>Copy All Hash to Clipboard</source>
+          <target state="translated">すべてのハッシュ値をクリップボードにコピーする</target>
         </trans-unit>
       </group>
     </body>
