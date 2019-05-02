@@ -1423,23 +1423,21 @@ namespace StringCodec.UWP.Common
         #region Local Setting Helper
         public static object Get(string key, object value = null)
         {
-            object result = null;
+            object result = value;
 
             if (AppSetting.ContainsKey(key) && AppSetting[key] != null)
                 result = AppSetting[key];
-            else if (ApplicationData.Current.LocalSettings.Values.ContainsKey(key))
+            else if (ApplicationData.Current.LocalSettings.Values.ContainsKey(key) && ApplicationData.Current.LocalSettings.Values[key] != null)
                 result = ApplicationData.Current.LocalSettings.Values[key];
             else
             {
                 if (value != null)
                 {
                     ApplicationData.Current.LocalSettings.Values.Add(key, value);
-                    //ApplicationData.Current.LocalSettings.Values[key] = value;
                     AppSetting[key] = value;
                 }
-                result = value;
             }
-
+            if (result is string && string.IsNullOrEmpty(result as string)) result = value;
             return (result);
         }
 
@@ -1596,7 +1594,7 @@ namespace StringCodec.UWP.Common
     {
         //public static string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif", ".svg", ".xaml" };
         public static string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif", ".svg", ".spa", ".sph" };
-        public static string[] image_exts = new string[] { ".pcx", ".tga", ".ras", ".sun", ".ppm", ".pgm", ".pbm", ".pnm", ".sgi"};
+        public static string[] image_exts = new string[] { ".pcx", ".tga", ".ras", ".sun", ".ppm", ".pgm", ".pbm", ".pnm", ".sgi" };
         public static string[] text_ext = new string[] {
             ".txt", ".text", ".base64", ".md", ".me", ".htm", ".html", ".xhtml", ".css", ".rst", ".xml", ".csv",
             ".cs", ".xaml", ".js", ".ts", ".json", ".cpp", ".hpp", ".c", ".cc", ".h", ".vb", ".vbs", ".py", ".pyw",".pas", ".r",

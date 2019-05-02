@@ -126,8 +126,9 @@ namespace StringCodec.UWP.Common
 
             try
             {
-                var opts = (Settings.Get("HashSelected") as string).Split(",");
-                var hashlist = opts.Select(o => (TextCodecs.HASH)Enum.Parse(typeof(TextCodecs.HASH), o));
+                //var opts = Settings.Get("HashSelected", new string[]{ }) == null ?  : (Settings.Get("HashSelected") as string).Split(",");
+                var opts =  (Settings.Get("HashSelected", "MD5,SHA256") as string).Split(",");
+                var hashlist = opts.Select(o => (TextCodecs.HASH)Enum.Parse(typeof(TextCodecs.HASH), o.Trim().Upper()));
                 foreach (var h in hashlist)
                 {
                     if (h == TextCodecs.HASH.CRC32) chkHashCRC32.IsChecked = true;
@@ -151,7 +152,7 @@ namespace StringCodec.UWP.Common
                 symHashPaste.SetValue(ToolTipService.ToolTipProperty, "HashPaste".T());
                 symHashCompare.SetValue(ToolTipService.ToolTipProperty, "HashCompare".T());
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ex.Message.T().ShowMessage("ERROR".T());
             }
