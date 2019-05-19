@@ -1,0 +1,399 @@
+﻿Field,ID,Type (Type),default,en-us,ja,zh-hans,zh-hant
+Description,2,Text,,"This application is text string encode and decode tool.
+
+1. URL encode/decode
+2. BASE64, UUEncode, XXEncode, Quoted Printable encode/decode
+3. Raw bytes like \x0d\x0a encode/decode
+4. encode small image to base64 string or decode image from base64 string
+5. text to QR code, or decode QR code from clipboard image
+6. text to some 1D barcode, or decode content from clipboard image
+7. rename file or folder name to specified oem charset (UTF8, GBK, BIG5, SHIFT-JIS, ASCII, UNICODE)
+8. convert text file content from source charset to target charset (UTF8, GBK, BIG5, SHIFT-JIS, ASCII, UNICODE)
+9. Simple SVG support, can be used to create Windows icons required series of bitmaps
+10. Simple Morse-Code Encoder/Decoder.
+11. English text Case conversion
+12. Chinese number/currency uppercase (rule reference from Wikipedia, not too many test conversion results may not be completely accurate)
+13. Simple Chinese Simplified/Traditional conversion, used library provided by the Microsoft, there is not supported cross-strait unique terms (the OPENCC.UWP library always failed when conversion).
+14. The Full-Width/Half-Width conversion of Chinese numeric characters, not full featured for all symbol.
+15. Japanese Digital/currency conversion to uppercase (rule reference from Wikipedia, not too many test conversion results may not be completely accurate)
+16. Case conversion of Japanese katakana, Full-Width/Half-Width conversion
+17. Generate GUID/UUID (Microsoft format)
+18. Convert HTML text special characters
+19. Encode/Decode From/To file
+20. Calculating String/File Hash ( CRC32, MD4/eDonkey/eMule, MD5, SHA1, SHA256, SHA384, SHA512)
+","これは、クリップボードからクリップボード/ペーストに結果をコピーし、テキストや生成された画像を共有することができ、テキスト文字列のエンコードとデコードのためのガジェットです。
+
+1. URL のエンコード/デコード
+2. BASE64, UUEncode, XXEncode, Quoted Printable エンコード/デコード
+3. \x0d\x0a などの元のバイトなどの文字列の内容のエンコード/デコード
+4. 小さいイメージを base64 文字列としてエンコードするか、base64 文字列からイメージをデコードします。
+5. qr コードへのテキスト、またはクリップボードの画像から qr コードをデコード
+6. いくつかの一次元バーコードにテキスト、またはクリップボードの画像からコンテンツをデコード
+7. ファイルまたはフォルダの名前を指定された OEM 文字セットに変更します (現在、Utf8、gbk、big5、シフト jis、ascii、unicode、Windows-1250 ~ 1258)
+8. テキストファイルの内容をソースキャラクタセットからターゲットキャラクタセットに変換します (現在サポートされている Utf8、gbk、big5、シフト jis、ascii、unicode、Windows-1250 ~ 1258)
+9. シンプルな SVG のサポートは、Windows のアイコンを作成するために使用することができますビットマップの必要な一連の
+10. モールス信号の簡単なコーデック。
+11. 英語テキストケース変換
+12. 中国の数字/通貨を大文字に変換 (ウィキペディアからのルール参照、あまりにも多くのテスト変換の結果は完全に正確ではないかもしれません)
+13. 簡単な中国の簡体字変換、ライブラリによって提供されるマイクロソフトの使用は、スワップ機能のクロス海峡ユニークな用語がありません (もともと OPENCC を採用したかったです。 UWP ライブラリでは、変換が常に失敗する理由がわかりません)。
+14. 中国の数字文字のフルアングルのハーフアングル変換は、ルールがより複雑であり、マッピング法が見つからないため、シンボル変換は非常に包括的ではありません
+15. 日本のデジタル/通貨から大文字への変換 (ウィキペディアからのルール参照は、あまりにも多くのテスト変換の結果が完全に正確ではないかもしれません)
+16. 日本語カタカナのケース変換、フルアングルのハーフアングル変換
+17. GUID/UUID の生成
+18. HTML テキスト特殊文字変換
+19. ファイルのロードからファイルへのコーデックの結果をデコードし、保存する機能をサポート
+20. 文字列/ファイルハッシュの計算（CRC32、MD4 / eDonkey / eMule、MD5、SHA1、SHA256、SHA384、SHA512）","这是一个用于文本字符串编码和解码小工具, 可以复制结果到剪贴板/从剪贴板粘贴以及共享文本或生成的图片.
+
+1. URL编码/解码
+2. BASE64, UUEncode, XXEncode. Quoted Printable 编码/解码
+3. 原始字节，如\x0d\x0a这样的字符串内容的编码/解码
+4. 将小图像编码为base64字符串或从BASE64 字符串解码图像
+5. 文本到QR码，或从剪贴板图像解码QR二维码
+6. 文本到一些一维条形码，或从剪贴板图像解码内容
+7. 将文件或文件夹名称重命名为指定的 OEM 字符集（现支持 UTF8，GBK，BIG5，SHIFT-JIS，ASCII，UNICODE, Windows-1250~1258）
+8. 将文本文件内容从源字符集转换为目标字符集（现支持 UTF8，GBK，BIG5，SHIFT-JIS，ASCII，UNICODE, Windows-1250~1258）
+9. 简单的SVG支持, 可以用来创建Windows图标所需的系列位图
+10. 莫尔斯电码的简单编解码.
+11. 英文文字大小写转换
+12. 中文数字/货币转为大写(规则参考自维基百科, 未经太多测试转换结果可能不完全准确)
+13. 简单的中文简繁转换, 使用的是微软提供的库, 没有两岸特有名词的互换功能(原本想采用的OpenCC.UWP的库不知道为什么始终转换失败).
+14. 中文数字字符的全角半角转换, 因为规则比较繁杂, 而且没有找到映射规律, 所以符号转换不是很全面
+15. 日文数字/货币转换为大写(规则参考自维基百科, 未经太多测试转换结果可能不完全准确)
+16. 日文片假名的大小写转换, 全角半角转换
+17. GUID/UUID 生成
+18. HTML文本特殊字符转换
+19. 支持从文件载入内容编解码与保存编解码结果到文件的功能
+20. 支持自定义简繁转换的短语
+21. 字符串/文件的散列计算, 支持 CRC32, MD4/eDonkey/eMule, MD5, SHA1, SHA256, SHA384, SHA512","這是一個用於文本字符串編碼和解碼小工具, 可以複製結果到剪貼板/從剪貼板粘貼以及共享文本或生成的圖片.
+
+1. URL編碼/解碼
+2. BASE64, UUEncode, XXEncode. Quoted Printable 編碼/解碼
+3. 原始字節，如\x0d\x0a這樣的字符串內容的編碼/解碼
+4. 將小圖像編碼為base64字符串或從BASE64 字符串解碼圖像
+5. 文本到QR碼，或從剪貼板圖像解碼QR二維碼
+6. 文本到一些一維條形碼，或從剪貼板圖像解碼內容
+7. 將檔案或檔案夾名稱重命名為指定的 OEM 字符集（現支持 UTF8，GBK，BIG5，SHIFT-JIS，ASCII，UNICODE, Windows-1250~1258）
+8. 將文本檔案內容從源字符集轉換為目標字符集（現支持 UTF8，GBK，BIG5，SHIFT-JIS，ASCII，UNICODE, Windows-1250~1258）
+9. 簡單的SVG支持, 可以用來創建Windows圖標所需的系列位圖
+10. 莫爾斯電碼的簡單編解碼.
+11. 英文文字大小寫轉換
+12. 中文數字/貨幣轉為大寫(規則參考自維基百科, 未經太多測試轉換結果可能不完全準確)
+13. 簡單的中文簡繁轉換, 使用的是微軟提供的庫, 沒有兩岸特有名詞的互換功能(原本想採用的OpenCC.UWP的庫不知道為什麼始終轉換失敗).
+14. 中文數字字符的全角半角轉換, 因為規則比較繁雜, 而且沒有找到映射規律, 所以符號轉換不是很全面
+15. 日文數字/貨幣轉換為大寫(規則參考自維基百科, 未經太多測試轉換結果可能不完全準確)
+16. 日文片假名的大小寫轉換, 全角半角轉換
+17. GUID/UUID 生成
+18. HTML文本特殊字符轉換
+19. 支持從檔案載入內容編解碼與保存編解碼結果到檔案的功能
+20. 支持自定義簡繁轉換的短語
+21. 字符串/檔案的散列計算, 支持 CRC32, MD4/eDonkey/eMule, MD5, SHA1, SHA256, SHA384, SHA512"
+ReleaseNotes,3,Text,,"2019/05/02
+1. Add feature of ""Calculating String/File Hash"", supported CRC32, MD4/eDonkey/eMule, MD5, SHA1, SHA256, SHA384, SHA512.
+2. Fixed some monor bugs. 
+
+2018/12/23
+1. Fix crash errors when loading the system default UI language at startup, which can occur in a single-language region, such as Japan.
+2. Add uuencode, Xxencode, Quoted Printable codec, 
+3. Add encode/decode from/to file
+
+2018/12/18
+1. Added code pages for some European countries intuitive selection support
+2. Some issues that caused the crash may have been fixed
+3. Simple Morse-Code Encoder/Decoder.
+4. English text Case conversion
+5. Chinese number/currency uppercase (rule reference from Wikipedia, not too many test conversion results may not be completely accurate)
+6. Simple Chinese Simplified/Traditional conversion, used library provided by the Microsoft, there is not supported cross-strait unique terms (the OPENCC.UWP library always failed when conversion).
+7. The Full-Width/Half-Width conversion of Chinese numeric characters, not full featured for all symbol.
+8. Japanese Digital/currency conversion to uppercase (rule reference from Wikipedia, not too many test conversion results may not be completely accurate)
+9. Case conversion of Japanese katakana, Full-Width/Half-Width conversion
+10. Generate GUID/UUID (Microsoft format)
+11. Convert HTML text special characters
+11. Add HTML text special character conversion","2019/05/02
+1. CRC32、MD4 / eDonkey / eMule、MD5、SHA1、SHA256、SHA384、SHA512をサポートする「Calculating String / File Hash」の機能を追加しました。
+2. いくつかの問題を修正しました。
+
+2018/12/23
+1. 日本のような単一言語の地域で発生する可能性がある起動時にシステムの既定の UI 言語を読み込むときにクラッシュエラーを修正します。
+2. uuencode、Xxencode、引用印刷可能なコーデックのサポートを増やし、
+3. ファイルの読み込み内容からファイルへのコーデック結果のデコードおよび保存機能を向上
+
+2018/12/18
+1. いくつかのヨーロッパ諸国のためのコードページを追加しました直観的な選択サポート
+2. クラッシュの原因となった問題が修正された可能性がある
+3. モールス符号の単純なコーデックを増やします。
+4. 英語のテキストケース変換を追加します。
+5. 中国語の数字/通貨を大文字にします (ウィキペディアからのルール参照は、あまりにも多くのテスト変換結果が完全に正確でない可能性があります)
+6. 簡単な中国語簡体字変換を追加します。マイクロソフトが提供するライブラリを使用して、クロス海峡ユニークな名詞スワップ機能はありません (もともと OPENCC を採用したかったです。 UWP ライブラリでは、変換が常に失敗する理由がわかりません)。
+7. ルールは複雑であり、マッピング法が見つからないため、中国語の数字のフルアングルのハーフアングル変換を増やし、シンボルの変換は非常に包括的ではありません
+8. 日本語の数値/通貨変換を大文字にします (ウィキペディアからのルール参照は、あまりにも多くのテスト変換結果が完全に正確でない可能性があります)
+9. 日本語カタカナの大文字変換、フルアングルハーフアングル変換の増加
+10. Guid/uuid の生成を増やします。
+11. HTML テキストの追加特殊文字変換
+
+2018/10/30
+1. いくつかのエラーを修正する
+2. デコード/エンコーディングをサポートするテキスト/ファイル・コード・ページの追加
+3. Windows アイコンに必要な一連のビットマップを作成するために使用できる単純な SVG サポートを追加します。
+4. ディレクトリを展開するときなど、ファイル/フォルダのツリービューの動作を変更して、パフォーマンスを向上させるためにインクルードされたファイル/サブディレクトリのリストを取得します。 これで、アイテムを右クリックして名前の変更/変換を直接行うことができます。
+5. 一部の UI レイアウトを最適化する","2019/05/02
+1.  增加字符串/文件的散列计算功能, 支持 CRC32, MD4/eDonkey/eMule, MD5, SHA1, SHA256, SHA384, SHA512.
+2. 修复代码中的一些小错误. 
+
+2019/02/28
+1. 改用新同文堂的词汇转换表, 并支持自定义简繁转换的短语
+2. 修复一些小BUG. 如SVG文件载入时修正文件头, 数字转换中文大写错误
+
+2018/12/23
+1. 修复启动时载入系统默认UI语言时的崩溃错误, 会出现在单一语种的地区, 例如日本.
+2. 增加对UUEncode, XXEncode, Quoted Printable 编解码的支持,
+3. 增加从文件载入内容编解码与保存编解码结果到文件的功能
+
+2018/12/18
+1. 增加了一些欧洲国家的代码页直观选择支持
+2. 可能修复了一些引发崩溃的问题
+3. 增加莫尔斯电码的简单编解码.
+4. 增加英文文字大小写转换
+5. 增加中文数字/货币转为大写(规则参考自维基百科, 未经太多测试转换结果可能不完全准确)
+6. 增加简单的中文简繁转换, 使用的是微软提供的库, 没有两岸特有名词的互换功能(原本想采用的OpenCC.UWP的库不知道为什么始终转换失败).
+7. 增加中文数字字符的全角半角转换, 因为规则比较繁杂, 而且没有找到映射规律, 所以符号转换不是很全面
+8. 增加日文数字/货币转换为大写(规则参考自维基百科, 未经太多测试转换结果可能不完全准确)
+9. 增加日文片假名的大小写转换, 全角半角转换
+10. 增加GUID/UUID 生成
+11. 增加HTML文本特殊字符转换
+
+2018/10/30
+1. 修复若干错误
+2. 支持解码/编码更多的文本/文件代码页
+3. 添加简单的SVG支持, 可以用来创建Windows图标所需的系列位图
+4. 改变文件/文件夹的树视图的行为, 如展开目录时才获取包含的文件/子目录列表, 以提升性能. 现在直接鼠标右击项目就可以重命名/转换,不需要先选中才可以
+5. 优化一些UI布局
+","2019/05/02
+1.  增加字符串/檔案的散列計算功能, 支持 CRC32, MD4/eDonkey/eMule, MD5, SHA1, SHA256, SHA384, SHA512.
+2. 修復代碼中的一些小錯誤. 
+
+2019/02/28
+1. 改用新同文堂的詞彙轉換表, 並支持自定義簡繁轉換的短語
+2. 修復一些小BUG. 如SVG檔案載入時修正檔案頭, 數字轉換中文大寫錯誤
+
+2018/12/23
+1. 修復啟動時載入系統默認UI語言時的崩潰錯誤, 會出現在單一語種的地區, 例如日本.
+2. 增加對UUEncode, XXEncode, Quoted Printable 編解碼的支持,
+3. 增加從檔案載入內容編解碼與保存編解碼結果到檔案的功能
+
+2018/12/18
+1. 增加了一些歐洲國家的代碼頁直觀選擇支持
+2. 可能修復了一些引發崩潰的問題
+3. 增加莫爾斯電碼的簡單編解碼.
+4. 增加英文文字大小寫轉換
+5. 增加中文數字/貨幣轉為大寫(規則參考自維基百科, 未經太多測試轉換結果可能不完全準確)
+6. 增加簡單的中文簡繁轉換, 使用的是微軟提供的庫, 沒有兩岸特有名詞的互換功能(原本想採用的OpenCC.UWP的庫不知道為什麼始終轉換失敗).
+7. 增加中文數字字符的全角半角轉換, 因為規則比較繁雜, 而且沒有找到映射規律, 所以符號轉換不是很全面
+8. 增加日文數字/貨幣轉換為大寫(規則參考自維基百科, 未經太多測試轉換結果可能不完全準確)
+9. 增加日文片假名的大小寫轉換, 全角半角轉換
+10. 增加GUID/UUID 生成
+11. 增加HTML文本特殊字符轉換
+
+2018/10/30
+1. 修復若干錯誤
+2. 支持解碼/編碼更多的文本/檔案代碼頁
+3. 添加簡單的SVG支持, 可以用來創建Windows圖標所需的系列位圖
+4. 改變檔案/檔案夾的樹視圖的行為, 如展開目錄時才獲取包含的檔案/子目錄列表, 以提升性能. 現在直接鼠標右擊項目就可以重命名/轉換,不需要先選中才可以
+5. 優化一些UI佈局
+"
+Title,4,Text,,StringCodec,テキストコーデック,文本编码解码工具,文本編碼解碼工具
+ShortTitle,5,Text,,,,,
+SortTitle,6,Text,,,,,
+VoiceTitle,7,Text,,,,,
+ShortDescription,8,Text,,,,,
+DevStudio,9,Text,,netcharm,netcharm,netcharm,netcharm
+CopyrightTrademarkInformation,12,Text,,netcharm,netcharm,netcharm,netcharm
+AdditionalLicenseTerms,13,Text,,,,,
+DesktopScreenshot1,100,Relative path (or URL to file in Partner Center),,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688601505/listings/1152922700001118342/listingassets/2000000000017839999,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688601505/listings/1152922700001118344/listingassets/2000000000017845202,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688601505/listings/1152922700001118346/listingassets/2000000000017843766,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688601505/listings/1152922700001118348/listingassets/2000000000017843164
+DesktopScreenshot2,101,Relative path (or URL to file in Partner Center),,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688601505/listings/1152922700001118342/listingassets/2000000000017840226,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688601505/listings/1152922700001118344/listingassets/2000000000017845207,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688601505/listings/1152922700001118346/listingassets/2000000000017843910,
+DesktopScreenshot3,102,Relative path (or URL to file in Partner Center),,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688601505/listings/1152922700001118342/listingassets/2000000000017840292,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688601505/listings/1152922700001118344/listingassets/2000000000017845261,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688601505/listings/1152922700001118346/listingassets/2000000000017843911,
+DesktopScreenshot4,103,Relative path (or URL to file in Partner Center),,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688601505/listings/1152922700001118342/listingassets/2000000000017840297,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688601505/listings/1152922700001118344/listingassets/2000000000017845263,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688601505/listings/1152922700001118346/listingassets/2000000000017843912,
+DesktopScreenshot5,104,Relative path (or URL to file in Partner Center),,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688601505/listings/1152922700001118342/listingassets/2000000000017840347,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688601505/listings/1152922700001118344/listingassets/2000000000017845268,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688601505/listings/1152922700001118346/listingassets/2000000000017843913,
+DesktopScreenshot6,105,Relative path (or URL to file in Partner Center),,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688601505/listings/1152922700001118342/listingassets/2000000000017840421,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688601505/listings/1152922700001118344/listingassets/2000000000017845306,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688601505/listings/1152922700001118346/listingassets/2000000000017843915,
+DesktopScreenshot7,106,Relative path (or URL to file in Partner Center),,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688601505/listings/1152922700001118342/listingassets/2000000000017840425,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688601505/listings/1152922700001118344/listingassets/2000000000017845323,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688601505/listings/1152922700001118346/listingassets/2000000000017843916,
+DesktopScreenshot8,107,Relative path (or URL to file in Partner Center),,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688601505/listings/1152922700001118342/listingassets/2000000000017840535,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688601505/listings/1152922700001118344/listingassets/2000000000017845367,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688601505/listings/1152922700001118346/listingassets/2000000000017843919,
+DesktopScreenshot9,108,Relative path (or URL to file in Partner Center),,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688601505/listings/1152922700001118342/listingassets/2000000000017840582,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688601505/listings/1152922700001118344/listingassets/2000000000017845396,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688601505/listings/1152922700001118346/listingassets/2000000000017844091,
+DesktopScreenshot10,109,Relative path (or URL to file in Partner Center),,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688601505/listings/1152922700001118342/listingassets/2000000000017840588,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688601505/listings/1152922700001118344/listingassets/2000000000017845414,https://developer.microsoft.com/en-us/dashboard/apps/9N49BK55S2JZ/submissions/1152921505688601505/listings/1152922700001118346/listingassets/2000000000017844095,
+DesktopScreenshotCaption1,150,Text,,Main UI,テキストコーデック表示,导航视图,
+DesktopScreenshotCaption2,151,Text,,QR Encode and Decode UI,ナビゲーションビュー,文本编码解码视图,
+DesktopScreenshotCaption3,152,Text,,Small Image From/To BASE64 UI,QRコード生成/解釈ビュー,二维码生成/解读视图,
+DesktopScreenshotCaption4,153,Text,,Common 1-D Barcode Encode and Decode UI,BASE64と画像変換ビュー,一维条码生成/解码视图,
+DesktopScreenshotCaption5,154,Text,,QR Code and 1D Barcode Foreground/Background Color picker dialog,バーコード生成/復号化ビュー,二维码/条码颜色选取对话框,
+DesktopScreenshotCaption6,155,Text,,Common QR Code Builder UI,特定のコンテンツのQRコード生成ビュー,特定内容的二维码生成视图,
+DesktopScreenshotCaption7,156,Text,,Common QR Code options flyout,指定したファイル/フォルダを開き、ファイル/フォルダ名を指定した文字セットに変更するか、ソースファイルセットから指定した文字セットに変更します,"打开指定的文件/文件夹, 以便对文件/文件夹的名称做指定字符集的重命名或者文本文件的内容从源字符集转换为指定的字符集",
+DesktopScreenshotCaption8,157,Text,,File and Folder rename/convert UI with source Shift-JIS text,上のコマンドボタンバーで、名前の変更/変換ボタンを右クリックして、関連するオプションを表示します。,"选中一个文件或者文件后, 就可以右键弹出快捷菜单以便重命名/文本内容转换",
+DesktopScreenshotCaption9,158,Text,,when selected one item you can right-click mouse/right tapped to popup a context flyout for fast rename/convert item,"选中一个文件或者文件后, 就可以右键弹出快捷菜单以便重命名/文本内容转换","在上方的命令按钮条上, 右键点击重命名/转换按钮会弹出相关的选项.",
+DesktopScreenshotCaption10,159,Text,,"right-click or right tapped on rename/convert AppBar command button, will popup the options for rename/convert",ビューセット、あなたが今、窓ダーク/ライトのテーマだけでなく、ユーザーインターフェースの言語を設定することができます流暢ではないが、私を許してください場合は、今、機械翻訳のための英語/簡体字中国語/繁体字中国語/日本語、日本語ベースのインターフェイスをサポートしています,"设定视图, 现在可以设定窗口主题深色/浅色, 以及用户界面的语言, 现在支持英语/简体中文/繁体中文/日语, 日语界面为机器翻译为主, 如有不通顺请见谅",
+MobileScreenshot1,200,Relative path (or URL to file in Partner Center),,,,,
+MobileScreenshot2,201,Relative path (or URL to file in Partner Center),,,,,
+MobileScreenshot3,202,Relative path (or URL to file in Partner Center),,,,,
+MobileScreenshot4,203,Relative path (or URL to file in Partner Center),,,,,
+MobileScreenshot5,204,Relative path (or URL to file in Partner Center),,,,,
+MobileScreenshot6,205,Relative path (or URL to file in Partner Center),,,,,
+MobileScreenshot7,206,Relative path (or URL to file in Partner Center),,,,,
+MobileScreenshot8,207,Relative path (or URL to file in Partner Center),,,,,
+MobileScreenshot9,208,Relative path (or URL to file in Partner Center),,,,,
+MobileScreenshot10,209,Relative path (or URL to file in Partner Center),,,,,
+MobileScreenshotCaption1,250,Text,,,,,
+MobileScreenshotCaption2,251,Text,,,,,
+MobileScreenshotCaption3,252,Text,,,,,
+MobileScreenshotCaption4,253,Text,,,,,
+MobileScreenshotCaption5,254,Text,,,,,
+MobileScreenshotCaption6,255,Text,,,,,
+MobileScreenshotCaption7,256,Text,,,,,
+MobileScreenshotCaption8,257,Text,,,,,
+MobileScreenshotCaption9,258,Text,,,,,
+MobileScreenshotCaption10,259,Text,,,,,
+XboxScreenshot1,300,Relative path (or URL to file in Partner Center),,,,,
+XboxScreenshot2,301,Relative path (or URL to file in Partner Center),,,,,
+XboxScreenshot3,302,Relative path (or URL to file in Partner Center),,,,,
+XboxScreenshot4,303,Relative path (or URL to file in Partner Center),,,,,
+XboxScreenshot5,304,Relative path (or URL to file in Partner Center),,,,,
+XboxScreenshot6,305,Relative path (or URL to file in Partner Center),,,,,
+XboxScreenshot7,306,Relative path (or URL to file in Partner Center),,,,,
+XboxScreenshot8,307,Relative path (or URL to file in Partner Center),,,,,
+XboxScreenshot9,308,Relative path (or URL to file in Partner Center),,,,,
+XboxScreenshot10,309,Relative path (or URL to file in Partner Center),,,,,
+XboxScreenshotCaption1,350,Text,,,,,
+XboxScreenshotCaption2,351,Text,,,,,
+XboxScreenshotCaption3,352,Text,,,,,
+XboxScreenshotCaption4,353,Text,,,,,
+XboxScreenshotCaption5,354,Text,,,,,
+XboxScreenshotCaption6,355,Text,,,,,
+XboxScreenshotCaption7,356,Text,,,,,
+XboxScreenshotCaption8,357,Text,,,,,
+XboxScreenshotCaption9,358,Text,,,,,
+XboxScreenshotCaption10,359,Text,,,,,
+HolographicScreenshot1,400,Relative path (or URL to file in Partner Center),,,,,
+HolographicScreenshot2,401,Relative path (or URL to file in Partner Center),,,,,
+HolographicScreenshot3,402,Relative path (or URL to file in Partner Center),,,,,
+HolographicScreenshot4,403,Relative path (or URL to file in Partner Center),,,,,
+HolographicScreenshot5,404,Relative path (or URL to file in Partner Center),,,,,
+HolographicScreenshot6,405,Relative path (or URL to file in Partner Center),,,,,
+HolographicScreenshot7,406,Relative path (or URL to file in Partner Center),,,,,
+HolographicScreenshot8,407,Relative path (or URL to file in Partner Center),,,,,
+HolographicScreenshot9,408,Relative path (or URL to file in Partner Center),,,,,
+HolographicScreenshot10,409,Relative path (or URL to file in Partner Center),,,,,
+HolographicScreenshotCaption1,450,Text,,,,,
+HolographicScreenshotCaption2,451,Text,,,,,
+HolographicScreenshotCaption3,452,Text,,,,,
+HolographicScreenshotCaption4,453,Text,,,,,
+HolographicScreenshotCaption5,454,Text,,,,,
+HolographicScreenshotCaption6,455,Text,,,,,
+HolographicScreenshotCaption7,456,Text,,,,,
+HolographicScreenshotCaption8,457,Text,,,,,
+HolographicScreenshotCaption9,458,Text,,,,,
+HolographicScreenshotCaption10,459,Text,,,,,
+StoreLogo720x1080,600,Relative path (or URL to file in Partner Center),,,,,
+StoreLogo1080x1080,601,Relative path (or URL to file in Partner Center),,,,,
+StoreLogo300x300,602,Relative path (or URL to file in Partner Center),,,,,
+PromoImage1920x1080,606,Relative path (or URL to file in Partner Center),,,,,
+PromoImage2400x1200,607,Relative path (or URL to file in Partner Center),,,,,
+XboxBrandedKeyArt584x800,608,Relative path (or URL to file in Partner Center),,,,,
+XboxTitledHero1920x1080,609,Relative path (or URL to file in Partner Center),,,,,
+XboxFeaturedPromo1080x1080,610,Relative path (or URL to file in Partner Center),,,,,
+Feature1,700,Text,,"Text From/To URL, BASE64, QRCODE, BARCODE...",BASE64コーデック画像,BASE64 编解码图像,BASE64 编解码图像
+Feature2,701,Text,,"Load SVG Icon file, and convert it to windows icon images",QRコードQRコードを生成する,生成QRCode二维码,生成QRCode二维码
+Feature3,702,Text,,UUEncode XXEncode QuotedPrintable,テキストまたはQRコード/画像を共有する,共享文本或者二维码/图像,共享文本或者二维码/图像
+Feature4,703,Text,,Share QRCode To other apps,UUEncode XXEncode Quoted Printable,SVG转换为图标系列图像文件,UUEncode XXEncode Quoted Printable
+Feature5,704,Text,,String/File Hash Calculating,文字列/ファイルハッシュの計算,UUEncode XXEncode Quoted Printable,字符串/文件 散列计算
+Feature6,705,Text,,,,字符串/文件的散列值计算,
+Feature7,706,Text,,,,,
+Feature8,707,Text,,,,,
+Feature9,708,Text,,,,,
+Feature10,709,Text,,,,,
+Feature11,710,Text,,,,,
+Feature12,711,Text,,,,,
+Feature13,712,Text,,,,,
+Feature14,713,Text,,,,,
+Feature15,714,Text,,,,,
+Feature16,715,Text,,,,,
+Feature17,716,Text,,,,,
+Feature18,717,Text,,,,,
+Feature19,718,Text,,,,,
+Feature20,719,Text,,,,,
+RecommendedHardwareReq1,850,Text,,,,,
+RecommendedHardwareReq2,851,Text,,,,,
+RecommendedHardwareReq3,852,Text,,,,,
+RecommendedHardwareReq4,853,Text,,,,,
+RecommendedHardwareReq5,854,Text,,,,,
+RecommendedHardwareReq6,855,Text,,,,,
+RecommendedHardwareReq7,856,Text,,,,,
+RecommendedHardwareReq8,857,Text,,,,,
+RecommendedHardwareReq9,858,Text,,,,,
+RecommendedHardwareReq10,859,Text,,,,,
+RecommendedHardwareReq11,860,Text,,,,,
+SearchTerm1,900,Text,,String Encode Decode,"テキストエンコーディングのデコード ハッシュ ",文本 编码 解码 散列,文本 編碼 解碼 散列
+SearchTerm2,901,Text,,Text Encode Decode,BASE64画像符号化復号化,BASE64 图像 编码 解码,BASE64 圖像 編碼 解碼
+SearchTerm3,902,Text,,"QRCode Generator Decode ",QRコードエンコードデコード,二维码 编码 解码,二維碼 編碼 解碼
+SearchTerm4,903,Text,,Image From To Base64,1次元バーコードのエンコードとデコード,一维 条码 编码 解码,一維 條碼 編碼 解碼
+SearchTerm5,904,Text,,SVG To Image,文字セット名の変更とテキストファイルの変換を指定する,指定字符集重命名以及转换文本文件,指定字符集重命名以及轉換文本檔案
+SearchTerm6,905,Text,,File Folder charset,SVG画像,SVG 图像,SVG 圖像
+SearchTerm7,906,Text,,Hash Calc,UUE XXE Quoted,UUE XXE Quoted,UUE XXE Quoted
+TrailerToPlayAtTopOfListing,999,Relative path (or URL to file in Partner Center),,,,,
+Trailer1,1000,Relative path (or URL to file in Partner Center),,,,,
+Trailer2,1001,Relative path (or URL to file in Partner Center),,,,,
+Trailer3,1002,Relative path (or URL to file in Partner Center),,,,,
+Trailer4,1003,Relative path (or URL to file in Partner Center),,,,,
+Trailer5,1004,Relative path (or URL to file in Partner Center),,,,,
+Trailer6,1005,Relative path (or URL to file in Partner Center),,,,,
+Trailer7,1006,Relative path (or URL to file in Partner Center),,,,,
+Trailer8,1007,Relative path (or URL to file in Partner Center),,,,,
+Trailer9,1008,Relative path (or URL to file in Partner Center),,,,,
+Trailer10,1009,Relative path (or URL to file in Partner Center),,,,,
+Trailer11,1010,Relative path (or URL to file in Partner Center),,,,,
+Trailer12,1011,Relative path (or URL to file in Partner Center),,,,,
+Trailer13,1012,Relative path (or URL to file in Partner Center),,,,,
+Trailer14,1013,Relative path (or URL to file in Partner Center),,,,,
+Trailer15,1014,Relative path (or URL to file in Partner Center),,,,,
+TrailerTitle1,1020,Text,,,,,
+TrailerTitle2,1021,Text,,,,,
+TrailerTitle3,1022,Text,,,,,
+TrailerTitle4,1023,Text,,,,,
+TrailerTitle5,1024,Text,,,,,
+TrailerTitle6,1025,Text,,,,,
+TrailerTitle7,1026,Text,,,,,
+TrailerTitle8,1027,Text,,,,,
+TrailerTitle9,1028,Text,,,,,
+TrailerTitle10,1029,Text,,,,,
+TrailerTitle11,1030,Text,,,,,
+TrailerTitle12,1031,Text,,,,,
+TrailerTitle13,1032,Text,,,,,
+TrailerTitle14,1033,Text,,,,,
+TrailerTitle15,1034,Text,,,,,
+TrailerThumbnail1,1040,Relative path (or URL to file in Partner Center),,,,,
+TrailerThumbnail2,1041,Relative path (or URL to file in Partner Center),,,,,
+TrailerThumbnail3,1042,Relative path (or URL to file in Partner Center),,,,,
+TrailerThumbnail4,1043,Relative path (or URL to file in Partner Center),,,,,
+TrailerThumbnail5,1044,Relative path (or URL to file in Partner Center),,,,,
+TrailerThumbnail6,1045,Relative path (or URL to file in Partner Center),,,,,
+TrailerThumbnail7,1046,Relative path (or URL to file in Partner Center),,,,,
+TrailerThumbnail8,1047,Relative path (or URL to file in Partner Center),,,,,
+TrailerThumbnail9,1048,Relative path (or URL to file in Partner Center),,,,,
+TrailerThumbnail10,1049,Relative path (or URL to file in Partner Center),,,,,
+TrailerThumbnail11,1050,Relative path (or URL to file in Partner Center),,,,,
+TrailerThumbnail12,1051,Relative path (or URL to file in Partner Center),,,,,
+TrailerThumbnail13,1052,Relative path (or URL to file in Partner Center),,,,,
+TrailerThumbnail14,1053,Relative path (or URL to file in Partner Center),,,,,
+TrailerThumbnail15,1054,Relative path (or URL to file in Partner Center),,,,,
+OverrideLogosForWin10,603,True/False,,False,False,False,False
+StoreLogoOverride150x150,604,Relative path (or URL to file in Partner Center),,,,,
+StoreLogoOverride71x71,605,Relative path (or URL to file in Partner Center),,,,,
+OptionalPromo358x358,611,Relative path (or URL to file in Partner Center),,,,,
+OptionalPromo1000x800,612,Relative path (or URL to file in Partner Center),,,,,
+OptionalPromo414x180,613,Relative path (or URL to file in Partner Center),,,,,
+MinimumHardwareReq1,800,Text,,,,,
+MinimumHardwareReq2,801,Text,,,,,
+MinimumHardwareReq3,802,Text,,,,,
+MinimumHardwareReq4,803,Text,,,,,
+MinimumHardwareReq5,804,Text,,,,,
+MinimumHardwareReq6,805,Text,,,,,
+MinimumHardwareReq7,806,Text,,,,,
+MinimumHardwareReq8,807,Text,,,,,
+MinimumHardwareReq9,808,Text,,,,,
+MinimumHardwareReq10,809,Text,,,,,
+MinimumHardwareReq11,810,Text,,,,,

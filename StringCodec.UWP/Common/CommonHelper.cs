@@ -1421,9 +1421,9 @@ namespace StringCodec.UWP.Common
     {
         private static PropertySet AppSetting = new PropertySet();
         #region Local Setting Helper
-        public static object Get(string key, object value = null)
+        public static dynamic Get(string key, dynamic value = null)
         {
-            object result = value;
+            dynamic result = value;
 
             if (AppSetting.ContainsKey(key) && AppSetting[key] != null)
                 result = AppSetting[key];
@@ -1441,7 +1441,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        public static bool Set(string key, object value)
+        public static bool Set(string key, dynamic value)
         {
             AppSetting[key] = value;
             ApplicationData.Current.LocalSettings.Values[key] = value;

@@ -274,12 +274,12 @@ namespace StringCodec.UWP.Common
                         var unicode = System.Web.HttpUtility.HtmlDecode(match.Value);
                         if (unicode.Length == 1)
                         {
-                            replacements.Add(match.Value, string.Concat("&#", Convert.ToInt32(unicode[0]), ";"));
+                            replacements.Add(match.Value, $"&#x{Convert.ToInt32(unicode[0]):X2};");
                         }
                     }
                 }
 
-                var entryPattenDec = new Regex("&\\#([0-9]{1,6});", RegexOptions.IgnoreCase);
+                var entryPattenDec = new Regex("&#([0-9]{1,6});", RegexOptions.IgnoreCase);
                 foreach (Match match in entryPattenDec.Matches(html))
                 {
                     if (!replacements.ContainsKey(match.Value))
@@ -287,15 +287,17 @@ namespace StringCodec.UWP.Common
                         if (match.Groups.Count > 1)
                         {
                             var v = Convert.ToInt32(match.Groups[1].Value);
-                            if(127 <= v && v <= 256)
-                                replacements.Add(match.Value, $"\\x{Convert.ToInt32(match.Groups[1].Value):X2}");
+                            if (127 <= v && v <= 256)
+                                replacements.Add(match.Value, $"\\x{v:X2}");
+                            else if (v > 0xFFFF)
+                                replacements.Add(match.Value, $"{char.ConvertFromUtf32(v)}");
                             else
-                                replacements.Add(match.Value, $"{Convert.ToChar(Convert.ToInt32(match.Groups[1].Value))}");                            
+                                replacements.Add(match.Value, $"{Convert.ToChar(v)}");
                         }
                     }
                 }
 
-                var entryPattenHex = new Regex("&\\#x([a-fA-F0-9]{1,6});", RegexOptions.IgnoreCase);
+                var entryPattenHex = new Regex("&#x([a-fA-F0-9]{1,6});", RegexOptions.IgnoreCase);
                 foreach (Match match in entryPattenHex.Matches(html))
                 {
                     if (!replacements.ContainsKey(match.Value))
@@ -304,9 +306,11 @@ namespace StringCodec.UWP.Common
                         {
                             var v = Convert.ToInt32(match.Groups[1].Value, 16);
                             if (127 <= v && v <= 256)
-                                replacements.Add(match.Value, $"\\x{match.Groups[1].Value}");
+                                replacements.Add(match.Value, $"\\x{v:X2}");
+                            else if (v > 0xFFFF)
+                                replacements.Add(match.Value, $"{char.ConvertFromUtf32(v)}");
                             else
-                                replacements.Add(match.Value, $"{Convert.ToChar(Convert.ToInt32(match.Groups[1].Value, 16))}");
+                                replacements.Add(match.Value, $"{Convert.ToChar(v)}");
                         }
                     }
                 }
@@ -324,7 +328,9 @@ namespace StringCodec.UWP.Common
             static private string UnicodeToEntity(string html)
             {
                 var replacements = new Dictionary<string, string>();
-                foreach (Match match in Regex.Matches(html, @"((^[\u0000-\u007f])|([\u2300-\u23ff])|([\u2600-\u27ff])|([\u1f000-\u1f9ff]))"))
+                //var html_range = @"((^[\u0000-\u007f])|([\u2300-\u23ff])|([\u2600-\u27ff])|([\u1f000-\u1f9ff]))";
+                var html_range = @"((^[\u0000-\u007f])|([\u2300-\u23ff])|([\u2600-\u27ff]))";
+                foreach (Match match in Regex.Matches(html, html_range))
                 {
                     if (match.Groups.Count > 1 && !replacements.ContainsKey(match.Value))
                     {
@@ -333,6 +339,7 @@ namespace StringCodec.UWP.Common
                     }
                 }
 
+                html = html.Replace("&amp;#", "&#", StringComparison.CurrentCultureIgnoreCase);
                 foreach (var replacement in replacements)
                 {
                     html = html.Replace(replacement.Key, replacement.Value);
@@ -352,7 +359,7 @@ namespace StringCodec.UWP.Common
 
                 try
                 {
-                    //result = System.Web.HttpUtility.HtmlEncode(result);
+                    result = Regex.Replace(result, @"&(amp;){0,1}#(([0-9]{1,6})|(x([a-fA-F0-9]{1,5})));", "&#$2;", RegexOptions.IgnoreCase);
                     result = UnicodeToEntity(System.Net.WebUtility.HtmlEncode(result));
                 }
                 catch (Exception ex)
@@ -370,13 +377,10 @@ namespace StringCodec.UWP.Common
 
             static public async Task<string> Decode(string text, Encoding enc)
             {
-                string result = text;
-
+                string result = Regex.Replace(text, @"&(amp;){0,1}#(([0-9]{1,6})|(x([a-fA-F0-9]{1,5})));", "&#$2;", RegexOptions.IgnoreCase);
                 try
                 {
                     result = EntityToUnicode(result, enc);
-                    //result = EntityToUnicode(System.Net.WebUtility.HtmlDecode(result), enc);
-                    //result = result.ConvertFrom(enc);
                 }
                 catch (Exception ex)
                 {
