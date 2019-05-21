@@ -627,22 +627,23 @@ namespace StringCodec.UWP.Common
 
             static public string Decode(string text, Encoding enc)
             {
-                string result = string.Empty;
-
-                //result = Uri.UnescapeDataString(text.Replace("\\x", "%")).ConvertFrom(enc);
+                string result = text;
 
                 var raws = new Dictionary<string, string>();
-                var entryPattenRaw = new Regex(@"(\\x([a-fA-F0-9]){2})+", RegexOptions.IgnoreCase);
-                foreach (Match match in entryPattenRaw.Matches(text))
+                var entryPattenRaw = new Regex(@"(\\(x([a-fA-F0-9]{2})|([0-9]{3})))+", RegexOptions.IgnoreCase);
+                foreach (Match match in entryPattenRaw.Matches(result))
                 {
                     if (!raws.ContainsKey(match.Value))
                     {
                         if (match.Groups.Count > 1)
                         {
-                            List<byte> byteList = new List<byte>();                            
+                            List<byte> byteList = new List<byte>();
                             foreach(Capture c in match.Groups[1].Captures)
                             {
-                                byteList.Add((byte)Convert.ToInt32(c.Value.Replace("\\x", ""), 16));
+                                if(c.Value.StartsWith("\\x", StringComparison.CurrentCultureIgnoreCase))
+                                    byteList.Add((byte)Convert.ToInt32(c.Value.Replace("\\x", "", StringComparison.CurrentCultureIgnoreCase), 16));
+                                else
+                                    byteList.Add((byte)Convert.ToInt32(c.Value.Replace("\\", "")));
                             }
                             var decoded = enc.GetString(byteList.ToArray());
                             raws.Add(match.Value, decoded);
@@ -652,10 +653,8 @@ namespace StringCodec.UWP.Common
 
                 foreach (var raw in raws)
                 {
-                    text = text.Replace(raw.Key, raw.Value);
+                    result = result.Replace(raw.Key, raw.Value);
                 }
-
-                result = text;
 
                 return (result);
             }
@@ -671,16 +670,30 @@ namespace StringCodec.UWP.Common
 
             static public string Encode(string text, Encoding enc, bool LineBreak = false)
             {
-                string result = text;
+                string result = System.Net.WebUtility.HtmlEncode(Regex.Replace(text, @"&(amp;){0,1}#(([0-9]{1,6})|(x([a-fA-F0-9]{1,5})));", "&#$2;", RegexOptions.IgnoreCase));
 
                 var replacements = new Dictionary<string, string>();
-                foreach (Match match in Regex.Matches(text, @"([^\u000D\u000A\u0020-\u007E])"))
+                foreach (Match match in Regex.Matches(result, @"&((amp;){0,1})#(([0-9]{1,6})|(x([a-fA-F0-9]{1,5})));", RegexOptions.IgnoreCase))
                 {
                     if (match.Groups.Count > 1 && !replacements.ContainsKey(match.Value))
                     {
-                        var v = Convert.ToInt32(match.Groups[1].Value[0]);
-                        //if (v == 0x0D || v == 0x0A) continue;
-                        replacements.Add(match.Value, $"\\u{v:X4}");
+                        var v = string.IsNullOrEmpty(match.Groups[6].Value) ? Convert.ToInt32(match.Groups[3].Value) : Convert.ToInt32(match.Groups[6].Value, 16);
+                        if (v > 0xFFFF)
+                            replacements.Add(match.Value, $"\\u{v:X5}");
+                        else
+                            replacements.Add(match.Value, $"\\u{v:X4}");
+                    }
+                }
+
+                foreach (Match match in Regex.Matches(result, @"([^\u000D\u000A\u0020-\u007E])"))
+                {
+                    if (match.Groups.Count > 1 && !replacements.ContainsKey(match.Value))
+                    {
+                        var v = Convert.ToInt32(match.Value[0]);
+                        if (v > 0xFFFF)
+                            replacements.Add(match.Value, $"\\u{v:X5}");
+                        else
+                            replacements.Add(match.Value, $"\\u{v:X4}");
                     }
                 }
 
@@ -702,15 +715,18 @@ namespace StringCodec.UWP.Common
                 string result = text;
 
                 var replacements = new Dictionary<string, string>();
-                var entryPattenHex = new Regex(@"(\\u([a-fA-F0-9]){4,6})", RegexOptions.IgnoreCase);
-                foreach (Match match in entryPattenHex.Matches(text))
+                var entryPattenHex = new Regex(@"(\\u([\+\-]{0,1})([a-fA-F0-9]{4,6}))", RegexOptions.IgnoreCase);
+                foreach (Match match in entryPattenHex.Matches(result))
                 {
                     if (!replacements.ContainsKey(match.Value))
                     {
-                        if (match.Groups.Count > 1)
+                        if (match.Groups.Count > 3)
                         {
-                            var v = Convert.ToInt32(match.Value.Replace("\\u", ""), 16);
-                            replacements.Add(match.Value, $"{Convert.ToChar(v)}");
+                            var v = Convert.ToInt32(match.Groups[3].Value, 16);
+                            if (v > 0xFFFF)
+                                replacements.Add(match.Value, $"{char.ConvertFromUtf32(v)}");
+                            else
+                                replacements.Add(match.Value, $"{Convert.ToChar(v)}");
                         }
                     }
                 }
@@ -734,16 +750,30 @@ namespace StringCodec.UWP.Common
 
             static public string Encode(string text, Encoding enc, bool LineBreak = false)
             {
-                string result = text;
+                string result = System.Net.WebUtility.HtmlEncode(Regex.Replace(text, @"&(amp;){0,1}#(([0-9]{1,6})|(x([a-fA-F0-9]{1,5})));", "&#$2;", RegexOptions.IgnoreCase));
 
                 var replacements = new Dictionary<string, string>();
-                foreach (Match match in Regex.Matches(text, @"([^\u000D\u000A\u0020-\u007E])"))
+                foreach (Match match in Regex.Matches(result, @"&((amp;){0,1})#(([0-9]{1,6})|(x([a-fA-F0-9]{1,5})));", RegexOptions.IgnoreCase))
                 {
                     if (match.Groups.Count > 1 && !replacements.ContainsKey(match.Value))
                     {
-                        var v = Convert.ToInt32(match.Groups[1].Value[0]);
-                        //if (v == 0x0D || v == 0x0A) continue;
-                        replacements.Add(match.Value, $"&#x{v:X4};");
+                        var v = string.IsNullOrEmpty(match.Groups[6].Value) ? Convert.ToInt32(match.Groups[3].Value) : Convert.ToInt32(match.Groups[6].Value, 16);
+                        if (v > 0xFFFF)
+                            replacements.Add(match.Value, $"&#x{v:X5};");
+                        else
+                            replacements.Add(match.Value, $"&#x{v:X4};");
+                    }
+                }
+
+                foreach (Match match in Regex.Matches(result, @"([^\u000D\u000A\u0020-\u007E])"))
+                {
+                    if (match.Groups.Count > 1 && !replacements.ContainsKey(match.Value))
+                    {
+                        var v = Convert.ToInt32(match.Value[0]);
+                        if (v > 0xFFFF)
+                            replacements.Add(match.Value, $"&#x{v:X5};");
+                        else
+                            replacements.Add(match.Value, $"&#x{v:X4};");
                     }
                 }
 
@@ -762,11 +792,11 @@ namespace StringCodec.UWP.Common
 
             static public string Decode(string text, Encoding enc)
             {
-                string result = text;
+                string result = Regex.Replace(text, @"&(amp;){0,1}#(([0-9]{1,6})|(x([a-fA-F0-9]{1,5})));", "&#$2;", RegexOptions.IgnoreCase);
 
                 var replacements = new Dictionary<string, string>();
 
-                var entryPattenDec = new Regex("&\\#([0-9]{1,6});", RegexOptions.IgnoreCase);
+                var entryPattenDec = new Regex("&#([0-9]{1,6});", RegexOptions.IgnoreCase);
                 foreach (Match match in entryPattenDec.Matches(text))
                 {
                     if (!replacements.ContainsKey(match.Value))
@@ -774,12 +804,15 @@ namespace StringCodec.UWP.Common
                         if (match.Groups.Count > 1)
                         {
                             var v = Convert.ToInt32(match.Groups[1].Value);
-                            replacements.Add(match.Value, $"{Convert.ToChar(v)}");
+                            if (v > 0xFFFF)
+                                replacements.Add(match.Value, $"{char.ConvertFromUtf32(v)}");
+                            else                           
+                                replacements.Add(match.Value, $"{Convert.ToChar(v)}");
                         }
                     }
                 }
 
-                var entryPattenHex = new Regex("&\\#x([a-fA-F0-9]{1,6});", RegexOptions.IgnoreCase);
+                var entryPattenHex = new Regex("&#x([a-fA-F0-9]{1,6});", RegexOptions.IgnoreCase);
                 foreach (Match match in entryPattenHex.Matches(text))
                 {
                     if (!replacements.ContainsKey(match.Value))
@@ -787,7 +820,10 @@ namespace StringCodec.UWP.Common
                         if (match.Groups.Count > 1)
                         {
                             var v = Convert.ToInt32(match.Groups[1].Value, 16);
-                            replacements.Add(match.Value, $"{Convert.ToChar(v)}");
+                            if (v > 0xFFFF)
+                                replacements.Add(match.Value, $"{char.ConvertFromUtf32(v)}");
+                            else
+                                replacements.Add(match.Value, $"{Convert.ToChar(v)}");
                         }
                     }
                 }
@@ -1389,7 +1425,6 @@ namespace StringCodec.UWP.Common
         static public async Task<string> Encode(string content, CODEC Codec, bool LineBreak = false)
         {
             return (await Encode(content, Codec, Encoding.Default, LineBreak));
-
         }
 
         static public async Task<string> Encode(WriteableBitmap image, string format = ".png", bool prefix = true, bool LineBreak = false)
