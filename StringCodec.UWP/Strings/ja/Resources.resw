@@ -465,7 +465,7 @@
   <data name="optPrefix.Text" xml:space="preserve">
     <value>BASE64 にプレフィックスを追加します。</value>
   </data>
-  <data name="optLineBreak.Text" xml:space="preserve">
+  <data name="optLineBreak.Label" xml:space="preserve">
     <value>改行</value>
   </data>
   <data name="optFmtPng.Text" xml:space="preserve">
@@ -1148,5 +1148,8 @@
   </data>
   <data name="HashCopyAll" xml:space="preserve">
     <value>すべてのハッシュ値をクリップボードにコピーする</value>
+  </data>
+  <data name="optROT13.Text" xml:space="preserve">
+    <value>ROT-13</value>
   </data>
 </root>

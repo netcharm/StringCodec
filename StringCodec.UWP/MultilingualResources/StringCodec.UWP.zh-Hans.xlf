@@ -610,7 +610,7 @@
           <source>Add Prefix to BASE64</source>
           <target state="translated">添加前导信息到BASE64文本</target>
         </trans-unit>
-        <trans-unit id="optLineBreak.Text" translate="yes" xml:space="preserve">
+        <trans-unit id="optLineBreak.Label" translate="yes" xml:space="preserve">
           <source>Line Break</source>
           <target state="translated">插入换行符</target>
         </trans-unit>
@@ -1521,6 +1521,10 @@
         <trans-unit id="HashCopyAll" translate="yes" xml:space="preserve">
           <source>Copy All Hash to Clipboard</source>
           <target state="translated">复制所有散列值到剪贴板</target>
+        </trans-unit>
+        <trans-unit id="optROT13.Text" translate="yes" xml:space="preserve">
+          <source>ROT-13</source>
+          <target state="translated">ROT-13 编码</target>
         </trans-unit>
       </group>
     </body>

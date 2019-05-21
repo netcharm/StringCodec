@@ -588,7 +588,7 @@
   <data name="optPrefix.Text" xml:space="preserve">
     <value>Add Prefix to BASE64</value>
   </data>
-  <data name="optLineBreak.Text" xml:space="preserve">
+  <data name="optLineBreak.Label" xml:space="preserve">
     <value>Line Break</value>
   </data>
   <data name="optFmtPng.Text" xml:space="preserve">
@@ -1253,5 +1253,8 @@
   </data>
   <data name="HashCopyAll" xml:space="preserve">
     <value>Copy All Hash to Clipboard</value>
+  </data>
+  <data name="optROT13.Text" xml:space="preserve">
+    <value>ROT-13</value>
   </data>
 </root>

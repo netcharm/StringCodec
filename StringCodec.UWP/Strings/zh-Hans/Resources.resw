@@ -465,7 +465,7 @@
   <data name="optPrefix.Text" xml:space="preserve">
     <value>添加前导信息到BASE64文本</value>
   </data>
-  <data name="optLineBreak.Text" xml:space="preserve">
+  <data name="optLineBreak.Label" xml:space="preserve">
     <value>插入换行符</value>
   </data>
   <data name="optFmtPng.Text" xml:space="preserve">
@@ -1148,5 +1148,8 @@
   </data>
   <data name="HashCopyAll" xml:space="preserve">
     <value>复制所有散列值到剪贴板</value>
+  </data>
+  <data name="optROT13.Text" xml:space="preserve">
+    <value>ROT-13 编码</value>
   </data>
 </root>

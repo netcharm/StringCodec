@@ -26,7 +26,7 @@ namespace StringCodec.UWP.Common
             URL, HTML, BASE64, UUE, XXE, RAW, UNICODEVALUE, UNICODEGLYPH, QUOTED,
             THUNDER, FLASHGET,
             UUID, GUID,
-            MORSE, MORSEABBR,
+            MORSE, MORSEABBR, ROT13
         };
 
         public enum HASH
@@ -1223,6 +1223,79 @@ namespace StringCodec.UWP.Common
             }
         }
 
+        static public class ROT13
+        {
+            static public string Encode(byte[] text, Encoding enc, bool LineBreak = false)
+            {
+                string result = string.Empty;
+
+                var bytes = text;
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    var c = bytes[i];
+                    if (78 <= c && c <= 90)
+                    {
+                        bytes[i] = (byte)(c - 13);
+                    }
+                    else if (65 <= c && c <= 77)
+                    {
+                        bytes[i] = (byte)(c + 13);
+                    }
+                    else if (110 <= c && c <= 122)
+                    {
+                        bytes[i] = (byte)(c - 13);
+                    }
+                    else if (97 <= c && c <= 109)
+                    {
+                        bytes[i] = (byte)(c + 13);
+                    }
+                }
+                result = enc.GetString(bytes);
+
+                return (result);
+            }
+
+            static public string Encode(string text, Encoding enc, bool LineBreak = false)
+            {
+                return (Decode(text, enc));
+            }
+
+            static public string Encode(string text, bool LineBreak = false)
+            {
+                return (Encode(text, Encoding.Default, LineBreak));
+            }
+
+            static public string Decode(string text, Encoding enc)
+            {
+                string result = text;
+
+                var bytes = enc.GetBytes(result);
+                for(int i = 0; i< bytes.Length; i++)
+                {
+                    var c = bytes[i];
+                    if (65 <= c && c <= 77)
+                    {
+                        bytes[i] = (byte)(c + 13);
+                    }
+                    else if (78 <= c && c <= 90)
+                    {
+                        bytes[i] = (byte)(c - 13);
+                    }
+                    else if (97 <= c && c <= 109)
+                    {
+                        bytes[i] = (byte)(c + 13);
+                    }
+                    else if (110 <= c && c <= 122)
+                    {
+                        bytes[i] = (byte)(c - 13);
+                    }
+                }
+                result = enc.GetString(bytes);
+
+                return (result);
+            }
+        }
+
         static public class GUID
         {
             static public string Encode(byte[] text, Encoding enc, string fmt = "D", bool UpCase = true, bool UUID = false)
@@ -1344,6 +1417,9 @@ namespace StringCodec.UWP.Common
                     case CODEC.MORSEABBR:
                         result = await MORSE.Encode(content, enc);
                         break;
+                    case CODEC.ROT13:
+                        result = ROT13.Encode(content, enc);
+                        break;
                     case CODEC.UUID:
                         result = GUID.Encode(content, enc, "D", true, true);
                         break;
@@ -1404,6 +1480,9 @@ namespace StringCodec.UWP.Common
                     case CODEC.MORSE:
                     case CODEC.MORSEABBR:
                         result = await MORSE.Encode(content);
+                        break;
+                    case CODEC.ROT13:
+                        result = ROT13.Encode(content);
                         break;
                     case CODEC.UUID:
                         result = GUID.Encode(content, "D", true, true);
@@ -1694,6 +1773,9 @@ namespace StringCodec.UWP.Common
                         break;
                     case CODEC.MORSEABBR:
                         result = await MORSE.Decode(content, false);
+                        break;
+                    case CODEC.ROT13:
+                        result = ROT13.Decode(content, enc);
                         break;
                     case CODEC.UUID:
                         result = GUID.Decode(content);

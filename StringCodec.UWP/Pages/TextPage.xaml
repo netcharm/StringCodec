@@ -39,9 +39,9 @@
                         <MenuFlyoutSubItem x:Name="optPassword" x:Uid="optPassword" Text="Password">
                             <ToggleMenuFlyoutItem x:Name="optMorse" x:Uid="optMorse" Text="Morse Code" Click="Codec_Click"/>
                             <ToggleMenuFlyoutItem x:Name="optMorseAbbr" x:Uid="optMorseAbbr" Text="Morse Code Expand Abbr." Click="Codec_Click"/>
+                            <MenuFlyoutSeparator />
+                            <ToggleMenuFlyoutItem x:Name="optROT13" x:Uid="optROT13" Text="ROT-13" Click="Codec_Click"/>
                         </MenuFlyoutSubItem>
-                        <MenuFlyoutSeparator />
-                        <ToggleMenuFlyoutItem x:Name="optLineBreak" x:Uid="optLineBreak" Text="Line Break" Click="OptLang_Click"/>
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
@@ -294,6 +294,7 @@
                         <FontIcon Glyph="&#xE751;" FontFamily="Segoe MDL2 Assets"/>
                     </AppBarToggleButton.Icon>
                 </AppBarToggleButton>
+                <AppBarToggleButton x:Name="optLineBreak" x:Uid="optLineBreak" Label="Line Break" Click="OptLang_Click"/>
                 <AppBarToggleButton x:Name="optOverwriteFiles" x:Uid="optOverwriteFiles" Label="Overwrite File(s)" Click="OptOverwrite_Click" />
                 <!--<AppBarButton Label="About"/>-->
             </CommandBar.SecondaryCommands>

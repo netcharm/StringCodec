@@ -610,7 +610,7 @@
           <source>Add Prefix to BASE64</source>
           <target state="translated">BASE64 にプレフィックスを追加します。</target>
         </trans-unit>
-        <trans-unit id="optLineBreak.Text" translate="yes" xml:space="preserve">
+        <trans-unit id="optLineBreak.Label" translate="yes" xml:space="preserve">
           <source>Line Break</source>
           <target state="translated">改行</target>
         </trans-unit>
@@ -1521,6 +1521,10 @@
         <trans-unit id="HashCopyAll" translate="yes" xml:space="preserve">
           <source>Copy All Hash to Clipboard</source>
           <target state="translated">すべてのハッシュ値をクリップボードにコピーする</target>
+        </trans-unit>
+        <trans-unit id="optROT13.Text" translate="yes" xml:space="preserve">
+          <source>ROT-13</source>
+          <target state="translated">ROT-13</target>
         </trans-unit>
       </group>
     </body>

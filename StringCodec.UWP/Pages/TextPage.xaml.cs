@@ -130,7 +130,7 @@ namespace StringCodec.UWP.Pages
                     optURL, optHtml, optRaw,
                     optUnicodeValue, optUnicodeGlyph,
                     optThunder, optFlashGet,
-                    optMorse, optMorseAbbr,
+                    optMorse, optMorseAbbr, optROT13
                 };
 
                 var btn = sender as ToggleMenuFlyoutItem;
