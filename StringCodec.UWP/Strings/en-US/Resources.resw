@@ -585,7 +585,7 @@
   <data name="edQR.PlaceholderText" xml:space="preserve">
     <value>Input text at here</value>
   </data>
-  <data name="optPrefix.Text" xml:space="preserve">
+  <data name="optPrefix.Label" xml:space="preserve">
     <value>Add Prefix to BASE64</value>
   </data>
   <data name="optLineBreak.Label" xml:space="preserve">

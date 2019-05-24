@@ -606,7 +606,7 @@
           <source>Input text at here</source>
           <target state="translated">ここにテキストを入力</target>
         </trans-unit>
-        <trans-unit id="optPrefix.Text" translate="yes" xml:space="preserve">
+        <trans-unit id="optPrefix.Label" translate="yes" xml:space="preserve">
           <source>Add Prefix to BASE64</source>
           <target state="translated">BASE64 にプレフィックスを追加します。</target>
         </trans-unit>

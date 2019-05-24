@@ -606,7 +606,7 @@
           <source>Input text at here</source>
           <target state="translated">在此输入文本</target>
         </trans-unit>
-        <trans-unit id="optPrefix.Text" translate="yes" xml:space="preserve">
+        <trans-unit id="optPrefix.Label" translate="yes" xml:space="preserve">
           <source>Add Prefix to BASE64</source>
           <target state="translated">添加前导信息到BASE64文本</target>
         </trans-unit>

@@ -462,7 +462,7 @@
   <data name="edQR.PlaceholderText" xml:space="preserve">
     <value>在此输入文本</value>
   </data>
-  <data name="optPrefix.Text" xml:space="preserve">
+  <data name="optPrefix.Label" xml:space="preserve">
     <value>添加前导信息到BASE64文本</value>
   </data>
   <data name="optLineBreak.Label" xml:space="preserve">

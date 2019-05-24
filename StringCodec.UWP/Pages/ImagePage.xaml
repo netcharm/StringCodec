@@ -23,9 +23,6 @@
             <AppBarButton Grid.Column="0" x:Name="btnOpt" x:Uid="btnOpt" Icon="Bullets" Label="Options" VerticalAlignment="Center">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
-                        <ToggleMenuFlyoutItem x:Name="optPrefix" x:Uid="optPrefix" Text="Add Prefix to BASE64" Click="Opt_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optLinbeBreak" x:Uid="optLineBreak" Text="Add LineBreak to BASE64" Click="Opt_Click"/>
-                        <MenuFlyoutSeparator />
                         <ToggleMenuFlyoutItem x:Name="optFmtPng" x:Uid="optFmtPng" Text="PNG Image File" Click="OptFmt_Click"/>
                         <ToggleMenuFlyoutItem x:Name="optFmtJpg" x:Uid="optFmtJpg" Text="JPG Image File" Click="OptFmt_Click"/>
                         <ToggleMenuFlyoutItem x:Name="optFmtBmp" x:Uid="optFmtBmp" Text="BMP Image File" Click="OptFmt_Click"/>
@@ -77,6 +74,9 @@
                         <FontIcon Glyph="&#xF1C9;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
                     </AppBarButton.Icon>
                 </AppBarButton>
+                <AppBarSeparator/>
+                <AppBarToggleButton x:Name="optPrefix" x:Uid="optPrefix" Label="Add Prefix to BASE64" Click="Opt_Click"/>
+                <AppBarToggleButton x:Name="optLinbeBreak" x:Uid="optLineBreak" Label="Add LineBreak to BASE64" Click="Opt_Click"/>
             </CommandBar.SecondaryCommands>
 
             <CommandBar.Content>
