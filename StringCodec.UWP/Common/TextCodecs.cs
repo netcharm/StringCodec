@@ -715,14 +715,14 @@ namespace StringCodec.UWP.Common
                 string result = text;
 
                 var replacements = new Dictionary<string, string>();
-                var entryPattenHex = new Regex(@"(\\u([\+\-]{0,1})([a-fA-F0-9]{4,6}))", RegexOptions.IgnoreCase);
+                var entryPattenHex = new Regex(@"(((\\u)|(u[\+\-]))([a-fA-F0-9]{4,6}))", RegexOptions.IgnoreCase);
                 foreach (Match match in entryPattenHex.Matches(result))
                 {
                     if (!replacements.ContainsKey(match.Value))
                     {
-                        if (match.Groups.Count > 3)
+                        if (match.Groups.Count > 5)
                         {
-                            var v = Convert.ToInt32(match.Groups[3].Value, 16);
+                            var v = Convert.ToInt32(match.Groups[5].Value, 16);
                             if (v > 0xFFFF)
                                 replacements.Add(match.Value, $"{char.ConvertFromUtf32(v)}");
                             else
