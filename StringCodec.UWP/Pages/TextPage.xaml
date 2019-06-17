@@ -221,7 +221,8 @@
                         <MenuFlyoutItem x:Name="optRemoveBlankLine" x:Uid="optRemoveBlankLine" Text="Remove Blank Lines" Click="Case_Click"/>
                         <MenuFlyoutItem x:Name="optMergeBlankLine" x:Uid="optMergeBlankLine" Text="Merge Blank Lines" Click="Case_Click"/>
                         <MenuFlyoutSeparator/>
-                        <MenuFlyoutItem x:Name="optReverse" x:Uid="optReverse" Text="Reverse" Click="Case_Click"/>
+                        <MenuFlyoutItem x:Name="optReverseSmart" x:Uid="optReverseSmart" Text="Reverse (Smart)" Click="Case_Click"/>
+                        <MenuFlyoutItem x:Name="optReverseForce" x:Uid="optReverseForce" Text="Reverse (Force)" Click="Case_Click"/>
                         <MenuFlyoutSeparator />
                         <MenuFlyoutSubItem x:Name="optHash" x:Uid="optHash" Text="Hash Calculating">
                             <MenuFlyoutItem x:Name="optHashMD5" x:Uid="optHashMD5" Text="MD5" Click="Hash_Click"/>

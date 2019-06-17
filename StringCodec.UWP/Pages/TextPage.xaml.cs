@@ -158,8 +158,10 @@ namespace StringCodec.UWP.Pages
 
             try
             {
-                if (sender == optReverse)
-                    result = text.ReverseOrder();
+                if (sender == optReverseSmart)
+                    result = text.ReverseOrder(true);
+                else if (sender == optReverseForce)
+                    result = text.ReverseOrder(false);
                 #region English case convert
                 else if (sender == optCaseUp)
                     result = text.Upper(CURRENT_CULTURE);

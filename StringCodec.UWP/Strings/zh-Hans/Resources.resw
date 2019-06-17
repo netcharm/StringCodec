@@ -951,8 +951,11 @@
   <data name="optLangCz.Text" xml:space="preserve">
     <value>捷克语</value>
   </data>
-  <data name="optReverse.Text" xml:space="preserve">
-    <value>逆向文本</value>
+  <data name="optReverseSmart.Text" xml:space="preserve">
+    <value>逆向文本(智能)</value>
+  </data>
+  <data name="optReverseForce.Text" xml:space="preserve">
+    <value>逆向文本(强制)</value>
   </data>
   <data name="optLangEUCJP.Text" xml:space="preserve">
     <value>日语(EUC)</value>

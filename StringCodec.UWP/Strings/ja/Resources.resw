@@ -951,8 +951,11 @@
   <data name="optLangCz.Text" xml:space="preserve">
     <value>チェコ</value>
   </data>
-  <data name="optReverse.Text" xml:space="preserve">
-    <value>逆文字列</value>
+  <data name="optReverseSmart.Text" xml:space="preserve">
+    <value>逆文字列(スマート)</value>
+  </data>
+  <data name="optReverseForce.Text" xml:space="preserve">
+    <value>逆文字列(强制)</value>
   </data>
   <data name="optLangEUCJP.Text" xml:space="preserve">
     <value>日本語(EUC)</value>

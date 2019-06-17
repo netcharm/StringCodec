@@ -2107,19 +2107,65 @@ namespace StringCodec.UWP.Common
         }
         #endregion
 
-        public static string ReverseOrder(this string text)
+        public static string ReverseOrder(this string text, bool ReverseSymbol = false)
         {
             string result = text;
 
+            var symbols = new Dictionary<char, char>()
+            {
+                { '<', '>' }, { '>', '<' },
+                { '[', ']' }, { ']', '[' },
+                { '{', '}' }, { '}', '{' },
+
+                { '“', '”' }, { '”', '“' },
+                { '〝', '〞' }, { '〞', '〝'},
+
+                { '〈', '〉' }, { '〉', '〈' },
+                { '《', '》' }, { '》', '《' },
+                { '「', '」' }, { '」', '「' },
+                { '『', '』' }, { '』', '『' },
+                { '【', '】' }, { '】', '【' },
+                { '〔', '〕' }, { '〕', '〔' },
+                { '〖', '〗' }, { '〗', '〖'},
+                { '〘', '〙' }, { '〙', '〘'},
+                { '〚', '〛' }, { '〛', '〚'},
+
+                { '←', '→' }, { '→', '←' },
+                { '↑', '↓' }, { '↓', '↑' },
+                { '↖', '↗' }, { '↗', '↖' },
+                { '↘', '↙' }, { '↙', '↘' },
+                { '⇦', '⇨' }, { '⇨', '⇦' },
+                { '⇧', '⇩' }, { '⇩', '⇧'},
+
+                { '≤', '≥' }, { '≥', '≤'},
+                { '≦', '≧' }, { '≧', '≦'},
+                { '≪', '≫' }, { '≫', '≪'},
+                { '≮', '≯' }, { '≯', '≮'},
+                { '≲', '≳' }, { '≳', '≲'},
+                { '≶', '≷' }, { '≷', '≶'},
+                { '⊂', '⊃' }, { '⊃', '⊂'},
+                { '⊄', '⊅' }, { '⊅', '⊄'},
+                { '⊆', '⊇' }, { '⊇', '⊆'},
+                { '⊊', '⊋' }, { '⊋', '⊊'},
+
+                { '⎾', '⏋' }, { '⏋', '⎾'},
+                { '⎿', '⏌' }, { '⏌', '⎿'},
+                { '⏉', '⏊' }, { '⏊', '⏉'},
+
+            };
             var sentences = text.Split(LINEBREAK, StringSplitOptions.None);
             StringBuilder sb = new StringBuilder();
             foreach (var sentence in sentences.Reverse())
             {
                 var l = sentence.Reverse().ToList();
-                for (var i = 0; i < l.Count; i++)
+                if (ReverseSymbol)
                 {
-                    if (l[i].Equals('“')) l[i] = '”';
-                    else if (l[i].Equals('”')) l[i] = '“';
+                    for (var i = 0; i < l.Count; i++)
+                    {
+                        if (symbols.ContainsKey(l[i])) l[i] = symbols[(l[i])];
+                        //if (l[i].Equals('“')) l[i] = '”';
+                        //else if (l[i].Equals('”')) l[i] = '“';
+                    }
                 }
                 sb.AppendLine(string.Join("", l));
             }

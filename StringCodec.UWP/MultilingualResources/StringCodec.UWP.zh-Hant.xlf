@@ -1258,9 +1258,13 @@
           <source>Czech</source>
           <target state="translated">捷克語</target>
         </trans-unit>
-        <trans-unit id="optReverse.Text" translate="yes" xml:space="preserve">
-          <source>Reverse</source>
-          <target state="translated">逆向文本</target>
+        <trans-unit id="optReverseSmart.Text" translate="yes" xml:space="preserve">
+          <source>Reverse (Smart)</source>
+          <target state="translated">逆向文本(智能)</target>
+        </trans-unit>
+        <trans-unit id="optReverseForce.Text" translate="yes" xml:space="preserve">
+          <source>Reverse (Force)</source>
+          <target state="translated">逆向文本(强制)</target>
         </trans-unit>
         <trans-unit id="optLangEUCJP.Text" translate="yes" xml:space="preserve">
           <source>Japanese(EUC)</source>

@@ -1056,8 +1056,11 @@
   <data name="optCaseZhT2S.Text" xml:space="preserve">
     <value>Chinese Traditional To Simplified</value>
   </data>
-  <data name="optReverse.Text" xml:space="preserve">
-    <value>Reverse</value>
+  <data name="optReverseSmart.Text" xml:space="preserve">
+    <value>Reverse (Smart)</value>
+  </data>
+  <data name="optReverseForce.Text" xml:space="preserve">
+    <value>Reverse (Force)</value>
   </data>
   <data name="optLangEUCJP.Text" xml:space="preserve">
     <value>Japanese(EUC)</value>
