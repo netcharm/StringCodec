@@ -127,7 +127,7 @@ namespace StringCodec.UWP.Pages
 
                 ToggleMenuFlyoutItem[] opts = new ToggleMenuFlyoutItem[] {
                     optBase64, optUUE, optXXE, optQuoted,
-                    optURL, optHtml, optRaw,
+                    optURL, optHtml, optRaw, optRawEscape,
                     optUnicodeValue, optUnicodeGlyph,
                     optThunder, optFlashGet,
                     optMorse, optMorseAbbr, optROT13

@@ -519,6 +519,9 @@
   <data name="optRaw.Text" xml:space="preserve">
     <value>RAW (\xHH)</value>
   </data>
+  <data name="optRawEscape.Text" xml:space="preserve">
+    <value>RAW (\\xHH)</value>
+  </data>
   <data name="optThunder.Text" xml:space="preserve">
     <value>迅雷連結</value>
   </data>

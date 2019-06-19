@@ -23,7 +23,8 @@ namespace StringCodec.UWP.Common
         public static byte[] hexRange = Encoding.Default.GetBytes("0123456789abcdefABCDEF");
 
         public enum CODEC {
-            URL, HTML, BASE64, UUE, XXE, RAW, UNICODEVALUE, UNICODEGLYPH, QUOTED,
+            URL, HTML, BASE64, UUE, XXE, RAW, RAWESCAPE,
+            UNICODEVALUE, UNICODEGLYPH, QUOTED,
             THUNDER, FLASHGET,
             UUID, GUID,
             MORSE, MORSEABBR, ROT13
@@ -592,42 +593,46 @@ namespace StringCodec.UWP.Common
 
         static public class RAW
         {
-            static public string Encode(byte[] text, Encoding enc, bool LineBreak = false)
+            static public string Encode(byte[] text, Encoding enc, bool LineBreak = false, bool Escape = false)
             {
                 string result = string.Empty;
 
                 List<string> asciis = new List<string>();
                 int count = 0;
-                foreach(var c in text)
+                foreach (var c in text)
                 {
-                    asciis.Add($"\\x{c:X2}");
+                    if (Escape)
+                        asciis.Add($"\\\\x{c:X2}");
+                    else
+                        asciis.Add($"\\x{c:X2}");
                     if (LineBreak && count % 18 == 0) asciis.Add(Environment.NewLine);
                     count++;
                 }
-                result = string.Join("", asciis);;
+                result = string.Join("", asciis); ;
 
                 return (result);
             }
 
-            static public string Encode(string text, Encoding enc, bool LineBreak = false)
+            static public string Encode(string text, Encoding enc, bool LineBreak = false, bool Escape = false)
             {
                 string result = string.Empty;
 
                 var bytes = enc.GetBytes(text);
                 if (bytes is byte[] && bytes.Length > 0)
-                    result = Encode(bytes, enc, LineBreak);
+                    result = Encode(bytes, enc, LineBreak, Escape);
 
                 return (result);
             }
 
-            static public string Encode(string text, bool LineBreak = false)
+            static public string Encode(string text, bool LineBreak = false, bool Escape = false)
             {
-                return (Encode(text, Encoding.Default, LineBreak));
+                return (Encode(text, Encoding.Default, LineBreak, Escape));
             }
 
-            static public string Decode(string text, Encoding enc)
+            static public string Decode(string text, Encoding enc, bool Escape = false)
             {
                 string result = text;
+                if (Escape) result = result.Replace("\\\\x", "\\x");
 
                 var raws = new Dictionary<string, string>();
                 var entryPattenRaw = new Regex(@"(\\(x([a-fA-F0-9]{2})|([0-9]{3})))+", RegexOptions.IgnoreCase);
@@ -638,9 +643,9 @@ namespace StringCodec.UWP.Common
                         if (match.Groups.Count > 1)
                         {
                             List<byte> byteList = new List<byte>();
-                            foreach(Capture c in match.Groups[1].Captures)
+                            foreach (Capture c in match.Groups[1].Captures)
                             {
-                                if(c.Value.StartsWith("\\x", StringComparison.CurrentCultureIgnoreCase))
+                                if (c.Value.StartsWith("\\x", StringComparison.CurrentCultureIgnoreCase))
                                     byteList.Add((byte)Convert.ToInt32(c.Value.Replace("\\x", "", StringComparison.CurrentCultureIgnoreCase), 16));
                                 else
                                     byteList.Add((byte)Convert.ToInt32(c.Value.Replace("\\", "")));
@@ -1398,6 +1403,9 @@ namespace StringCodec.UWP.Common
                     case CODEC.RAW:
                         result = RAW.Encode(content, enc);
                         break;
+                    case CODEC.RAWESCAPE:
+                        result = RAW.Encode(content, enc, false, true);
+                        break;
                     case CODEC.UNICODEVALUE:
                         result = UnicodeValue.Encode(content, enc);
                         break;
@@ -1461,6 +1469,9 @@ namespace StringCodec.UWP.Common
                         break;
                     case CODEC.RAW:
                         result = RAW.Encode(content, enc);
+                        break;
+                    case CODEC.RAWESCAPE:
+                        result = RAW.Encode(content, enc, false, true);
                         break;
                     case CODEC.UNICODEVALUE:
                         result = UnicodeValue.Encode(content, enc);
@@ -1752,6 +1763,9 @@ namespace StringCodec.UWP.Common
                         break;
                     case CODEC.RAW:
                         result = RAW.Decode(content, enc);
+                        break;
+                    case CODEC.RAWESCAPE:
+                        result = RAW.Decode(content, enc, true);
                         break;
                     case CODEC.UNICODEVALUE:
                         result = UnicodeValue.Decode(content, enc);

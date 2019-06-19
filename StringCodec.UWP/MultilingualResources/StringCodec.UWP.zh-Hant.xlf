@@ -682,6 +682,10 @@
           <source>RAW</source>
           <target state="translated">RAW (\xHH)</target>
         </trans-unit>
+        <trans-unit id="optRawEscape.Text" translate="yes" xml:space="preserve">
+          <source>RAW (Escape)</source>
+          <target state="translated">RAW (\\xHH)</target>
+        </trans-unit>
         <trans-unit id="optThunder.Text" translate="yes" xml:space="preserve">
           <source>Thunder</source>
           <target state="translated">迅雷連結</target>
