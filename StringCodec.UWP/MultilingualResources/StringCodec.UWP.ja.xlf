@@ -1534,6 +1534,22 @@
           <source>ROT-13</source>
           <target state="translated">ROT-13</target>
         </trans-unit>
+        <trans-unit id="optSort09.Text" translate="yes" xml:space="preserve">
+          <source>Sort (0-9)</source>
+          <target state="translated">行を値で並べ替える (昇順)</target>
+        </trans-unit>
+        <trans-unit id="optSort90.Text" translate="yes" xml:space="preserve">
+          <source>Sort (9-0)</source>
+          <target state="translated">行を値で並べ替える (降順)</target>
+        </trans-unit>
+        <trans-unit id="optSortAZ.Text" translate="yes" xml:space="preserve">
+          <source>Sort (A-Z)</source>
+          <target state="translated">文字で行を並べ替える (昇順)</target>
+        </trans-unit>
+        <trans-unit id="optSortZA.Text" translate="yes" xml:space="preserve">
+          <source>Sort (Z-A)</source>
+          <target state="translated">文字で行を並べ替える (降順)</target>
+        </trans-unit>
       </group>
     </body>
   </file>

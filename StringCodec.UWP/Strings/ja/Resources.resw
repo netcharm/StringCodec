@@ -1158,4 +1158,16 @@
   <data name="optROT13.Text" xml:space="preserve">
     <value>ROT-13</value>
   </data>
+  <data name="optSort09.Text" xml:space="preserve">
+    <value>行を値で並べ替える (昇順)</value>
+  </data>
+  <data name="optSort90.Text" xml:space="preserve">
+    <value>行を値で並べ替える (降順)</value>
+  </data>
+  <data name="optSortAZ.Text" xml:space="preserve">
+    <value>文字で行を並べ替える (昇順)</value>
+  </data>
+  <data name="optSortZA.Text" xml:space="preserve">
+    <value>文字で行を並べ替える (降順)</value>
+  </data>
 </root>

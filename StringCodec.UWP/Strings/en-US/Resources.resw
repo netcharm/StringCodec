@@ -1263,4 +1263,16 @@
   <data name="optROT13.Text" xml:space="preserve">
     <value>ROT-13</value>
   </data>
+  <data name="optSort09.Text" xml:space="preserve">
+    <value>Sort (0-9)</value>
+  </data>
+  <data name="optSort90.Text" xml:space="preserve">
+    <value>Sort (9-0)</value>
+  </data>
+  <data name="optSortAZ.Text" xml:space="preserve">
+    <value>Sort (A-Z)</value>
+  </data>
+  <data name="optSortZA.Text" xml:space="preserve">
+    <value>Sort (Z-A)</value>
+  </data>
 </root>

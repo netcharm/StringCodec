@@ -1158,4 +1158,16 @@
   <data name="optROT13.Text" xml:space="preserve">
     <value>ROT-13 编码</value>
   </data>
+  <data name="optSort09.Text" xml:space="preserve">
+    <value>按数值排序行 (升序)</value>
+  </data>
+  <data name="optSort90.Text" xml:space="preserve">
+    <value>按数值排序行 (降序)</value>
+  </data>
+  <data name="optSortAZ.Text" xml:space="preserve">
+    <value>按字符排序行 (升序)</value>
+  </data>
+  <data name="optSortZA.Text" xml:space="preserve">
+    <value>按字符排序行 (降序)</value>
+  </data>
 </root>

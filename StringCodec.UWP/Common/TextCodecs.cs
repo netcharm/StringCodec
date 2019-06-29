@@ -2125,6 +2125,7 @@ namespace StringCodec.UWP.Common
         {
             string result = text;
 
+            #region Symbols table
             var symbols = new Dictionary<char, char>()
             {
                 { '<', '>' }, { '>', '<' },
@@ -2143,6 +2144,19 @@ namespace StringCodec.UWP.Common
                 { '〖', '〗' }, { '〗', '〖'},
                 { '〘', '〙' }, { '〙', '〘'},
                 { '〚', '〛' }, { '〛', '〚'},
+
+                { '⌈', '⌉' }, { '⌉', '⌈'},
+                { '⌊', '⌋' }, { '⌋', '⌊'},
+                { '⌌', '⌍' }, { '⌍', '⌌'},
+                { '⌎', '⌏' }, { '⌏', '⌎'},
+                { '⌐', '⌙' }, { '⌙', '⌐'},
+                { '⌜', '⌝' }, { '⌝', '⌜'},
+                { '⌞', '⌟' }, { '⌟', '⌞'},
+                { '⌠', '⌡' }, { '⌡', '⌠'},
+                { '⌢', '⏝' }, { '⏝', '⌢'},
+                { '⏜', '⌣' }, { '⌣', '⏜'},
+                { '⏞', '⏟' }, { '⏟', '⏞'},
+                { '⏠', '⏡' }, { '⏡', '⏠'},
 
                 { '←', '→' }, { '→', '←' },
                 { '↑', '↓' }, { '↓', '↑' },
@@ -2175,7 +2189,14 @@ namespace StringCodec.UWP.Common
                 { '⎿', '⏌' }, { '⏌', '⎿'},
                 { '⏉', '⏊' }, { '⏊', '⏉'},
 
+                { '⏩', '⏪' }, { '⏪', '⏩'},
+                { '⏫', '⏬' }, { '⏬', '⏫'},
+                { '⏭', '⏮' }, { '⏮', '⏭'},
+                { '⏴', '⏵' }, { '⏵', '⏴'},
+                { '⏶', '⏷' }, { '⏷', '⏶'},
+
             };
+            #endregion
 
             var sentences = text.Split(LINEBREAK, StringSplitOptions.None);
             StringBuilder sb = new StringBuilder();
@@ -2198,6 +2219,64 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
+        public static string Sort(this string text, bool descending = false, bool numeric = true)
+        {
+            var sentences = text.Split(LINEBREAK, StringSplitOptions.None).ToList();
+
+            if (numeric)
+            {
+                var patt = new Regex(@"((.*?){0,1}([+|-]{0,1}\d+(\.\d+){0,1})(.*){0,1})");
+
+                var order = descending ? -1 : 1;
+
+                #region Sort with numeric
+                //sentences.Sort(StringComparer.CurrentCulture);
+                sentences.Sort((x, y) =>
+                {
+                    var mx = patt.Match(x.TrimEnd());
+                    var my = patt.Match(y.TrimEnd());
+                    if(mx.Success && my.Success)
+                    {
+                        //var ret = order * mx.Groups[2].Value.CompareTo(my.Groups[2].Value);
+                        var ret = order * string.Compare(mx.Groups[2].Value, my.Groups[2].Value, StringComparison.CurrentCulture);
+                        if (ret == 0) ret = order * string.Compare(mx.Groups[5].Value, my.Groups[5].Value, StringComparison.CurrentCulture);
+                        if (ret == 0)
+                        {
+                            var dx = double.Parse(mx.Groups[3].Value);
+                            var dy = double.Parse(my.Groups[3].Value);
+                            ret = dx == dy ? 0 : order * (dx > dy ? 1 : -1);
+                        }
+                        return (ret);
+                    }
+                    else
+                    {
+                        return (order * string.Compare(x, y, StringComparison.CurrentCulture));
+                    }
+                });
+                return (string.Join(Environment.NewLine, sentences).Trim());
+
+                //var result = sentences;
+
+                //if (descending)
+                //    result = sentences.OrderByDescending(s => double.Parse(Regex.Match(s, @"([+|-]{0,1}\d+(\.\d+){0,1})").Value)).ToList();
+                //else
+                //    result = sentences.OrderBy(s => double.Parse(Regex.Match(s, @"([+|-]{0,1}\d+(\.\d+){0,1})").Value)).ToList();
+
+                //return (string.Join(Environment.NewLine, result).Trim());
+                #endregion
+            }
+            else
+            {
+                #region Simple sort
+                if (descending)
+                    sentences.Sort((x, y) => -string.Compare(x, y, StringComparison.CurrentCulture));
+                else
+                    sentences.Sort((x, y) => string.Compare(x, y, StringComparison.CurrentCulture));
+
+                return (string.Join(Environment.NewLine, sentences).Trim());
+                #endregion
+            }
+        }
         #region Latin case converter
         public static string Upper(this string text, System.Globalization.CultureInfo enc = null)
         {

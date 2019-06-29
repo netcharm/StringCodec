@@ -226,6 +226,11 @@
                         <MenuFlyoutItem x:Name="optReverseSmart" x:Uid="optReverseSmart" Text="Reverse (Smart)" Click="Case_Click"/>
                         <MenuFlyoutItem x:Name="optReverseForce" x:Uid="optReverseForce" Text="Reverse (Force)" Click="Case_Click"/>
                         <MenuFlyoutSeparator />
+                        <MenuFlyoutItem x:Name="optSortAZ" x:Uid="optSortAZ" Text="Sort (A-Z)" Click="Case_Click"/>
+                        <MenuFlyoutItem x:Name="optSortZA" x:Uid="optSortZA" Text="Sort (Z-A)" Click="Case_Click"/>
+                        <MenuFlyoutItem x:Name="optSort09" x:Uid="optSort09" Text="Sort (0-9)" Click="Case_Click"/>
+                        <MenuFlyoutItem x:Name="optSort90" x:Uid="optSort90" Text="Sort (9-0)" Click="Case_Click"/>
+                        <MenuFlyoutSeparator />
                         <MenuFlyoutSubItem x:Name="optHash" x:Uid="optHash" Text="Hash Calculating">
                             <MenuFlyoutItem x:Name="optHashMD5" x:Uid="optHashMD5" Text="MD5" Click="Hash_Click"/>
                             <MenuFlyoutItem x:Name="optHashMD4" x:Uid="optHashMD4" Text="MD4/eDonkey/eMule" Click="Hash_Click"/>

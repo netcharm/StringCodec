@@ -153,15 +153,25 @@ namespace StringCodec.UWP.Pages
 
         private async void Case_Click(object sender, RoutedEventArgs e)
         {
-            var text = edSrc.Text;
+            var text = edSrc.SelectionLength > 0 ? edSrc.SelectedText : edSrc.Text;
             var result = text;
 
             try
             {
+                #region Misc converter
                 if (sender == optReverseSmart)
                     result = text.ReverseOrder(true);
                 else if (sender == optReverseForce)
                     result = text.ReverseOrder(false);
+                else if (sender == optSortAZ)
+                    result = text.Sort(false, false);
+                else if (sender == optSortZA)
+                    result = text.Sort(true, false);
+                else if (sender == optSort09)
+                    result = text.Sort(false, true);
+                else if (sender == optSort90)
+                    result = text.Sort(true, true);
+                #endregion
                 #region English case convert
                 else if (sender == optCaseUp)
                     result = text.Upper(CURRENT_CULTURE);
@@ -239,16 +249,16 @@ namespace StringCodec.UWP.Pages
 
         private async void Hash_Click(object sender, RoutedEventArgs e)
         {
-            var text = edSrc.Text;
+            var text = edSrc.SelectionLength > 0 ? edSrc.SelectedText : edSrc.Text;
             var result = text;
 
             try
             {
-                if(sender == optHashMD5)
+                if (sender == optHashMD5)
                 {
                     result = result.CalcMD5(CURRENT_ENC);
                 }
-                else if(sender == optHashMD4)
+                else if (sender == optHashMD4)
                 {
                     result = result.CalcMD4(CURRENT_ENC);
                 }
@@ -379,20 +389,21 @@ namespace StringCodec.UWP.Pages
         {
             if (sender is MenuFlyoutItem)
             {
+                var text = edSrc.SelectionLength > 0 ? edSrc.SelectedText : edSrc.Text;
                 var btn = sender as MenuFlyoutItem;
                 switch (btn.Name)
                 {
                     case "btnShareSrcAsURL":
-                        await Utils.Share(edSrc.Text, true);
+                        await Utils.Share(text, true);
                         break;
                     case "btnShareDstAsURL":
-                        await Utils.Share(edDst.Text, true);
+                        await Utils.Share(text, true);
                         break;
                     case "btnShareSrcContent":
-                        Utils.Share(edSrc.Text);
+                        Utils.Share(text);
                         break;
                     case "btnShareDstContent":
-                        Utils.Share(edDst.Text);
+                        Utils.Share(text);
                         break;
                     default:
                         break;
@@ -410,6 +421,7 @@ namespace StringCodec.UWP.Pages
             {
                 if (sender is AppBarButton)
                 {
+                    text = edSrc.SelectionLength > 0 ? edSrc.SelectedText : edSrc.Text;
                     var btn = sender as AppBarButton;
                     switch (btn.Name)
                     {
@@ -417,7 +429,7 @@ namespace StringCodec.UWP.Pages
                             if (CURRENT_CODEC == TextCodecs.CODEC.UUID)
                             {
                                 StringBuilder sb = new StringBuilder();
-                                string guid = TextCodecs.GUID.Encode(edSrc.Text);
+                                string guid = TextCodecs.GUID.Encode(text);
                                 sb.AppendLine(TextCodecs.GUID.Encode(guid, "N"));
                                 sb.AppendLine(TextCodecs.GUID.Encode(guid, "D"));
                                 sb.AppendLine(TextCodecs.GUID.Encode(guid, "B"));
@@ -426,14 +438,14 @@ namespace StringCodec.UWP.Pages
                                 edDst.Text = sb.ToString();
                             }
                             else
-                                edDst.Text = await TextCodecs.Encode(edSrc.Text, CURRENT_CODEC, CURRENT_ENC, CURRENT_LINEBREAK);
+                                edDst.Text = await TextCodecs.Encode(text, CURRENT_CODEC, CURRENT_ENC, CURRENT_LINEBREAK);
                             text_src = edDst.Text;
                             break;
                         case "btnDecode":
                             if (CURRENT_CODEC == TextCodecs.CODEC.UUID)
                             {
                                 StringBuilder sb = new StringBuilder();
-                                string guid = TextCodecs.GUID.Decode(edSrc.Text);
+                                string guid = TextCodecs.GUID.Decode(text);
                                 sb.AppendLine(TextCodecs.GUID.Decode(guid, "N"));
                                 sb.AppendLine(TextCodecs.GUID.Decode(guid, "D"));
                                 sb.AppendLine(TextCodecs.GUID.Decode(guid, "B"));
@@ -442,10 +454,9 @@ namespace StringCodec.UWP.Pages
                                 edDst.Text = sb.ToString();
                             }
                             else
-                                edDst.Text = await TextCodecs.Decode(edSrc.Text, CURRENT_CODEC, CURRENT_ENC);
+                                edDst.Text = await TextCodecs.Decode(text, CURRENT_CODEC, CURRENT_ENC);
                             text_src = edDst.Text;
                             break;
-
                         case "btnEncodeFile":
                             var encFiles = await Utils.OpenFiles(Utils.text_ext);
                             BatchProcessNotification(true);
