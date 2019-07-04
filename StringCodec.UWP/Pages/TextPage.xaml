@@ -26,6 +26,7 @@
                         <ToggleMenuFlyoutItem x:Name="optUUE" x:Uid="optUUE" Text="UUEncode" Click="Codec_Click"/>
                         <ToggleMenuFlyoutItem x:Name="optXXE" x:Uid="optXXE" Text="XXEncode" Click="Codec_Click"/>
                         <ToggleMenuFlyoutItem x:Name="optQuoted" x:Uid="optQuoted" Text="Quoted" Click="Codec_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optHZGB2312" x:Uid="optHZGB2312" Text="HZ-GB2312" Click="Codec_Click"/>
                         <MenuFlyoutSeparator />
                         <ToggleMenuFlyoutItem x:Name="optRaw" x:Uid="optRaw" Text="RAW" Click="Codec_Click"/>
                         <ToggleMenuFlyoutItem x:Name="optRawEscape" x:Uid="optRawEscape" Text="RAW (Escape)" Click="Codec_Click"/>

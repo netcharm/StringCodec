@@ -24,7 +24,7 @@ namespace StringCodec.UWP.Common
 
         public enum CODEC {
             URL, HTML, BASE64, UUE, XXE, RAW, RAWESCAPE,
-            UNICODEVALUE, UNICODEGLYPH, QUOTED,
+            UNICODEVALUE, UNICODEGLYPH, QUOTED, HZGB2312,
             THUNDER, FLASHGET,
             UUID, GUID,
             MORSE, MORSEABBR, ROT13
@@ -591,6 +591,73 @@ namespace StringCodec.UWP.Common
 
         }
 
+        static public class HZGB2312
+        {
+            static public string Encode(byte[] text, Encoding enc, bool LineBreak = false)
+            {
+                string result = string.Empty;
+
+                var bytesOut = new List<byte>();
+                foreach (var c in text)
+                {
+                    bytesOut.Add((byte)(c - 128));
+                }
+                result = $"~{{{Encoding.Default.GetString(bytesOut.ToArray())}~}}";
+
+                return (result);
+            }
+
+            static public string Encode(string text, Encoding enc, bool LineBreak = false)
+            {
+                string result = string.Empty;
+
+                var bytes = enc.GetBytes(text);
+                if (bytes is byte[] && bytes.Length > 0)
+                    result = Encode(bytes, enc);
+
+                return (result);
+            }
+
+            static public string Encode(string text, bool LineBreak = false)
+            {
+                return (Encode(text, Encoding.Default, LineBreak));
+            }
+
+            static public string Decode(string text, Encoding enc)
+            {
+                string result = text;
+
+                var patten = @"~\{(.*?)~\}";
+                if (Regex.IsMatch(text, patten, RegexOptions.Multiline))
+                {
+                    var replace = new Dictionary<string, string>();
+                    foreach (Match m in Regex.Matches(text, patten, RegexOptions.Multiline))
+                    {
+                        if (replace.ContainsKey(m.Value)) continue;
+                        var r = Decode(m.Groups[1].Value, enc);
+                        replace.Add(m.Value, r);
+                    }
+                    foreach(var kv in replace)
+                    {
+                        result = result.Replace(kv.Key, kv.Value);
+                    }
+                }
+                else
+                {
+                    var bytesIn = Encoding.Default.GetBytes(text);
+                    var bytesOut = new List<byte>();
+                    foreach (var c in bytesIn)
+                    {
+                        //if (c == '~' || c == '{' || c == '}') continue;
+                        bytesOut.Add((byte)(c + 128));
+                    }
+                    result = enc.GetString(bytesOut.ToArray());
+                }
+
+                return (result);
+            }
+        }
+
         static public class RAW
         {
             static public string Encode(byte[] text, Encoding enc, bool LineBreak = false, bool Escape = false)
@@ -608,7 +675,7 @@ namespace StringCodec.UWP.Common
                     if (LineBreak && count % 18 == 0) asciis.Add(Environment.NewLine);
                     count++;
                 }
-                result = string.Join("", asciis); ;
+                result = string.Join("", asciis);
 
                 return (result);
             }
@@ -1415,6 +1482,9 @@ namespace StringCodec.UWP.Common
                     case CODEC.QUOTED:
                         result = QUOTED.Encode(content, enc);
                         break;
+                    case CODEC.HZGB2312:
+                        result = HZGB2312.Encode(content, enc);
+                        break;
                     case CODEC.THUNDER:
                         result = await THUNDER.Encode(content, enc);
                         break;
@@ -1481,6 +1551,9 @@ namespace StringCodec.UWP.Common
                         break;
                     case CODEC.QUOTED:
                         result = QUOTED.Encode(content, enc);
+                        break;
+                    case CODEC.HZGB2312:
+                        result = HZGB2312.Encode(content, enc);
                         break;
                     case CODEC.THUNDER:
                         result = await THUNDER.Encode(content, enc);
@@ -1775,6 +1848,9 @@ namespace StringCodec.UWP.Common
                         break;
                     case CODEC.QUOTED:
                         result = QUOTED.Decode(content, enc);
+                        break;
+                    case CODEC.HZGB2312:
+                        result = HZGB2312.Decode(content, enc);
                         break;
                     case CODEC.THUNDER:
                         result = await THUNDER.Decode(content, enc);
