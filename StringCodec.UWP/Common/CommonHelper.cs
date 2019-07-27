@@ -546,6 +546,14 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
+        public static async Task<WriteableBitmap> ToWriteableBitmap(this FrameworkElement element, double scale)
+        {
+            var w = (int)Math.Ceiling(element.ActualWidth * scale);
+            var h = (int)Math.Ceiling(element.ActualHeight * scale);
+
+            return (await element.ToWriteableBitmap(w, h));
+        }
+        
         public static async Task<WriteableBitmap> ToWriteableBitmap(this FrameworkElement element, int width, int height)
         {
             WriteableBitmap result = null;
@@ -866,7 +874,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        public static Rect Bound(this WriteableBitmap image)
+        public static Rect Bound(this WriteableBitmap image, int space=0)
         {
             int w = image.PixelWidth;
             int h = image.PixelHeight;
@@ -917,7 +925,7 @@ namespace StringCodec.UWP.Common
             int t = 0;
             for (int y = 0; y < h; y++)
             {
-                for (int x = 0; x < w; x++)
+                for (int x = l; x < r; x++)
                 {
                     if (matC[x, y] != coV)
                     {
@@ -931,86 +939,7 @@ namespace StringCodec.UWP.Common
             int b = h - 1;
             for (int y = h - 1; y >= 0; y--)
             {
-                for (int x = 0; x < w; x++)
-                {
-                    if (matC[x, y] != coV)
-                    {
-                        b = y;
-                        break;
-                    }
-                }
-                if (b < h - 1) break;
-            }
-
-            return (new Rect(l, t, r - l + 1, b - t + 1));
-        }
-
-        public static WriteableBitmap Crop(this WriteableBitmap image, int space = 0)
-        {
-            var w = image.PixelWidth;
-            var h = image.PixelHeight;
-
-            byte[] arr = image.PixelBuffer.ToArray();
-
-            uint coV = (uint)(arr[0]) + ((uint)(arr[1]) << 8) + ((uint)(arr[2]) << 16) + ((uint)(arr[3]) << 24);
-
-            uint[,] matC = new uint[w, h];
-            int i = 0;
-            for (int y = 0; y < h; y++)
-            {
-                for (int x = 0; x < w; x++)
-                {
-                    matC[x, y] = (uint)(arr[i]) + ((uint)(arr[i + 1]) << 8) + ((uint)(arr[i + 2]) << 16) + ((uint)(arr[i + 3]) << 24);
-                    i += 4;
-                }
-            }
-
-            int l = 0;
-            for (int x = 0; x < w; x++)
-            {
-                for (int y = 0; y < h; y++)
-                {
-                    if (matC[x, y] != coV)
-                    {
-                        l = x;
-                        break;
-                    }
-                }
-                if (l > 0) break;
-            }
-
-            int r = w - 1;
-            for (int x = w - 1; x >= 0; x--)
-            {
-                for (int y = 0; y < h; y++)
-                {
-                    if (matC[x, y] != coV)
-                    {
-                        r = x;
-                        break;
-                    }
-                }
-                if (r < w - 1) break;
-            }
-
-            int t = 0;
-            for (int y = 0; y < h; y++)
-            {
-                for (int x = 0; x < w; x++)
-                {
-                    if (matC[x, y] != coV)
-                    {
-                        t = y;
-                        break;
-                    }
-                }
-                if (t > 0) break;
-            }
-
-            int b = h - 1;
-            for (int y = h - 1; y >= 0; y--)
-            {
-                for (int x = 0; x < w; x++)
+                for (int x = l; x < r; x++)
                 {
                     if (matC[x, y] != coV)
                     {
@@ -1026,16 +955,106 @@ namespace StringCodec.UWP.Common
             t = Math.Max(t - space, 0);
             b = Math.Min(b + space, h - 1);
 
-            var result = image.Crop(l, t, r - l + 1, b - t + 1);
+            return (new Rect(l, t, r - l + 1, b - t + 1));
+        }
+
+        public static WriteableBitmap Crop(this WriteableBitmap image, int space = 0)
+        {
+            //var w = image.PixelWidth;
+            //var h = image.PixelHeight;
+
+            //byte[] arr = image.PixelBuffer.ToArray();
+
+            //uint coV = (uint)(arr[0]) + ((uint)(arr[1]) << 8) + ((uint)(arr[2]) << 16) + ((uint)(arr[3]) << 24);
+
+            //uint[,] matC = new uint[w, h];
+            //int i = 0;
+            //for (int y = 0; y < h; y++)
+            //{
+            //    for (int x = 0; x < w; x++)
+            //    {
+            //        matC[x, y] = (uint)(arr[i]) + ((uint)(arr[i + 1]) << 8) + ((uint)(arr[i + 2]) << 16) + ((uint)(arr[i + 3]) << 24);
+            //        i += 4;
+            //    }
+            //}
+
+            //int l = 0;
+            //for (int x = 0; x < w; x++)
+            //{
+            //    for (int y = 0; y < h; y++)
+            //    {
+            //        if (matC[x, y] != coV)
+            //        {
+            //            l = x;
+            //            break;
+            //        }
+            //    }
+            //    if (l > 0) break;
+            //}
+
+            //int r = w - 1;
+            //for (int x = w - 1; x >= 0; x--)
+            //{
+            //    for (int y = 0; y < h; y++)
+            //    {
+            //        if (matC[x, y] != coV)
+            //        {
+            //            r = x;
+            //            break;
+            //        }
+            //    }
+            //    if (r < w - 1) break;
+            //}
+
+            //int t = 0;
+            //for (int y = 0; y < h; y++)
+            //{
+            //    for (int x = 0; x < w; x++)
+            //    {
+            //        if (matC[x, y] != coV)
+            //        {
+            //            t = y;
+            //            break;
+            //        }
+            //    }
+            //    if (t > 0) break;
+            //}
+
+            //int b = h - 1;
+            //for (int y = h - 1; y >= 0; y--)
+            //{
+            //    for (int x = 0; x < w; x++)
+            //    {
+            //        if (matC[x, y] != coV)
+            //        {
+            //            b = y;
+            //            break;
+            //        }
+            //    }
+            //    if (b < h - 1) break;
+            //}
+
+            //l = Math.Max(l - space, 0);
+            //r = Math.Min(r + space, w - 1);
+            //t = Math.Max(t - space, 0);
+            //b = Math.Min(b + space, h - 1);
+
+            var rect = image.Bound(space);
+            var l = (int)Math.Max(0, rect.Left - space);
+            var t = (int)Math.Max(0, rect.Top - space);
+            var w = (int)Math.Min(image.PixelWidth, rect.Width + space * 2);
+            var h = (int)Math.Min(image.PixelHeight, rect.Height + space * 2);
+
+            var result = image.Crop(l, t, w, h);
             return (result);
         }
 
         public static WriteableBitmap Crop(this WriteableBitmap image, double space)
         {
-            var rect = image.Bound();
-
             var tol = Math.Max(0, Math.Min(1.0, space));
             var sp = Math.Ceiling(Math.Min(image.PixelWidth * tol, image.PixelHeight * tol));
+
+            var rect = image.Bound((int)sp);
 
             var l = (int)Math.Max(0, rect.Left - sp);
             var t = (int)Math.Max(0, rect.Top - sp);

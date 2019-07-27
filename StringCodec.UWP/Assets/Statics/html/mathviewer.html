@@ -61,11 +61,11 @@
             //var zv = (window.innerWidth * 100 / document.body.clientWidth) + '%'
             //document.body.style.zoom = zv;
 
-            return (window.devicePixelRatio);
+            return (window.devicePixelRatio+'');
         }
 
         function GetEquationRect() {
-            var result = "";
+            var result = '';
             try {
                 var bound = document.querySelector('#equationtex-Frame').getBoundingClientRect();
                 l = window.scrollX + bound.left;

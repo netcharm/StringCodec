@@ -48,6 +48,8 @@ namespace StringCodec.UWP.Pages
 
             MathView.DOMContentLoaded += OnContentLoaded;
             MathView.DefaultBackgroundColor = CURRENT_BGCOLOR;
+            MathView.CanDrag = false;
+            //MathView.CompositeMode = ElementCompositeMode.SourceOver;
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
@@ -81,6 +83,7 @@ namespace StringCodec.UWP.Pages
                 {
                     await MathView.InvokeScriptAsync("ChangeColor", new string[] { CURRENT_FGCOLOR.ToCssRGBA(), Colors.White.ToCssRGBA() });
                 }
+
                 await MathView.CapturePreviewToStreamAsync(rs);
                 await rs.FlushAsync();
                 var wb = await rs.ToWriteableBitmap();
@@ -90,7 +93,10 @@ namespace StringCodec.UWP.Pages
                     wb = wb.Crop(2);
                 }
 
-                await MathView.InvokeScriptAsync("ChangeColor", new string[] { CURRENT_FGCOLOR.ToCssRGBA(), CURRENT_BGCOLOR.ToCssRGBA() });
+                if (MathView.DefaultBackgroundColor.A == 0x00)
+                {
+                    await MathView.InvokeScriptAsync("ChangeColor", new string[] { CURRENT_FGCOLOR.ToCssRGBA(), CURRENT_BGCOLOR.ToCssRGBA() });
+                }
 
                 return (wb);
             }
@@ -100,30 +106,38 @@ namespace StringCodec.UWP.Pages
         { 
             if (CURRENT_IMAGE == null || force)
             {
-                var wb = await MathView.ToWriteableBitmap();
+                var scale = await MathView.InvokeScriptAsync("GetPageZoomRatio", null);
+                var ratio = 1.0;
+                double.TryParse(scale, out ratio);
+                if (ratio == 0.0) ratio = 1;
+                else ratio = Math.Ceiling(ratio);
 
+                var wb = await MathView.ToWriteableBitmap();
                 if (wb is WriteableBitmap)
                 {
-                    var size = await MathView.InvokeScriptAsync("GetEquationRect", null);
                     var space = 2;
                     var tolerance = space * 2;
 
+                    var size = await MathView.InvokeScriptAsync("GetEquationRect", null);
                     if (!string.IsNullOrEmpty(size))
                     {
-                        var sv = size.Split(',');
-                        var l = (int)Math.Floor(double.Parse(sv[0]));
-                        var t = (int)Math.Floor(double.Parse(sv[1]));
-                        var w = (int)Math.Ceiling(double.Parse(sv[2]));
-                        var h = (int)Math.Ceiling(double.Parse(sv[3]));
-                        l = Math.Max(0, l - tolerance);
-                        t = Math.Max(0, t - tolerance);
-                        w = Math.Min(wb.PixelWidth, w + tolerance);
-                        h = Math.Min(wb.PixelHeight, h + tolerance);
-                        wb = wb.Crop(l, t, w, h);
-                    }
-                    else
-                    {
-                        //wb = wb.Crop();
+                        try
+                        {
+                            var sv = size.Split(',');
+                            var l = (int)Math.Floor(double.Parse(sv[0].Trim()));
+                            var t = (int)Math.Floor(double.Parse(sv[1].Trim()));
+                            var w = (int)Math.Ceiling(double.Parse(sv[2].Trim()));
+                            var h = (int)Math.Ceiling(double.Parse(sv[3].Trim()));
+                            l = Math.Max(0, l - tolerance);
+                            t = Math.Max(0, t - tolerance);
+                            w = Math.Min(wb.PixelWidth, (int)(w * ratio) + tolerance);
+                            h = Math.Min(wb.PixelHeight, (int)(h * ratio) + tolerance);
+                            wb = wb.Crop(l, t, w, h);
+                        }
+                        catch(Exception)
+                        {
+
+                        }
                     }
                     wb = wb.Crop(space);
                 }
@@ -233,60 +247,42 @@ namespace StringCodec.UWP.Pages
         private async void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
             var btn = sender as AppBarButton;
-            switch (btn.Name)
+            try
             {
-                case "btnGenerateMath":
-                    try
-                    {
+                switch (btn.Name)
+                {
+                    case "btnGenerateMath":
                         var tex = edSrc.Text.Trim();//.Replace("\\", "\\\\");
-                        var result = await MathView.InvokeScriptAsync("ChangeEquation", new string[] { tex });
-                        //await GetMathImage(true);
-                    }
-                    catch(Exception ex)
-                    {
-                        ex.Message.ShowMessage("Error");
-                    }
-                    break;
-                case "btnCopy":
-                    try
-                    {
+                        if (!string.IsNullOrEmpty(tex))
+                        {
+                            var result = await MathView.InvokeScriptAsync("ChangeEquation", new string[] { tex });
+                            //await GetMathImage(true);
+                        }
+                        break;
+                    case "btnCopy":
                         Utils.SetClipboard(await GetMathImage(true));
-                    }
-                    catch (Exception ex)
-                    {
-                        ex.Message.ShowMessage("Error");
-                    }
-                    break;
-                case "btnCaptureMathToClip":
-                    try
-                    {
+                        break;
+                    case "btnCaptureMathToClip":
                         Utils.SetClipboard(await GetMathCapture());
-                    }
-                    catch (Exception ex)
-                    {
-                        ex.Message.ShowMessage("Error");
-                    }
-                    break;
-                case "btnCaptureMathToShare":
-                    try
-                    {
+                        break;
+                    case "btnCaptureMathToShare":
                         await Utils.Share(await GetMathCapture(), "Math".T());
-                    }
-                    catch (Exception ex)
-                    {
-                        ex.Message.ShowMessage("Error");
-                    }
-                    break;
-                case "btnPaste":
-                    edSrc.Text = await Utils.GetClipboard(edSrc.Text.Trim());
-                    break;
-                case "btnSave":
-                    await Utils.ShowSaveDialog(await GetMathImage(true), "Math");
-                    break;
-                case "btnShare":
-                    break;
-                default:
-                    break;
+                        break;
+                    case "btnPaste":
+                        edSrc.Text = await Utils.GetClipboard(edSrc.Text.Trim());
+                        break;
+                    case "btnSave":
+                        await Utils.ShowSaveDialog(await GetMathImage(true), "Math");
+                        break;
+                    case "btnShare":
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.Message.ShowMessage("Error");
             }
         }
 
