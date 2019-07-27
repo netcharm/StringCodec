@@ -1,0 +1,124 @@
+﻿<Page
+    x:Class="StringCodec.UWP.Pages.LaTexPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:StringCodec.UWP.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Loaded="Page_Loaded"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid  Margin="12, 0, 12, 12" x:Name="LayoutRoot" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height=".5*" />
+            <RowDefinition Height=".5*" />
+        </Grid.RowDefinitions>
+
+        <CommandBar Grid.Row="0" x:Name="CmdBar" x:Uid="CmdBar" KeyboardAcceleratorPlacementMode="Auto">
+            <AppBarButton x:Name="btnOpt" x:Uid="btnOpt" Icon="Bullets" Label="Options" VerticalAlignment="Center">
+                <AppBarButton.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem x:Name="optFgColor" x:Uid="optFgColor" Text="Foreground Color" 
+                                        Click="OptColor_Click">
+                            <MenuFlyoutItem.Icon>
+                                <FontIcon Glyph="&#xE2B1;" FontFamily="Segoe MDL2 Assets"/>
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                        <MenuFlyoutItem x:Name="optBgColor" x:Uid="optBgColor" Text="Background Color" 
+                                        Click="OptColor_Click">
+                            <MenuFlyoutItem.Icon>
+                                <FontIcon Glyph="&#xE2B1;" FontFamily="Segoe MDL2 Assets"/>
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                        <MenuFlyoutItem x:Name="optResetColor" x:Uid="optResetColor" Text="Reset Color" 
+                                        Click="OptColor_Click"/>
+                        <MenuFlyoutSeparator />
+                        <ToggleMenuFlyoutItem x:Name="optScale100" x:Uid="optScale100" Text="Scale 100%" 
+                                        Click="OptScale_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optScale125" x:Uid="optScale125" Text="Scale 125%" 
+                                        Click="OptScale_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optScale133" x:Uid="optScale133" Text="Scale 133%" 
+                                        Click="OptScale_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optScale150" x:Uid="optScale150" Text="Scale 150%" 
+                                        Click="OptScale_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optScale200" x:Uid="optScale200" Text="Scale 200%" 
+                                        Click="OptScale_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optScale250" x:Uid="optScale250" Text="Scale 250%" 
+                                        Click="OptScale_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optScale300" x:Uid="optScale300" Text="Scale 300%" 
+                                        Click="OptScale_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optScale400" x:Uid="optScale400" Text="Scale 400%" 
+                                        Click="OptScale_Click"/>
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+            <AppBarSeparator />
+            <AppBarButton x:Name="btnCopy" x:Uid="btnCopy" Label="Copy" Icon="Copy" VerticalAlignment="Center" Click="AppBarButton_Click"  />
+            <AppBarButton x:Name="btnPaste" x:Uid="btnPaste" Label="Paste" Icon="Paste" VerticalAlignment="Center" Click="AppBarButton_Click" />
+            <AppBarSeparator />
+            <AppBarButton x:Name="btnGenerateMath" x:Uid="btnGenerateMath" Label="Generate" VerticalAlignment="Center" Click="AppBarButton_Click" >
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="F2" />
+                </AppBarButton.KeyboardAccelerators>
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xE94B;" FontFamily="Segoe MDL2 Assets"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarSeparator />
+            <AppBarButton x:Name="btnSave" x:Uid="btnSave" Label="Save" Icon="Save" VerticalAlignment="Center" Click="AppBarButton_Click" />
+            <AppBarButton x:Name="btnShare" x:Uid="btnShare" Label="Share" Icon="Share" VerticalAlignment="Center">
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="F12"/>
+                </AppBarButton.KeyboardAccelerators>
+                <AppBarButton.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem x:Name="btnShareSrcContent" x:Uid="btnShareSrcContent" Text="Share Input Contents" Click="AppBarShare_Click"/>
+                        <MenuFlyoutItem x:Name="btnShareDstContent" x:Uid="btnShareDstImage" Text="Share Output Image" Click="AppBarShare_Click"/>
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+
+            <CommandBar.SecondaryCommands>
+                <!-- More Button Dropdown menu -->
+                <AppBarButton x:Name="btnSrcText" x:Uid="btnSrcQRCode" Label="Input to QRCode" Click="Send_Click" >
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xF029;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton x:Name="btnDstImage" x:Uid="btnImageToBase64" Label="Image to BASE64" Icon="Shuffle" VerticalAlignment="Center" Click="Send_Click" />
+                <!--<AppBarButton Label="About"/>-->
+            </CommandBar.SecondaryCommands>
+
+            <CommandBar.Content>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <!--<ProgressRing Grid.Column="0" x:Name="ring" x:Uid="Ring" VerticalAlignment="Center"/>-->
+                    <TextBlock Grid.Column="1" x:Name="edInfo" x:Uid="edInfo" Text="" Margin="12,14" VerticalAlignment="Center"/>
+                </Grid>
+            </CommandBar.Content>
+        </CommandBar>
+
+        <TextBox Grid.Row="1" Margin="0 16 0 0" x:Name="edSrc" x:Uid="edSrc" 
+                 Header="Input:" PlaceholderText="Input at here" 
+                 AcceptsReturn="True" CanDrag="True" 
+                 FontFamily="Consolas" FontSize="16" IsSpellCheckEnabled="True" 
+                 SelectionHighlightColorWhenNotFocused="{ThemeResource ButtonBorderThemeBrush}"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                 ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                 AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" />
+
+
+        <WebView Grid.Row="2" x:Name="MathView"
+                 DefaultBackgroundColor="Transparent"
+                 Source="ms-appx-web:///Assets/Statics/html/mathviewer.html" />
+
+        <ProgressRing Grid.RowSpan="3" x:Name="progress" Width="96" Height="96" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
+        <MediaElement x:Name="mediaPlayer" AutoPlay="False" Source="ms-winsoundevent:Notification.Default" Width="0" Height="0" Visibility="Collapsed"/>
+    </Grid>
+
+</Page>

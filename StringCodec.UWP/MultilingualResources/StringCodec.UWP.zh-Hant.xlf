@@ -1088,11 +1088,11 @@
         </trans-unit>
         <trans-unit id="btnShareDstAsURL.Text" translate="yes" xml:space="preserve">
           <source>Share Output As URL</source>
-          <target state="translated">分享輸出的連結</target>
+          <target state="translated">分享生成的連結</target>
         </trans-unit>
         <trans-unit id="btnShareDstContent.Text" translate="yes" xml:space="preserve">
           <source>Share Output Contents</source>
-          <target state="translated">分享輸出的文本</target>
+          <target state="translated">分享生成的文本</target>
         </trans-unit>
         <trans-unit id="btnShareSrcAsURL.Text" translate="yes" xml:space="preserve">
           <source>Share Input As URL</source>
@@ -1549,6 +1549,54 @@
         <trans-unit id="optSortZA.Text" translate="yes" xml:space="preserve">
           <source>Sort (Z-A)</source>
           <target state="translated">按字符排序行 (降序)</target>
+        </trans-unit>
+        <trans-unit id="btnShareDstImage.Text" translate="yes" xml:space="preserve">
+          <source>Share Output Image</source>
+          <target state="translated">分享生成的圖像</target>
+        </trans-unit>
+        <trans-unit id="optScale100.Text" translate="yes" xml:space="preserve">
+          <source>Scale 100%</source>
+          <target state="translated">縮放 100%</target>
+        </trans-unit>
+        <trans-unit id="optScale125.Text" translate="yes" xml:space="preserve">
+          <source>Scale 125%</source>
+          <target state="translated">縮放 125%</target>
+        </trans-unit>
+        <trans-unit id="optScale133.Text" translate="yes" xml:space="preserve">
+          <source>Scale 133%</source>
+          <target state="translated">縮放 133%</target>
+        </trans-unit>
+        <trans-unit id="optScale150.Text" translate="yes" xml:space="preserve">
+          <source>Scale 150%</source>
+          <target state="translated">縮放 150%</target>
+        </trans-unit>
+        <trans-unit id="optScale200.Text" translate="yes" xml:space="preserve">
+          <source>Scale 200%</source>
+          <target state="translated">縮放 200%</target>
+        </trans-unit>
+        <trans-unit id="optScale250.Text" translate="yes" xml:space="preserve">
+          <source>Scale 250%</source>
+          <target state="translated">縮放 250%</target>
+        </trans-unit>
+        <trans-unit id="optScale300.Text" translate="yes" xml:space="preserve">
+          <source>Scale 300%</source>
+          <target state="translated">縮放 300%</target>
+        </trans-unit>
+        <trans-unit id="optScale400.Text" translate="yes" xml:space="preserve">
+          <source>Scale 400%</source>
+          <target state="translated">縮放 400%</target>
+        </trans-unit>
+        <trans-unit id="btnGenerateMath.Label" translate="yes" xml:space="preserve">
+          <source>Generate</source>
+          <target state="translated">生成</target>
+        </trans-unit>
+        <trans-unit id="nvItemLaTex.Content" translate="yes" xml:space="preserve">
+          <source>LaTex Math To Image</source>
+          <target state="translated">LaTex 數學公式轉為圖片</target>
+        </trans-unit>
+        <trans-unit id="nvItemLaTex.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Converting LaTex mathematical formula to image</source>
+          <target state="translated">轉換簡單LaTex數學公式為圖片</target>
         </trans-unit>
       </group>
     </body>

@@ -321,6 +321,10 @@ namespace StringCodec.UWP
                     {
                         nvMain.SelectedItem = nvItemCommonOneD as NavigationViewItem;
                     }
+                    else if (e.SourcePageType == typeof(Pages.LaTexPage))
+                    {
+                        nvMain.SelectedItem = nvItemLaTex as NavigationViewItem;
+                    }
                     else if (e.SourcePageType == typeof(Pages.CharsetPage))
                     {
                         nvMain.SelectedItem = nvItemCharset as NavigationViewItem;
@@ -380,6 +384,9 @@ namespace StringCodec.UWP
                                 break;
                             case "nvItemCommonOneD":
                                 ContentFrame.Navigate(typeof(Pages.CommonOneDPage), this);
+                                break;
+                            case "nvItemLaTex":
+                                ContentFrame.Navigate(typeof(Pages.LaTexPage), this);
                                 break;
                             case "nvItemCharset":
                                 ContentFrame.Navigate(typeof(Pages.CharsetPage), this);

@@ -1275,4 +1275,40 @@
   <data name="optSortZA.Text" xml:space="preserve">
     <value>Sort (Z-A)</value>
   </data>
+  <data name="nvItemLaTex.Content" xml:space="preserve">
+    <value>LaTex Math To Image</value>
+  </data>
+  <data name="nvItemLaTex.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Converting LaTex mathematical formula to image</value>
+  </data>  
+  <data name="btnShareDstImage.Text" xml:space="preserve">
+    <value>Share Output Image</value>
+  </data>
+  <data name="optScale100.Text" xml:space="preserve">
+    <value>Scale 100%</value>
+  </data>
+  <data name="optScale125.Text" xml:space="preserve">
+    <value>Scale 125%</value>
+  </data>
+  <data name="optScale133.Text" xml:space="preserve">
+    <value>Scale 133%</value>
+  </data>
+  <data name="optScale150.Text" xml:space="preserve">
+    <value>Scale 150%</value>
+  </data>
+  <data name="optScale200.Text" xml:space="preserve">
+    <value>Scale 200%</value>
+  </data>
+  <data name="optScale250.Text" xml:space="preserve">
+    <value>Scale 250%</value>
+  </data>
+  <data name="optScale300.Text" xml:space="preserve">
+    <value>Scale 300%</value>
+  </data>
+  <data name="optScale400.Text" xml:space="preserve">
+    <value>Scale 400%</value>
+  </data>
+  <data name="btnGenerateMath.Label" xml:space="preserve">
+    <value>Generate</value>
+  </data>
 </root>

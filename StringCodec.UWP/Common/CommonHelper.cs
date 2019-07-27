@@ -504,6 +504,18 @@ namespace StringCodec.UWP.Common
 
     public static class WriteableBitmapExtentions
     {
+        #region Color Extentions
+        public static string ToHTML(this Color color)
+        {
+            return ($"#{color.A:X2}{color.R:X2}{color.G:X2}{color.B:X2}");
+        }
+
+        public static string ToCssRGBA(this Color color)
+        {
+            return ($"rgba({color.R},{color.G},{color.B},{color.A/255.0:F2})");
+        }
+        #endregion
+
         #region FrameworkElement UIElement to WriteableBitmap
         public static async Task<WriteableBitmap> ToWriteableBitmap(this FrameworkElement element)
         {
@@ -787,6 +799,186 @@ namespace StringCodec.UWP.Common
             result.FillRectangle(0, 0, result.PixelWidth, result.PixelHeight, bgcolor);
             result.Blit(new Rect(size_left, size_top, image.PixelWidth, image.PixelHeight), image, new Rect(0, 0, image.PixelWidth, image.PixelHeight));
 
+            return (result);
+        }
+
+        public static Rect Bound(this WriteableBitmap image)
+        {
+            int w = image.PixelWidth;
+            int h = image.PixelHeight;
+
+            byte[] arr = image.PixelBuffer.ToArray();
+
+            uint coV = (uint)(arr[0]) + ((uint)(arr[1]) << 8) + ((uint)(arr[2]) << 16) + ((uint)(arr[3]) << 24);
+
+            uint[,] matC = new uint[w, h];
+            int i = 0;
+            for (int y = 0; y < h; y++)
+            {
+                for (int x = 0; x < w; x++)
+                {
+                    matC[x, y] = (uint)(arr[i]) + ((uint)(arr[i + 1]) << 8) + ((uint)(arr[i + 2]) << 16) + ((uint)(arr[i + 3]) << 24);
+                    i += 4;
+                }
+            }
+
+            int l = 0;
+            for (int x = 0; x < w; x++)
+            {
+                for (int y = 0; y < h; y++)
+                {
+                    if (matC[x, y] != coV)
+                    {
+                        l = x;
+                        break;
+                    }
+                }
+                if (l > 0) break;
+            }
+
+            int r = w - 1;
+            for (int x = w - 1; x >= 0; x--)
+            {
+                for (int y = 0; y < h; y++)
+                {
+                    if (matC[x, y] != coV)
+                    {
+                        r = x;
+                        break;
+                    }
+                }
+                if (r < w - 1) break;
+            }
+
+            int t = 0;
+            for (int y = 0; y < h; y++)
+            {
+                for (int x = 0; x < w; x++)
+                {
+                    if (matC[x, y] != coV)
+                    {
+                        t = y;
+                        break;
+                    }
+                }
+                if (t > 0) break;
+            }
+
+            int b = h - 1;
+            for (int y = h - 1; y >= 0; y--)
+            {
+                for (int x = 0; x < w; x++)
+                {
+                    if (matC[x, y] != coV)
+                    {
+                        b = y;
+                        break;
+                    }
+                }
+                if (b < h - 1) break;
+            }
+
+            return (new Rect(l, t, r - l + 1, b - t + 1));
+        }
+
+        public static WriteableBitmap Crop(this WriteableBitmap image, int space = 0)
+        {
+            var w = image.PixelWidth;
+            var h = image.PixelHeight;
+
+            byte[] arr = image.PixelBuffer.ToArray();
+
+            uint coV = (uint)(arr[0]) + ((uint)(arr[1]) << 8) + ((uint)(arr[2]) << 16) + ((uint)(arr[3]) << 24);
+
+            uint[,] matC = new uint[w, h];
+            int i = 0;
+            for (int y = 0; y < h; y++)
+            {
+                for (int x = 0; x < w; x++)
+                {
+                    matC[x, y] = (uint)(arr[i]) + ((uint)(arr[i + 1]) << 8) + ((uint)(arr[i + 2]) << 16) + ((uint)(arr[i + 3]) << 24);
+                    i += 4;
+                }
+            }
+
+            int l = 0;
+            for (int x = 0; x < w; x++)
+            {
+                for (int y = 0; y < h; y++)
+                {
+                    if (matC[x, y] != coV)
+                    {
+                        l = x;
+                        break;
+                    }
+                }
+                if (l > 0) break;
+            }
+
+            int r = w - 1;
+            for (int x = w - 1; x >= 0; x--)
+            {
+                for (int y = 0; y < h; y++)
+                {
+                    if (matC[x, y] != coV)
+                    {
+                        r = x;
+                        break;
+                    }
+                }
+                if (r < w - 1) break;
+            }
+
+            int t = 0;
+            for (int y = 0; y < h; y++)
+            {
+                for (int x = 0; x < w; x++)
+                {
+                    if (matC[x, y] != coV)
+                    {
+                        t = y;
+                        break;
+                    }
+                }
+                if (t > 0) break;
+            }
+
+            int b = h - 1;
+            for (int y = h - 1; y >= 0; y--)
+            {
+                for (int x = 0; x < w; x++)
+                {
+                    if (matC[x, y] != coV)
+                    {
+                        b = y;
+                        break;
+                    }
+                }
+                if (b < h - 1) break;
+            }
+
+            l = Math.Max(l - space, 0);
+            r = Math.Min(r + space, w - 1);
+            t = Math.Max(t - space, 0);
+            b = Math.Min(b + space, h - 1);
+
+            var result = image.Crop(l, t, r - l + 1, b - t + 1);
+            return (result);
+        }
+
+        public static WriteableBitmap Crop(this WriteableBitmap image, double space)
+        {
+            var rect = image.Bound();
+
+            var tol = Math.Max(0, Math.Min(1.0, space));
+            var sp = Math.Ceiling(Math.Min(image.PixelWidth * tol, image.PixelHeight * tol));
+
+            var l = (int)Math.Max(0, rect.Left - sp);
+            var t = (int)Math.Max(0, rect.Top - sp);
+            var w = (int)Math.Min(image.PixelWidth, rect.Width + sp * 2);
+            var h = (int)Math.Min(image.PixelHeight, rect.Height + sp * 2);
+
+            var result = image.Crop(l, t, w, h);
             return (result);
         }
         #endregion
@@ -1609,6 +1801,7 @@ namespace StringCodec.UWP.Common
             player.Play();
         }
 
+
         #region Share Extentions
         private static DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
         private static StorageFile _tempExportFile;
@@ -1812,6 +2005,83 @@ namespace StringCodec.UWP.Common
             };
             dataPackage.SetText(text);
             Clipboard.SetContent(dataPackage);
+        }
+
+        public static async void SetClipboard(WriteableBitmap wb)
+        {
+            DataPackage dataPackage = new DataPackage
+            {
+                RequestedOperation = DataPackageOperation.Copy
+            };
+
+            try
+            {
+                #region Create a temporary file Copy to Clipboard
+                //StorageFile tempFile = await (image.Source as WriteableBitmap).StoreTemporaryFile(pixelBuffer, r_width, r_height);
+
+                //if (tempFile != null)
+                //{
+                //    dataPackage.SetBitmap(RandomAccessStreamReference.CreateFromFile(tempFile));
+                //    //await tempFile.DeleteAsync();
+                //}
+                #endregion
+
+                #region Create in memory image data Copy to Clipboard
+                try
+                {
+                    var cistream = await wb.ToRandomAccessStream(".png");
+                    if (cistream != null)
+                    {
+                        dataPackage.SetBitmap(RandomAccessStreamReference.CreateFromStream(cistream));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
+                }
+                #endregion
+
+                #region Create other MIME format data Copy to Clipboard
+                //string[] fmts = new string[] { "CF_DIB", "CF_BITMAP", "BITMAP", "DeviceIndependentBitmap", "image/png", "image/bmp", "image/jpg", "image/jpeg" };
+                string[] fmts = new string[] { "image/png", "image/bmp", "image/jpg", "image/jpeg", "PNG" };
+                foreach (var fmt in fmts)
+                {
+                    if (fmt.Equals("CF_DIBV5", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        try
+                        {
+                            byte[] arr = wb.ToBytes();
+                            byte[] dib = arr.Skip(14).ToArray();
+                            var rms = await dib.ToRandomAccessStream();
+                            dataPackage.SetData(fmt, rms);
+                        }
+                        catch (Exception ex)
+                        {
+                            await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
+                        }
+                    }
+                    else
+                    {
+                        try
+                        {
+                            byte[] arr = await wb.ToBytes(fmt);
+                            var rms = await arr.ToRandomAccessStream();
+                            dataPackage.SetData(fmt, rms);
+                        }
+                        catch (Exception ex)
+                        {
+                            await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
+                        }
+                    }
+                }
+                #endregion
+
+                Clipboard.SetContent(dataPackage);
+            }
+            catch (Exception ex)
+            {
+                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
+            }
         }
 
         public static void SetClipboard(Image image, int size)
@@ -2400,7 +2670,7 @@ namespace StringCodec.UWP.Common
                 SuggestedFileName = $"{prefix}{now.ToString("yyyyMMddHHmmssff")}{suffix}.png"
             };
             //fp.FileTypeChoices.Add("Image File", new List<string>() { ".png", ".jpg", ".jpeg", ".tif", ".tiff", ".gif", ".bmp" });
-            fp.FileTypeChoices.Add("Image File", image_ext);
+            fp.FileTypeChoices.Add("Image File".T(), image_ext);
             StorageFile TargetFile = await fp.PickSaveFileAsync();
             if (TargetFile != null)
             {
@@ -2570,6 +2840,87 @@ namespace StringCodec.UWP.Common
                             BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,
                             (uint)r_width, (uint)r_height, dpi, dpi,
                             pixelBuffer.ToArray()
+                        );
+                        //刷新图像
+                        await encoder.FlushAsync();
+                    }
+                    result = TargetFile.Name;
+                    #endregion
+                }
+                FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(TargetFile);
+            }
+            return (result);
+        }
+
+        public static async Task<string> ShowSaveDialog(WriteableBitmap image, string prefix = "", string suffix = "")
+        {
+            if (!(image is WriteableBitmap)) return (string.Empty);
+
+            string result = string.Empty;
+
+            if (!string.IsNullOrEmpty(prefix)) prefix = $"{prefix}_";
+            if (!string.IsNullOrEmpty(suffix)) suffix = $"_{suffix}";
+
+            var now = DateTime.Now;
+            FileSavePicker fp = new FileSavePicker
+            {
+                SuggestedStartLocation = PickerLocationId.Desktop,
+                SuggestedFileName = $"{prefix}{now.ToString("yyyyMMddHHmmssff")}{suffix}.png"
+            };
+
+            fp.FileTypeChoices.Add("Image File".T(), image_ext);
+            StorageFile TargetFile = await fp.PickSaveFileAsync();
+            if (TargetFile != null)
+            {
+                StorageApplicationPermissions.MostRecentlyUsedList.Add(TargetFile, TargetFile.Name);
+                if (StorageApplicationPermissions.FutureAccessList.Entries.Count >= 1000)
+                    StorageApplicationPermissions.FutureAccessList.Remove(StorageApplicationPermissions.FutureAccessList.Entries.Last().Token);
+                StorageApplicationPermissions.FutureAccessList.Add(TargetFile, TargetFile.Name);
+
+                // 在用户完成更改并调用CompleteUpdatesAsync之前，阻止对文件的更新
+                CachedFileManager.DeferUpdates(TargetFile);
+
+                if (!TargetFile.FileType.Equals(".svg", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    #region Save WriteableBitmap
+                    using (var fileStream = await TargetFile.OpenAsync(FileAccessMode.ReadWrite))
+                    {
+                        var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
+
+                        var encId = BitmapEncoder.PngEncoderId;
+                        var fext = Path.GetExtension(TargetFile.Name).ToLower();
+                        switch (fext)
+                        {
+                            case ".bmp":
+                                encId = BitmapEncoder.BmpEncoderId;
+                                break;
+                            case ".gif":
+                                encId = BitmapEncoder.GifEncoderId;
+                                break;
+                            case ".png":
+                                encId = BitmapEncoder.PngEncoderId;
+                                break;
+                            case ".jpg":
+                                encId = BitmapEncoder.JpegEncoderId;
+                                break;
+                            case ".jpeg":
+                                encId = BitmapEncoder.JpegEncoderId;
+                                break;
+                            case ".tif":
+                                encId = BitmapEncoder.TiffEncoderId;
+                                break;
+                            case ".tiff":
+                                encId = BitmapEncoder.TiffEncoderId;
+                                break;
+                            default:
+                                encId = BitmapEncoder.PngEncoderId;
+                                break;
+                        }
+                        var encoder = await BitmapEncoder.CreateAsync(encId, fileStream);
+                        encoder.SetPixelData(
+                            BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,
+                            (uint)image.PixelWidth, (uint)image.PixelHeight, dpi, dpi,
+                            image.PixelBuffer.ToArray()
                         );
                         //刷新图像
                         await encoder.FlushAsync();

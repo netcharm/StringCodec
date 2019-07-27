@@ -1550,6 +1550,54 @@
           <source>Sort (Z-A)</source>
           <target state="translated">文字で行を並べ替える (降順)</target>
         </trans-unit>
+        <trans-unit id="btnShareDstImage.Text" translate="yes" xml:space="preserve">
+          <source>Share Output Image</source>
+          <target state="translated">生成された画像を共有する</target>
+        </trans-unit>
+        <trans-unit id="optScale100.Text" translate="yes" xml:space="preserve">
+          <source>Scale 100%</source>
+          <target state="translated">ズーム 100%</target>
+        </trans-unit>
+        <trans-unit id="optScale125.Text" translate="yes" xml:space="preserve">
+          <source>Scale 125%</source>
+          <target state="translated">ズーム 125%</target>
+        </trans-unit>
+        <trans-unit id="optScale133.Text" translate="yes" xml:space="preserve">
+          <source>Scale 133%</source>
+          <target state="translated">ズーム 133%</target>
+        </trans-unit>
+        <trans-unit id="optScale150.Text" translate="yes" xml:space="preserve">
+          <source>Scale 150%</source>
+          <target state="translated">ズーム 150%</target>
+        </trans-unit>
+        <trans-unit id="optScale200.Text" translate="yes" xml:space="preserve">
+          <source>Scale 200%</source>
+          <target state="translated">ズーム 200%</target>
+        </trans-unit>
+        <trans-unit id="optScale250.Text" translate="yes" xml:space="preserve">
+          <source>Scale 250%</source>
+          <target state="translated">ズーム 250%</target>
+        </trans-unit>
+        <trans-unit id="optScale300.Text" translate="yes" xml:space="preserve">
+          <source>Scale 300%</source>
+          <target state="translated">ズーム 300%</target>
+        </trans-unit>
+        <trans-unit id="optScale400.Text" translate="yes" xml:space="preserve">
+          <source>Scale 400%</source>
+          <target state="translated">ズーム 400%</target>
+        </trans-unit>
+        <trans-unit id="btnGenerateMath.Label" translate="yes" xml:space="preserve">
+          <source>Generate</source>
+          <target state="translated">生成する</target>
+        </trans-unit>
+        <trans-unit id="nvItemLaTex.Content" translate="yes" xml:space="preserve">
+          <source>LaTex Math To Image</source>
+          <target state="translated">LaTexの数式を画像に変換する</target>
+        </trans-unit>
+        <trans-unit id="nvItemLaTex.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Converting LaTex mathematical formula to image</source>
+          <target state="translated">単純なLaTex数学の式を画像に変換する</target>
+        </trans-unit>
       </group>
     </body>
   </file>

@@ -2353,6 +2353,7 @@ namespace StringCodec.UWP.Common
                 #endregion
             }
         }
+        
         #region Latin case converter
         public static string Upper(this string text, System.Globalization.CultureInfo enc = null)
         {

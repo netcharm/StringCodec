@@ -57,6 +57,11 @@
                     <FontIcon Glyph="&#xE701;" FontFamily="Segoe MDL2 Assets"/>
                 </NavigationViewItem.Icon>
             </NavigationViewItem>
+            <NavigationViewItem x:Name="nvItemLaTex" x:Uid="nvItemLaTex" Content="LaTex Math To Image" Tag="PageLaTex" ToolTipService.ToolTip="Converting LaTex mathematical formula to image" Tapped="NvMain_Click">
+                <NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xE943;" FontFamily="Segoe MDL2 Assets"/>
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>            
             <NavigationViewItemSeparator/>
             <NavigationViewItem x:Name="nvItemCharset" x:Uid="nvItemCharset" Content="Folder&amp;File Charset" Tag="PageCharset" ToolTipService.ToolTip="Converting folder/file names with specified character sets" Tapped="NvMain_Click">
                 <NavigationViewItem.Icon>

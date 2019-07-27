@@ -823,10 +823,10 @@
     <value>从文本编码解码工具分享</value>
   </data>
   <data name="btnShareDstAsURL.Text" xml:space="preserve">
-    <value>分享输出的链接</value>
+    <value>分享生成的链接</value>
   </data>
   <data name="btnShareDstContent.Text" xml:space="preserve">
-    <value>分享输出的文本</value>
+    <value>分享生成的内容</value>
   </data>
   <data name="btnShareSrcAsURL.Text" xml:space="preserve">
     <value>分享输入的链接</value>
@@ -1169,5 +1169,41 @@
   </data>
   <data name="optSortZA.Text" xml:space="preserve">
     <value>按字符排序行 (降序)</value>
+  </data>
+  <data name="btnShareDstImage.Text" xml:space="preserve">
+    <value>分享生成的图像</value>
+  </data>
+  <data name="optScale100.Text" xml:space="preserve">
+    <value>缩放 100%</value>
+  </data>
+  <data name="optScale125.Text" xml:space="preserve">
+    <value>缩放 125%</value>
+  </data>
+  <data name="optScale133.Text" xml:space="preserve">
+    <value>缩放 133%</value>
+  </data>
+  <data name="optScale150.Text" xml:space="preserve">
+    <value>缩放 150%</value>
+  </data>
+  <data name="optScale200.Text" xml:space="preserve">
+    <value>缩放 200%</value>
+  </data>
+  <data name="optScale250.Text" xml:space="preserve">
+    <value>缩放 250%</value>
+  </data>
+  <data name="optScale300.Text" xml:space="preserve">
+    <value>缩放 300%</value>
+  </data>
+  <data name="optScale400.Text" xml:space="preserve">
+    <value>缩放 400%</value>
+  </data>
+  <data name="btnGenerateMath.Label" xml:space="preserve">
+    <value>生成</value>
+  </data>
+  <data name="nvItemLaTex.Content" xml:space="preserve">
+    <value>LaTex 数学公式转为图片</value>
+  </data>
+  <data name="nvItemLaTex.ToolTipService.ToolTip" xml:space="preserve">
+    <value>转换简单LaTex数学公式为图片</value>
   </data>
 </root>

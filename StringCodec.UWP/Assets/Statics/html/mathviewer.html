@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        body {
+            /*background: transparent;*/
+            /*background: #112233;*/
+            /*color: silver;*/
+        }
+    </style>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+        showMathMenu: false,
+        tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+        MathML: { scale: 150 },
+        CommonHTML: { scale: 150 },
+        'HTML-CSS': { scale: 150 },
+        SVG: { scale: 150 },
+        });
+    </script>
+    <script src="/Assets/Statics/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    <script>
+        function LoadMathJax() {
+            var head = document.getElementsByTagName('head')[0];
+            var script = document.createElement('script');
+            script.type = "text/x-mathjax-config";
+            script[(window.opera ? "innerHTML" : "text")] =
+                "MathJax.Hub.Config({\n" +
+                "  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},\n" +
+                "  showMathMenu: false,\n" +
+                "  MathML: { scale: 150 },\n" +
+                "  CommonHTML: { scale: 130 },\n" +
+                "  'HTML-CSS': { scale: 150 },\n" +
+                "  SVG: { scale: 150 },\n" +
+                "});";
+            head.appendChild(script);
+
+            script = document.createElement("script");
+            script.src = "/Assets/Statics/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+            head.appendChild(script);
+
+            return ("OK");
+        }
+
+        function ChangeEquation(param) {
+            var str = "" + param;
+            var index = str.indexOf(",");
+            var lang = str.substring(0, index);
+            var newequ = str.substring(index + 1);
+            var math = MathJax.Hub.getAllJax(lang)[0];
+            MathJax.Hub.Queue(["Text", math, newequ]);
+
+            return ("OK");
+        }
+
+        function GetEquationRect() {
+            var result = "";
+            try {
+                var bound = document.querySelector('#equationtex-Frame').getBoundingClientRect();
+                l = window.scrollX + bound.left;
+                t = window.scrollY + bound.top;
+                w = bound.width;
+                h = bound.height;
+                result = l + ',' + t + ',' + w + ',' + h;
+            }
+            finally {
+
+            }
+            return (result);
+        }
+
+        function ChangeBG(color) {
+            document.body.style.backgroundColor = color;
+            return ("OK");
+        }
+
+        function ChangeFG(color) {
+            document.body.style.color = color;
+            return ("OK");
+        }
+
+        function ChangeColor(fgcolor, bgcolor) {
+            document.body.setAttribute('style', 'color:' + fgcolor + ';' + 'background-color:' + bgcolor + ';');
+            return ("OK");
+        }
+
+        function ChangeScale(param) {
+            MathJax.Hub.Config({
+                showMathMenu: false,
+                MathML: { scale: param },
+                CommonHTML: { scale: param },
+                'HTML-CSS': { scale: param },
+                SVG: { scale: param },
+            });
+            MathJax.Hub.Rerender();
+            return ("OK");
+        }
+    </script>
+</head>
+
+<body>
+    <!--This is for LaTex-->
+    <div>
+        <script type="math/tex; mode=display" id="equationtex">
+\begin{equation}
+\frac{\partial\psi}{\partial t}=\kappa\mathrm{\nabla}^2\psi \\
+
+\begin{aligned}
+
+x &= r (cos(t) + t sin(t)) \\
+y &= r (sin(t) - t cos(t)) \\
+
+\end{aligned}
+\end{equation}
+        </script>
+    </div>
+
+</body>
+</html>
