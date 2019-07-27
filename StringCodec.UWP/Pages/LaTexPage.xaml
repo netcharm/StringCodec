@@ -82,12 +82,15 @@
 
             <CommandBar.SecondaryCommands>
                 <!-- More Button Dropdown menu -->
-                <AppBarButton x:Name="btnSrcText" x:Uid="btnSrcQRCode" Label="Input to QRCode" Click="Send_Click" >
+                <AppBarButton x:Name="btnSrcText" x:Uid="btnSrcQRCode" Label="Input to QRCode" VerticalAlignment="Center" Click="Send_Click" >
                     <AppBarButton.Icon>
                         <FontIcon Glyph="&#xF029;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
                     </AppBarButton.Icon>
                 </AppBarButton>
                 <AppBarButton x:Name="btnDstImage" x:Uid="btnImageToBase64" Label="Image to BASE64" Icon="Shuffle" VerticalAlignment="Center" Click="Send_Click" />
+                <AppBarSeparator/>
+                <AppBarButton x:Name="btnCaptureMathToClip" x:Uid="btnCaptureMathToClip" Label="Capture &amp; Copy Math Image" Icon="Camera" VerticalAlignment="Center" Click="AppBarButton_Click" />
+                <AppBarButton x:Name="btnCaptureMathToShare" x:Uid="btnCaptureMathToShare" Label="Capture &amp; Share Math Image" Icon="Camera" VerticalAlignment="Center" Click="AppBarButton_Click" />
                 <!--<AppBarButton Label="About"/>-->
             </CommandBar.SecondaryCommands>
 

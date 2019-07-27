@@ -1280,7 +1280,7 @@
   </data>
   <data name="nvItemLaTex.ToolTipService.ToolTip" xml:space="preserve">
     <value>Converting LaTex mathematical formula to image</value>
-  </data>  
+  </data>
   <data name="btnShareDstImage.Text" xml:space="preserve">
     <value>Share Output Image</value>
   </data>
@@ -1310,5 +1310,14 @@
   </data>
   <data name="btnGenerateMath.Label" xml:space="preserve">
     <value>Generate</value>
+  </data>
+  <data name="btnCaptureMathToClip.Label" xml:space="preserve">
+    <value>Capture &amp; Copy Math Image</value>
+  </data>
+  <data name="btnCaptureMathToShare.Label" xml:space="preserve">
+    <value>Capture &amp; Share Math Image</value>
+  </data>
+  <data name="Math" xml:space="preserve">
+    <value>Mathematical formula</value>
   </data>
 </root>

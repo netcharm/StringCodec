@@ -72,8 +72,32 @@ namespace StringCodec.UWP.Pages
             edSrc.IsEnabled = true;
         }
 
-        private async Task<WriteableBitmap> GetMathImage(bool force = false)
+        private async Task<WriteableBitmap> GetMathCapture()
         {
+            using (Windows.Storage.Streams.InMemoryRandomAccessStream rs = new Windows.Storage.Streams.InMemoryRandomAccessStream())
+            {
+                //MathView.DefaultBackgroundColor = Windows.UI.Colors.Transparent;
+                if (MathView.DefaultBackgroundColor.A == 0x00)
+                {
+                    await MathView.InvokeScriptAsync("ChangeColor", new string[] { CURRENT_FGCOLOR.ToCssRGBA(), Colors.White.ToCssRGBA() });
+                }
+                await MathView.CapturePreviewToStreamAsync(rs);
+                await rs.FlushAsync();
+                var wb = await rs.ToWriteableBitmap();
+
+                if (wb is WriteableBitmap)
+                {
+                    wb = wb.Crop(2);
+                }
+
+                await MathView.InvokeScriptAsync("ChangeColor", new string[] { CURRENT_FGCOLOR.ToCssRGBA(), CURRENT_BGCOLOR.ToCssRGBA() });
+
+                return (wb);
+            }
+        }
+
+        private async Task<WriteableBitmap> GetMathImage(bool force = false)
+        { 
             if (CURRENT_IMAGE == null || force)
             {
                 var wb = await MathView.ToWriteableBitmap();
@@ -129,22 +153,16 @@ namespace StringCodec.UWP.Pages
             switch (C_NAME)
             {
                 case "ResetColor":
-                    //CURRENT_BGCOLOR = Colors.Transparent; // Color.FromArgb(255, 255, 255, 255);
                     CURRENT_BGCOLOR = Color.FromArgb(0, 255, 255, 255);
-                    //CURRENT_BGCOLOR = Color.FromArgb(0, 0, 0, 0);
                     CURRENT_FGCOLOR = Colors.Black; // Color.FromArgb(255, 000, 000, 000);
                     MathView.DefaultBackgroundColor = CURRENT_BGCOLOR;
-                    //var retbg = await MathView.InvokeScriptAsync("ChangeBG", new string[] { CURRENT_BGCOLOR.ToHTML() });
-                    //var retfg = await MathView.InvokeScriptAsync("ChangeFG", new string[] { CURRENT_FGCOLOR.ToHTML() });
                     break;
                 case "BgColor":
                     CURRENT_BGCOLOR = await Utils.ShowColorDialog(CURRENT_BGCOLOR);
-                    //MathView.DefaultBackgroundColor = CURRENT_BGCOLOR;
-                    //retbg = await MathView.InvokeScriptAsync("ChangeBG", new string[] { CURRENT_BGCOLOR.ToHTML() });
+                    MathView.DefaultBackgroundColor = CURRENT_BGCOLOR;
                     break;
                 case "FgColor":
                     CURRENT_FGCOLOR = await Utils.ShowColorDialog(CURRENT_FGCOLOR);
-                    //retfg = await MathView.InvokeScriptAsync("ChangeFG", new string[] { CURRENT_FGCOLOR.ToHTML() });
                     break;
                 default:
                     break;
@@ -204,7 +222,7 @@ namespace StringCodec.UWP.Pages
                         Utils.Share(text);
                         break;
                     case "btnShareDstContent":
-                        await Utils.Share(await GetMathImage(), "Math");
+                        await Utils.Share(await GetMathImage(), "Math".T());
                         break;
                     default:
                         break;
@@ -238,14 +256,26 @@ namespace StringCodec.UWP.Pages
                     {
                         ex.Message.ShowMessage("Error");
                     }
-                    //using (Windows.Storage.Streams.InMemoryRandomAccessStream rs = new Windows.Storage.Streams.InMemoryRandomAccessStream())
-                    //{
-                    //    mathView.DefaultBackgroundColor = Windows.UI.Colors.Transparent;
-                    //    await mathView.CapturePreviewToStreamAsync(rs);
-                    //    await rs.FlushAsync();
-                    //    var img = await rs.ToWriteableBitmap();
-                    //    Utils.SetClipboard(img);
-                    //}
+                    break;
+                case "btnCaptureMathToClip":
+                    try
+                    {
+                        Utils.SetClipboard(await GetMathCapture());
+                    }
+                    catch (Exception ex)
+                    {
+                        ex.Message.ShowMessage("Error");
+                    }
+                    break;
+                case "btnCaptureMathToShare":
+                    try
+                    {
+                        await Utils.Share(await GetMathCapture(), "Math".T());
+                    }
+                    catch (Exception ex)
+                    {
+                        ex.Message.ShowMessage("Error");
+                    }
                     break;
                 case "btnPaste":
                     edSrc.Text = await Utils.GetClipboard(edSrc.Text.Trim());

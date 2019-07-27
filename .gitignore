@@ -261,3 +261,4 @@ __pycache__/
 *.pyc
 /StringCodec.UWP/snapshots
 /StringCodec.UWP/Assets/Statics/js/MathJax
+/StringCodec.UWP/Assets/Statics/html/mathviewer_test.html

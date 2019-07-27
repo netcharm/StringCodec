@@ -546,6 +546,35 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
+        public static async Task<WriteableBitmap> ToWriteableBitmap(this FrameworkElement element, int width, int height)
+        {
+            WriteableBitmap result = null;
+            using (var fileStream = new InMemoryRandomAccessStream())
+            {
+                var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
+
+                RenderTargetBitmap rtb = new RenderTargetBitmap();
+                await rtb.RenderAsync(element, width, height);
+                var pixelBuffer = await rtb.GetPixelsAsync();
+                var r_width = rtb.PixelWidth;
+                var r_height = rtb.PixelHeight;
+
+                var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, fileStream);
+                encoder.SetPixelData(
+                    BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,
+                    (uint)r_width, (uint)r_height,
+                    dpi, dpi,
+                    pixelBuffer.ToArray());
+                await encoder.FlushAsync();
+
+                result = new WriteableBitmap(r_width, r_height);
+                await result.SetSourceAsync(fileStream);
+                await fileStream.FlushAsync();
+                byte[] arr = WindowsRuntimeBufferExtensions.ToArray(result.PixelBuffer, 0, (int)result.PixelBuffer.Length);
+            }
+            return (result);
+        }
+
         public static async Task<WriteableBitmap> ToWriteableBitmap(this FrameworkElement element, Color bgcolor)
         {
             WriteableBitmap result = null;
@@ -579,6 +608,41 @@ namespace StringCodec.UWP.Common
             }
             return (result);
         }
+
+        public static async Task<WriteableBitmap> ToWriteableBitmap(this FrameworkElement element, int width, int height, Color bgcolor)
+        {
+            WriteableBitmap result = null;
+            using (var fileStream = new InMemoryRandomAccessStream())
+            {
+                var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
+
+                RenderTargetBitmap rtb = new RenderTargetBitmap();
+                await rtb.RenderAsync(element, width, height);
+                var pixelBuffer = await rtb.GetPixelsAsync();
+                var r_width = rtb.PixelWidth;
+                var r_height = rtb.PixelHeight;
+
+                var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, fileStream);
+                encoder.SetPixelData(
+                    BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore,
+                    (uint)r_width, (uint)r_height,
+                    dpi, dpi,
+                    pixelBuffer.ToArray());
+                await encoder.FlushAsync();
+
+                result = new WriteableBitmap(r_width, r_height);
+                result.FillRectangle(0, 0, r_width, r_height, bgcolor);
+
+                var wb = new WriteableBitmap(1, 1);
+                await wb.SetSourceAsync(fileStream);
+                await fileStream.FlushAsync();
+                byte[] arr = WindowsRuntimeBufferExtensions.ToArray(wb.PixelBuffer, 0, (int)wb.PixelBuffer.Length);
+
+                result.BlitRender(wb, false);
+            }
+            return (result);
+        }
+
         #endregion
 
         #region Text with family size style color to WriteableBitmap

@@ -13,7 +13,7 @@
     </style>
     <script type="text/x-mathjax-config">
         MathJax.Hub.Config({
-        showMathMenu: false,
+        showMathMenu: true,
         tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
         MathML: { scale: 150 },
         CommonHTML: { scale: 150 },
@@ -31,7 +31,7 @@
             script[(window.opera ? "innerHTML" : "text")] =
                 "MathJax.Hub.Config({\n" +
                 "  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},\n" +
-                "  showMathMenu: false,\n" +
+                "  showMathMenu: true,\n" +
                 "  MathML: { scale: 150 },\n" +
                 "  CommonHTML: { scale: 130 },\n" +
                 "  'HTML-CSS': { scale: 150 },\n" +
@@ -55,6 +55,13 @@
             MathJax.Hub.Queue(["Text", math, newequ]);
 
             return ("OK");
+        }
+
+        function GetPageZoomRatio() {
+            //var zv = (window.innerWidth * 100 / document.body.clientWidth) + '%'
+            //document.body.style.zoom = zv;
+
+            return (window.devicePixelRatio);
         }
 
         function GetEquationRect() {
@@ -90,7 +97,7 @@
 
         function ChangeScale(param) {
             MathJax.Hub.Config({
-                showMathMenu: false,
+                showMathMenu: true,
                 MathML: { scale: param },
                 CommonHTML: { scale: param },
                 'HTML-CSS': { scale: param },

@@ -1598,6 +1598,18 @@
           <source>Converting LaTex mathematical formula to image</source>
           <target state="translated">轉換簡單LaTex數學公式為圖片</target>
         </trans-unit>
+        <trans-unit id="btnCaptureMathToClip.Label" translate="yes" xml:space="preserve">
+          <source>Capture &amp; Copy Math Image</source>
+          <target state="translated">捕獲數學公式圖像到剪貼板</target>
+        </trans-unit>
+        <trans-unit id="btnCaptureMathToShare.Label" translate="yes" xml:space="preserve">
+          <source>Capture &amp; Share Math Image</source>
+          <target state="translated">捕獲數學公式圖像並分享</target>
+        </trans-unit>
+        <trans-unit id="Math" translate="yes" xml:space="preserve">
+          <source>Mathematical formula</source>
+          <target state="translated">數學公式</target>
+        </trans-unit>
       </group>
     </body>
   </file>

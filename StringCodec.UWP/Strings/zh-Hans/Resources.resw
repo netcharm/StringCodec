@@ -1206,4 +1206,13 @@
   <data name="nvItemLaTex.ToolTipService.ToolTip" xml:space="preserve">
     <value>转换简单LaTex数学公式为图片</value>
   </data>
+  <data name="btnCaptureMathToClip.Label" xml:space="preserve">
+    <value>捕获数学公式图像到剪贴板</value>
+  </data>
+  <data name="btnCaptureMathToShare.Label" xml:space="preserve">
+    <value>捕获数学公式图像并分享</value>
+  </data>
+  <data name="Math" xml:space="preserve">
+    <value>数学公式</value>
+  </data>
 </root>
