@@ -887,15 +887,28 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        public static Rect Bound(this WriteableBitmap image, int space=0)
+        public static Rect Boundary(this WriteableBitmap image, int space=0)
+        {
+            return (image.Boundary(image.GetPixel(0, 0), image.GetPixel(image.PixelWidth - 1, image.PixelHeight - 1), space));
+        }
+
+        public static Rect Boundary(this WriteableBitmap image, Color color, int space = 0)
+        {
+            return(image.Boundary(color, color, space));
+        }
+
+        public static Rect Boundary(this WriteableBitmap image, Color color_0, Color color_1, int space = 0)
         {
             int w = image.PixelWidth;
             int h = image.PixelHeight;
 
             byte[] arr = image.PixelBuffer.ToArray();
 
-            uint coV = (uint)(arr[0]) + ((uint)(arr[1]) << 8) + ((uint)(arr[2]) << 16) + ((uint)(arr[3]) << 24);
+            int c = arr.Length - 1;
+            uint co0 = (uint)(color_0.B) + ((uint)(color_0.G) << 8) + ((uint)(color_0.R) << 16) + ((uint)(color_0.A) << 24);
+            uint co1 = (uint)(color_1.B) + ((uint)(color_1.G) << 8) + ((uint)(color_1.R) << 16) + ((uint)(color_1.A) << 24);
 
+            #region Pixels to Matrix
             uint[,] matC = new uint[w, h];
             int i = 0;
             for (int y = 0; y < h; y++)
@@ -906,13 +919,15 @@ namespace StringCodec.UWP.Common
                     i += 4;
                 }
             }
+            #endregion
 
+            #region Finding left boundary
             int l = 0;
             for (int x = 0; x < w; x++)
             {
                 for (int y = 0; y < h; y++)
                 {
-                    if (matC[x, y] != coV)
+                    if (matC[x, y] != co0)
                     {
                         l = x;
                         break;
@@ -920,13 +935,15 @@ namespace StringCodec.UWP.Common
                 }
                 if (l > 0) break;
             }
+            #endregion
 
+            #region Finding right boundary
             int r = w - 1;
             for (int x = w - 1; x >= 0; x--)
             {
                 for (int y = 0; y < h; y++)
                 {
-                    if (matC[x, y] != coV)
+                    if (matC[x, y] != co1)
                     {
                         r = x;
                         break;
@@ -934,13 +951,15 @@ namespace StringCodec.UWP.Common
                 }
                 if (r < w - 1) break;
             }
+            #endregion
 
+            #region Finding top boundary
             int t = 0;
             for (int y = 0; y < h; y++)
             {
                 for (int x = l; x <= r; x++)
                 {
-                    if (matC[x, y] != coV)
+                    if (matC[x, y] != co0)
                     {
                         t = y;
                         break;
@@ -948,13 +967,15 @@ namespace StringCodec.UWP.Common
                 }
                 if (t > 0) break;
             }
+            #endregion
 
+            #region Finding bottom boundary
             int b = h - 1;
             for (int y = h - 1; y >= 0; y--)
             {
                 for (int x = l; x <= r; x++)
                 {
-                    if (matC[x, y] != coV)
+                    if (matC[x, y] != co1)
                     {
                         b = y;
                         break;
@@ -962,6 +983,7 @@ namespace StringCodec.UWP.Common
                 }
                 if (b < h - 1) break;
             }
+            #endregion
 
             l = Math.Max(l - space, 0);
             r = Math.Min(r + space, w - 1);
@@ -973,14 +995,8 @@ namespace StringCodec.UWP.Common
 
         public static WriteableBitmap Crop(this WriteableBitmap image, int space = 0)
         {
-
-            var rect = image.Bound(space);
-            var l = (int)Math.Max(0, rect.Left - space);
-            var t = (int)Math.Max(0, rect.Top - space);
-            var w = (int)Math.Min(image.PixelWidth, rect.Width + space * 2);
-            var h = (int)Math.Min(image.PixelHeight, rect.Height + space * 2);
-
-            var result = image.Crop(l, t, w, h);
+            var rect = image.Boundary(space);
+            var result = image.Crop(rect);
             return (result);
         }
 
@@ -989,14 +1005,7 @@ namespace StringCodec.UWP.Common
             var tol = Math.Max(0, Math.Min(1.0, space));
             var sp = Math.Ceiling(Math.Min(image.PixelWidth * tol, image.PixelHeight * tol));
 
-            var rect = image.Bound((int)sp);
-
-            var l = (int)Math.Max(0, rect.Left - sp);
-            var t = (int)Math.Max(0, rect.Top - sp);
-            var w = (int)Math.Min(image.PixelWidth, rect.Width + sp * 2);
-            var h = (int)Math.Min(image.PixelHeight, rect.Height + sp * 2);
-
-            var result = image.Crop(l, t, w, h);
+            var result = image.Crop(sp);
             return (result);
         }
         #endregion
@@ -1608,19 +1617,26 @@ namespace StringCodec.UWP.Common
         {
             dynamic result = value;
 
-            if (AppSetting.ContainsKey(key) && AppSetting[key] != null)
-                result = AppSetting[key];
-            else if (ApplicationData.Current.LocalSettings.Values.ContainsKey(key) && ApplicationData.Current.LocalSettings.Values[key] != null)
-                result = ApplicationData.Current.LocalSettings.Values[key];
-            else
+            try
             {
-                if (value != null)
+                if (AppSetting.ContainsKey(key) && AppSetting[key] != null)
+                    result = AppSetting[key];
+                else if (ApplicationData.Current.LocalSettings.Values.ContainsKey(key) && ApplicationData.Current.LocalSettings.Values[key] != null)
+                    result = ApplicationData.Current.LocalSettings.Values[key];
+                else
                 {
-                    ApplicationData.Current.LocalSettings.Values.Add(key, value);
-                    AppSetting[key] = value;
+                    if (value != null)
+                    {
+                        ApplicationData.Current.LocalSettings.Values.Add(key, value);
+                        AppSetting[key] = value;
+                    }
                 }
+                if (result is string && string.IsNullOrEmpty(result as string)) result = value;
             }
-            if (result is string && string.IsNullOrEmpty(result as string)) result = value;
+            catch(Exception ex)
+            {
+                ex.Message.ShowMessage("ERROR".T());
+            }
             return (result);
         }
 

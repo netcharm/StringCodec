@@ -43,7 +43,11 @@ namespace StringCodec.UWP
         /// <param name="e">有关启动请求和过程的详细信息。</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            Settings.LoadUILanguage(Settings.GetUILanguage());
+            try
+            {
+                Settings.LoadUILanguage(Settings.GetUILanguage());
+            }
+            catch (Exception) { }
 
             // 不要在窗口已包含内容时重复应用程序初始化，
             // 只需确保窗口处于活动状态

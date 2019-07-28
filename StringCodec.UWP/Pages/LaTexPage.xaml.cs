@@ -150,11 +150,11 @@ namespace StringCodec.UWP.Pages
                             var h = (int)Math.Ceiling(double.Parse(sv[3].Trim()));
                             l = Math.Max(0, l - tolerance);
                             t = Math.Max(0, t - tolerance);
-                            w = Math.Min(wb.PixelWidth, (int)(w * ratio) + tolerance);
-                            h = Math.Min(wb.PixelHeight, (int)(h * ratio) + tolerance);
+                            w = Math.Min(wb.PixelWidth, (int)(w * ratio) + tolerance * 2);
+                            h = Math.Min(wb.PixelHeight, (int)(h * ratio) + tolerance * 2);
                             wb = wb.Crop(l, t, w, h);
                         }
-                        catch(Exception)
+                        catch (Exception)
                         {
 
                         }
