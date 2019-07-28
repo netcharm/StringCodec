@@ -480,7 +480,11 @@
         </trans-unit>
         <trans-unit id="btnImageToBase64.Label" translate="yes" xml:space="preserve">
           <source>Image to BASE64</source>
-          <target state="translated">BASE64 をイメージ</target>
+          <target state="translated">BASE64をイメージ</target>
+        </trans-unit>
+        <trans-unit id="btnCaptureToBase64.Label" translate="yes" xml:space="preserve">
+          <source>Capture to BASE64</source>
+          <target state="translated">BASE64キャプチャ画像</target>
         </trans-unit>
         <trans-unit id="btnTextToDecode.Label" translate="yes" xml:space="preserve">
           <source>Text to String Decode</source>
@@ -1609,6 +1613,18 @@
         <trans-unit id="Math" translate="yes" xml:space="preserve">
           <source>Mathematical formula</source>
           <target state="translated">数式</target>
+        </trans-unit>
+        <trans-unit id="btnImageAsHtmlToClip.Label" translate="yes" xml:space="preserve">
+          <source>Copy Math Image as HTML</source>
+          <target state="translated">数学画像をHTMLとしてコピー</target>
+        </trans-unit>
+        <trans-unit id="btnCaptureAsHtmlToClip.Label" translate="yes" xml:space="preserve">
+          <source>Copy Math Capture as HTML</source>
+          <target state="translated">HTMLとしてのMath Captureのコピー</target>
+        </trans-unit>
+        <trans-unit id="btnImageAsHtml.Label" translate="yes" xml:space="preserve">
+          <source>Copy Image as HTML</source>
+          <target state="translated">画像をHTMLとしてコピー</target>
         </trans-unit>
       </group>
     </body>

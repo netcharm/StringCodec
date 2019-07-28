@@ -482,6 +482,10 @@
           <source>Image to BASE64</source>
           <target state="translated">圖像編碼為BASE64</target>
         </trans-unit>
+        <trans-unit id="btnCaptureToBase64.Label" translate="yes" xml:space="preserve">
+          <source>Capture to BASE64</source>
+          <target state="translated">捕獲圖像並編碼為BASE64</target>
+        </trans-unit>
         <trans-unit id="btnTextToDecode.Label" translate="yes" xml:space="preserve">
           <source>Text to String Decode</source>
           <target state="translated">文本內容解碼</target>
@@ -1609,6 +1613,18 @@
         <trans-unit id="Math" translate="yes" xml:space="preserve">
           <source>Mathematical formula</source>
           <target state="translated">數學公式</target>
+        </trans-unit>
+        <trans-unit id="btnImageAsHtmlToClip.Label" translate="yes" xml:space="preserve">
+          <source>Copy Math Image as HTML</source>
+          <target state="translated">數學公式圖像作為HTML複製到剪貼板</target>
+        </trans-unit>
+        <trans-unit id="btnCaptureAsHtmlToClip.Label" translate="yes" xml:space="preserve">
+          <source>Copy Math Capture as HTML</source>
+          <target state="translated">捕獲數學公式並作為HTML複製到剪貼板</target>
+        </trans-unit>
+        <trans-unit id="btnImageAsHtml.Label" translate="yes" xml:space="preserve">
+          <source>Copy Image as HTML</source>
+          <target state="translated">圖像作為HTML複製到剪貼板</target>
         </trans-unit>
       </group>
     </body>

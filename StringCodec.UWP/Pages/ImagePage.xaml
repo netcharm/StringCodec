@@ -59,19 +59,25 @@
             
             <CommandBar.SecondaryCommands>
                 <!-- More Button Dropdown menu -->
-                <AppBarButton x:Name="btnImageQRCode" x:Uid="btnImageQRCode" Label="Image to QRCode" Click="QRCode_Click">
+                <AppBarButton x:Name="btnImageQRCode" x:Uid="btnImageQRCode" Label="Image to QRCode" Click="ImageAction_Click">
                     <AppBarButton.Icon>
                         <FontIcon Glyph="&#xF029;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
                     </AppBarButton.Icon>
                 </AppBarButton>
-                <AppBarButton x:Name="btnImageOneD" x:Uid="btnImageOneD" Label="Image to 1D Barcode" Click="QRCode_Click">
+                <AppBarButton x:Name="btnImageOneD" x:Uid="btnImageOneD" Label="Image to 1D Barcode" Click="ImageAction_Click">
                     <AppBarButton.Icon>
                         <FontIcon Glyph="&#xF02A;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
                     </AppBarButton.Icon>
                 </AppBarButton>
-                <AppBarButton x:Name="btnImageSvg" x:Uid="btnImageSvg" Label="SVG Rasterization" Visibility="Collapsed" Click="QRCode_Click">
+                <AppBarButton x:Name="btnImageSvg" x:Uid="btnImageSvg" Label="SVG Rasterization" Visibility="Collapsed" Click="ImageAction_Click">
                     <AppBarButton.Icon>
                         <FontIcon Glyph="&#xF1C9;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarSeparator/>
+                <AppBarButton x:Name="btnImageAsHtml" x:Uid="btnImageAsHtml" Label="Copy Image as HTML" Click="ImageAction_Click">
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xF121;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
                     </AppBarButton.Icon>
                 </AppBarButton>
                 <AppBarSeparator/>

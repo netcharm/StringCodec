@@ -367,7 +367,10 @@
     <value>保存</value>
   </data>
   <data name="btnImageToBase64.Label" xml:space="preserve">
-    <value>BASE64 をイメージ</value>
+    <value>BASE64をイメージ</value>
+  </data>
+  <data name="btnCaptureToBase64.Label" xml:space="preserve">
+    <value>BASE64キャプチャ画像</value>
   </data>
   <data name="btnTextToDecode.Label" xml:space="preserve">
     <value>テキスト文字列をデコードします。</value>
@@ -1214,5 +1217,14 @@
   </data>
   <data name="Math" xml:space="preserve">
     <value>数式</value>
+  </data>
+  <data name="btnImageAsHtmlToClip.Label" xml:space="preserve">
+    <value>数学画像をHTMLとしてコピー</value>
+  </data>
+  <data name="btnCaptureAsHtmlToClip.Label" xml:space="preserve">
+    <value>HTMLとしてのMath Captureのコピー</value>
+  </data>
+  <data name="btnImageAsHtml.Label" xml:space="preserve">
+    <value>画像をHTMLとしてコピー</value>
   </data>
 </root>

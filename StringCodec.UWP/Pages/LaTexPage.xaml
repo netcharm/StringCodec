@@ -88,9 +88,21 @@
                     </AppBarButton.Icon>
                 </AppBarButton>
                 <AppBarButton x:Name="btnDstImage" x:Uid="btnImageToBase64" Label="Image to BASE64" Icon="Shuffle" VerticalAlignment="Center" Click="Send_Click" />
+                <AppBarButton x:Name="btnDstCapture" x:Uid="btnCaptureToBase64" Label="Capture to BASE64" Icon="Shuffle" VerticalAlignment="Center" Click="Send_Click" />
                 <AppBarSeparator/>
                 <AppBarButton x:Name="btnCaptureMathToClip" x:Uid="btnCaptureMathToClip" Label="Capture &amp; Copy Math Image" Icon="Camera" VerticalAlignment="Center" Click="AppBarButton_Click" />
                 <AppBarButton x:Name="btnCaptureMathToShare" x:Uid="btnCaptureMathToShare" Label="Capture &amp; Share Math Image" Icon="Camera" VerticalAlignment="Center" Click="AppBarButton_Click" />
+                <AppBarSeparator/>
+                <AppBarButton x:Name="btnImageAsHtmlToClip" x:Uid="btnImageAsHtmlToClip" Label="Copy Math Image as HTML" VerticalAlignment="Center" Click="AppBarButton_Click">
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xF121;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
+                    </AppBarButton.Icon>                    
+                </AppBarButton>
+                <AppBarButton x:Name="btnCaptureAsHtmlToClip" x:Uid="btnCaptureAsHtmlToClip" Label="Copy Math Capture as HTML" VerticalAlignment="Center" Click="AppBarButton_Click">
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xF121;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
                 <!--<AppBarButton Label="About"/>-->
             </CommandBar.SecondaryCommands>
 

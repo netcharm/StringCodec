@@ -56,6 +56,13 @@ namespace StringCodec.UWP.Common
         }
     }
 
+    public class WriteableBitmapObject
+    {
+        public WriteableBitmap Image { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+    }
+
     public class SVG
     {
         private byte[] bytes = null;
@@ -395,6 +402,12 @@ namespace StringCodec.UWP.Common
                 //}
             }
             return (b64);
+        }
+
+        public static async Task<string> ToHTML(this SvgImageSource svg, byte[] bytes, string alt="")
+        {
+            var b64 = await svg.ToBase64(bytes, true);
+            return($"<img src=\"{b64}\" alt=\"{alt}\" />");
         }
 
         public static SVG ToSVG(this Image image)
@@ -925,7 +938,7 @@ namespace StringCodec.UWP.Common
             int t = 0;
             for (int y = 0; y < h; y++)
             {
-                for (int x = l; x < r; x++)
+                for (int x = l; x <= r; x++)
                 {
                     if (matC[x, y] != coV)
                     {
@@ -939,7 +952,7 @@ namespace StringCodec.UWP.Common
             int b = h - 1;
             for (int y = h - 1; y >= 0; y--)
             {
-                for (int x = l; x < r; x++)
+                for (int x = l; x <= r; x++)
                 {
                     if (matC[x, y] != coV)
                     {
@@ -960,84 +973,6 @@ namespace StringCodec.UWP.Common
 
         public static WriteableBitmap Crop(this WriteableBitmap image, int space = 0)
         {
-            //var w = image.PixelWidth;
-            //var h = image.PixelHeight;
-
-            //byte[] arr = image.PixelBuffer.ToArray();
-
-            //uint coV = (uint)(arr[0]) + ((uint)(arr[1]) << 8) + ((uint)(arr[2]) << 16) + ((uint)(arr[3]) << 24);
-
-            //uint[,] matC = new uint[w, h];
-            //int i = 0;
-            //for (int y = 0; y < h; y++)
-            //{
-            //    for (int x = 0; x < w; x++)
-            //    {
-            //        matC[x, y] = (uint)(arr[i]) + ((uint)(arr[i + 1]) << 8) + ((uint)(arr[i + 2]) << 16) + ((uint)(arr[i + 3]) << 24);
-            //        i += 4;
-            //    }
-            //}
-
-            //int l = 0;
-            //for (int x = 0; x < w; x++)
-            //{
-            //    for (int y = 0; y < h; y++)
-            //    {
-            //        if (matC[x, y] != coV)
-            //        {
-            //            l = x;
-            //            break;
-            //        }
-            //    }
-            //    if (l > 0) break;
-            //}
-
-            //int r = w - 1;
-            //for (int x = w - 1; x >= 0; x--)
-            //{
-            //    for (int y = 0; y < h; y++)
-            //    {
-            //        if (matC[x, y] != coV)
-            //        {
-            //            r = x;
-            //            break;
-            //        }
-            //    }
-            //    if (r < w - 1) break;
-            //}
-
-            //int t = 0;
-            //for (int y = 0; y < h; y++)
-            //{
-            //    for (int x = 0; x < w; x++)
-            //    {
-            //        if (matC[x, y] != coV)
-            //        {
-            //            t = y;
-            //            break;
-            //        }
-            //    }
-            //    if (t > 0) break;
-            //}
-
-            //int b = h - 1;
-            //for (int y = h - 1; y >= 0; y--)
-            //{
-            //    for (int x = 0; x < w; x++)
-            //    {
-            //        if (matC[x, y] != coV)
-            //        {
-            //            b = y;
-            //            break;
-            //        }
-            //    }
-            //    if (b < h - 1) break;
-            //}
-
-            //l = Math.Max(l - space, 0);
-            //r = Math.Min(r + space, w - 1);
-            //t = Math.Max(t - space, 0);
-            //b = Math.Min(b + space, h - 1);
 
             var rect = image.Bound(space);
             var l = (int)Math.Max(0, rect.Left - space);
@@ -1103,52 +1038,25 @@ namespace StringCodec.UWP.Common
 
         public static async Task<string> ToBase64String(this WriteableBitmap image, string fmt, bool prefix, bool linebreak)
         {
-            string result = string.Empty;
-
-            var opt = Base64FormattingOptions.None;
-            if (linebreak) opt = Base64FormattingOptions.InsertLineBreaks;
-
-            var mime = "image/png";
-            switch (fmt.ToLower())
-            {
-                case ".bmp":
-                    mime = "image/bmp";
-                    break;
-                case ".gif":
-                    mime = "image/gif";
-                    break;
-                case ".png":
-                    mime = "image/png";
-                    break;
-                case ".jpg":
-                    mime = "image/jpeg";
-                    break;
-                case ".jpeg":
-                    mime = "image/jpeg";
-                    break;
-                case ".tif":
-                    mime = "image/tiff";
-                    break;
-                case ".tiff":
-                    mime = "image/tiff";
-                    break;
-                default:
-                    mime = "image/png";
-                    break;
-            }
-            if (prefix) mime = $"data:{mime};base64,";
-            else        mime = string.Empty;
-
-            byte[] arr = await image.ToBytes(fmt);
-            var base64 = Convert.ToBase64String(arr, opt);
-            result = $"{mime}{base64}";
-
-            return (result);
+            var b64 = await image.ToBase64(fmt, prefix, linebreak);
+            return (b64);
         }
 
         public static async Task<string> ToBase64String(this Image image, string fmt, bool prefix, bool linebreak)
         {
             return(await (await image.ToWriteableBitmap()).ToBase64(fmt, prefix, linebreak));
+        }
+
+        public static async Task<string> ToHTML(this WriteableBitmap image, string alt="", string fmt=".png")
+        {
+            var b64 = await image.ToBase64(fmt, true, true);
+            return ($"<img src=\"{b64.Trim()}\" alt=\"{await alt.Trim().Encoder(TextCodecs.CODEC.HTML)}\" />");
+        }
+
+        public static async Task<string> ToHTML(this Image image, string alt="", string fmt=".png")
+        {
+            var b64 = await (await image.ToWriteableBitmap()).ToBase64(fmt, true, true);
+            return ($"<img src=\"{b64.Trim()}\" alt=\"{await alt.Trim().Encoder(TextCodecs.CODEC.HTML)}\" />");
         }
 
         public static async Task<WriteableBitmap> ToWriteableBitmap(this ImageSource Source, byte[] Bytes=null)
@@ -1647,22 +1555,22 @@ namespace StringCodec.UWP.Common
         #region I18N
         public static string _(this string text)
         {
-            return (AppResources.GetString(text));
+            return (AppResources.GetString(text).Replace("\\n", "\n").Replace("\\r", "\r"));
         }
 
         public static string T(this string text)
         {
-            return (AppResources.GetString(text));
+            return (AppResources.GetString(text).Replace("\\n", "\n").Replace("\\r", "\r"));
         }
 
         public static string GetString(this string text)
         {
-            return (AppResources.GetString(text));
+            return (AppResources.GetString(text).Replace("\\n", "\n").Replace("\\r", "\r"));
         }
 
         public static string GetText(this string text)
         {
-            return (AppResources.GetString(text));
+            return (AppResources.GetString(text).Replace("\\n", "\n").Replace("\\r", "\r"));
         }
         #endregion
 

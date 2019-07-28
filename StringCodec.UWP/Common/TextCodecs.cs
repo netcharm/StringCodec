@@ -1590,7 +1590,7 @@ namespace StringCodec.UWP.Common
             return (await Encode(content, Codec, Encoding.Default, LineBreak));
         }
 
-        static public async Task<string> Encode(WriteableBitmap image, string format = ".png", bool prefix = true, bool LineBreak = false)
+        static public async Task<string> Encode(this WriteableBitmap image, string format = ".png", bool prefix = true, bool LineBreak = false)
         {
             string result = string.Empty;
             try
@@ -1643,7 +1643,7 @@ namespace StringCodec.UWP.Common
                     var encoder = await BitmapEncoder.CreateAsync(encId, fileStream);
                     // Save the image file with jpg extension 
                     encoder.SetPixelData(
-                        BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore,
+                        BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,//.Ignore,
                         //(uint)bmp.PixelWidth, (uint)bmp.PixelHeight, 
                         (uint)image.PixelWidth, (uint)image.PixelHeight,
                         96.0, 96.0,
@@ -1682,7 +1682,7 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        static public async Task<string> ProgressEncode(WriteableBitmap image, string format = ".png", bool prefix = true, bool LineBreak = false)
+        static public async Task<string> ProgressEncode(this WriteableBitmap image, string format = ".png", bool prefix = true, bool LineBreak = false)
         {
             string result = string.Empty;
             int processCount = 0;
@@ -1737,7 +1737,7 @@ namespace StringCodec.UWP.Common
                     var encoder = await BitmapEncoder.CreateAsync(encId, fileStream);
                     // Save the image file with jpg extension 
                     encoder.SetPixelData(
-                        BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore,
+                        BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,//.Ignore,
                         //(uint)bmp.PixelWidth, (uint)bmp.PixelHeight, 
                         (uint)image.PixelWidth, (uint)image.PixelHeight,
                         96.0, 96.0,
@@ -1986,11 +1986,11 @@ namespace StringCodec.UWP.Common
                     if ((int)dlgResult.Id == 0)
                     {
                         if (string.IsNullOrEmpty(format)) format = ".png";
-                        result = await ProgressEncode(wb, format, prefix, linebreak);
+                        result = await wb.ProgressEncode(format, prefix, linebreak);
                     }
                 }
                 else
-                    result = await Encode(wb, format, prefix, linebreak);
+                    result = await wb.Encode(format, prefix, linebreak);
             }
             catch(Exception ex)
             {

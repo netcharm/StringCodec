@@ -1320,4 +1320,16 @@
   <data name="Math" xml:space="preserve">
     <value>Mathematical formula</value>
   </data>
+  <data name="btnImageAsHtmlToClip.Label" xml:space="preserve">
+    <value>Copy Math Image as HTML</value>
+  </data>
+  <data name="btnCaptureAsHtmlToClip.Label" xml:space="preserve">
+    <value>Copy Math Capture as HTML</value>
+  </data>
+  <data name="btnImageAsHtml.Label" xml:space="preserve">
+    <value>Copy Image as HTML</value>
+  </data>
+    <data name="btnCaptureToBase64.Label" xml:space="preserve">
+    <value>Capture to BASE64</value>
+  </data>
 </root>

@@ -20,6 +20,7 @@ using Windows.Graphics.Imaging;
 using Windows.Graphics.Display;
 using Windows.UI;
 using System.Threading.Tasks;
+using System.Text;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -34,6 +35,9 @@ namespace StringCodec.UWP.Pages
         private Color CURRENT_BGCOLOR = Color.FromArgb(0, 255, 255, 255);
         private Color CURRENT_FGCOLOR = Colors.Black; //Color.FromArgb(255, 000, 000, 000);
         private int CURRENT_SCALE = 150;
+
+        private string DEFAULT_FORMULAR = string.Empty;
+        private string CURRENT_FORMULAR = string.Empty;
         private WriteableBitmap CURRENT_IMAGE = null;
 
         public LaTexPage()
@@ -45,6 +49,22 @@ namespace StringCodec.UWP.Pages
             optScale150.IsChecked = true;
 
             edSrc.IsEnabled = false;
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(@"\begin{equation}");
+            sb.AppendLine(@"\frac{\partial\psi}{\partial t} = \kappa\mathrm{\nabla}^2\psi \\");
+            sb.AppendLine(@"");
+            sb.AppendLine(@"\begin{aligned}");
+            sb.AppendLine(@"");
+            sb.AppendLine(@"x &= r (cos(t) + t sin(t)) \\");
+            sb.AppendLine(@"y &= r (sin(t) - t cos(t)) \\");
+            sb.AppendLine(@"");
+            sb.AppendLine(@"\end{aligned}");
+            sb.AppendLine(@"\end{equation}");
+
+
+            DEFAULT_FORMULAR = sb.ToString();
+            CURRENT_FORMULAR = DEFAULT_FORMULAR;
 
             MathView.DOMContentLoaded += OnContentLoaded;
             MathView.DefaultBackgroundColor = CURRENT_BGCOLOR;
@@ -220,7 +240,24 @@ namespace StringCodec.UWP.Pages
             else if (sender == btnDstImage)
             {
                 if (CURRENT_IMAGE == null) return;
-                Frame.Navigate(typeof(ImagePage), CURRENT_IMAGE);
+                //Frame.Navigate(typeof(ImagePage), await GetMathImage());
+                var obj = new WriteableBitmapObject()
+                {
+                    Image = await GetMathImage(),
+                    Title = edSrc.Text
+                };
+                Frame.Navigate(typeof(ImagePage), obj);
+            }
+            else if (sender == btnDstCapture)
+            {
+                if (CURRENT_IMAGE == null) return;
+                //Frame.Navigate(typeof(ImagePage), await GetMathImage());
+                var obj = new WriteableBitmapObject()
+                {
+                    Image = await GetMathCapture(),
+                    Title = edSrc.Text
+                };
+                Frame.Navigate(typeof(ImagePage), obj);
             }
         }
 
@@ -256,6 +293,7 @@ namespace StringCodec.UWP.Pages
                         if (!string.IsNullOrEmpty(tex))
                         {
                             var result = await MathView.InvokeScriptAsync("ChangeEquation", new string[] { tex });
+                            CURRENT_FORMULAR = tex;
                             //await GetMathImage(true);
                         }
                         break;
@@ -264,6 +302,12 @@ namespace StringCodec.UWP.Pages
                         break;
                     case "btnCaptureMathToClip":
                         Utils.SetClipboard(await GetMathCapture());
+                        break;
+                    case "btnImageAsHtmlToClip":
+                        Utils.SetClipboard(await (await GetMathImage()).ToHTML(CURRENT_FORMULAR));
+                        break;
+                    case "btnCaptureAsHtmlToClip":
+                        Utils.SetClipboard(await (await GetMathCapture()).ToHTML(CURRENT_FORMULAR));
                         break;
                     case "btnCaptureMathToShare":
                         await Utils.Share(await GetMathCapture(), "Math".T());

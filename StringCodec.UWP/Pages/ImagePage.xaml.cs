@@ -121,7 +121,21 @@ namespace StringCodec.UWP.Pages
                     var wb = await imgBase64.ToWriteableBitmap();
                     edBase64.Text = await wb.ToBase64(CURRENT_FORMAT, CURRENT_PREFIX, CURRENT_LINEBREAK);
                 }
-                else if(data is SVG)
+                else if (data is WriteableBitmapObject)
+                {
+                    var obj = data as WriteableBitmapObject;
+                    if (obj.Image is WriteableBitmap)
+                    {
+                        imgBase64.Source = obj.Image;
+                        if (CURRENT_LINEBREAK) edBase64.TextWrapping = TextWrapping.NoWrap;
+                        else edBase64.TextWrapping = TextWrapping.Wrap;
+                        var wb = await imgBase64.ToWriteableBitmap();
+                        edBase64.Text = await wb.ToBase64(CURRENT_FORMAT, CURRENT_PREFIX, CURRENT_LINEBREAK);
+                    }
+                    if (!string.IsNullOrEmpty(obj.Title))
+                        imgBase64.Tag = obj.Title;
+                }
+                else if (data is SVG)
                 {
                     if (CURRENT_LINEBREAK) edBase64.TextWrapping = TextWrapping.NoWrap;
                     else edBase64.TextWrapping = TextWrapping.Wrap;
@@ -194,25 +208,30 @@ namespace StringCodec.UWP.Pages
             }
         }
 
-        private async void QRCode_Click(object sender, RoutedEventArgs e)
+        private async void ImageAction_Click(object sender, RoutedEventArgs e)
         {
+            if (imgBase64.Source == null) return;
             if (sender == btnImageQRCode)
             {
-                if (imgBase64.Source == null) return;
                 //Frame.Navigate(typeof(QRCodePage), imgBase64.Source as WriteableBitmap);
                 Frame.Navigate(typeof(QRCodePage), await imgBase64.ToWriteableBitmap());
             }
             else if (sender == btnImageOneD)
             {
-                if (imgBase64.Source == null) return;
                 //Frame.Navigate(typeof(CommonOneDPage), imgBase64.Source as WriteableBitmap);
                 Frame.Navigate(typeof(CommonOneDPage), await imgBase64.ToWriteableBitmap());
             }
             else if (sender == btnImageSvg)
             {
-                if (imgBase64.Source == null || !(imgBase64.Source is SvgImageSource) || !(imgBase64.Tag is byte[])) return;
+                if (!(imgBase64.Source is SvgImageSource) || !(imgBase64.Tag is byte[])) return;
                 var svg = imgBase64.ToSVG();
                 Frame.Navigate(typeof(SvgPage), svg);
+            }
+            else if (sender == btnImageAsHtml)
+            {
+                var alt = string.Empty;
+                if (imgBase64.Tag is string) alt = (string)(imgBase64.Tag);
+                Utils.SetClipboard(await (await imgBase64.ToWriteableBitmap()).ToHTML(alt, ".png"));
             }
         }
 

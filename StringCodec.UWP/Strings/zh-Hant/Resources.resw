@@ -369,6 +369,9 @@
   <data name="btnImageToBase64.Label" xml:space="preserve">
     <value>圖像編碼為BASE64</value>
   </data>
+  <data name="btnCaptureToBase64.Label" xml:space="preserve">
+    <value>捕獲圖像並編碼為BASE64</value>
+  </data>
   <data name="btnTextToDecode.Label" xml:space="preserve">
     <value>文本內容解碼</value>
   </data>
@@ -1214,5 +1217,14 @@
   </data>
   <data name="Math" xml:space="preserve">
     <value>數學公式</value>
+  </data>
+  <data name="btnImageAsHtmlToClip.Label" xml:space="preserve">
+    <value>數學公式圖像作為HTML複製到剪貼板</value>
+  </data>
+  <data name="btnCaptureAsHtmlToClip.Label" xml:space="preserve">
+    <value>捕獲數學公式並作為HTML複製到剪貼板</value>
+  </data>
+  <data name="btnImageAsHtml.Label" xml:space="preserve">
+    <value>圖像作為HTML複製到剪貼板</value>
   </data>
 </root>

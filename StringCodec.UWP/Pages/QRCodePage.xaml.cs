@@ -229,15 +229,27 @@ namespace StringCodec.UWP.Pages
 
         private async void Base64_Click(object sender, RoutedEventArgs e)
         {
-            if(sender == btnImageToBase64)
+            if (sender == btnImageToBase64)
             {
                 if (imgQR.Source == null) return;
-                Frame.Navigate(typeof(ImagePage), await imgQR.ToWriteableBitmap());
+                //Frame.Navigate(typeof(ImagePage), await imgQR.ToWriteableBitmap());
+                var obj = new WriteableBitmapObject()
+                {
+                    Image = await imgQR.ToWriteableBitmap(),
+                    Title = edQR.Text
+                };
+                Frame.Navigate(typeof(ImagePage), obj);
             }
-            else if(sender == btnTextToDecode)
+            else if (sender == btnTextToDecode)
             {
                 if (string.IsNullOrEmpty(edQR.Text)) return;
                 Frame.Navigate(typeof(TextPage), edQR.Text);
+            }
+            else if(sender == btnImageAsHtml)
+            {
+                if (imgQR.Source == null) return;
+                var image = await imgQR.ToWriteableBitmap();
+                Utils.SetClipboard(await image.ToHTML(edQR.Text));
             }
         }
 
