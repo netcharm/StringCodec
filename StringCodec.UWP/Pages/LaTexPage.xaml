@@ -18,6 +18,9 @@
 
         <CommandBar Grid.Row="0" x:Name="CmdBar" x:Uid="CmdBar" KeyboardAcceleratorPlacementMode="Auto">
             <AppBarButton x:Name="btnOpt" x:Uid="btnOpt" Icon="Bullets" Label="Options" VerticalAlignment="Center">
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="F1" />
+                </AppBarButton.KeyboardAccelerators>                
                 <AppBarButton.Flyout>
                     <MenuFlyout>
                         <MenuFlyoutItem x:Name="optFgColor" x:Uid="optFgColor" Text="Foreground Color" 
@@ -55,8 +58,16 @@
                 </AppBarButton.Flyout>
             </AppBarButton>
             <AppBarSeparator />
-            <AppBarButton x:Name="btnCopy" x:Uid="btnCopy" Label="Copy" Icon="Copy" VerticalAlignment="Center" Click="AppBarButton_Click"  />
-            <AppBarButton x:Name="btnPaste" x:Uid="btnPaste" Label="Paste" Icon="Paste" VerticalAlignment="Center" Click="AppBarButton_Click" />
+            <AppBarButton x:Name="btnCopy" x:Uid="btnCopy" Label="Copy" Icon="Copy" VerticalAlignment="Center" Click="AppBarButton_Click" >
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="C" Modifiers="Control" />
+                </AppBarButton.KeyboardAccelerators>
+            </AppBarButton>
+            <AppBarButton x:Name="btnPaste" x:Uid="btnPaste" Label="Paste" Icon="Paste" VerticalAlignment="Center" Click="AppBarButton_Click" >
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="V" Modifiers="Control" />
+                </AppBarButton.KeyboardAccelerators>
+            </AppBarButton>
             <AppBarSeparator />
             <AppBarButton x:Name="btnGenerateMath" x:Uid="btnGenerateMath" Label="Generate" VerticalAlignment="Center" Click="AppBarButton_Click" >
                 <AppBarButton.KeyboardAccelerators>
@@ -67,7 +78,11 @@
                 </AppBarButton.Icon>
             </AppBarButton>
             <AppBarSeparator />
-            <AppBarButton x:Name="btnSave" x:Uid="btnSave" Label="Save" Icon="Save" VerticalAlignment="Center" Click="AppBarButton_Click" />
+            <AppBarButton x:Name="btnSave" x:Uid="btnSave" Label="Save" Icon="Save" VerticalAlignment="Center" Click="AppBarButton_Click" >
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="S" Modifiers="Control" />
+                </AppBarButton.KeyboardAccelerators>
+            </AppBarButton>
             <AppBarButton x:Name="btnShare" x:Uid="btnShare" Label="Share" Icon="Share" VerticalAlignment="Center">
                 <AppBarButton.KeyboardAccelerators>
                     <KeyboardAccelerator Key="F12"/>
@@ -92,6 +107,7 @@
                 <AppBarSeparator/>
                 <AppBarButton x:Name="btnCaptureMathToClip" x:Uid="btnCaptureMathToClip" Label="Capture &amp; Copy Math Image" Icon="Camera" VerticalAlignment="Center" Click="AppBarButton_Click" />
                 <AppBarButton x:Name="btnCaptureMathToShare" x:Uid="btnCaptureMathToShare" Label="Capture &amp; Share Math Image" Icon="Camera" VerticalAlignment="Center" Click="AppBarButton_Click" />
+                <AppBarButton x:Name="btnCaptureMathToSave" x:Uid="btnCaptureMathToSave" Label="Capture &amp; Save Math Image" Icon="Camera" VerticalAlignment="Center" Click="AppBarButton_Click" />
                 <AppBarSeparator/>
                 <AppBarButton x:Name="btnImageAsHtmlToClip" x:Uid="btnImageAsHtmlToClip" Label="Copy Math Image as HTML" VerticalAlignment="Center" Click="AppBarButton_Click">
                     <AppBarButton.Icon>
@@ -130,7 +146,12 @@
 
         <WebView Grid.Row="2" x:Name="MathView"
                  DefaultBackgroundColor="Transparent"
-                 Source="ms-appx-web:///Assets/Statics/html/mathviewer.html" />
+                 Source="ms-appx-web:///Assets/Statics/html/mathviewer.html" 
+                 NavigationStarting="MathView_NavigationStarting" 
+                 NavigationFailed="MathView_NavigationFailed" 
+                 LongRunningScriptDetected="MathView_LongRunningScriptDetected" 
+                 ScriptNotify="MathView_ScriptNotify" 
+                 DOMContentLoaded="MathView_DOMContentLoaded" />
 
         <ProgressRing Grid.RowSpan="3" x:Name="progress" Width="96" Height="96" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
         <MediaElement x:Name="mediaPlayer" AutoPlay="False" Source="ms-winsoundevent:Notification.Default" Width="0" Height="0" Visibility="Collapsed"/>

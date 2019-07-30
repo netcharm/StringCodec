@@ -1610,6 +1610,10 @@
           <source>Capture &amp; Share Math Image</source>
           <target state="translated">キャプチャして数学画像を共有する</target>
         </trans-unit>
+        <trans-unit id="btnCaptureMathToSave.Label" translate="yes" xml:space="preserve">
+          <source>Capture &amp; Save Math Image</source>
+          <target state="translated">キャプチャして数学画像を保存する</target>
+        </trans-unit>
         <trans-unit id="Math" translate="yes" xml:space="preserve">
           <source>Mathematical formula</source>
           <target state="translated">数式</target>

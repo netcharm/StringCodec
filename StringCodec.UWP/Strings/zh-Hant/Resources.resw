@@ -1215,6 +1215,9 @@
   <data name="btnCaptureMathToShare.Label" xml:space="preserve">
     <value>捕獲數學公式圖像並分享</value>
   </data>
+  <data name="btnCaptureMathToSave.Label" xml:space="preserve">
+    <value>捕獲數學公式圖像並保存</value>
+  </data>
   <data name="Math" xml:space="preserve">
     <value>數學公式</value>
   </data>

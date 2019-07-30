@@ -40,60 +40,6 @@ namespace StringCodec.UWP.Pages
         private string CURRENT_FORMULAR = string.Empty;
         private WriteableBitmap CURRENT_IMAGE = null;
 
-        public LaTexPage()
-        {
-            this.InitializeComponent();
-
-            NavigationCacheMode = NavigationCacheMode.Enabled;
-
-            optScale150.IsChecked = true;
-
-            edSrc.IsEnabled = false;
-
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine(@"\begin{equation}");
-            sb.AppendLine(@"\frac{\partial\psi}{\partial t} = \kappa\mathrm{\nabla}^2\psi \\");
-            sb.AppendLine(@"");
-            sb.AppendLine(@"\begin{aligned}");
-            sb.AppendLine(@"");
-            sb.AppendLine(@"x &= r (cos(t) + t sin(t)) \\");
-            sb.AppendLine(@"y &= r (sin(t) - t cos(t)) \\");
-            sb.AppendLine(@"");
-            sb.AppendLine(@"\end{aligned}");
-            sb.AppendLine(@"\end{equation}");
-
-
-            DEFAULT_FORMULAR = sb.ToString();
-            CURRENT_FORMULAR = DEFAULT_FORMULAR;
-
-            MathView.DOMContentLoaded += OnContentLoaded;
-            MathView.DefaultBackgroundColor = CURRENT_BGCOLOR;
-            MathView.CanDrag = false;
-            //MathView.CompositeMode = ElementCompositeMode.SourceOver;
-        }
-
-        private async void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                var ret = await MathView.InvokeScriptAsync("ChangeColor", new string[] { CURRENT_FGCOLOR.ToCssRGBA(), CURRENT_BGCOLOR.ToCssRGBA() });
-                //var ret = await mathView.InvokeScriptAsync("LoadMathJax", null);
-                //if (ret.Equals("OK", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    //edSrc.IsEnabled = true;
-                }
-            }
-            catch
-            {
-
-            }
-        }
-
-        private void OnContentLoaded(object sender, WebViewDOMContentLoadedEventArgs e)
-        {
-            edSrc.IsEnabled = true;
-        }
-
         private async Task<WriteableBitmap> GetMathCapture()
         {
             using (Windows.Storage.Streams.InMemoryRandomAccessStream rs = new Windows.Storage.Streams.InMemoryRandomAccessStream())
@@ -123,7 +69,7 @@ namespace StringCodec.UWP.Pages
         }
 
         private async Task<WriteableBitmap> GetMathImage(bool force = false)
-        { 
+        {
             if (CURRENT_IMAGE == null || force)
             {
                 var scale = await MathView.InvokeScriptAsync("GetPageZoomRatio", null);
@@ -166,6 +112,54 @@ namespace StringCodec.UWP.Pages
             return (CURRENT_IMAGE);
         }
 
+        public LaTexPage()
+        {
+            this.InitializeComponent();
+
+            NavigationCacheMode = NavigationCacheMode.Enabled;
+
+            optScale150.IsChecked = true;
+
+            edSrc.IsEnabled = false;
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(@"\begin{equation}");
+            sb.AppendLine(@"\frac{\partial\psi}{\partial t} = \kappa\mathrm{\nabla}^2\psi \\");
+            sb.AppendLine(@"");
+            sb.AppendLine(@"\begin{aligned}");
+            sb.AppendLine(@"");
+            sb.AppendLine(@"x &= r (cos(t) + t sin(t)) \\");
+            sb.AppendLine(@"y &= r (sin(t) - t cos(t)) \\");
+            sb.AppendLine(@"");
+            sb.AppendLine(@"\end{aligned}");
+            sb.AppendLine(@"\end{equation}");
+
+
+            DEFAULT_FORMULAR = sb.ToString();
+            CURRENT_FORMULAR = DEFAULT_FORMULAR;
+
+            MathView.DefaultBackgroundColor = CURRENT_BGCOLOR;
+            MathView.CanDrag = false;
+            //MathView.CompositeMode = ElementCompositeMode.SourceOver;
+        }
+
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var ret = await MathView.InvokeScriptAsync("ChangeColor", new string[] { CURRENT_FGCOLOR.ToCssRGBA(), CURRENT_BGCOLOR.ToCssRGBA() });
+                //var ret = await mathView.InvokeScriptAsync("LoadMathJax", null);
+                //if (ret.Equals("OK", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    //edSrc.IsEnabled = true;
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
 
@@ -178,6 +172,34 @@ namespace StringCodec.UWP.Pages
                 var data = e.Parameter;
             }
         }
+
+        #region WebView events routine
+        private void MathView_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
+        {
+
+        }
+
+        private void MathView_NavigationFailed(object sender, WebViewNavigationFailedEventArgs e)
+        {
+            e.WebErrorStatus.ToString().ShowMessage("ERROR".T());
+        }
+
+        private void MathView_DOMContentLoaded(WebView sender, WebViewDOMContentLoadedEventArgs args)
+        {
+            edSrc.IsEnabled = true;
+        }
+
+        private void MathView_LongRunningScriptDetected(WebView sender, WebViewLongRunningScriptDetectedEventArgs args)
+        {            
+            if(args.ExecutionTime > TimeSpan.FromMilliseconds(5000))
+                args.StopPageScriptExecution = true;
+        }
+
+        private void MathView_ScriptNotify(object sender, NotifyEventArgs e)
+        {
+            //e.Value;
+        }
+        #endregion
 
         private async void OptColor_Click(object sender, RoutedEventArgs e)
         {
@@ -318,6 +340,9 @@ namespace StringCodec.UWP.Pages
                     case "btnSave":
                         await Utils.ShowSaveDialog(await GetMathImage(true), "Math");
                         break;
+                    case "btnCaptureMathToSave":
+                        await Utils.ShowSaveDialog(await GetMathCapture(), "Math");
+                        break;
                     case "btnShare":
                         break;
                     default:
@@ -353,9 +378,7 @@ namespace StringCodec.UWP.Pages
         {
 
         }
-
         #endregion
-
 
     }
 }

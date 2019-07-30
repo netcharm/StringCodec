@@ -1317,6 +1317,9 @@
   <data name="btnCaptureMathToShare.Label" xml:space="preserve">
     <value>Capture &amp; Share Math Image</value>
   </data>
+  <data name="btnCaptureMathToSave.Label" xml:space="preserve">
+    <value>Capture &amp; Save Math Image</value>
+  </data>
   <data name="Math" xml:space="preserve">
     <value>Mathematical formula</value>
   </data>
