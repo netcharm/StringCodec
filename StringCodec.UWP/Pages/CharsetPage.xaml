@@ -135,6 +135,9 @@
             </AppBarButton>
             <AppBarSeparator />
             <AppBarButton Grid.Column="0" x:Name="btnOptSrc" x:Uid="btnOptSrc" Icon="Character" Label="Source" VerticalAlignment="Center">
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="F1" />
+                </AppBarButton.KeyboardAccelerators>                
                 <AppBarButton.Flyout>
                     <MenuFlyout>
                         <ToggleMenuFlyoutItem x:Name="optSrcGBK" x:Uid="optLangGBK" Text="GBK" Click="OptSrc_Click">
@@ -222,6 +225,9 @@
             </AppBarButton>
             <AppBarSeparator />
             <AppBarButton Grid.Column="0" x:Name="btnOptDst" x:Uid="btnOptDst" Icon="Character" Label="Target" VerticalAlignment="Center">
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="F1" Modifiers="Control" />
+                </AppBarButton.KeyboardAccelerators>                
                 <AppBarButton.Flyout>
                     <MenuFlyout>
                         <ToggleMenuFlyoutItem x:Name="optDstGBK" x:Uid="optLangGBK" Text="GBK" Click="OptDst_Click">
@@ -313,7 +319,11 @@
                     <KeyboardAccelerator Key="F12"/>
                 </AppBarButton.KeyboardAccelerators>
             </AppBarButton>
-            <AppBarButton x:Name="btnCopy" x:Uid="btnCopy" Label="Copy" Icon="Copy" VerticalAlignment="Center" Click="AppBarButton_Click"  />
+            <AppBarButton x:Name="btnCopy" x:Uid="btnCopy" Label="Copy" Icon="Copy" VerticalAlignment="Center" Click="AppBarButton_Click" >
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="C" Modifiers="Control" />
+                </AppBarButton.KeyboardAccelerators>                
+            </AppBarButton>
 
             <CommandBar.SecondaryCommands>
                 <!-- More Button Dropdown menu -->

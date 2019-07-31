@@ -120,6 +120,9 @@ namespace StringCodec.UWP.Pages
 
             optScale150.IsChecked = true;
 
+            optWrapText.IsChecked = true;
+
+            edSrc.TextWrapping = TextWrapping.Wrap;
             edSrc.IsEnabled = false;
 
             StringBuilder sb = new StringBuilder();
@@ -251,6 +254,21 @@ namespace StringCodec.UWP.Pages
             }
         }
 
+        private void OptWrap_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender == optWrapText)
+            {
+                if (optWrapText.IsChecked == true)
+                {
+                    edSrc.TextWrapping = TextWrapping.Wrap;
+                }
+                else
+                {
+                    edSrc.TextWrapping = TextWrapping.NoWrap;
+                }
+            }
+        }
+
         private async void Send_Click(object sender, RoutedEventArgs e)
         {
             await GetMathImage();
@@ -379,6 +397,7 @@ namespace StringCodec.UWP.Pages
 
         }
         #endregion
+
 
     }
 }

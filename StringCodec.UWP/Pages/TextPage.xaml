@@ -18,6 +18,9 @@
 
         <CommandBar Grid.Row="0" x:Name="CmdBar" x:Uid="CmdBar" KeyboardAcceleratorPlacementMode="Auto" PreviewKeyDown="TextSrc_PreviewKeyDown">
             <AppBarButton x:Name="btnOpt" x:Uid="btnOpt" Icon="Bullets" Label="Options" VerticalAlignment="Center">
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="F1" />
+                </AppBarButton.KeyboardAccelerators>
                 <AppBarButton.Flyout>
                     <MenuFlyout>
                         <ToggleMenuFlyoutItem x:Name="optURL" x:Uid="optURL" Text="URL" Click="Codec_Click"/>
@@ -49,6 +52,9 @@
                 </AppBarButton.Flyout>
             </AppBarButton>
             <AppBarButton  x:Name="btnOptLang" x:Uid="btnOptLang" Icon="Character" Label="Language" VerticalAlignment="Center">
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="F1" Modifiers="Control" />
+                </AppBarButton.KeyboardAccelerators>                
                 <AppBarButton.Flyout>
                     <MenuFlyout>
                         <ToggleMenuFlyoutItem x:Name="optLangGBK" x:Uid="optLangGBK" Text="GBK" Click="OptLang_Click">
@@ -117,8 +123,16 @@
                 </AppBarButton.Flyout>
             </AppBarButton>
             <AppBarSeparator />
-            <AppBarButton x:Name="btnCopy" x:Uid="btnCopy" Label="Copy" Icon="Copy" VerticalAlignment="Center" Click="AppBarButton_Click"  />
-            <AppBarButton x:Name="btnPaste" x:Uid="btnPaste" Label="Paste" Icon="Paste" VerticalAlignment="Center" Click="AppBarButton_Click" />
+            <AppBarButton x:Name="btnCopy" x:Uid="btnCopy" Label="Copy" Icon="Copy" VerticalAlignment="Center" Click="AppBarButton_Click" >
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="C" Modifiers="Control" />
+                </AppBarButton.KeyboardAccelerators>                
+            </AppBarButton>
+            <AppBarButton x:Name="btnPaste" x:Uid="btnPaste" Label="Paste" Icon="Paste" VerticalAlignment="Center" Click="AppBarButton_Click" >
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="V" Modifiers="Control" />
+                </AppBarButton.KeyboardAccelerators>                
+            </AppBarButton>
             <AppBarSeparator />
             <AppBarButton x:Name="btnEncode" x:Uid="btnEncode" Label="Encode" Icon="Mail" VerticalAlignment="Center" Click="AppBarButton_Click" >
                 <AppBarButton.KeyboardAccelerators>
@@ -247,7 +261,11 @@
                 </AppBarButton.Flyout>
             </AppBarButton>
             <AppBarSeparator />
-            <AppBarButton x:Name="btnSave" x:Uid="btnSave" Label="Save" Icon="Save" VerticalAlignment="Center" Click="AppBarButton_Click" />
+            <AppBarButton x:Name="btnSave" x:Uid="btnSave" Label="Save" Icon="Save" VerticalAlignment="Center" Click="AppBarButton_Click" >
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="S" Modifiers="Control" />
+                </AppBarButton.KeyboardAccelerators>                
+            </AppBarButton>
             <AppBarButton x:Name="btnShare" x:Uid="btnShare" Label="Share" Icon="Share" VerticalAlignment="Center">
                 <AppBarButton.KeyboardAccelerators>
                     <KeyboardAccelerator Key="F12"/>

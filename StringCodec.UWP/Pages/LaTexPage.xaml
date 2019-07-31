@@ -119,6 +119,15 @@
                         <FontIcon Glyph="&#xF121;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
                     </AppBarButton.Icon>
                 </AppBarButton>
+                <AppBarSeparator/>
+                <AppBarToggleButton x:Name="optWrapText" x:Uid="optWrapText" Label="Wrap Text" Click="OptWrap_Click" >
+                    <AppBarToggleButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control" Key="W" />
+                    </AppBarToggleButton.KeyboardAccelerators>
+                    <AppBarToggleButton.Icon>
+                        <FontIcon Glyph="&#xE751;" FontFamily="Segoe MDL2 Assets"/>
+                    </AppBarToggleButton.Icon>
+                </AppBarToggleButton>
                 <!--<AppBarButton Label="About"/>-->
             </CommandBar.SecondaryCommands>
 
