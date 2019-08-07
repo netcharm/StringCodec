@@ -14,14 +14,24 @@
     <script type="text/x-mathjax-config">
         MathJax.Hub.Config({
         showMathMenu: true,
-        tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+        extensions: ["tex2jax.js","Safe.js"],
+        tex2jax: {
+            inlineMath: [['$','$'], ['\\(','\\)']]
+        },
+        asciimath2jax: {
+          delimiters: [['$','$'], ['`','`']]
+        },
+        TeX: {
+            equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js", "color.js"]
+        },
         MathML: { scale: 150 },
         CommonHTML: { scale: 150 },
         'HTML-CSS': { scale: 150 },
         SVG: { scale: 150 },
         });
     </script>
-    <script src="/Assets/Statics/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="/Assets/Statics/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML,Safe"></script>
 
     <script>
         function LoadMathJax() {
@@ -113,16 +123,19 @@
     <!--This is for LaTex-->
     <div>
         <script type="math/tex; mode=display" id="equationtex">
-\begin{equation}
+
 \frac{\partial\psi}{\partial t}=\kappa\mathrm{\nabla}^2\psi \\
 
-\begin{aligned}
+\begin{align} 
+a_{11}& =b_{11}& a_{12}& =b_{12} \notag \\ 
+a_{21}& =b_{21}& a_{22}& =b_{22}+c_{22} \tag{y}\\
+\notag \\
+\notag \\
+x & = r (cos(t) + t sin(t)) \tag{1} \\
+y & = r (sin(t) - t cos(t)) \tag{2} \\
+z & = 3x 
+\end{align}
 
-x &= r (cos(t) + t sin(t)) \\
-y &= r (sin(t) - t cos(t)) \\
-
-\end{aligned}
-\end{equation}
         </script>
     </div>
 

@@ -75,12 +75,12 @@
             <AppBarSeparator />
             <AppBarButton x:Name="btnCopy" x:Uid="btnCopy" Label="Copy" Icon="Copy" VerticalAlignment="Center" Click="AppBarButton_Click" >
                 <AppBarButton.KeyboardAccelerators>
-                    <KeyboardAccelerator Key="C" Modifiers="Control" />
+                    <KeyboardAccelerator Key="C" Modifiers="Menu" />
                 </AppBarButton.KeyboardAccelerators>
             </AppBarButton>
             <AppBarButton x:Name="btnPaste" x:Uid="btnPaste" Label="Paste" Icon="Paste" VerticalAlignment="Center" Click="AppBarButton_Click" >
                 <AppBarButton.KeyboardAccelerators>
-                    <KeyboardAccelerator Key="V" Modifiers="Control" />
+                    <KeyboardAccelerator Key="V" Modifiers="Menu" />
                 </AppBarButton.KeyboardAccelerators>
             </AppBarButton>
             <AppBarSeparator />
