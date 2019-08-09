@@ -62,9 +62,11 @@
 
         function ChangeEquation(param) {
             var str = "" + param;
-            var index = str.indexOf(",");
-            var lang = str.substring(0, index);
-            var newequ = str.substring(index + 1);
+            //var index = str.indexOf(",");
+            //var lang = str.substring(0, index);
+            //var newequ = str.substring(index + 1);
+            var lang = "";
+            var newequ = str;
             var math = MathJax.Hub.getAllJax(lang)[0];
             MathJax.Hub.Queue(["Text", math, newequ]);
 
