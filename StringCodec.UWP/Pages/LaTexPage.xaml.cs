@@ -329,7 +329,7 @@ namespace StringCodec.UWP.Pages
                 switch (btn.Name)
                 {
                     case "btnGenerateMath":
-                        var tex = edSrc.Text.Trim();//.Replace("\\", "\\\\");
+                        var tex = edSrc.Text.Trim().Replace("\\,", "\\ ");
                         if (!string.IsNullOrEmpty(tex))
                         {
                             var result = await MathView.InvokeScriptAsync("ChangeEquation", new string[] { tex });
