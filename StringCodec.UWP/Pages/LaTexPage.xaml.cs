@@ -29,12 +29,13 @@ namespace StringCodec.UWP.Pages
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class LaTexPage : Page
+    public sealed partial class LaTeXPage : Page
     {
         //private Color CURRENT_BGCOLOR = Colors.Transparent; //Color.FromArgb(255, 255, 255, 255);
         private Color CURRENT_BGCOLOR = Color.FromArgb(0, 255, 255, 255);
         private Color CURRENT_FGCOLOR = Colors.Black; //Color.FromArgb(255, 000, 000, 000);
         private int CURRENT_SCALE = 150;
+        private MATH_INPUT_FORMAT CURRENT_MATHINPUT = MATH_INPUT_FORMAT.TeX;
 
         private string DEFAULT_FORMULAR = string.Empty;
         private string CURRENT_FORMULAR = string.Empty;
@@ -112,7 +113,40 @@ namespace StringCodec.UWP.Pages
             return (CURRENT_IMAGE);
         }
 
-        public LaTexPage()
+        private void LoadMathInputFormat(MATH_INPUT_FORMAT fmt)
+        {
+            switch (fmt)
+            {
+                case MATH_INPUT_FORMAT.TeX:
+                    MathView.Source = new Uri("ms-appx-web:///Assets/Statics/html/mathviewer_tex.html");
+                    optInputTeX.IsChecked = true;
+                    optInputAM.IsChecked = false;
+                    break;
+                case MATH_INPUT_FORMAT.AsciiMath:
+                    MathView.Source = new Uri("ms-appx-web:///Assets/Statics/html/mathviewer_asciimath.html");
+                    optInputTeX.IsChecked = false;
+                    optInputAM.IsChecked = true;
+                    break;
+                default:
+                    MathView.Source = new Uri("ms-appx-web:///Assets/Statics/html/mathviewer_tex.html");
+                    optInputTeX.IsChecked = true;
+                    optInputAM.IsChecked = false;
+                    break;
+            }
+            GeneratingMath();
+        }
+
+        private async void GeneratingMath()
+        {
+            var tex = edSrc.Text.Trim();
+            if (!string.IsNullOrEmpty(tex))
+            {
+                var result = await MathView.InvokeScriptAsync("ChangeEquation", new string[] { tex });
+                CURRENT_FORMULAR = tex;
+            }
+        }
+
+        public LaTeXPage()
         {
             this.InitializeComponent();
 
@@ -141,9 +175,20 @@ namespace StringCodec.UWP.Pages
             DEFAULT_FORMULAR = sb.ToString();
             CURRENT_FORMULAR = DEFAULT_FORMULAR;
 
+            try
+            {
+                CURRENT_MATHINPUT = (MATH_INPUT_FORMAT)Enum.Parse(typeof(MATH_INPUT_FORMAT), (string)Settings.Get("MathInput", CURRENT_MATHINPUT.ToString()));
+            }
+            catch(Exception)
+            {
+
+            }
+
             MathView.DefaultBackgroundColor = CURRENT_BGCOLOR;
             MathView.CanDrag = false;
             //MathView.CompositeMode = ElementCompositeMode.SourceOver;
+            LoadMathInputFormat(CURRENT_MATHINPUT);
+
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
@@ -228,6 +273,35 @@ namespace StringCodec.UWP.Pages
             }
             var ret = await MathView.InvokeScriptAsync("ChangeColor", new string[] { CURRENT_FGCOLOR.ToCssRGBA(), CURRENT_BGCOLOR.ToCssRGBA() });
             //await GetMathImage(true);
+        }
+
+        private void OptInput_Click(object sender, RoutedEventArgs e)
+        {
+            var InputItems = new ToggleMenuFlyoutItem[] {
+                optInputTeX,
+                optInputAM
+            };
+
+            foreach (var item in InputItems)
+            {
+                if (item == sender)
+                {
+                    item.IsChecked = true;
+                    var btnName = item.Name;
+                    if (sender == optInputTeX)
+                    {
+                        CURRENT_MATHINPUT = MATH_INPUT_FORMAT.TeX;
+                    }
+                    else if (sender == optInputAM)
+                    {
+                        CURRENT_MATHINPUT = MATH_INPUT_FORMAT.AsciiMath;
+                    }
+                    LoadMathInputFormat(CURRENT_MATHINPUT);
+                    Settings.Set("MathInput", CURRENT_MATHINPUT.ToString());
+                }
+                else
+                    item.IsChecked = false;
+            }
         }
 
         private async void OptScale_Click(object sender, RoutedEventArgs e)
@@ -329,12 +403,7 @@ namespace StringCodec.UWP.Pages
                 switch (btn.Name)
                 {
                     case "btnGenerateMath":
-                        var tex = edSrc.Text.Trim();
-                        if (!string.IsNullOrEmpty(tex))
-                        {
-                            var result = await MathView.InvokeScriptAsync("ChangeEquation", new string[] { tex });
-                            CURRENT_FORMULAR = tex;
-                        }
+                        GeneratingMath();
                         break;
                     case "btnCopy":
                         Utils.SetClipboard(await GetMathImage(true));
@@ -395,8 +464,11 @@ namespace StringCodec.UWP.Pages
         {
 
         }
+
         #endregion
 
 
     }
+
+    internal enum MATH_INPUT_FORMAT { TeX=0, AsciiMath=1 }
 }

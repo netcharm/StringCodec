@@ -156,8 +156,8 @@
     <Compile Include="Pages\ImagePage.xaml.cs">
       <DependentUpon>ImagePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\LaTexPage.xaml.cs">
-      <DependentUpon>LaTexPage.xaml</DependentUpon>
+    <Compile Include="Pages\LaTeXPage.xaml.cs">
+      <DependentUpon>LaTeXPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\QRCodePage.xaml.cs">
       <DependentUpon>QRCodePage.xaml</DependentUpon>
@@ -204,6 +204,7 @@
     <None Include="Assets\Statics\js\MathJax\fonts\HTML-CSS\Asana-Math\eot\AsanaMathJax_Size6-Regular.eot" />
     <None Include="Assets\Statics\js\MathJax\fonts\HTML-CSS\Asana-Math\eot\AsanaMathJax_Symbols-Regular.eot" />
     <None Include="Assets\Statics\js\MathJax\fonts\HTML-CSS\Asana-Math\eot\AsanaMathJax_Variants-Regular.eot" />
+    <Content Include="Assets\Statics\html\mathviewer_asciimath.html" />
     <Content Include="Assets\Statics\js\MathJax\fonts\HTML-CSS\Asana-Math\otf\AsanaMathJax_Alphabets-Regular.otf" />
     <Content Include="Assets\Statics\js\MathJax\fonts\HTML-CSS\Asana-Math\otf\AsanaMathJax_Arrows-Regular.otf" />
     <Content Include="Assets\Statics\js\MathJax\fonts\HTML-CSS\Asana-Math\otf\AsanaMathJax_DoubleStruck-Regular.otf" />
@@ -807,7 +808,7 @@
     <Content Include="Assets\Square71x71Logo.scale-150.png" />
     <Content Include="Assets\Square71x71Logo.scale-200.png" />
     <Content Include="Assets\Square71x71Logo.scale-400.png" />
-    <Content Include="Assets\Statics\html\mathviewer.html" />
+    <Content Include="Assets\Statics\html\mathviewer_tex.html" />
     <Content Include="Assets\Statics\js\MathJax\config\Accessible-full.js" />
     <Content Include="Assets\Statics\js\MathJax\config\Accessible.js" />
     <Content Include="Assets\Statics\js\MathJax\config\AM_CHTML-full.js" />
@@ -1844,7 +1845,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\LaTexPage.xaml">
+    <Page Include="Pages\LaTeXPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
