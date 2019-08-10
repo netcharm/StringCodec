@@ -133,7 +133,6 @@ namespace StringCodec.UWP.Pages
                     optInputAM.IsChecked = false;
                     break;
             }
-            GeneratingMath();
         }
 
         private async void GeneratingMath()
@@ -146,14 +145,19 @@ namespace StringCodec.UWP.Pages
                 var idx = l.Replace("\\%", "\\\\").IndexOf("%");
                 var line = idx >= 0 ? l.Substring(0, idx) : l;
                 if (string.IsNullOrEmpty(line)) continue;
+                //if (!line.EndsWith("\\\\")) line = $"{line} \\\\ ";
                 line = await line.Decoder(TextCodecs.CODEC.HTML, Encoding.UTF8);
                 sb.AppendLine(line);
             }
             var tex = string.Join(Environment.NewLine, sb);
             if (!string.IsNullOrEmpty(tex))
             {
-                var result = await MathView.InvokeScriptAsync("ChangeEquation", new string[] { tex });
-                CURRENT_FORMULAR = tex;
+                try
+                {
+                    var result = await MathView.InvokeScriptAsync("ChangeEquation", new string[] { tex });
+                    CURRENT_FORMULAR = tex;
+                }
+                catch (Exception) { }
             }
         }
 
@@ -162,8 +166,6 @@ namespace StringCodec.UWP.Pages
             this.InitializeComponent();
 
             NavigationCacheMode = NavigationCacheMode.Enabled;
-
-            optScale150.IsChecked = true;
 
             optWrapText.IsChecked = true;
 
@@ -181,10 +183,29 @@ namespace StringCodec.UWP.Pages
             sb.AppendLine(@"");
             sb.AppendLine(@"\end{aligned}");
             sb.AppendLine(@"\end{equation}");
-
-
             DEFAULT_FORMULAR = sb.ToString();
             CURRENT_FORMULAR = DEFAULT_FORMULAR;
+
+            try
+            {
+                CURRENT_SCALE = Settings.Get("MathScale", CURRENT_SCALE);
+            }
+            catch (Exception) { }
+            var ScaleItems = new ToggleMenuFlyoutItem[] {
+                optScale100,
+                optScale125, optScale133, optScale150,
+                optScale200, optScale250,
+                optScale300,
+                optScale400
+            };
+            foreach(var item in ScaleItems)
+            {
+                var scaleName = item.Name.Substring("optScale".Length);
+                if (int.Parse(scaleName) == CURRENT_SCALE)
+                    item.IsChecked = true;
+                else
+                    item.IsChecked = false;
+            }
 
             try
             {
@@ -246,6 +267,8 @@ namespace StringCodec.UWP.Pages
         private void MathView_DOMContentLoaded(WebView sender, WebViewDOMContentLoadedEventArgs args)
         {
             edSrc.IsEnabled = true;
+            if(!string.IsNullOrEmpty(edSrc.Text.Trim()))
+                GeneratingMath();
         }
 
         private void MathView_LongRunningScriptDetected(WebView sender, WebViewLongRunningScriptDetectedEventArgs args)
@@ -337,6 +360,7 @@ namespace StringCodec.UWP.Pages
                 else
                     item.IsChecked = false;
             }
+            Settings.Set("MathScale", CURRENT_SCALE);
         }
 
         private void OptWrap_Click(object sender, RoutedEventArgs e)

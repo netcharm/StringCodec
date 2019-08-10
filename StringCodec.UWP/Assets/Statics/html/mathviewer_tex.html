@@ -27,16 +27,40 @@
                 delimiters: [['$','$'], ['`','`']]
             },
             TeX: {
-                equationNumbers: { autoNumber: "AMS" },
+                equationNumbers: { 
+                    autoNumber: "AMS",
+                    useLabelIds: true
+                },
+                Macros: {
+                    iddots: "{\\kern3mu\\raise1mu{.}\\kern3mu\\raise6mu{.}\\kern3mu\\raise12mu{.}}"
+                },
                 extensions: ["autoload-all.js"]
             },
             MathML: {
+                linebreaks: {
+                    automatic: true
+                },
                 scale: 150,
                 extensions: ["content-mathml.js", "mml3.js"]
             },
-            CommonHTML: { scale: 150 },
-            'HTML-CSS': { scale: 150 },
-            SVG: { scale: 150 },
+            CommonHTML: { 
+                linebreaks: {
+                    automatic: true
+                },
+                scale: 150 
+            },
+            'HTML-CSS': { 
+                linebreaks: {
+                    automatic: true
+                },
+                scale: 150 
+            },
+            SVG: {
+                linebreaks: {
+                    automatic: true
+                },
+                scale: 150 
+            },
         });
     </script>
     <script src="/Assets/Statics/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML-full,Safe"></script>
@@ -65,20 +89,14 @@
         }
 
         function ChangeEquation(param) {
+            var newequ = "" + param;
+            var math = MathJax.Hub.getAllJax()[0];
             MathJax.Hub.Queue(
                 ["resetEquationNumbers", MathJax.InputJax.TeX],
-                ["PreProcess", MathJax.Hub],
-                ["Reprocess", MathJax.Hub]
+                //["PreProcess", MathJax.Hub],
+                //["Reprocess", MathJax.Hub],
+                ["Text", math, newequ]
             );
-
-            var str = "" + param;
-            //var index = str.indexOf(",");
-            //var lang = str.substring(0, index);
-            //var newequ = str.substring(index + 1);
-            var lang = "";
-            var newequ = str;
-            var math = MathJax.Hub.getAllJax(lang)[0];
-            MathJax.Hub.Queue(["Text", math, newequ]);
 
             return ("OK");
         }
@@ -109,6 +127,10 @@
             return (result);
         }
 
+        function GetMathLog() {
+            return ("" + MathJax.Message.Log());
+        }
+
         function ChangeBG(color) {
             document.body.style.backgroundColor = color;
             return ("OK");
@@ -135,6 +157,20 @@
             MathJax.Hub.Rerender();
             return ("OK");
         }
+
+        function ChangeAutoNumber(on) {
+            var no = "AMS";
+            if (typeof (on) === "boolean") {
+                no = on ? "AMS" : "none";
+                MathJax.Hub.Config({
+                    TeX: {
+                        equationNumbers: { autoNumber: no }
+                    }
+                });
+                MathJax.Hub.Rerender();
+            }
+            return ("OK");
+        }
     </script>
 </head>
 
@@ -152,7 +188,7 @@ a_{21} & = b_{21}& a_{22}& =b_{22}+c_{22} \tag{y}\\
 \notag \\
 x & = r (cos(t) + t sin(t)) \tag{1} \\
 y & = r (sin(t) - t cos(t)) \tag{2} \\
-z & = 3x
+z & = 3x \label{eq:0}
 \end{align}
 
         </script>
