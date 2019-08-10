@@ -138,7 +138,18 @@ namespace StringCodec.UWP.Pages
 
         private async void GeneratingMath()
         {
-            var tex = edSrc.Text.Trim();
+            var lines = edSrc.Text.Trim().Split(new char[]{ '\n', '\r' });
+            StringBuilder sb = new StringBuilder();
+            foreach(var l in lines)
+            {
+                if (string.IsNullOrEmpty(l)) continue;
+                var idx = l.Replace("\\%", "\\\\").IndexOf("%");
+                var line = idx >= 0 ? l.Substring(0, idx) : l;
+                if (string.IsNullOrEmpty(line)) continue;
+                line = await line.Decoder(TextCodecs.CODEC.HTML, Encoding.UTF8);
+                sb.AppendLine(line);
+            }
+            var tex = string.Join(Environment.NewLine, sb);
             if (!string.IsNullOrEmpty(tex))
             {
                 var result = await MathView.InvokeScriptAsync("ChangeEquation", new string[] { tex });

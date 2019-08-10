@@ -10,6 +10,10 @@
             /*background: #112233;*/
             /*color: silver;*/
         }
+        #equationam-Frame {
+            left: 50%;
+            transform: translateX(-50%);
+        }
     </style>
     <script type="text/x-mathjax-config">
         MathJax.Hub.Config({
@@ -61,6 +65,12 @@
         }
 
         function ChangeEquation(param) {
+            MathJax.Hub.Queue(
+                ["resetEquationNumbers", MathJax.InputJax.TeX],
+                ["PreProcess", MathJax.Hub],
+                ["Reprocess", MathJax.Hub]
+            );
+
             var str = "" + param;
             //var index = str.indexOf(",");
             //var lang = str.substring(0, index);
@@ -129,20 +139,20 @@
 </head>
 
 <body>
-    <!--This is for LaTex-->
+    <!--This is for LaTeX/TeX-->
     <div>
         <script type="math/tex; mode=display" id="equationtex">
 \LaTeX \quad \TeX \\
 \frac{\partial\psi}{\partial t}=\kappa\mathrm{\nabla}^2\psi \\
 
-\begin{align} 
-a_{11} & = b_{11}& a_{12}& =b_{12} \notag \\ 
+\begin{align}
+a_{11} & = b_{11}& a_{12}& =b_{12} \notag \\
 a_{21} & = b_{21}& a_{22}& =b_{22}+c_{22} \tag{y}\\
 \notag \\
 \notag \\
 x & = r (cos(t) + t sin(t)) \tag{1} \\
 y & = r (sin(t) - t cos(t)) \tag{2} \\
-z & = 3x 
+z & = 3x
 \end{align}
 
         </script>

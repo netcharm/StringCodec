@@ -275,7 +275,8 @@ namespace StringCodec.UWP.Common
                         var unicode = System.Web.HttpUtility.HtmlDecode(match.Value);
                         if (unicode.Length == 1)
                         {
-                            replacements.Add(match.Value, $"&#x{Convert.ToInt32(unicode[0]):X2};");
+                            //replacements.Add(match.Value, $"&#x{Convert.ToInt32(unicode[0]):X2};");
+                            replacements.Add(match.Value, $"{unicode[0]}");
                         }
                     }
                 }

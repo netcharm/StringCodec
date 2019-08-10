@@ -10,6 +10,10 @@
             /*background: #112233;*/
             /*color: silver;*/
         }
+        #equationam-Frame {
+            left: 50%;
+            transform: translateX(-50%);
+        }
     </style>
     <script type="text/x-mathjax-config">
         MathJax.Hub.Config({
@@ -92,9 +96,9 @@
             }
             catch(e) {
                 result = '0,0,'+ window.innerWidth + ',' + window.innerHeight;
-            }            
+            }
             finally {
-            
+
             }
             return (result);
         }
@@ -129,11 +133,11 @@
 </head>
 
 <body>
-    <!--This is for LaTex-->
+    <!--This is for AsciiMath-->
     <div>
         <script type="math/asciimath; mode=display" id="equationam">
 sum_(i=1)^n i^3=((n(n+1))/2)^2
-        </script>        
+        </script>
     </div>
 
 </body>
