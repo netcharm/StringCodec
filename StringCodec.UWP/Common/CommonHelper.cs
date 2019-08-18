@@ -2023,6 +2023,7 @@ namespace StringCodec.UWP.Common
                 {
                     dataPackage.SetText(text);
                 }
+                Clipboard.Clear();
                 Clipboard.SetContent(dataPackage);
             }
             catch (Exception ex)
@@ -2099,7 +2100,7 @@ namespace StringCodec.UWP.Common
                     }
                 }
                 #endregion
-
+                Clipboard.Clear();
                 Clipboard.SetContent(dataPackage);
             }
             catch (Exception ex)
@@ -2210,9 +2211,9 @@ namespace StringCodec.UWP.Common
                             await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
                         }
                     }
-                }            
+                }
                 #endregion
-
+                Clipboard.Clear();
                 Clipboard.SetContent(dataPackage);
             }
             catch (Exception ex)
