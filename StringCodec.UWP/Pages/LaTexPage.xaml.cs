@@ -447,10 +447,10 @@ namespace StringCodec.UWP.Pages
                         Utils.SetClipboard(await GetMathCapture());
                         break;
                     case "btnImageAsHtmlToClip":
-                        Utils.SetClipboard(await (await GetMathImage()).ToHTML(CURRENT_FORMULAR));
+                        Utils.SetClipboard(await (await GetMathImage()).ToHTML(CURRENT_FORMULAR), true);
                         break;
                     case "btnCaptureAsHtmlToClip":
-                        Utils.SetClipboard(await (await GetMathCapture()).ToHTML(CURRENT_FORMULAR));
+                        Utils.SetClipboard(await (await GetMathCapture()).ToHTML(CURRENT_FORMULAR), true);
                         break;
                     case "btnCaptureMathToShare":
                         await Utils.Share(await GetMathCapture(), "Math".T());

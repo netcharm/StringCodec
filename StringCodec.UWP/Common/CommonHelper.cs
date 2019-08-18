@@ -1789,7 +1789,7 @@ namespace StringCodec.UWP.Common
         #endregion
     }
 
-    class Utils
+    public static class Utils
     {
         //public static string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif", ".svg", ".xaml" };
         public static string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif", ".svg", ".spa", ".sph" };
@@ -2004,14 +2004,31 @@ namespace StringCodec.UWP.Common
         #endregion
 
         #region Clipboard Extentions
-        public static void SetClipboard(string text)
+        public static async void SetClipboard(string text, bool html=false)
         {
             DataPackage dataPackage = new DataPackage
             {
                 RequestedOperation = DataPackageOperation.Copy
             };
-            dataPackage.SetText(text);
-            Clipboard.SetContent(dataPackage);
+            try
+            {
+                if (html)
+                {
+                    string content = HtmlFormatHelper.CreateHtmlFormat(text);
+                    dataPackage.SetData("text/html", content);
+                    dataPackage.SetData(StandardDataFormats.Html, content);
+                    dataPackage.SetData(StandardDataFormats.Text, text);
+                }
+                else
+                {
+                    dataPackage.SetText(text);
+                }
+                Clipboard.SetContent(dataPackage);
+            }
+            catch (Exception ex)
+            {
+                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
+            }
         }
 
         public static async void SetClipboard(WriteableBitmap wb)
