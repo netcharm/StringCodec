@@ -105,6 +105,12 @@
             </AppBarButton>
             
             <CommandBar.SecondaryCommands>
+                <AppBarButton x:Name="btnImageAsHtml" x:Uid="btnImageAsHtml" Label="Copy Image as HTML" Click="Base64_Click">
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xF121;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarSeparator/>
                 <!-- More Button Dropdown menu -->
                 <AppBarToggleButton x:Name="optSaveSizeWindow" x:Uid="optSaveSizeWindow" Label="Display Size" Click="OptSave_Click">
                     <AppBarToggleButton.Icon>

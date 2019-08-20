@@ -251,6 +251,16 @@ namespace StringCodec.UWP.Pages
             }
         }
 
+        private async void Base64_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender == btnImageAsHtml)
+            {
+                if (imgQR.Source == null) return;
+                var image = await imgQR.ToWriteableBitmap(CURRENT_SIZE);
+                Utils.SetClipboard(await image.ToHTML(edQR.Text), true);
+            }
+        }
+
         private async void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
             var btn = sender as AppBarButton;
@@ -545,6 +555,7 @@ namespace StringCodec.UWP.Pages
             //def.Complete();
         }
         #endregion
+
 
     }
 }

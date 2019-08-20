@@ -248,7 +248,7 @@ namespace StringCodec.UWP.Pages
             if (sender == btnImageToBase64)
             {
                 if (imgBarcode.Source == null) return;
-                Frame.Navigate(typeof(ImagePage), await imgBarcode.ToWriteableBitmap());
+                Frame.Navigate(typeof(ImagePage), await imgBarcode.ToWriteableBitmap(CURRENT_SIZE));
             }
             else if (sender == btnTextToDecode)
             {
@@ -259,6 +259,12 @@ namespace StringCodec.UWP.Pages
             {
                 if (string.IsNullOrEmpty(edBarcode.Text)) return;
                 Frame.Navigate(typeof(QRCodePage), edBarcode.Text);
+            }
+            else if (sender == btnImageAsHtml)
+            {
+                if (imgBarcode.Source == null) return;
+                var image = await imgBarcode.ToWriteableBitmap(CURRENT_SIZE);
+                Utils.SetClipboard(await image.ToHTML(edBarcode.Text), true);
             }
         }
 

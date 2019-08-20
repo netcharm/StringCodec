@@ -566,7 +566,21 @@ namespace StringCodec.UWP.Common
 
             return (await element.ToWriteableBitmap(w, h));
         }
-        
+
+        public static async Task<WriteableBitmap> ToWriteableBitmap(this FrameworkElement element, int size)
+        {
+            double aspect = element.ActualWidth / element.ActualHeight;
+
+            var w = size;
+            var h = (int)Math.Ceiling(size / aspect);
+            return (await element.ToWriteableBitmap(w, h));
+        }
+
+        public static async Task<WriteableBitmap> ToWriteableBitmap(this FrameworkElement element, Size size)
+        {
+            return (await element.ToWriteableBitmap((int)(size.Width), (int)(size.Height)));
+        }
+
         public static async Task<WriteableBitmap> ToWriteableBitmap(this FrameworkElement element, int width, int height)
         {
             WriteableBitmap result = null;
@@ -1059,13 +1073,16 @@ namespace StringCodec.UWP.Common
         public static async Task<string> ToHTML(this WriteableBitmap image, string alt="", string fmt=".png")
         {
             var b64 = await image.ToBase64(fmt, true, true);
-            return ($"<img src=\"{b64.Trim()}\" alt=\"{await alt.Trim().Encoder(TextCodecs.CODEC.HTML)}\" />");
+            if(string.IsNullOrEmpty(alt))
+                return ($"<img src=\"{b64.Trim()}\" />");
+            else
+                return ($"<img src=\"{b64.Trim()}\" alt=\"{await alt.Trim().Encoder(TextCodecs.CODEC.HTML)}\" />");
         }
 
-        public static async Task<string> ToHTML(this Image image, string alt="", string fmt=".png")
+        public static async Task<string> ToHTML(this Image image, string alt = "", string fmt = ".png")
         {
-            var b64 = await (await image.ToWriteableBitmap()).ToBase64(fmt, true, true);
-            return ($"<img src=\"{b64.Trim()}\" alt=\"{await alt.Trim().Encoder(TextCodecs.CODEC.HTML)}\" />");
+            var wb = await image.ToWriteableBitmap();
+            return (await wb.ToHTML(alt, fmt));
         }
 
         public static async Task<WriteableBitmap> ToWriteableBitmap(this ImageSource Source, byte[] Bytes=null)
@@ -2032,7 +2049,15 @@ namespace StringCodec.UWP.Common
             }
         }
 
-        public static async void SetClipboard(WriteableBitmap wb)
+        public static void SetClipboard(WriteableBitmap wb)
+        {
+            if(wb is WriteableBitmap)
+            {
+                SetClipboard(wb, string.Empty);
+            }
+        }
+
+        public static async void SetClipboard(WriteableBitmap wb, string text, bool html = false)
         {
             DataPackage dataPackage = new DataPackage
             {
@@ -2100,6 +2125,20 @@ namespace StringCodec.UWP.Common
                     }
                 }
                 #endregion
+
+                #region Add Html/Text content to clipboard datapackage
+                if (!string.IsNullOrEmpty(text.Trim()))
+                {
+                    if (html)
+                    {
+                        string content = HtmlFormatHelper.CreateHtmlFormat(text.Trim());
+                        dataPackage.SetData("text/html", content);
+                        dataPackage.SetData(StandardDataFormats.Html, content);
+                    }
+                    dataPackage.SetData(StandardDataFormats.Text, text);
+                }
+                #endregion
+
                 Clipboard.Clear();
                 Clipboard.SetContent(dataPackage);
             }
@@ -2109,19 +2148,25 @@ namespace StringCodec.UWP.Common
             }
         }
 
+        public static void SetClipboard(Image image)
+        {
+            if (image is Image)
+            {
+                SetClipboard(image, (int)(image.ActualWidth), (int)(image.ActualHeight));
+            }
+        }
+
         public static void SetClipboard(Image image, int size)
         {
-            SetClipboard(image, size, size);
+            if (image is Image)
+            {
+                SetClipboard(image, size, size);
+            }
         }
 
         public static async void SetClipboard(Image image, int width, int height)
         {
             if (image.Source == null) return;
-
-            DataPackage dataPackage = new DataPackage
-            {
-                RequestedOperation = DataPackageOperation.Copy
-            };
 
             try
             {
@@ -2154,67 +2199,7 @@ namespace StringCodec.UWP.Common
                     r_height = Convert.ToInt32(height * factor);
                 }
 
-                #region Create a temporary file Copy to Clipboard
-                //StorageFile tempFile = await (image.Source as WriteableBitmap).StoreTemporaryFile(pixelBuffer, r_width, r_height);
-
-                //if (tempFile != null)
-                //{
-                //    dataPackage.SetBitmap(RandomAccessStreamReference.CreateFromFile(tempFile));
-                //    //await tempFile.DeleteAsync();
-                //}
-                #endregion
-
-                #region Create in memory image data Copy to Clipboard
-                try
-                {
-                    var cistream = await wb.ToRandomAccessStream(".png");
-                    if (cistream != null)
-                    {
-                        dataPackage.SetBitmap(RandomAccessStreamReference.CreateFromStream(cistream));
-                    }
-                }
-                catch (Exception ex)
-                {
-                    await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
-                }
-                #endregion
-
-                #region Create other MIME format data Copy to Clipboard
-                //string[] fmts = new string[] { "CF_DIB", "CF_BITMAP", "BITMAP", "DeviceIndependentBitmap", "image/png", "image/bmp", "image/jpg", "image/jpeg" };
-                string[] fmts = new string[] { "image/png", "image/bmp", "image/jpg", "image/jpeg", "PNG" };
-                foreach (var fmt in fmts)
-                {
-                    if (fmt.Equals("CF_DIBV5", StringComparison.CurrentCultureIgnoreCase))
-                    {
-                        try
-                        {
-                            byte[] arr = wb.ToBytes();
-                            byte[] dib = arr.Skip(14).ToArray();
-                            var rms = await dib.ToRandomAccessStream();
-                            dataPackage.SetData(fmt, rms);
-                        }
-                        catch (Exception ex)
-                        {
-                            await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
-                        }
-                    }
-                    else
-                    {
-                        try
-                        {
-                            byte[] arr = await wb.ToBytes(fmt);
-                            var rms = await arr.ToRandomAccessStream();
-                            dataPackage.SetData(fmt, rms);
-                        }
-                        catch (Exception ex)
-                        {
-                            await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
-                        }
-                    }
-                }
-                #endregion
-                Clipboard.Clear();
-                Clipboard.SetContent(dataPackage);
+                SetClipboard(wb);
             }
             catch (Exception ex)
             {

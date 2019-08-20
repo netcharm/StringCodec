@@ -231,7 +231,7 @@ namespace StringCodec.UWP.Pages
             {
                 var alt = string.Empty;
                 if (imgBase64.Tag is string) alt = (string)(imgBase64.Tag);
-                Utils.SetClipboard(await (await imgBase64.ToWriteableBitmap()).ToHTML(alt, ".png"));
+                Utils.SetClipboard(await (await imgBase64.ToWriteableBitmap()).ToHTML(alt, ".png"), true);
             }
         }
 

@@ -235,7 +235,7 @@ namespace StringCodec.UWP.Pages
                 //Frame.Navigate(typeof(ImagePage), await imgQR.ToWriteableBitmap());
                 var obj = new WriteableBitmapObject()
                 {
-                    Image = await imgQR.ToWriteableBitmap(),
+                    Image = await imgQR.ToWriteableBitmap(CURRENT_SIZE),
                     Title = edQR.Text
                 };
                 Frame.Navigate(typeof(ImagePage), obj);
@@ -248,8 +248,8 @@ namespace StringCodec.UWP.Pages
             else if(sender == btnImageAsHtml)
             {
                 if (imgQR.Source == null) return;
-                var image = await imgQR.ToWriteableBitmap();
-                Utils.SetClipboard(await image.ToHTML(edQR.Text));
+                var image = await imgQR.ToWriteableBitmap(CURRENT_SIZE);
+                Utils.SetClipboard(await image.ToHTML(edQR.Text), true);
             }
         }
 
