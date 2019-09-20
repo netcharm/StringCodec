@@ -1275,11 +1275,11 @@
   <data name="optSortZA.Text" xml:space="preserve">
     <value>Sort (Z-A)</value>
   </data>
-  <data name="nvItemLaTex.Content" xml:space="preserve">
-    <value>LaTex Math To Image</value>
+  <data name="nvItemLaTeX.Content" xml:space="preserve">
+    <value>LaTeX Math To Image</value>
   </data>
-  <data name="nvItemLaTex.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Converting LaTex mathematical formula to image</value>
+  <data name="nvItemLaTeX.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Converting LaTeX mathematical formula to image</value>
   </data>
   <data name="btnShareDstImage.Text" xml:space="preserve">
     <value>Share Output Image</value>

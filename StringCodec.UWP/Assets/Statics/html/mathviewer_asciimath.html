@@ -5,7 +5,14 @@
     <meta charset="utf-8" />
     <title></title>
     <style>
+        html {
+            -ms-overflow-style: none;
+        }
+        ::-webkit-scrollbar {
+            display: none;
+        }
         body {
+            overflow: hidden;
             /*background: transparent;*/
             /*background: #112233;*/
             /*color: silver;*/
@@ -129,7 +136,11 @@
         function GetMathLog() {
             return ("" + MathJax.Message.Log());
         }
-        
+
+        function DisableScrollBar() {
+            document.body.scroll = "no";
+        }
+
         function ChangeBG(color) {
             document.body.style.backgroundColor = color;
             return ("OK");
@@ -173,11 +184,12 @@
     </script>
 </head>
 
-<body>
+<body scroll="no">
     <!--This is for AsciiMath-->
+    <!-- sum_(i=1)^n i^3=((n(n+1))/2)^2 -->
     <div>
         <script type="math/asciimath; mode=display" id="equationam">
-sum_(i=1)^n i^3=((n(n+1))/2)^2
+            e^(i\pi)+1=0
         </script>
     </div>
 

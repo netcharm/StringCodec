@@ -1594,13 +1594,13 @@
           <source>Generate</source>
           <target state="translated">生成</target>
         </trans-unit>
-        <trans-unit id="nvItemLaTex.Content" translate="yes" xml:space="preserve">
-          <source>LaTex Math To Image</source>
-          <target state="translated">LaTex 数学公式转为图片</target>
+        <trans-unit id="nvItemLaTeX.Content" translate="yes" xml:space="preserve">
+          <source>LaTeX Math To Image</source>
+          <target state="translated">LaTeX 数学公式转为图片</target>
         </trans-unit>
-        <trans-unit id="nvItemLaTex.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
-          <source>Converting LaTex mathematical formula to image</source>
-          <target state="translated">转换简单LaTex数学公式为图片</target>
+        <trans-unit id="nvItemLaTeX.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Converting LaTeX mathematical formula to image</source>
+          <target state="translated">转换简单LaTeX数学公式为图片</target>
         </trans-unit>
         <trans-unit id="btnCaptureMathToClip.Label" translate="yes" xml:space="preserve">
           <source>Capture &amp; Copy Math Image</source>

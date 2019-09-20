@@ -157,17 +157,45 @@
                  ScrollViewer.HorizontalScrollBarVisibility="Auto" 
                  AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" />
 
-
-        <WebView Grid.Row="2" x:Name="MathView"
-                 DefaultBackgroundColor="Transparent"
-                 NavigationStarting="MathView_NavigationStarting" 
-                 NavigationFailed="MathView_NavigationFailed" 
-                 LongRunningScriptDetected="MathView_LongRunningScriptDetected" 
-                 ScriptNotify="MathView_ScriptNotify" 
-                 DOMContentLoaded="MathView_DOMContentLoaded" />
-
-        <ProgressRing Grid.RowSpan="3" x:Name="progress" Width="96" Height="96" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
-        <MediaElement x:Name="mediaPlayer" AutoPlay="False" Source="ms-winsoundevent:Notification.Default" Width="0" Height="0" Visibility="Collapsed"/>
+        <ScrollViewer Grid.Row="2" x:Name="ContentViewer"
+                      HorizontalScrollMode="Auto" VerticalScrollMode="Auto" 
+                      HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <WebView x:Name="MathView" 
+                     ScrollViewer.HorizontalScrollMode="Disabled" ScrollViewer.VerticalScrollMode="Disabled"
+                     DefaultBackgroundColor="Transparent"
+                     IsHoldingEnabled="True" IsRightTapEnabled="True"
+                     RightTapped="MathView_RightTapped"
+                     NavigationStarting="MathView_NavigationStarting" 
+                     NavigationFailed="MathView_NavigationFailed" 
+                     LongRunningScriptDetected="MathView_LongRunningScriptDetected" 
+                     ScriptNotify="MathView_ScriptNotify" 
+                     DOMContentLoaded="MathView_DOMContentLoaded">
+                <FlyoutBase.AttachedFlyout>
+                    <MenuFlyout x:Name="MathContextMenu">
+                        <MenuFlyoutItem x:Name="cfImageAMathToClip" x:Uid="cfImageAMathToClip" Text="Copy Math Image" Icon="Camera" VerticalAlignment="Center" Click="AppBarButton_Click" />
+                        <MenuFlyoutItem x:Name="cfImageAMathToShare" x:Uid="cfImageAMathToShare" Text="Share Math Image" Icon="Camera" VerticalAlignment="Center" Click="AppBarButton_Click" />
+                        <MenuFlyoutItem x:Name="cfImageAMathToSave" x:Uid="cfImageAMathToSave" Text="Save Math Image" Icon="Camera" VerticalAlignment="Center" Click="AppBarButton_Click" />
+                        <MenuFlyoutItem x:Name="cfImageAsHtmlToClip" x:Uid="cfImageAsHtmlToClip" Text="Copy Math Image as HTML" VerticalAlignment="Center" Click="AppBarButton_Click">
+                            <MenuFlyoutItem.Icon>
+                                <FontIcon Glyph="&#xF121;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                        <MenuFlyoutSeparator/>
+                        <MenuFlyoutItem x:Name="cfCaptureMathToClip" x:Uid="cfCaptureMathToClip" Text="Capture &amp; Copy Math Image" Icon="Camera" VerticalAlignment="Center" Click="AppBarButton_Click" />
+                        <MenuFlyoutItem x:Name="cfCaptureMathToShare" x:Uid="cfCaptureMathToShare" Text="Capture &amp; Share Math Image" Icon="Camera" VerticalAlignment="Center" Click="AppBarButton_Click" />
+                        <MenuFlyoutItem x:Name="cfCaptureMathToSave" x:Uid="cfCaptureMathToSave" Text="Capture &amp; Save Math Image" Icon="Camera" VerticalAlignment="Center" Click="AppBarButton_Click" />
+                        <MenuFlyoutItem x:Name="cfCaptureAsHtmlToClip" x:Uid="cfCaptureAsHtmlToClip" Text="Copy Math Capture as HTML" VerticalAlignment="Center" Click="AppBarButton_Click">
+                            <MenuFlyoutItem.Icon>
+                                <FontIcon Glyph="&#xF121;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                    </MenuFlyout>
+                </FlyoutBase.AttachedFlyout>
+            </WebView>
+        </ScrollViewer>
+        
+        <!--<ProgressRing Grid.RowSpan="3" x:Name="progress" Width="96" Height="96" HorizontalAlignment="Center" VerticalAlignment="Center" IsActive="False" Visibility="Collapsed"/>
+        <MediaElement x:Name="mediaPlayer" AutoPlay="False" Source="ms-winsoundevent:Notification.Default" Width="0" Height="0" Visibility="Collapsed"/>-->
     </Grid>
 
 </Page>

@@ -41,10 +41,86 @@ namespace StringCodec.UWP.Pages
         private string CURRENT_FORMULAR = string.Empty;
         private WriteableBitmap CURRENT_IMAGE = null;
 
+        private async Task<Size> GetMathSize()
+        {
+            Size result = Size.Empty;
+
+            var scale = await MathView.InvokeScriptAsync("GetPageZoomRatio", null);
+            var ratio = 1.0;
+            double.TryParse(scale, out ratio);
+            if (ratio == 0.0) ratio = 1;
+            else ratio = Math.Max(0, ratio);
+
+            var space = 2;
+            var tolerance = space * 2;
+
+            var size = await MathView.InvokeScriptAsync("GetEquationRect", null);
+            if (!string.IsNullOrEmpty(size))
+            {
+                try
+                {
+                    var sv = size.Split(',');
+                    var l = (int)Math.Floor(double.Parse(sv[0].Trim()));
+                    var t = (int)Math.Floor(double.Parse(sv[1].Trim()));
+                    var w = (int)Math.Ceiling(double.Parse(sv[2].Trim()));
+                    var h = (int)Math.Ceiling(double.Parse(sv[3].Trim()));
+                    l = Math.Max(0, l - tolerance);
+                    t = Math.Max(0, t - tolerance);
+                    w = Math.Max(w, (int)(w * ratio) + tolerance * 2);
+                    h = Math.Max(h, (int)(h * ratio) + tolerance * 2);
+                    result.Width = w;
+                    result.Height = h;
+                }
+                catch (Exception)
+                {
+
+                }
+            }
+
+            return (result);
+        }
+
+        private async void SetMathView()
+        {
+            var vs = await GetMathSize();
+            int extra = 32;
+            if (vs != Size.Empty)
+            {
+                if (MathView.ActualWidth != MathView.Width || MathView.Width != vs.Width + extra)
+                {
+                    MathView.Width = vs.Width + extra;
+                    ContentViewer.HorizontalContentAlignment = HorizontalAlignment.Center;
+                    ContentViewer.ChangeView(MathView.Width / 2.0, 0, 1, true);
+                    MathView.UpdateLayout();
+                }
+
+                if (MathView.ActualHeight != MathView.Height || MathView.Height != vs.Height + extra)
+                {
+                    MathView.Height = vs.Height + extra;
+                    MathView.UpdateLayout();
+                }
+                
+
+                if (MathView.Width > ContentViewer.ActualWidth)
+                    ContentViewer.HorizontalScrollBarVisibility = ScrollBarVisibility.Visible;
+                else
+                    ContentViewer.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
+
+                if (MathView.Height > ContentViewer.ActualHeight)
+                    ContentViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
+                else
+                    ContentViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+
+                //ContentViewer.VerticalScrollMode = ScrollMode.Auto;
+            }
+        }
+
         private async Task<WriteableBitmap> GetMathCapture()
         {
             using (Windows.Storage.Streams.InMemoryRandomAccessStream rs = new Windows.Storage.Streams.InMemoryRandomAccessStream())
             {
+                SetMathView();
+
                 //MathView.DefaultBackgroundColor = Windows.UI.Colors.Transparent;
                 if (MathView.DefaultBackgroundColor.A == 0x00)
                 {
@@ -73,11 +149,13 @@ namespace StringCodec.UWP.Pages
         {
             if (CURRENT_IMAGE == null || force)
             {
+                SetMathView();
+
                 var scale = await MathView.InvokeScriptAsync("GetPageZoomRatio", null);
                 var ratio = 1.0;
                 double.TryParse(scale, out ratio);
-                if (ratio == 0.0) ratio = 1;
-                else ratio = Math.Ceiling(ratio);
+                if (ratio <= 0.0) ratio = 1.0;
+                //else ratio = Math.Ceiling(ratio);
 
                 var wb = await MathView.ToWriteableBitmap();
                 if (wb is WriteableBitmap)
@@ -95,10 +173,10 @@ namespace StringCodec.UWP.Pages
                             var t = (int)Math.Floor(double.Parse(sv[1].Trim()));
                             var w = (int)Math.Ceiling(double.Parse(sv[2].Trim()));
                             var h = (int)Math.Ceiling(double.Parse(sv[3].Trim()));
-                            l = Math.Max(0, l - tolerance);
-                            t = Math.Max(0, t - tolerance);
-                            w = Math.Min(wb.PixelWidth, (int)(w * ratio) + tolerance * 2);
-                            h = Math.Min(wb.PixelHeight, (int)(h * ratio) + tolerance * 2);
+                            l = (int)Math.Min(l * ratio, Math.Max(0, l - tolerance));
+                            t = (int)Math.Min(t * ratio, Math.Max(0, t - tolerance));
+                            w = (int)Math.Max(w + tolerance * 2, Math.Min(wb.PixelWidth, w * Math.Ceiling(ratio) + tolerance * 2));
+                            h = (int)Math.Max(h + tolerance * 2, Math.Min(wb.PixelHeight, h * Math.Ceiling(ratio) + tolerance * 2));
                             wb = wb.Crop(l, t, w, h);
                         }
                         catch (Exception)
@@ -154,7 +232,9 @@ namespace StringCodec.UWP.Pages
             {
                 try
                 {
-                    var result = await MathView.InvokeScriptAsync("ChangeEquation", new string[] { tex });
+                    await MathView.InvokeScriptAsync("ChangeEquation", new string[] { tex });
+                    SetMathView();
+
                     CURRENT_FORMULAR = tex;
                 }
                 catch (Exception) { }
@@ -254,6 +334,20 @@ namespace StringCodec.UWP.Pages
         }
 
         #region WebView events routine
+        private void MathView_RightTapped(object sender, RightTappedRoutedEventArgs e)
+        {
+            var state = Windows.UI.Core.CoreWindow.GetForCurrentThread().GetKeyState(Windows.System.VirtualKey.Shift);
+            if (state == Windows.UI.Core.CoreVirtualKeyStates.Down)
+            {
+                e.Handled = false;
+            }
+            else
+            {
+                MathContextMenu.ShowAt(MathView, e.GetPosition(sender as UIElement));
+                e.Handled = true;
+            }
+        }
+
         private void MathView_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
         {
 
@@ -267,7 +361,9 @@ namespace StringCodec.UWP.Pages
         private void MathView_DOMContentLoaded(WebView sender, WebViewDOMContentLoadedEventArgs args)
         {
             edSrc.IsEnabled = true;
-            if(!string.IsNullOrEmpty(edSrc.Text.Trim()))
+            MathView.Width = MathView.ActualWidth;
+            MathView.Height = MathView.ActualHeight;
+            if (!string.IsNullOrEmpty(edSrc.Text.Trim()))
                 GeneratingMath();
         }
 
@@ -501,7 +597,6 @@ namespace StringCodec.UWP.Pages
         }
 
         #endregion
-
 
     }
 

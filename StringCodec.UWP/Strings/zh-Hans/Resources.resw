@@ -1203,11 +1203,11 @@
   <data name="btnGenerateMath.Label" xml:space="preserve">
     <value>生成</value>
   </data>
-  <data name="nvItemLaTex.Content" xml:space="preserve">
-    <value>LaTex 数学公式转为图片</value>
+  <data name="nvItemLaTeX.Content" xml:space="preserve">
+    <value>LaTeX 数学公式转为图片</value>
   </data>
-  <data name="nvItemLaTex.ToolTipService.ToolTip" xml:space="preserve">
-    <value>转换简单LaTex数学公式为图片</value>
+  <data name="nvItemLaTeX.ToolTipService.ToolTip" xml:space="preserve">
+    <value>转换简单LaTeX数学公式为图片</value>
   </data>
   <data name="btnCaptureMathToClip.Label" xml:space="preserve">
     <value>捕获数学公式图像到剪贴板</value>

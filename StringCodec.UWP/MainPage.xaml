@@ -11,9 +11,6 @@
     Loaded="Page_Loaded"    
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Page.Resources>
-    </Page.Resources>
-
     <NavigationView x:Name="nvMain" x:Uid="NvMain"
                     Loaded="NvMain_Loaded" 
                     SelectionChanged="NvMain_SelectionChanged" 
@@ -57,20 +54,21 @@
                     <FontIcon Glyph="&#xE701;" FontFamily="Segoe MDL2 Assets"/>
                 </NavigationViewItem.Icon>
             </NavigationViewItem>
-            <NavigationViewItem x:Name="nvItemLaTex" x:Uid="nvItemLaTex" Content="LaTex Math To Image" Tag="PageLaTex" ToolTipService.ToolTip="Converting LaTex mathematical formula to image" Tapped="NvMain_Click">
+            <NavigationViewItemSeparator/>
+            <NavigationViewItem x:Name="nvItemSvg" x:Uid="nvItemSvg" Content="SVG To Image" Tag="PageSvg" ToolTipService.ToolTip="Converting SVG to Image" Tapped="NvMain_Click">
+                <NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xF1C9;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
+            <NavigationViewItem x:Name="nvItemLaTeX" x:Uid="nvItemLaTeX" Content="LaTeX Math To Image" Tag="PageLaTeX" ToolTipService.ToolTip="Converting LaTeX mathematical formula to image" Tapped="NvMain_Click">
                 <NavigationViewItem.Icon>
                     <FontIcon Glyph="&#xE943;" FontFamily="Segoe MDL2 Assets"/>
                 </NavigationViewItem.Icon>
-            </NavigationViewItem>            
+            </NavigationViewItem>
             <NavigationViewItemSeparator/>
             <NavigationViewItem x:Name="nvItemCharset" x:Uid="nvItemCharset" Content="Folder&amp;File Charset" Tag="PageCharset" ToolTipService.ToolTip="Converting folder/file names with specified character sets" Tapped="NvMain_Click">
                 <NavigationViewItem.Icon>
                     <FontIcon Glyph="&#xEC50;" FontFamily="Segoe MDL2 Assets"/>
-                </NavigationViewItem.Icon>
-            </NavigationViewItem>
-            <NavigationViewItem x:Name="nvItemSvg" x:Uid="nvItemSvg" Content="SVG To Image" Tag="PageSvg" ToolTipService.ToolTip="Converting SVG to Image" Tapped="NvMain_Click">
-                <NavigationViewItem.Icon>
-                    <FontIcon Glyph="&#xF1C9;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>
                 </NavigationViewItem.Icon>
             </NavigationViewItem>
         </NavigationView.MenuItems>

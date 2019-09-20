@@ -1203,11 +1203,11 @@
   <data name="btnGenerateMath.Label" xml:space="preserve">
     <value>生成する</value>
   </data>
-  <data name="nvItemLaTex.Content" xml:space="preserve">
-    <value>LaTexの数式を画像に変換する</value>
+  <data name="nvItemLaTeX.Content" xml:space="preserve">
+    <value>LaTeXの数式を画像に変換する</value>
   </data>
-  <data name="nvItemLaTex.ToolTipService.ToolTip" xml:space="preserve">
-    <value>単純なLaTex数学の式を画像に変換する</value>
+  <data name="nvItemLaTeX.ToolTipService.ToolTip" xml:space="preserve">
+    <value>単純なLaTeX数学の式を画像に変換する</value>
   </data>
   <data name="btnCaptureMathToClip.Label" xml:space="preserve">
     <value>キャプチャして数学画像をコピー</value>

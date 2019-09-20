@@ -5,7 +5,14 @@
     <meta charset="utf-8" />
     <title></title>
     <style>
+        html {
+            -ms-overflow-style: none;
+        }
+        ::-webkit-scrollbar {
+            display: none;
+        }
         body {
+            overflow: hidden;
             /*background: transparent;*/
             /*background: #112233;*/
             /*color: silver;*/
@@ -131,6 +138,10 @@
             return ("" + MathJax.Message.Log());
         }
 
+        function DisableScrollBar() {
+            document.body.scroll = "no";
+        }
+
         function ChangeBG(color) {
             document.body.style.backgroundColor = color;
             return ("OK");
@@ -174,23 +185,25 @@
     </script>
 </head>
 
-<body>
+<body scroll="no">
     <!--This is for LaTeX/TeX-->
+    <!--
+    \LaTeX \quad \TeX \\
+    \frac{\partial\psi}{\partial t}=\kappa\mathrm{\nabla}^2\psi \\
+
+    \begin{align}
+    a_{11} & = b_{11}& a_{12}& =b_{12} \notag \\
+    a_{21} & = b_{21}& a_{22}& =b_{22}+c_{22} \tag{y}\\
+    \notag \\
+    \notag \\
+    x & = r (cos(t) + t sin(t)) \tag{1} \\
+    y & = r (sin(t) - t cos(t)) \tag{2} \\
+    z & = 3x \label{eq:0}
+    \end{align}
+    -->
     <div>
         <script type="math/tex; mode=display" id="equationtex">
-\LaTeX \quad \TeX \\
-\frac{\partial\psi}{\partial t}=\kappa\mathrm{\nabla}^2\psi \\
-
-\begin{align}
-a_{11} & = b_{11}& a_{12}& =b_{12} \notag \\
-a_{21} & = b_{21}& a_{22}& =b_{22}+c_{22} \tag{y}\\
-\notag \\
-\notag \\
-x & = r (cos(t) + t sin(t)) \tag{1} \\
-y & = r (sin(t) - t cos(t)) \tag{2} \\
-z & = 3x \label{eq:0}
-\end{align}
-
+            e^{i\pi}+1=0
         </script>
     </div>
 

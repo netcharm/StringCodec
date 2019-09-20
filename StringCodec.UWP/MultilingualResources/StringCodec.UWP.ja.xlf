@@ -1594,13 +1594,13 @@
           <source>Generate</source>
           <target state="translated">生成する</target>
         </trans-unit>
-        <trans-unit id="nvItemLaTex.Content" translate="yes" xml:space="preserve">
-          <source>LaTex Math To Image</source>
-          <target state="translated">LaTexの数式を画像に変換する</target>
+        <trans-unit id="nvItemLaTeX.Content" translate="yes" xml:space="preserve">
+          <source>LaTeX Math To Image</source>
+          <target state="translated">LaTeXの数式を画像に変換する</target>
         </trans-unit>
-        <trans-unit id="nvItemLaTex.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
-          <source>Converting LaTex mathematical formula to image</source>
-          <target state="translated">単純なLaTex数学の式を画像に変換する</target>
+        <trans-unit id="nvItemLaTeX.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Converting LaTeX mathematical formula to image</source>
+          <target state="translated">単純なLaTeX数学の式を画像に変換する</target>
         </trans-unit>
         <trans-unit id="btnCaptureMathToClip.Label" translate="yes" xml:space="preserve">
           <source>Capture &amp; Copy Math Image</source>
