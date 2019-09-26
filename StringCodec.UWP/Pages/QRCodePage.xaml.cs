@@ -275,7 +275,13 @@ namespace StringCodec.UWP.Pages
                     //await sc.StartCaptureAsync();
                     break;
                 case "btnSave":
-                    await Utils.ShowSaveDialog(imgQR, CURRENT_SIZE, "QR");
+                    if (CURRENT_SIZE == 0)
+                    {
+                        int size = (int)((imgQR.Parent as Viewbox).ActualWidth);
+                        await Utils.ShowSaveDialog(imgQR, size, "QR");
+                    }
+                    else
+                        await Utils.ShowSaveDialog(imgQR, CURRENT_SIZE, "QR");
                     break;
                 case "btnShare":
                     await Utils.Share(await imgQR.ToWriteableBitmap(), "QR");

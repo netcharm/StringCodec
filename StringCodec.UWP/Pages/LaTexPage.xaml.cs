@@ -41,6 +41,28 @@ namespace StringCodec.UWP.Pages
         private string CURRENT_FORMULAR = string.Empty;
         private WriteableBitmap CURRENT_IMAGE = null;
 
+        private void LoadMathInputFormat(MATH_INPUT_FORMAT fmt)
+        {
+            switch (fmt)
+            {
+                case MATH_INPUT_FORMAT.TeX:
+                    MathView.Source = new Uri("ms-appx-web:///Assets/Statics/html/mathviewer_tex.html");
+                    optInputTeX.IsChecked = true;
+                    optInputAM.IsChecked = false;
+                    break;
+                case MATH_INPUT_FORMAT.AsciiMath:
+                    MathView.Source = new Uri("ms-appx-web:///Assets/Statics/html/mathviewer_asciimath.html");
+                    optInputTeX.IsChecked = false;
+                    optInputAM.IsChecked = true;
+                    break;
+                default:
+                    MathView.Source = new Uri("ms-appx-web:///Assets/Statics/html/mathviewer_tex.html");
+                    optInputTeX.IsChecked = true;
+                    optInputAM.IsChecked = false;
+                    break;
+            }
+        }
+
         private async Task<Size> GetMathSize()
         {
             Size result = Size.Empty;
@@ -80,37 +102,51 @@ namespace StringCodec.UWP.Pages
             return (result);
         }
 
+        private void ResetMathView()
+        {
+            MathView.Width = 2048 + 32;
+            MathView.Height = 2048;
+            //ContentViewer.UpdateLayout();
+        }
+
         private async void SetMathView()
         {
+            //ContentViewer.UpdateLayout();
             var vs = await GetMathSize();
             int extra = 32;
+            Size view = ContentViewer.RenderSize;
             if (vs != Size.Empty)
             {
-                if (MathView.ActualWidth != MathView.Width || MathView.Width != vs.Width + extra)
+                if (MathView.ActualWidth != vs.Width + extra || vs.Width > view.Width - extra)
                 {
                     MathView.Width = vs.Width + extra;
                     ContentViewer.HorizontalContentAlignment = HorizontalAlignment.Center;
-                    ContentViewer.ChangeView(MathView.Width / 2.0, 0, 1, true);
-                    MathView.UpdateLayout();
                 }
-
-                if (MathView.ActualHeight != MathView.Height || MathView.Height != vs.Height + extra)
+                else
+                {
+                    MathView.Width = view.Width - extra;
+                }
+                if (MathView.ActualHeight != vs.Height + extra || vs.Height > view.Height - extra)
                 {
                     MathView.Height = vs.Height + extra;
-                    MathView.UpdateLayout();
                 }
-                
+                else
+                {
+                    MathView.Height = view.Height - extra;
+                }
 
-                if (MathView.Width > ContentViewer.ActualWidth)
+                if (MathView.ActualWidth > ContentViewer.ActualWidth)
                     ContentViewer.HorizontalScrollBarVisibility = ScrollBarVisibility.Visible;
                 else
                     ContentViewer.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
 
-                if (MathView.Height > ContentViewer.ActualHeight)
+                if (MathView.ActualHeight > ContentViewer.ActualHeight)
                     ContentViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
                 else
                     ContentViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
 
+                //ContentViewer.UpdateLayout();
+                ContentViewer.ChangeView((MathView.ActualWidth - ContentViewer.ActualWidth) / 2.0, 0, 1, true);
                 //ContentViewer.VerticalScrollMode = ScrollMode.Auto;
             }
         }
@@ -119,9 +155,6 @@ namespace StringCodec.UWP.Pages
         {
             using (Windows.Storage.Streams.InMemoryRandomAccessStream rs = new Windows.Storage.Streams.InMemoryRandomAccessStream())
             {
-                SetMathView();
-
-                //MathView.DefaultBackgroundColor = Windows.UI.Colors.Transparent;
                 if (MathView.DefaultBackgroundColor.A == 0x00)
                 {
                     await MathView.InvokeScriptAsync("ChangeColor", new string[] { CURRENT_FGCOLOR.ToCssRGBA(), Colors.White.ToCssRGBA() });
@@ -149,8 +182,6 @@ namespace StringCodec.UWP.Pages
         {
             if (CURRENT_IMAGE == null || force)
             {
-                SetMathView();
-
                 var scale = await MathView.InvokeScriptAsync("GetPageZoomRatio", null);
                 var ratio = 1.0;
                 double.TryParse(scale, out ratio);
@@ -191,30 +222,10 @@ namespace StringCodec.UWP.Pages
             return (CURRENT_IMAGE);
         }
 
-        private void LoadMathInputFormat(MATH_INPUT_FORMAT fmt)
+        private async Task<bool> GeneratingMath()
         {
-            switch (fmt)
-            {
-                case MATH_INPUT_FORMAT.TeX:
-                    MathView.Source = new Uri("ms-appx-web:///Assets/Statics/html/mathviewer_tex.html");
-                    optInputTeX.IsChecked = true;
-                    optInputAM.IsChecked = false;
-                    break;
-                case MATH_INPUT_FORMAT.AsciiMath:
-                    MathView.Source = new Uri("ms-appx-web:///Assets/Statics/html/mathviewer_asciimath.html");
-                    optInputTeX.IsChecked = false;
-                    optInputAM.IsChecked = true;
-                    break;
-                default:
-                    MathView.Source = new Uri("ms-appx-web:///Assets/Statics/html/mathviewer_tex.html");
-                    optInputTeX.IsChecked = true;
-                    optInputAM.IsChecked = false;
-                    break;
-            }
-        }
+            bool result = false;
 
-        private async void GeneratingMath()
-        {
             var lines = edSrc.Text.Trim().Split(new char[]{ '\n', '\r' });
             StringBuilder sb = new StringBuilder();
             foreach(var l in lines)
@@ -232,13 +243,16 @@ namespace StringCodec.UWP.Pages
             {
                 try
                 {
-                    await MathView.InvokeScriptAsync("ChangeEquation", new string[] { tex });
+                    ResetMathView();
+                    var ret = await MathView.InvokeScriptAsync("ChangeEquation", new string[] { tex });
+                    if(ret.Equals("OK", StringComparison.CurrentCultureIgnoreCase)) { result = true; }
                     SetMathView();
 
                     CURRENT_FORMULAR = tex;
                 }
                 catch (Exception) { }
             }
+            return (result);
         }
 
         public LaTeXPage()
@@ -358,13 +372,15 @@ namespace StringCodec.UWP.Pages
             e.WebErrorStatus.ToString().ShowMessage("ERROR".T());
         }
 
-        private void MathView_DOMContentLoaded(WebView sender, WebViewDOMContentLoadedEventArgs args)
+        private async void MathView_DOMContentLoaded(WebView sender, WebViewDOMContentLoadedEventArgs args)
         {
             edSrc.IsEnabled = true;
             MathView.Width = MathView.ActualWidth;
             MathView.Height = MathView.ActualHeight;
             if (!string.IsNullOrEmpty(edSrc.Text.Trim()))
-                GeneratingMath();
+            {
+                await GeneratingMath();
+            }
         }
 
         private void MathView_LongRunningScriptDetected(WebView sender, WebViewLongRunningScriptDetectedEventArgs args)
@@ -534,7 +550,7 @@ namespace StringCodec.UWP.Pages
                 switch (btn.Name)
                 {
                     case "btnGenerateMath":
-                        GeneratingMath();
+                        await GeneratingMath();
                         break;
                     case "btnCopy":
                         Utils.SetClipboard(await GetMathImage(true));

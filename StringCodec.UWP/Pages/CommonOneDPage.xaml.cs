@@ -66,11 +66,11 @@ namespace StringCodec.UWP.Pages
 #if DEBUG
             try
             {
-                if (GraphicsCaptureSession.IsSupported())
-                {
-                    btnCapture.Visibility = Visibility.Visible;
-                    btnCapture.IsEnabled = true;
-                }
+                //if (GraphicsCaptureSession.IsSupported())
+                //{
+                //    btnCapture.Visibility = Visibility.Visible;
+                //    btnCapture.IsEnabled = true;
+                //}
             }
             catch(Exception ex)
             {
@@ -286,7 +286,13 @@ namespace StringCodec.UWP.Pages
                     edBarcode.Text = await Utils.GetClipboard(edBarcode.Text, imgBarcode);
                     break;
                 case "btnSave":
-                    await Utils.ShowSaveDialog(imgBarcode, CURRENT_SIZE, "BarCode");
+                    if (CURRENT_SIZE == 0)
+                    {
+                        int size = (int)((imgBarcode.Parent as Viewbox).ActualWidth);
+                        await Utils.ShowSaveDialog(imgBarcode, size, "BarCode");
+                    }
+                    else
+                        await Utils.ShowSaveDialog(imgBarcode, CURRENT_SIZE, "BarCode");
                     break;
                 case "btnShare":
                     await Utils.Share(await imgBarcode.ToWriteableBitmap(), "BarCode");
