@@ -90,6 +90,7 @@
                     </AppBarButton.Icon>
                 </AppBarButton>
                 <AppBarSeparator/>
+                <AppBarButton x:Name="btnImageLoad" x:Uid="btnImageLoad" Label="Load Image File" Icon="OpenLocal" Click="ImageAction_Click" FontFamily="FontAwesome"/>
                 <AppBarButton x:Name="btnImageAsHtml" x:Uid="btnImageAsHtml" Label="Copy Image as HTML" Click="ImageAction_Click">
                     <AppBarButton.Icon>
                         <FontIcon Glyph="&#xF121;" FontFamily="/Assets/Fonts/FontAwesome.otf#FontAwesome"/>

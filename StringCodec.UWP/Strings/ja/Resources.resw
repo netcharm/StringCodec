@@ -1230,4 +1230,7 @@
   <data name="btnImageAsHtml.Label" xml:space="preserve">
     <value>画像をHTMLとしてコピー</value>
   </data>
+  <data name="btnImageLoad.Label" xml:space="preserve">
+    <value>画像ファイル読み込み</value>
+  </data>
 </root>

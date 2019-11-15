@@ -1630,6 +1630,10 @@
           <source>Copy Image as HTML</source>
           <target state="translated">画像をHTMLとしてコピー</target>
         </trans-unit>
+        <trans-unit id="btnImageLoad.Label" translate="yes" xml:space="preserve">
+          <source>Load Image File</source>
+          <target state="translated">画像ファイル読み込み</target>
+        </trans-unit>
       </group>
     </body>
   </file>

@@ -106,12 +106,10 @@ namespace StringCodec.UWP.Pages
         {
             MathView.Width = 2048 + 32;
             MathView.Height = 2048;
-            //ContentViewer.UpdateLayout();
         }
 
         private async void SetMathView()
         {
-            //ContentViewer.UpdateLayout();
             var vs = await GetMathSize();
             int extra = 32;
             Size view = ContentViewer.RenderSize;

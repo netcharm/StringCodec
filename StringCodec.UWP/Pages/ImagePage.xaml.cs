@@ -210,15 +210,13 @@ namespace StringCodec.UWP.Pages
 
         private async void ImageAction_Click(object sender, RoutedEventArgs e)
         {
-            if (imgBase64.Source == null) return;
+            if (imgBase64.Source == null && sender != btnImageLoad) return;
             if (sender == btnImageQRCode)
             {
-                //Frame.Navigate(typeof(QRCodePage), imgBase64.Source as WriteableBitmap);
                 Frame.Navigate(typeof(QRCodePage), await imgBase64.ToWriteableBitmap());
             }
             else if (sender == btnImageOneD)
             {
-                //Frame.Navigate(typeof(CommonOneDPage), imgBase64.Source as WriteableBitmap);
                 Frame.Navigate(typeof(CommonOneDPage), await imgBase64.ToWriteableBitmap());
             }
             else if (sender == btnImageSvg)
@@ -226,6 +224,17 @@ namespace StringCodec.UWP.Pages
                 if (!(imgBase64.Source is SvgImageSource) || !(imgBase64.Tag is byte[])) return;
                 var svg = imgBase64.ToSVG();
                 Frame.Navigate(typeof(SvgPage), svg);
+            }
+            else if (sender == btnImageLoad)
+            {
+                var imgs = await Utils.OpenFiles(Utils.image_ext);
+                foreach (var img in imgs)
+                {
+                    var wb = await img.ToWriteableBitmap();
+                    imgBase64.Source = wb;
+                    lblInfo.Text = $"{"Count".T()}: {edBase64.Text.Length}, {"Size".T()}: {wb.PixelWidth}x{wb.PixelHeight}";
+                    break;
+                }
             }
             else if (sender == btnImageAsHtml)
             {

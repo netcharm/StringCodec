@@ -1332,7 +1332,10 @@
   <data name="btnImageAsHtml.Label" xml:space="preserve">
     <value>Copy Image as HTML</value>
   </data>
-    <data name="btnCaptureToBase64.Label" xml:space="preserve">
+  <data name="btnCaptureToBase64.Label" xml:space="preserve">
     <value>Capture to BASE64</value>
+  </data>
+  <data name="btnImageLoad.Label" xml:space="preserve">
+    <value>Load Image File</value>
   </data>
 </root>

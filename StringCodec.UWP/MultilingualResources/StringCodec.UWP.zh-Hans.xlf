@@ -1630,6 +1630,10 @@
           <source>Copy Image as HTML</source>
           <target state="translated">图像作为HTML复制到剪贴板</target>
         </trans-unit>
+        <trans-unit id="btnImageLoad.Label" translate="yes" xml:space="preserve">
+          <source>Load Image File</source>
+          <target state="translated">载入图像文件</target>
+        </trans-unit>
       </group>
     </body>
   </file>

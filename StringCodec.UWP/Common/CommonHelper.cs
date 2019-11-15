@@ -2689,65 +2689,6 @@ namespace StringCodec.UWP.Common
                     #region Save Image control display with specified size
                     var wb = await image.ToWriteableBitmap();
                     wb.SaveAsync(TargetFile, width, height);
-
-                    ////把控件变成图像
-                    //RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap();
-                    ////传入参数Image控件
-                    //var wb = await image.ToWriteableBitmap();
-                    //var bw = wb.PixelWidth;
-                    //var bh = wb.PixelHeight;
-                    //double factor = (double)bh / (double)bw;
-                    //await renderTargetBitmap.RenderAsync(image, width, (int)(width * factor));
-                    //var pixelBuffer = await renderTargetBitmap.GetPixelsAsync();
-                    ////
-                    //using (var fileStream = await TargetFile.OpenAsync(FileAccessMode.ReadWrite))
-                    //{
-                    //    var r_width = renderTargetBitmap.PixelWidth;
-                    //    var r_height = renderTargetBitmap.PixelHeight;
-                    //    var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
-                    //    if (width > 0 && height > 0)
-                    //    {
-                    //        r_width = width;
-                    //        r_height = (int)(width * factor);
-                    //    }
-                    //    var encId = BitmapEncoder.PngEncoderId;
-                    //    var fext = Path.GetExtension(TargetFile.Name).ToLower();
-                    //    switch (fext)
-                    //    {
-                    //        case ".bmp":
-                    //            encId = BitmapEncoder.BmpEncoderId;
-                    //            break;
-                    //        case ".gif":
-                    //            encId = BitmapEncoder.GifEncoderId;
-                    //            break;
-                    //        case ".png":
-                    //            encId = BitmapEncoder.PngEncoderId;
-                    //            break;
-                    //        case ".jpg":
-                    //            encId = BitmapEncoder.JpegEncoderId;
-                    //            break;
-                    //        case ".jpeg":
-                    //            encId = BitmapEncoder.JpegEncoderId;
-                    //            break;
-                    //        case ".tif":
-                    //            encId = BitmapEncoder.TiffEncoderId;
-                    //            break;
-                    //        case ".tiff":
-                    //            encId = BitmapEncoder.TiffEncoderId;
-                    //            break;
-                    //        default:
-                    //            encId = BitmapEncoder.PngEncoderId;
-                    //            break;
-                    //    }
-                    //    var encoder = await BitmapEncoder.CreateAsync(encId, fileStream);
-                    //    encoder.SetPixelData(
-                    //        BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,
-                    //        (uint)r_width, (uint)r_height, dpi, dpi,
-                    //        pixelBuffer.ToArray()
-                    //    );
-                    //    //刷新图像
-                    //    await encoder.FlushAsync();
-                    //}
                     result = TargetFile.Name;
                     #endregion
                 }
@@ -2788,49 +2729,6 @@ namespace StringCodec.UWP.Common
                 {
                     #region Save WriteableBitmap
                     image.SaveAsync(TargetFile);
-
-                    //using (var fileStream = await TargetFile.OpenAsync(FileAccessMode.ReadWrite))
-                    //{
-                    //    var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
-                    ////
-                    //    var encId = BitmapEncoder.PngEncoderId;
-                    //    var fext = Path.GetExtension(TargetFile.Name).ToLower();
-                    //    switch (fext)
-                    //    {
-                    //        case ".bmp":
-                    //            encId = BitmapEncoder.BmpEncoderId;
-                    //            break;
-                    //        case ".gif":
-                    //            encId = BitmapEncoder.GifEncoderId;
-                    //            break;
-                    //        case ".png":
-                    //            encId = BitmapEncoder.PngEncoderId;
-                    //            break;
-                    //        case ".jpg":
-                    //            encId = BitmapEncoder.JpegEncoderId;
-                    //            break;
-                    //        case ".jpeg":
-                    //            encId = BitmapEncoder.JpegEncoderId;
-                    //            break;
-                    //        case ".tif":
-                    //            encId = BitmapEncoder.TiffEncoderId;
-                    //            break;
-                    //        case ".tiff":
-                    //            encId = BitmapEncoder.TiffEncoderId;
-                    //            break;
-                    //        default:
-                    //            encId = BitmapEncoder.PngEncoderId;
-                    //            break;
-                    //    }
-                    //    var encoder = await BitmapEncoder.CreateAsync(encId, fileStream);
-                    //    encoder.SetPixelData(
-                    //        BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,
-                    //        (uint)image.PixelWidth, (uint)image.PixelHeight, dpi, dpi,
-                    //        image.PixelBuffer.ToArray()
-                    //    );
-                    //    //刷新图像
-                    //    await encoder.FlushAsync();
-                    //}
                     result = TargetFile.Name;
                     #endregion
                 }

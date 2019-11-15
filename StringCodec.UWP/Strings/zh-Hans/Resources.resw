@@ -1230,4 +1230,7 @@
   <data name="btnImageAsHtml.Label" xml:space="preserve">
     <value>图像作为HTML复制到剪贴板</value>
   </data>
+  <data name="btnImageLoad.Label" xml:space="preserve">
+    <value>载入图像文件</value>
+  </data>
 </root>
