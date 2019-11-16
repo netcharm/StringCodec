@@ -31,6 +31,8 @@ namespace StringCodec.UWP.Common
             }
         }
 
+        public bool Canceled { get; set; } = false;
+
         private IProgress<int> progress;
 
         public ProgressDialog()
@@ -39,6 +41,7 @@ namespace StringCodec.UWP.Common
             if (ApplicationData.Current.LocalSettings.Values.ContainsKey("AppTheme"))
                 this.RequestedTheme = (ElementTheme)ApplicationData.Current.LocalSettings.Values["AppTheme"];
 
+            Canceled = false;
             progress = new Progress<int>(percent => {
                 Bar.Value = percent;
                 Percent.Text = $"{percent}%";
@@ -61,6 +64,7 @@ namespace StringCodec.UWP.Common
 
         private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
+            Canceled = true;
         }
     }
 }

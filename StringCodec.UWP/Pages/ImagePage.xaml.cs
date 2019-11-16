@@ -252,7 +252,7 @@ namespace StringCodec.UWP.Pages
                 case "btnEncode":
                     string b64 = string.Empty;
                     edBase64.TextWrapping = TextWrapping.NoWrap;
-                    if(imgBase64.Source is SvgImageSource && CURRENT_FORMAT.Equals(".svg"))
+                    if(imgBase64.Source is SvgImageSource && CURRENT_FORMAT.Equals(".svg", StringComparison.CurrentCultureIgnoreCase))
                     {
                         try
                         {
@@ -280,10 +280,28 @@ namespace StringCodec.UWP.Pages
                         var wb = await imgBase64.ToWriteableBitmap();
                         b64 = await wb.ToBase64(CURRENT_FORMAT, CURRENT_PREFIX, CURRENT_LINEBREAK);
                     }
-                    edBase64.Text = b64;
-                    if (CURRENT_LINEBREAK) edBase64.TextWrapping = TextWrapping.NoWrap;
-                    else edBase64.TextWrapping = TextWrapping.Wrap;
+                    if (!string.IsNullOrEmpty(b64))
+                    {
+                        if (CURRENT_LINEBREAK) edBase64.TextWrapping = TextWrapping.NoWrap;
+                        else edBase64.TextWrapping = TextWrapping.Wrap;
 
+                        int count = 4000;
+                        if (b64.Length <= count)
+                        {
+                            edBase64.Text = b64;
+                        }
+                        else
+                        {
+                            edBase64.IsEnabled = false;
+                            edBase64.Text = b64.Substring(0, count);
+                            await edBase64.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                            {
+                                edBase64.Text += b64.Substring(count);
+                                edBase64.IsEnabled = true;
+                            });
+                        }
+                    }
+                    else { edBase64.Text = string.Empty; }
                     //
                     // Maybe TextBox bug: If lines > 3500, the text maybe displayed as white but infact
                     // the content is right, you can select & copy. it's ok, but only display white

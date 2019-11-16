@@ -1233,4 +1233,16 @@
   <data name="btnImageLoad.Label" xml:space="preserve">
     <value>載入圖像檔案</value>
   </data>
+  <data name="ProgressDialog.Title" xml:space="preserve">
+    <value>處理進度...</value>
+  </data>
+  <data name="ProgressDialog.SecondaryButtonText" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>确认</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
 </root>

@@ -1233,4 +1233,16 @@
   <data name="btnImageLoad.Label" xml:space="preserve">
     <value>画像ファイル読み込み</value>
   </data>
+  <data name="ProgressDialog.Title" xml:space="preserve">
+    <value>進行する...</value>
+  </data>
+  <data name="ProgressDialog.SecondaryButtonText" xml:space="preserve">
+    <value>取り消し</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>確認</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>取り消し</value>
+  </data>
 </root>

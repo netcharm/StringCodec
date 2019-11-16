@@ -1634,6 +1634,22 @@
           <source>Load Image File</source>
           <target state="translated">画像ファイル読み込み</target>
         </trans-unit>
+        <trans-unit id="ProgressDialog.Title" translate="yes" xml:space="preserve">
+          <source>Progress...</source>
+          <target state="translated">進行する...</target>
+        </trans-unit>
+        <trans-unit id="ProgressDialog.SecondaryButtonText" translate="yes" xml:space="preserve">
+          <source>Cancel</source>
+          <target state="translated">取り消し</target>
+        </trans-unit>
+        <trans-unit id="OK" translate="yes" xml:space="preserve">
+          <source>OK</source>
+          <target state="translated">確認</target>
+        </trans-unit>
+        <trans-unit id="Cancel" translate="yes" xml:space="preserve">
+          <source>Cancel</source>
+          <target state="translated">取り消し</target>
+        </trans-unit>
       </group>
     </body>
   </file>

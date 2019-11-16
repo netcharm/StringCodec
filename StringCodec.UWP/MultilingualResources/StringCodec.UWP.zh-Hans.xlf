@@ -1634,6 +1634,22 @@
           <source>Load Image File</source>
           <target state="translated">载入图像文件</target>
         </trans-unit>
+        <trans-unit id="ProgressDialog.Title" translate="yes" xml:space="preserve">
+          <source>Progress...</source>
+          <target state="translated">处理进度...</target>
+        </trans-unit>
+        <trans-unit id="ProgressDialog.SecondaryButtonText" translate="yes" xml:space="preserve">
+          <source>Cancel</source>
+          <target state="translated">取消</target>
+        </trans-unit>
+        <trans-unit id="OK" translate="yes" xml:space="preserve">
+          <source>OK</source>
+          <target state="translated">确认</target>
+        </trans-unit>
+        <trans-unit id="Cancel" translate="yes" xml:space="preserve">
+          <source>Cancel</source>
+          <target state="translated">取消</target>
+        </trans-unit>
       </group>
     </body>
   </file>

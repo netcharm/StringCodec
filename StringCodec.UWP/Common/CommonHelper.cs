@@ -1756,12 +1756,14 @@ namespace StringCodec.UWP.Common
     public static class Utils
     {
         //public static string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif", ".svg", ".xaml" };
-        public static string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif", ".svg", ".spa", ".sph" };
+        public static string[] image_ext = new string[] { ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".gif", ".svg", ".spa", ".sph", ".ico" };
         public static string[] image_exts = new string[] { ".pcx", ".tga", ".ras", ".sun", ".ppm", ".pgm", ".pbm", ".pnm", ".sgi" };
         public static string[] text_ext = new string[] {
-            ".txt", ".text", ".base64", ".md", ".me", ".htm", ".html", ".xhtml", ".css", ".rst", ".xml", ".csv",
-            ".cs", ".xaml", ".js", ".ts", ".json", ".cpp", ".hpp", ".c", ".cc", ".h", ".vb", ".vbs", ".py", ".pyw",".pas", ".r",
-            ".url"
+            ".txt", ".text", ".base64", ".md", ".me", ".htm", ".html", ".xhtml", ".css", ".rst", ".xml", ".csv", ".ini", ".cfg",
+            ".cs", ".xaml", ".js", ".ts", ".json", ".cpp", ".hpp", ".c", ".cc", ".h", ".vb", ".vbs", ".py", ".pyw", ".pas", ".r",
+            ".hx", ".kt", ".go", ".java",
+            ".url",
+            ".ass", ".ssa", ".srt", ".lrc"
         };
         public static string[] url_ext = new string[] { ".url" };
 

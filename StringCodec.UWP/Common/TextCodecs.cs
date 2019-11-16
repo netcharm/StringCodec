@@ -1739,7 +1739,7 @@ namespace StringCodec.UWP.Common
                     // Save the image file with jpg extension 
                     encoder.SetPixelData(
                         BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,//.Ignore,
-                        //(uint)bmp.PixelWidth, (uint)bmp.PixelHeight, 
+                                                                          //(uint)bmp.PixelWidth, (uint)bmp.PixelHeight, 
                         (uint)image.PixelWidth, (uint)image.PixelHeight,
                         96.0, 96.0,
                         pixels);
@@ -1776,15 +1776,22 @@ namespace StringCodec.UWP.Common
 
                             if (dlgProgress != null)
                                 dlgProgress.Report(tempCount * 100 / totalCount);
+
+                            if (dlgProgress.Canceled)
+                            {
+                                tempCount = -1;
+                                break;
+                            }
                         }
+                        if (tempCount < 0) return (-1);
                         if (LineBreak) base64 = string.Join("\n", sb);
                         else base64 = string.Join("", sb);
                         if (dlgProgress != null)
                             dlgProgress.Report(100);
 
-                        return tempCount;
+                        return (tempCount);
                     });
-                    if (prefix) result = $"data:{mime};base64,{base64}";
+                    if (!string.IsNullOrEmpty(base64) && prefix) result = $"data:{mime};base64,{base64}";
                     dlgResult.Cancel();
                     dlgProgress.Hide();
                 }
