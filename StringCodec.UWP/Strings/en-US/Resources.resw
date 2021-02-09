@@ -1015,22 +1015,22 @@
     <value>Capitalized Word (Force)</value>
   </data>
   <data name="optCaseJaFullKana.Text" xml:space="preserve">
-    <value>Japaness Full-Width Katakana</value>
+    <value>Japanese Full-Width Katakana</value>
   </data>
   <data name="optCaseJaHalfKana.Text" xml:space="preserve">
-    <value>Japaness Half-Width Katakana</value>
+    <value>Japanese Half-Width Katakana</value>
   </data>
   <data name="optCaseJaLowKana.Text" xml:space="preserve">
-    <value>Japaness Lower Katakana</value>
+    <value>Japanese Lower Katakana</value>
   </data>
   <data name="optCaseJaUpKana.Text" xml:space="preserve">
-    <value>Japaness Upper Katakana</value>
+    <value>Japanese Upper Katakana</value>
   </data>
   <data name="optCaseJaLowNum.Text" xml:space="preserve">
-    <value>Japaness Lower Number</value>
+    <value>Japanese Lower Number</value>
   </data>
   <data name="optCaseJaUpNum.Text" xml:space="preserve">
-    <value>Japaness Upper Number</value>
+    <value>Japanese Upper Number</value>
   </data>
   <data name="optCaseZhFullNum.Text" xml:space="preserve">
     <value>Chinese Full-Width Number/Symbol</value>
@@ -1051,7 +1051,7 @@
     <value>Chinese Upper Currency</value>
   </data>
   <data name="optCaseJaUpRmbNum.Text" xml:space="preserve">
-    <value>Japaness Upper Currency</value>
+    <value>Japanese Upper Currency</value>
   </data>
   <data name="optCaseZhS2T.Text" xml:space="preserve">
     <value>Chinese Simplified to Traditional</value>
@@ -1349,5 +1349,14 @@
   </data>
   <data name="OK" xml:space="preserve">
     <value>OK</value>
+  </data>
+  <data name="optCaseJaHiraKanaFull.Text" xml:space="preserve">
+    <value>Japanese Hiragana To Full-Width Katakana</value>
+  </data>
+  <data name="optCaseJaHiraKanaHalf.Text" xml:space="preserve">
+    <value>Japanese Hiragana To Half-Width Katakana</value>
+  </data>
+  <data name="optCaseJaKanaHira.Text" xml:space="preserve">
+    <value>Japanese Katakana To Hiragana</value>
   </data>
 </root>

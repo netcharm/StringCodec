@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -1080,7 +1081,8 @@ namespace StringCodec.UWP.Common
 
         static public class MORSE
         {
-            private static readonly Dictionary<string, string> MorseTable = new Dictionary<string, string>() {
+            private static readonly Dictionary<string, string> MorseTable = new Dictionary<string, string>()
+            {
                 // 以下数据来源于 维基百科(Wikipedia) 中文版
                 // https://zh.wikipedia.org/zh-cn/%E6%91%A9%E5%B0%94%E6%96%AF%E7%94%B5%E7%A0%81#%E7%8E%B0%E4%BB%A3%E5%9B%BD%E9%99%85%E6%91%A9%E5%B0%94%E6%96%AF%E7%94%B5%E7%A0%81
                 //
@@ -2503,6 +2505,150 @@ namespace StringCodec.UWP.Common
             { '\uFF9F', '\u309C' }, // 'ﾟ' : '゜'
         };
 
+        private static Dictionary<string, string> HiraToKanaMap = new Dictionary<string, string>()
+        {
+            {"きゃ", "キャ"} /* kya */, {"きゅ", "キュ"} /* kyu */, {"きょ", "キョ"} /* kyo */,
+            {"しゃ", "シャ"} /* sya */, {"しゅ", "シュ"} /* syu */, {"しょ", "ショ"} /* syo */,
+            {"ちゃ", "チャ"} /* cya */, {"ちゅ", "チュ"} /* cyu */, {"ちょ", "チョ"} /* cyo */,
+            {"にゃ", "ニャ"} /* nya */, {"にゅ", "ニュ"} /* nyu */, {"にょ", "ニョ"} /* nyo */,
+            {"ひゃ", "ヒャ"} /* hya */, {"ひゅ", "ヒュ"} /* hyu */, {"ひょ", "ヒョ"} /* hyo */,
+            {"みゃ", "ミャ"} /* mya */, {"みゅ", "ミュ"} /* myu */, {"みょ", "ミョ"} /* myo */,
+            {"りゃ", "リャ"} /* rya */, {"りゅ", "リュ"} /* ryu */, {"りょ", "リョ"} /* ryo */,
+            {"ぎゃ", "ギャ"} /* gya */, {"ぎゅ", "ギュ"} /* gyu */, {"ぎょ", "ギョ"} /* gyo */,
+            {"じゃ", "ジャ"} /* zya/ja */, {"じゅ", "ジュ"} /* yu/ju */, {"じょ", "ジョ"} /* zyo/jo */,
+            {"びゃ", "ビャ"} /* bya */, {"びゅ", "ビュ"} /* byu */, {"びょ", "ビョ"} /* byo */,
+            {"ぴゃ", "ピャ"} /* pya */, {"ぴゅ", "ピュ"} /* pyu */, {"ぴょ", "ピョ"} /* pyo */,
+
+            {"あ", "ア"} /*  a */, {"い", "イ"} /*   i */, {"う", "ウ"} /*  u */, {"え", "エ"} /*  e */, {"お", "オ"} /*  o */,
+            {"か", "カ"} /* ka */, {"き", "キ"} /*  ki */, {"く", "ク"} /* ku */, {"け", "ケ"} /* ke */, {"こ", "コ"} /* ko */,
+            {"さ", "サ"} /* sa */, {"し", "シ"} /* shi */, {"す", "ス"} /* si */, {"せ", "セ"} /* se */, {"そ", "ソ"} /* so */,
+            {"た", "タ"} /* ta */, {"ち", "チ"} /* chi */, {"つ", "ツ"} /* ci */, {"て", "テ"} /* te */, {"と", "ト"} /* to */,
+            {"な", "ナ"} /* na */, {"に", "ニ"} /*  ni */, {"ぬ", "ヌ"} /* nu */, {"ね", "ネ"} /* ne */, {"の", "ノ"} /* no */,
+            {"は", "ハ"} /* ha */, {"ひ", "ヒ"} /*  hi */, {"ふ", "フ"} /* fu */, {"へ", "ヘ"} /* he */, {"ほ", "ホ"} /* ho */,
+            {"ま", "マ"} /* ma */, {"み", "ミ"} /*  mi */, {"む", "ム"} /* mu */, {"め", "メ"} /* me */, {"も", "モ"} /* mo */,
+            {"や", "ヤ"} /* ya */, /*{"い", "イ"}    i */  {"ゆ", "ユ"} /* yu */, /*{"え", "エ"} /* e */ {"よ", "ヨ"} /* yo */,
+            {"ら", "ラ"} /* la */, {"り", "リ"} /*  li */, {"る", "ル"} /* lu */, {"れ", "レ"} /* le */, {"ろ", "ロ"} /* lo */,
+            {"わ", "ワ"} /* wa */, /*{"い", "イ"} /* i */ /*{"う", "ウ"} /* u */  /*{"え", "エ"} /* e */ {"を", "ヲ"} /* wo */,
+            {"ん", "ン"} /*  n */,
+
+            {"が", "ガ"} /* ga */, {"ぎ", "ギ"} /* gi */, {"ぐ", "グ"} /* gu */, {"げ", "ゲ"} /* ge */, {"ご", "ゴ"} /* go */,
+            {"ざ", "ザ"} /* za */, {"じ", "ジ"} /* zi/ji */, {"ず", "ズ"} /* zu */, {"ぜ", "ゼ"} /* ze */, {"ぞ", "ゾ"} /* zo */,
+            {"だ", "ダ"} /* da */, {"ぢ", "ヂ"} /* ji/di */, {"づ", "ヅ"} /* zu/du */, {"で", "デ"} /* de */, {"ど", "ド"} /* do */,
+            {"ば", "バ"} /* ba */, {"び", "ビ"} /* bi */, {"ぶ", "ブ"} /* bu */, {"べ", "ベ"} /* be */, {"ぼ", "ボ"} /* bo */,
+            {"ぱ", "パ"} /* pa */, {"ぴ", "ピ"} /* pi */, {"ぷ", "プ"} /* pu */, {"ぺ", "ペ"} /* pe */, {"ぽ", "ポ"} /* po */,
+        };
+
+        private static Dictionary<string, string> KanaToHiraMap = new Dictionary<string, string>()
+        {
+            {"キャ", "きゃ"} /* kya */, {"キュ", "きゅ"} /* kyu */, {"キョ", "きょ"} /* kyo */,
+            {"シャ", "しゃ"} /* sya */, {"シュ", "しゅ"} /* syu */, {"ショ", "しょ"} /* syo */,
+            {"チャ", "ちゃ"} /* cya */, {"チュ", "ちゅ"} /* cyu */, {"チョ", "ちょ"} /* cyo */,
+            {"ニャ", "にゃ"} /* nya */, {"ニュ", "にゅ"} /* nyu */, {"ニョ", "にょ"} /* nyo */,
+            {"ヒャ", "ひゃ"} /* hya */, {"ヒュ", "ひゅ"} /* hyu */, {"ヒョ", "ひょ"} /* hyo */,
+            {"ミャ", "みゃ"} /* mya */, {"ミュ", "みゅ"} /* myu */, {"ミョ", "みょ"} /* myo */,
+            {"リャ", "りゃ"} /* rya */, {"リュ", "りゅ"} /* ryu */, {"リョ", "りょ"} /* ryo */,
+            {"ギャ", "ぎゃ"} /* gya */, {"ギュ", "ぎゅ"} /* gyu */, {"ギョ", "ぎょ"} /* gyo */,
+            {"ジャ", "じゃ"} /* zya/ja */, {"ジュ", "じゅ"} /* yu/ju */, {"ジョ", "じょ"} /* zyo/jo */,
+            {"ビャ", "びゃ"} /* bya */, {"ビュ", "びゅ"} /* byu */, {"ビョ", "びょ"} /* byo */,
+            {"ピャ", "ぴゃ"} /* pya */, {"ピュ", "ぴゅ"} /* pyu */, {"ピョ", "ぴょ"} /* pyo */,
+
+            {"ア", "あ"} /*  a */, {"イ", "い"} /*   i */, {"ウ", "う"} /*  u */, {"エ", "え"} /*  e */, {"オ", "お"} /*  o */,
+            {"カ", "か"} /* ka */, {"キ", "き"} /*  ki */, {"ク", "く"} /* ku */, {"ケ", "け"} /* ke */, {"コ", "こ"} /* ko */,
+            {"サ", "さ"} /* sa */, {"シ", "し"} /* shi */, {"ス", "す"} /* si */, {"セ", "せ"} /* se */, {"ソ", "そ"} /* so */,
+            {"タ", "た"} /* ta */, {"チ", "ち"} /* chi */, {"ツ", "つ"} /* ci */, {"テ", "て"} /* te */, {"ト", "と"} /* to */,
+            {"ナ", "な"} /* na */, {"ニ", "に"} /*  ni */, {"ヌ", "ぬ"} /* nu */, {"ネ", "ね"} /* ne */, {"ノ", "の"} /* no */,
+            {"ハ", "は"} /* ha */, {"ヒ", "ひ"} /*  hi */, {"フ", "ふ"} /* fu */, {"ヘ", "へ"} /* he */, {"ホ", "ほ"} /* ho */,
+            {"マ", "ま"} /* ma */, {"ミ", "み"} /*  mi */, {"ム", "む"} /* mu */, {"メ", "め"} /* me */, {"モ", "も"} /* mo */,
+            {"ヤ", "や"} /* ya */, /*{"イ", "い"}    i */  {"ユ", "ゆ"} /* yu */, /*{"エ", "え"} /* e */ {"ヨ", "よ"} /* yo */,
+            {"ラ", "ら"} /* la */, {"リ", "り"} /*  li */, {"ル", "る"} /* lu */, {"レ", "れ"} /* le */, {"ロ", "ろ"} /* lo */,
+            {"ワ", "わ"} /* wa */, /*{"イ", "い"} /* i */ /*{"ウ", "う"} /* u */  /*{"エ", "え"} /* e */ {"ヲ", "を"} /* wo */,
+            {"ン", "ん"} /*  n */,
+
+            {"ガ", "が"} /* ga */, {"ギ", "ぎ"} /* gi */, {"グ", "ぐ"} /* gu */, {"ゲ", "げ"} /* ge */, {"ゴ", "ご"} /* go */,
+            {"ザ", "ざ"} /* za */, {"ジ", "じ"} /* zi/ji */, {"ズ", "ず"} /* zu */, {"ゼ", "ぜ"} /* ze */, {"ゾ", "ぞ"} /* zo */,
+            {"ダ", "だ"} /* da */, {"ヂ", "ぢ"} /* ji/di */, {"ヅ", "づ"} /* zu/du */, {"デ", "で"} /* de */, {"ド", "ど"} /* do */,
+            {"バ", "ば"} /* ba */, {"ビ", "び"} /* bi */, {"ブ", "ぶ"} /* bu */, {"ベ", "べ"} /* be */, {"ボ", "ぼ"} /* bo */,
+            {"パ", "ぱ"} /* pa */, {"ピ", "ぴ"} /* pi */, {"プ", "ぷ"} /* pu */, {"ペ", "ぺ"} /* pe */, {"ポ", "ぽ"} /* po */,
+
+            // イェ（ye），ウィ（wi），ウェ（we），ウオ，クァ（qwa），グァ（gwa），クィ（qwi），
+            // クェ（qwe），クォ（qwo），シェ（she），ジェ（je），チェ（che），ツァ（tsa），
+            // ツィ（tsi），ツェ（tse），ツォ（tso），テイ，デイ，テユ，デユ，トゥ（twu），ドゥ（dwu），
+            // ファ（fa），フィ（fi），フェ（fe），フォ（fo），フュ（fyu），チィ（tyi），ヂィ（dyi）
+
+            // イェ（ye），ウィ（wi），ウェ（we），ウオ，クァ（qwa），グァ（gwa），クィ（qwi），
+            // クェ（qwe），クォ（qwo），シェ（she），ジェ（je），チェ（che），ツァ（tsa），
+            // ツィ（tsi），ツェ（tse），ツォ（tso），テイ，デイ，テユ，デユ，トゥ（twu），ドゥ（dwu），
+            // ファ（fa），フィ（fi），フェ（fe），フォ（fo），フュ（fyu），チィ（tyi），ヂィ（dyi）
+        };
+
+        private static Dictionary<string, string> KanaToHalfMap = new Dictionary<string, string>()
+        {
+            {"グ", "ｸﾞ"}, {"ポ", "ﾎﾟ"}, {"ゲ", "ｹﾞ"}, {"ガ", "ｶﾞ"}, {"ギ", "ｷﾞ"},
+            {"ゴ", "ｺﾞ"}, {"ザ", "ｻﾞ"}, {"ジ", "ｼﾞ"}, {"ズ", "ｽﾞ"}, {"ゼ", "ｾﾞ"},
+            {"ダ", "ﾀﾞ"}, {"ヅ", "ﾂﾞ"}, {"ヂ", "ﾁﾞ"}, {"ゾ", "ｿﾞ"}, {"デ", "ﾃﾞ"},
+            {"ド", "ﾄﾞ"}, {"バ", "ﾊﾞ"}, {"パ", "ﾊﾟ"}, {"ビ", "ﾋﾞ"}, {"ピ", "ﾋﾟ"},
+            {"ベ", "ﾍﾞ"}, {"プ", "ﾌﾟ"}, {"ペ", "ﾍﾟ"}, {"ボ", "ﾎﾞ"}, {"ブ", "ﾌﾞ"},
+
+            {"ァ", "ｧ"}, {"ア", "ｱ"}, {"ィ", "ｨ"}, {"イ", "ｲ"}, {"ゥ", "ｩ"},
+            {"ウ", "ｳ"}, {"ェ", "ｪ"}, {"エ", "ｴ"}, {"ォ", "ｫ"}, {"オ", "ｵ"},
+            {"カ", "ｶ"}, {"キ", "ｷ"}, {"ク", "ｸ"}, {"ケ", "ｹ"}, {"コ", "ｺ"},
+            {"サ", "ｻ"}, {"シ", "ｼ"}, {"ス", "ｽ"}, {"セ", "ｾ"}, {"ソ", "ｿ"},
+            {"タ", "ﾀ"}, {"チ", "ﾁ"}, {"ッ", "ｯ"}, {"ツ", "ﾂ"}, {"テ", "ﾃ"},
+            {"ト", "ﾄ"}, {"ナ", "ﾅ"}, {"ニ", "ﾆ"}, {"ヌ", "ﾇ"}, {"ネ", "ﾈ"},
+            {"ノ", "ﾉ"}, {"ハ", "ﾊ"}, {"ヒ", "ﾋ"}, {"フ", "ﾌ"}, {"ヘ", "ﾍ"},
+            {"ホ", "ﾎ"}, {"マ", "ﾏ"}, {"ミ", "ﾐ"}, {"ム", "ﾑ"}, {"メ", "ﾒ"},
+            {"モ", "ﾓ"}, {"ャ", "ｬ"}, {"ヤ", "ﾔ"}, {"ュ", "ｭ"}, {"ユ", "ﾕ"},
+            {"ョ", "ｮ"}, {"ヨ", "ﾖ"}, {"ラ", "ﾗ"}, {"リ", "ﾘ"}, {"ル", "ﾙ"},
+            {"レ", "ﾚ"}, {"ロ", "ﾛ"}, {"ヮ", "ﾜ"}, {"ワ", "ﾜ"}, {"ヲ", "ｦ"},
+            {"ン", "ﾝ"}, {"ー", "ｰ"},
+
+            {"Ａ", "A"}, {"Ｂ", "B"}, {"Ｃ", "C"}, {"Ｄ", "D"}, {"Ｅ", "E"},
+            {"Ｆ", "F"}, {"Ｇ", "G"}, {"Ｈ", "H"}, {"Ｉ", "I"}, {"Ｊ", "J"},
+            {"Ｋ", "K"}, {"Ｌ", "L"}, {"Ｍ", "M"}, {"Ｎ", "N"}, {"Ｏ", "O"},
+            {"Ｐ", "P"}, {"Ｑ", "Q"}, {"Ｒ", "R"}, {"Ｓ", "S"}, {"Ｔ", "T"},
+            {"Ｕ", "U"}, {"Ｖ", "V"}, {"Ｗ", "W"}, {"Ｘ", "X"}, {"Ｙ", "Y"},
+            {"Ｚ", "Z"}, {"ａ", "a"}, {"ｂ", "b"}, {"ｃ", "c"}, {"ｄ", "d"},
+            {"ｅ", "e"}, {"ｆ", "f"}, {"ｇ", "g"}, {"ｈ", "h"}, {"ｉ", "i"},
+            {"ｊ", "j"}, {"ｋ", "k"}, {"ｌ", "l"}, {"ｍ", "m"}, {"ｎ", "n"},
+            {"ｏ", "o"}, {"ｐ", "p"}, {"ｑ", "q"}, {"ｒ", "r"}, {"ｓ", "s"},
+            {"ｔ", "t"}, {"ｕ", "u"}, {"ｖ", "v"}, {"ｗ", "w"}, {"ｘ", "x"},
+            {"ｙ", "y"}, {"ｚ", "z"}, {",", "、"},
+        };
+
+        private static Dictionary<string, string> KanaToFullMap = new Dictionary<string, string>()
+        {
+            {"ｸﾞ", "グ"}, {"ﾎﾟ", "ポ"}, {"ｹﾞ", "ゲ"}, {"ｶﾞ", "ガ"}, {"ｷﾞ", "ギ"},
+            {"ｺﾞ", "ゴ"}, {"ｻﾞ", "ザ"}, {"ｼﾞ", "ジ"}, {"ｽﾞ", "ズ"}, {"ｾﾞ", "ゼ"},
+            {"ﾀﾞ", "ダ"}, {"ﾂﾞ", "ヅ"}, {"ﾁﾞ", "ヂ"}, {"ｿﾞ", "ゾ"}, {"ﾃﾞ", "デ"},
+            {"ﾄﾞ", "ド"}, {"ﾊﾞ", "バ"}, {"ﾊﾟ", "パ"}, {"ﾋﾞ", "ビ"}, {"ﾋﾟ", "ピ"},
+            {"ﾍﾞ", "ベ"}, {"ﾌﾟ", "プ"}, {"ﾍﾟ", "ペ"}, {"ﾎﾞ", "ボ"}, {"ﾌﾞ", "ブ"},
+
+            {"ｧ", "ァ"}, {"ｱ", "ア"}, {"ｨ", "ィ"}, {"ｲ", "イ"}, {"ｩ", "ゥ"},
+            {"ｳ", "ウ"}, {"ｪ", "ェ"}, {"ｴ", "エ"}, {"ｫ", "ォ"}, {"ｵ", "オ"},
+            {"ｶ", "カ"}, {"ｷ", "キ"}, {"ｸ", "ク"}, {"ｹ", "ケ"}, {"ｺ", "コ"},
+            {"ｻ", "サ"}, {"ｼ", "シ"}, {"ｽ", "ス"}, {"ｾ", "セ"}, {"ｿ", "ソ"},
+            {"ﾀ", "タ"}, {"ﾁ", "チ"}, {"ｯ", "ッ"}, {"ﾂ", "ツ"}, {"ﾃ", "テ"},
+            {"ﾄ", "ト"}, {"ﾅ", "ナ"}, {"ﾆ", "ニ"}, {"ﾇ", "ヌ"}, {"ﾈ", "ネ"},
+            {"ﾉ", "ノ"}, {"ﾊ", "ハ"}, {"ﾋ", "ヒ"}, {"ﾌ", "フ"}, {"ﾍ", "ヘ"},
+            {"ﾎ", "ホ"}, {"ﾏ", "マ"}, {"ﾐ", "ミ"}, {"ﾑ", "ム"}, {"ﾒ", "メ"},
+            {"ﾓ", "モ"}, {"ｬ", "ャ"}, {"ﾔ", "ヤ"}, {"ｭ", "ュ"}, {"ﾕ", "ユ"},
+            {"ｮ", "ョ"}, {"ﾖ", "ヨ"}, {"ﾗ", "ラ"}, {"ﾘ", "リ"}, {"ﾙ", "ル"},
+            {"ﾚ", "レ"}, {"ﾛ", "ロ"}, /*{"ﾜ", "ヮ"},*/ {"ﾜ", "ワ"}, {"ｦ", "ヲ"},
+            {"ﾝ", "ン"}, {"ｰ", "ー"},
+
+            {"A", "Ａ"}, {"B", "Ｂ"}, {"C", "Ｃ"}, {"D", "Ｄ"}, {"E", "Ｅ"},
+            {"F", "Ｆ"}, {"G", "Ｇ"}, {"H", "Ｈ"}, {"I", "Ｉ"}, {"J", "Ｊ"},
+            {"K", "Ｋ"}, {"L", "Ｌ"}, {"M", "Ｍ"}, {"N", "Ｎ"}, {"O", "Ｏ"},
+            {"P", "Ｐ"}, {"Q", "Ｑ"}, {"R", "Ｒ"}, {"S", "Ｓ"}, {"T", "Ｔ"},
+            {"U", "Ｕ"}, {"V", "Ｖ"}, {"W", "Ｗ"}, {"X", "Ｘ"}, {"Y", "Ｙ"},
+            {"Z", "Ｚ"}, {"a", "ａ"}, {"b", "ｂ"}, {"c", "ｃ"}, {"d", "ｄ"},
+            {"e", "ｅ"}, {"f", "ｆ"}, {"g", "ｇ"}, {"h", "ｈ"}, {"i", "ｉ"},
+            {"j", "ｊ"}, {"k", "ｋ"}, {"l", "ｌ"}, {"m", "ｍ"}, {"n", "ｎ"},
+            {"o", "ｏ"}, {"p", "ｐ"}, {"q", "ｑ"}, {"r", "ｒ"}, {"s", "ｓ"},
+            {"t", "ｔ"}, {"u", "ｕ"}, {"v", "ｖ"}, {"w", "ｗ"}, {"x", "ｘ"},
+            {"y", "ｙ"}, {"z", "ｚ"}, {",", "、"},
+        };
+
         private static class JapanDigital
         {
             // General
@@ -2705,38 +2851,64 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
-        public static string KatakanaHalfToFull(this string text)
+        public static string KatakanaHalfToFull(this string text, bool lookup = true)
         {
-            var result = string.Empty;
-            for (var i = 0; i < text.Length; i++)
-            {               
-                if (text[i] == 32)
+            if (string.IsNullOrEmpty(text)) return (string.Empty);
+
+            var result = text;
+            if (lookup)
+            {
+                foreach (var kana in KanaToFullMap)
                 {
-                    result += (char)12288;
-                }
-                if (text[i] < 127)
-                {
-                    result += (char)(text[i] + 65248);
+                    var k = kana.Key;
+                    var v = kana.Value;
+                    result = result.Replace(k, v);
                 }
             }
-
-            if (string.IsNullOrEmpty(result))
-                result = text;
+            else
+            {
+                for (var i = 0; i < text.Length; i++)
+                {
+                    if (text[i] == 32)
+                    {
+                        result += (char)12288;
+                    }
+                    if (text[i] < 127)
+                    {
+                        result += (char)(text[i] + 65248);
+                    }
+                }
+                if (string.IsNullOrEmpty(result)) result = text;
+            }
             return result;
         }
 
-        public static string KatakanaFullToHalf(this string text)
+        public static string KatakanaFullToHalf(this string text, bool lookup = true)
         {
-            var result = string.Empty;
-            for (var i = 0; i < text.Length; i++)
+            if (string.IsNullOrEmpty(text)) return (string.Empty);
+
+            var result = text;
+            if (lookup)
             {
-                if (text[i] > 65248 && text[i] < 65375)
+                foreach (var kana in KanaToHalfMap)
                 {
-                    result += (char)(text[i] - 65248);
+                    var k = kana.Key;
+                    var v = kana.Value;
+                    result = result.Replace(k, v);
                 }
-                else
+            }
+            else
+            {
+                for (var i = 0; i < text.Length; i++)
                 {
-                    result += (char)text[i];
+                    if (text[i] > 65248 && text[i] < 65375)
+                    {
+                        result += (char)(text[i] - 65248);
+                    }
+                    else
+                    {
+                        result += (char)text[i];
+                    }
                 }
             }
             return result;
@@ -2764,6 +2936,34 @@ namespace StringCodec.UWP.Common
             return (result);
         }
 
+        public static string HiraToKana(this string text, bool half = false)
+        {
+            if (string.IsNullOrEmpty(text)) return (string.Empty);
+
+            var result = text;
+            foreach (var hira in HiraToKanaMap)
+            {
+                var k = hira.Key;
+                var v = hira.Value;
+                result = result.Replace(k, v);
+            }
+            if (half) result = KatakanaFullToHalf(result);
+            return (result);
+        }
+
+        public static string KanaToHira(this string text)
+        {
+            if (string.IsNullOrEmpty(text)) return (string.Empty);
+
+            var result = KatakanaHalfToFull(text);
+            foreach (var kana in KanaToHiraMap)
+            {
+                var k = kana.Key;
+                var v = kana.Value;
+                result = result.Replace(k, v);
+            }
+            return (result);
+        }
         #endregion
 
         #region Chinese case converter
@@ -3504,31 +3704,35 @@ namespace StringCodec.UWP.Common
         {
             System.Globalization.CultureInfo result = System.Globalization.CultureInfo.CurrentCulture;
 
-            if (Cultures.Count <= 0)
+            try
             {
-                int[] europe = new int[]{ 1250, 1251, 1252, 1253, 1254, 1255, 1256, 1257, 1258, 1259 };
-                var cultures = System.Globalization.CultureInfo.GetCultures(System.Globalization.CultureTypes.AllCultures);
-                Cultures.TryAdd("1252", System.Globalization.CultureInfo.GetCultureInfoByIetfLanguageTag("en"));
-                foreach (var culture in cultures)
+                if (Cultures.Count <= 0)
                 {
-                    if (!string.IsNullOrEmpty(culture.IetfLanguageTag))
+                    int[] europe = new int[]{ 1250, 1251, 1252, 1253, 1254, 1255, 1256, 1257, 1258, 1259 };
+                    var cultures = System.Globalization.CultureInfo.GetCultures(System.Globalization.CultureTypes.AllCultures);
+                    Cultures.TryAdd("1252", System.Globalization.CultureInfo.GetCultureInfoByIetfLanguageTag("en"));
+                    foreach (var culture in cultures)
                     {
-                        Cultures.TryAdd(culture.IetfLanguageTag.ToLower(), culture);
-                        if (europe.Contains(culture.TextInfo.ANSICodePage))
-                            Cultures.TryAdd($"{culture.TextInfo.ANSICodePage}", culture);
+                        if (!string.IsNullOrEmpty(culture.IetfLanguageTag))
+                        {
+                            Cultures.TryAdd(culture.IetfLanguageTag.ToLower(), culture);
+                            if (europe.Contains(culture.TextInfo.ANSICodePage))
+                                Cultures.TryAdd($"{culture.TextInfo.ANSICodePage}", culture);
+                        }
                     }
+                    Cultures.TryAdd("gbk", System.Globalization.CultureInfo.GetCultureInfoByIetfLanguageTag("zh-hans"));
+                    Cultures.TryAdd("big5", System.Globalization.CultureInfo.GetCultureInfoByIetfLanguageTag("zh-hant"));
+                    Cultures.TryAdd("jis", System.Globalization.CultureInfo.GetCultureInfoByIetfLanguageTag("ja"));
+                    Cultures.TryAdd("eucjp", System.Globalization.CultureInfo.GetCultureInfoByIetfLanguageTag("ja"));
+                    Cultures.TryAdd("korean", System.Globalization.CultureInfo.GetCultureInfoByIetfLanguageTag("ko"));
+                    Cultures.TryAdd("euckr", System.Globalization.CultureInfo.GetCultureInfoByIetfLanguageTag("ko"));
+                    Cultures.TryAdd("ascii", System.Globalization.CultureInfo.GetCultureInfoByIetfLanguageTag("en"));
+                    Cultures.TryAdd("thai", System.Globalization.CultureInfo.GetCultureInfoByIetfLanguageTag("th"));
                 }
-                Cultures.TryAdd("gbk", System.Globalization.CultureInfo.GetCultureInfoByIetfLanguageTag("zh-hans"));
-                Cultures.TryAdd("big5", System.Globalization.CultureInfo.GetCultureInfoByIetfLanguageTag("zh-hant"));
-                Cultures.TryAdd("jis", System.Globalization.CultureInfo.GetCultureInfoByIetfLanguageTag("ja"));
-                Cultures.TryAdd("eucjp", System.Globalization.CultureInfo.GetCultureInfoByIetfLanguageTag("ja"));
-                Cultures.TryAdd("korean", System.Globalization.CultureInfo.GetCultureInfoByIetfLanguageTag("ko"));
-                Cultures.TryAdd("euckr", System.Globalization.CultureInfo.GetCultureInfoByIetfLanguageTag("ko"));
-                Cultures.TryAdd("ascii", System.Globalization.CultureInfo.GetCultureInfoByIetfLanguageTag("en"));
-                Cultures.TryAdd("thai", System.Globalization.CultureInfo.GetCultureInfoByIetfLanguageTag("th"));
+                var tag = cultureTag.ToLower();
+                if (Cultures.ContainsKey(tag)) result = Cultures[tag];
             }
-            var tag = cultureTag.ToLower();
-            if (Cultures.ContainsKey(tag)) result = Cultures[tag];
+            catch(Exception ex) { Debug.WriteLine(ex.Message); Cultures = new Dictionary<string, System.Globalization.CultureInfo>(); }
 
             return (result);
         }

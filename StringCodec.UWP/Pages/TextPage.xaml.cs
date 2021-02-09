@@ -217,6 +217,12 @@ namespace StringCodec.UWP.Pages
                     result = text.KatakanaFullToHalf();
                 else if (sender == optCaseJaFullKana)
                     result = text.KatakanaHalfToFull();
+                else if (sender == optCaseJaKanaHira)
+                    result = text.KanaToHira();
+                else if (sender == optCaseJaHiraKanaFull)
+                    result = text.HiraToKana(half: false);
+                else if (sender == optCaseJaHiraKanaHalf)
+                    result = text.HiraToKana(half: true);
                 #endregion
                 #region Text process
                 else if (sender == optTrimBlankTail)

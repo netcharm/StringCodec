@@ -1155,19 +1155,19 @@
           <target state="translated">单词首字大写(强制)</target>
         </trans-unit>
         <trans-unit id="optCaseJaLowKana.Text" translate="yes" xml:space="preserve">
-          <source>Japaness Lower Katakana</source>
+          <source>Japanese Lower Katakana</source>
           <target state="translated">日语小写片假名</target>
         </trans-unit>
         <trans-unit id="optCaseJaLowNum.Text" translate="yes" xml:space="preserve">
-          <source>Japaness Lower Number</source>
+          <source>Japanese Lower Number</source>
           <target state="translated">日语小写数字</target>
         </trans-unit>
         <trans-unit id="optCaseJaUpKana.Text" translate="yes" xml:space="preserve">
-          <source>Japaness Upper Katakana</source>
+          <source>Japanese Upper Katakana</source>
           <target state="translated">日语大写片假名</target>
         </trans-unit>
         <trans-unit id="optCaseJaUpNum.Text" translate="yes" xml:space="preserve">
-          <source>Japaness Upper Number</source>
+          <source>Japanese Upper Number</source>
           <target state="translated">日语大写数字</target>
         </trans-unit>
         <trans-unit id="optCaseLow.Text" translate="yes" xml:space="preserve">
@@ -1195,11 +1195,11 @@
           <target state="translated">中文大写数字</target>
         </trans-unit>
         <trans-unit id="optCaseJaFullKana.Text" translate="yes" xml:space="preserve">
-          <source>Japaness Full-Width Katakana</source>
+          <source>Japanese Full-Width Katakana</source>
           <target state="translated">日语全宽片假名</target>
         </trans-unit>
         <trans-unit id="optCaseJaHalfKana.Text" translate="yes" xml:space="preserve">
-          <source>Japaness Half-Width Katakana</source>
+          <source>Japanese Half-Width Katakana</source>
           <target state="translated">日语半宽片假名</target>
         </trans-unit>
         <trans-unit id="optCaseZhLowRmbNum.Text" translate="yes" xml:space="preserve">
@@ -1211,7 +1211,7 @@
           <target state="translated">中文大写货币</target>
         </trans-unit>
         <trans-unit id="optCaseJaUpRmbNum.Text" translate="yes" xml:space="preserve">
-          <source>Japaness Upper Currency</source>
+          <source>Japanese Upper Currency</source>
           <target state="translated">日语大写货币</target>
         </trans-unit>
         <trans-unit id="optCaseZhS2T.Text" translate="yes" xml:space="preserve">
@@ -1649,6 +1649,18 @@
         <trans-unit id="Cancel" translate="yes" xml:space="preserve">
           <source>Cancel</source>
           <target state="translated">取消</target>
+        </trans-unit>
+        <trans-unit id="optCaseJaHiraKanaFull.Text" translate="yes" xml:space="preserve">
+          <source>Japanese Hiragana To Full-Width Katakana</source>
+          <target state="translated">日语平假名转为全宽片假名</target>
+        </trans-unit>
+        <trans-unit id="optCaseJaHiraKanaHalf.Text" translate="yes" xml:space="preserve">
+          <source>Japanese Hiragana To Half-Width Katakana</source>
+          <target state="translated">日语平假名转为半宽片假名</target>
+        </trans-unit>
+        <trans-unit id="optCaseJaKanaHira.Text" translate="yes" xml:space="preserve">
+          <source>Japanese Katakana To Hiragana</source>
+          <target state="translated">日语片假名转为平假名</target>
         </trans-unit>
       </group>
     </body>

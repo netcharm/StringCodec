@@ -1245,4 +1245,13 @@
   <data name="Cancel" xml:space="preserve">
     <value>取り消し</value>
   </data>
+  <data name="optCaseJaHiraKanaFull.Text" xml:space="preserve">
+    <value>日本語ひらがなから全角カタカナへ</value>
+  </data>
+  <data name="optCaseJaHiraKanaHalf.Text" xml:space="preserve">
+    <value>日本語のひらがなから半角カタカナまで</value>
+  </data>
+  <data name="optCaseJaKanaHira.Text" xml:space="preserve">
+    <value>日本語カタカナとひらがな</value>
+  </data>
 </root>

@@ -1245,4 +1245,13 @@
   <data name="Cancel" xml:space="preserve">
     <value>取消</value>
   </data>
+  <data name="optCaseJaHiraKanaFull.Text" xml:space="preserve">
+    <value>日語平假名轉為全寬片假名</value>
+  </data>
+  <data name="optCaseJaHiraKanaHalf.Text" xml:space="preserve">
+    <value>日語平假名轉為半寬片假名</value>
+  </data>
+  <data name="optCaseJaKanaHira.Text" xml:space="preserve">
+    <value>日語片假名轉為平假名</value>
+  </data>
 </root>

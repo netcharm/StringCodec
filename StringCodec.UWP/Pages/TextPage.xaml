@@ -208,21 +208,24 @@
                             <MenuFlyoutItem x:Name="optCaseZhS2T" x:Uid="optCaseZhS2T" Text="Chinese Simplified to Traditional" Click="Case_Click"/>
                             <MenuFlyoutItem x:Name="optCaseZhT2S" x:Uid="optCaseZhT2S" Text="Chinese Traditional To Simplified" Click="Case_Click"/>
                             <MenuFlyoutSeparator />
-                            <MenuFlyoutItem x:Name="optCaseJaUpNum" x:Uid="optCaseJaUpNum" Text="Japaness Upper Number" Click="Case_Click"/>
-                            <MenuFlyoutItem x:Name="optCaseJaLowNum" x:Uid="optCaseJaLowNum" Text="Japaness Lower Number" Click="Case_Click" Visibility="Collapsed" />
-                            <MenuFlyoutItem x:Name="optCaseJaUpRmbNum" x:Uid="optCaseJaUpRmbNum" Text="Japaness Upper Currency" Click="Case_Click"/>
-                            <MenuFlyoutItem x:Name="optCaseJaUpKana" x:Uid="optCaseJaUpKana" Text="Japaness Upper Katakana" Click="Case_Click"/>
-                            <MenuFlyoutItem x:Name="optCaseJaLowKana" x:Uid="optCaseJaLowKana" Text="Japaness Lower Katakana" Click="Case_Click"/>
-                            <MenuFlyoutItem x:Name="optCaseJaHalfKana" x:Uid="optCaseJaHalfKana" Text="Japaness Half-Width Katakana" Click="Case_Click">
+                            <MenuFlyoutItem x:Name="optCaseJaUpNum" x:Uid="optCaseJaUpNum" Text="Japanese Upper Number" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optCaseJaLowNum" x:Uid="optCaseJaLowNum" Text="Japanese Lower Number" Click="Case_Click" Visibility="Collapsed" />
+                            <MenuFlyoutItem x:Name="optCaseJaUpRmbNum" x:Uid="optCaseJaUpRmbNum" Text="Japanese Upper Currency" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optCaseJaUpKana" x:Uid="optCaseJaUpKana" Text="Japanese Upper Katakana" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optCaseJaLowKana" x:Uid="optCaseJaLowKana" Text="Japanese Lower Katakana" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optCaseJaHalfKana" x:Uid="optCaseJaHalfKana" Text="Japanese Half-Width Katakana" Click="Case_Click">
                                 <MenuFlyoutItem.Icon>
                                     <FontIcon Glyph="&#xE988;" FontFamily="Segoe MDL2 Assets"/>
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
-                            <MenuFlyoutItem x:Name="optCaseJaFullKana" x:Uid="optCaseJaFullKana" Text="Japaness Full-Width Katakana" Click="Case_Click">
+                            <MenuFlyoutItem x:Name="optCaseJaFullKana" x:Uid="optCaseJaFullKana" Text="Japanese Full-Width Katakana" Click="Case_Click">
                                 <MenuFlyoutItem.Icon>
                                     <FontIcon Glyph="&#xE987;" FontFamily="Segoe MDL2 Assets"/>
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
+                            <MenuFlyoutItem x:Name="optCaseJaKanaHira" x:Uid="optCaseJaKanaHira" Text="Japanese Katakana To Hiragana" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optCaseJaHiraKanaFull" x:Uid="optCaseJaHiraKanaFull" Text="Japanese Hiragana To Full-Width Katakana" Click="Case_Click"/>
+                            <MenuFlyoutItem x:Name="optCaseJaHiraKanaHalf" x:Uid="optCaseJaHiraKanaHalf" Text="Japanese Hiragana To Half-Width Katakana" Click="Case_Click"/>
                         </MenuFlyoutSubItem>
                         <MenuFlyoutSubItem x:Name="optTabSpace" x:Uid="optTabSpace" Text="Tab &lt;=&gt; Space">
                             <MenuFlyoutItem x:Name="optTabToSpace2" x:Uid="optTabToSpace2" Text="Tab To Space 2" Click="Case_Click"/>
