@@ -89,6 +89,10 @@ namespace StringCodec.UWP.Common
                 string result = string.Empty;
                 try
                 {
+                    if(Regex.IsMatch(text, @"^=\?(.{3,12})\?b\?(.+)\?=$", RegexOptions.IgnoreCase))
+                    {
+                        text = Regex.Replace(text, @"^=\?(.{3,12})\?b\?(.+)\?=$", "$2", RegexOptions.IgnoreCase);
+                    }
                     if (text.Length > 512)
                     {
                         var lines = text.Split(new char[]{ '\r', '\n' });
