@@ -1254,4 +1254,7 @@
   <data name="optCaseJaKanaHira.Text" xml:space="preserve">
     <value>日本語カタカナとひらがな</value>
   </data>
+  <data name="btnSwitchIO.ToolTipService.ToolTip" xml:space="preserve">
+    <value>入出力のテキスト内容を交換します</value>
+  </data>
 </root>

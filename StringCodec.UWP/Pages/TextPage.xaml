@@ -351,6 +351,11 @@
                  PreviewKeyDown="TextSrc_PreviewKeyDown"
                  TextChanged="TextSrc_TextChanged"
                  AllowDrop="True" DragEnter="OnDragEnter" DragOver="OnDragOver" Drop="OnDrop" />
+        <Button Grid.Row="2" Margin="0,4,0,4" x:Name="btnSwitchIO" x:Uid="btnSwitchIO" Click="BtnSwitchIO_Click"
+                Background="Transparent" ToolTipService.ToolTip="Exchange Input and Output contents"
+                Height="32" HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="Segoe UI">
+            <FontIcon Glyph="&#xE174;" FontSize="20" FontFamily="Segoe MDL2 Assets"/>
+        </Button>
         <TextBox Grid.Row="2" Margin="0 12 0 0" x:Name="edDst" x:Uid="edDst" 
                  Header="Output:" PlaceholderText="Here is output" 
                  AcceptsReturn="True" IsReadOnly="True" IsSpellCheckEnabled="True" 

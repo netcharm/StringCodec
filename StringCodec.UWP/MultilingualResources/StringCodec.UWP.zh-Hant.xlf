@@ -1661,7 +1661,11 @@
         <trans-unit id="optCaseJaKanaHira.Text" translate="yes" xml:space="preserve">
           <source>Japanese Katakana To Hiragana</source>
           <target state="translated">日語片假名轉為平假名</target>
-        </trans-unit>        
+        </trans-unit>
+        <trans-unit id="btnSwitchIO.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Exchange Input and Output contents</source>
+          <target state="translated">交換輸入和輸出的文本內容</target>
+        </trans-unit>
       </group>
     </body>
   </file>

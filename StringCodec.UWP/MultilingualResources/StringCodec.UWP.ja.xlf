@@ -1662,6 +1662,10 @@
           <source>Japanese Katakana To Hiragana</source>
           <target state="translated">日本語カタカナとひらがな</target>
         </trans-unit>
+        <trans-unit id="btnSwitchIO.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Exchange Input and Output contents</source>
+          <target state="translated">入出力のテキスト内容を交換します</target>
+        </trans-unit>
       </group>
     </body>
   </file>

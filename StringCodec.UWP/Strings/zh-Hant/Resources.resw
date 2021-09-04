@@ -1254,4 +1254,7 @@
   <data name="optCaseJaKanaHira.Text" xml:space="preserve">
     <value>日語片假名轉為平假名</value>
   </data>
+  <data name="btnSwitchIO.ToolTipService.ToolTip" xml:space="preserve">
+    <value>交換輸入和輸出的文本內容</value>
+  </data>
 </root>

@@ -1359,4 +1359,7 @@
   <data name="optCaseJaKanaHira.Text" xml:space="preserve">
     <value>Japanese Katakana To Hiragana</value>
   </data>
+  <data name="btnSwitchIO.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Exchange Input and Output contents</value>
+  </data>
 </root>

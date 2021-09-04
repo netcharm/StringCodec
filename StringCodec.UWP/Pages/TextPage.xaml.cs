@@ -634,7 +634,19 @@ namespace StringCodec.UWP.Pages
                 ex.Message.T().ShowMessage("ERROR".T());
             }
         }
-        
+
+        private void BtnSwitchIO_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var it = edSrc.Text;
+                var ot = edDst.Text;
+                edSrc.Text = ot;
+                edDst.Text = it;
+            }
+            catch (Exception ex) { ex.Message.T().ShowMessage("ERROR".T()); }
+        }
+
         #region Drag/Drop routines
         private bool canDrop = true;
         private async void OnDragEnter(object sender, DragEventArgs e)
@@ -747,9 +759,6 @@ namespace StringCodec.UWP.Pages
             }
             //def.Complete();
         }
-
-
         #endregion
-
     }
 }
