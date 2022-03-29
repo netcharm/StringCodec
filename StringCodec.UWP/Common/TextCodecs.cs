@@ -1085,7 +1085,7 @@ namespace StringCodec.UWP.Common
 
         static public class MORSE
         {
-            private static readonly Dictionary<string, string> MorseTable = new Dictionary<string, string>()
+            static private readonly Dictionary<string, string> MorseTable = new Dictionary<string, string>()
             {
                 // 以下数据来源于 维基百科(Wikipedia) 中文版
                 // https://zh.wikipedia.org/zh-cn/%E6%91%A9%E5%B0%94%E6%96%AF%E7%94%B5%E7%A0%81#%E7%8E%B0%E4%BB%A3%E5%9B%BD%E9%99%85%E6%91%A9%E5%B0%94%E6%96%AF%E7%94%B5%E7%A0%81
@@ -1136,7 +1136,7 @@ namespace StringCodec.UWP.Common
                 { " ", "/" }, //{ " ", "\u2423" },
             };
 
-            private static readonly Dictionary<string, string> MorseAbbrTable = new Dictionary<string, string>()
+            static private readonly Dictionary<string, string> MorseAbbrTable = new Dictionary<string, string>()
             {
                 { "AA", "All after" },                                                // 某字以后
                 { "AB", "All before" },                                               // 字以前
@@ -1225,6 +1225,11 @@ namespace StringCodec.UWP.Common
                 { "99", "go way" },                                                   // 走开（非友善） 
             };
 
+            static private readonly string DotPattens = @"[\u00B7\u2022\u2024\u2027\u2219\u22C5\u25CF\u25E6\u2E31\u2E33\u30FB\uFE52\uFE61\uFF0E\uFF65・]";
+            static private readonly string LinePattens = @"[\u00AF\u02C9\u02CD\u2010\u2011\u2012\u2013\u2014\u2015\u203E\u2043\u2500\u2501\u2E0F\u2E3A\u2E3B\u2F00\u30FC\uFE58\uFF0D\uFF3F\uFF70\uFFE3\uFFDA_－]";
+            static private readonly string SpacePattens = @"[\u3000\uFFA0　]";
+            static private readonly string UnknownChar = "\u303F";
+
             static public async Task<string> Encode(byte[] text, Encoding enc)
             {
                 string result = string.Empty;
@@ -1270,10 +1275,11 @@ namespace StringCodec.UWP.Common
                 {
                     if (!string.IsNullOrEmpty(text))
                     {
-                        text = Regex.Replace(text, @"[\u00B7\u2022\u2024\u2027\u2219\u25CF\u25E6\u30FB\uFE52\uFF0E\uFF65・]", ".", RegexOptions.IgnoreCase | RegexOptions.Multiline);
-                        text = Regex.Replace(text, @"[\u2010\u2013\u2014\u2015\u2500\u2501\u2F00\u30FC\uFE58\uFF0D\uFF3F\uFF70\uFFE3\uFFDA_－]", "-", RegexOptions.IgnoreCase | RegexOptions.Multiline);
+                        text = Regex.Replace(text, DotPattens, ".", RegexOptions.IgnoreCase | RegexOptions.Multiline);
+                        text = Regex.Replace(text, LinePattens, "-", RegexOptions.IgnoreCase | RegexOptions.Multiline);
+                        text = Regex.Replace(text, SpacePattens, " ", RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
-                        var cs = text.Replace("\u30FB", ".").Replace("\u30FC", "-").Replace("・", ".").Replace("－", "-").Split(" ");
+                        var cs = text.Replace("\u30FB", ".").Replace("\u30FC", "-").Replace("・", ".").Replace("－", "-").Replace("　", " ").Split(" ");
                         List<string> ret = new List<string>();
                         foreach (var c in cs)
                         {
@@ -1282,6 +1288,7 @@ namespace StringCodec.UWP.Common
                                 var v = MorseTable.FirstOrDefault(kv => kv.Value.Equals(c));
                                 ret.Add(v.Key);
                             }
+                            else ret.Add(UnknownChar);
                         }
                         result = string.Join("", ret).Trim();
                         if (!KeepAbbr)
