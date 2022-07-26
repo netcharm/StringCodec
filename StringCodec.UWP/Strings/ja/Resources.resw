@@ -525,6 +525,18 @@
   <data name="optRawEscape.Text" xml:space="preserve">
     <value>RAW (\\xHH)</value>
   </data>
+  <data name="optCommaByteStringDec.Text" xml:space="preserve">
+    <value>カンマ区切りのバイト値文字列(10進数)</value>
+  </data>
+  <data name="optCommaByteStringHex.Text" xml:space="preserve">
+    <value>カンマ区切りのバイト値文字列(16進数)</value>
+  </data>
+  <data name="optSpaceByteStringDec.Text" xml:space="preserve">
+    <value>スペース区切りのバイト値文字列(10進数)</value>
+  </data>
+  <data name="optSpaceByteStringHex.Text" xml:space="preserve">
+    <value>スペース区切りのバイト値文字列(16進数)</value>
+  </data>
   <data name="optThunder.Text" xml:space="preserve">
     <value>Thunder</value>
   </data>
@@ -543,8 +555,11 @@
   <data name="optLangJIS.Text" xml:space="preserve">
     <value>日本語</value>
   </data>
-  <data name="optLangUnicode.Text" xml:space="preserve">
-    <value>Unicode</value>
+  <data name="optLangUnicodeLE.Text" xml:space="preserve">
+    <value>Unicode LE</value>
+  </data>
+  <data name="optLangUnicodeBE.Text" xml:space="preserve">
+    <value>Unicode BE</value>
   </data>
   <data name="optLangAscii.Text" xml:space="preserve">
     <value>ASCII</value>

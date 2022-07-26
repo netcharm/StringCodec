@@ -34,6 +34,11 @@
                         <ToggleMenuFlyoutItem x:Name="optRaw" x:Uid="optRaw" Text="RAW" Click="Codec_Click"/>
                         <ToggleMenuFlyoutItem x:Name="optRawEscape" x:Uid="optRawEscape" Text="RAW (Escape)" Click="Codec_Click"/>
                         <MenuFlyoutSeparator />
+                        <ToggleMenuFlyoutItem x:Name="optCommaByteStringDec" x:Uid="optCommaByteStringDec" Text="Comma Byte String (Dec)" Click="Codec_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optCommaByteStringHex" x:Uid="optCommaByteStringHex" Text="Comma Byte String (Hex)" Click="Codec_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optSpaceByteStringDec" x:Uid="optSpaceByteStringDec" Text="Space Byte String (Dec)" Click="Codec_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optSpaceByteStringHex" x:Uid="optSpaceByteStringHex" Text="Space Byte String (Hex)" Click="Codec_Click"/>
+                        <MenuFlyoutSeparator />
                         <ToggleMenuFlyoutItem x:Name="optUnicodeValue" x:Uid="optUnicodeValue" Text="Unicode Value" Click="Codec_Click"/>
                         <ToggleMenuFlyoutItem x:Name="optUnicodeGlyph" x:Uid="optUnicodeGlyph" Text="Unicode Glyph" Click="Codec_Click"/>
                         <MenuFlyoutSeparator />
@@ -84,7 +89,8 @@
                         </ToggleMenuFlyoutItem>
                         <MenuFlyoutSeparator/>
                         <ToggleMenuFlyoutItem x:Name="optLangUTF8" x:Uid="optLangUTF8" Text="UTF-8" Click="OptLang_Click"/>
-                        <ToggleMenuFlyoutItem x:Name="optLangUnicode" x:Uid="optLangUnicode" Text="Unicode" Click="OptLang_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optLangUnicodeLE" x:Uid="optLangUnicodeLE" Text="Unicode LE" Click="OptLang_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="optLangUnicodeBE" x:Uid="optLangUnicodeBE" Text="Unicode BE" Click="OptLang_Click"/>
                         <MenuFlyoutSeparator/>
                         <MenuFlyoutSubItem x:Name="optLangGeneral" x:Uid="optLangGeneral" Text="General Languages">
                             <ToggleMenuFlyoutItem x:Name="optLangEn" x:Uid="optLangEn" Text="English" Click="OptLang_Click"/>

@@ -25,6 +25,7 @@ namespace StringCodec.UWP.Common
 
         public enum CODEC {
             URL, HTML, BASE64, UUE, XXE, RAW, RAWESCAPE,
+            COMMABYTESTRINGDEC, COMMABYTESTRINGHEX, SPACEBYTESTRINGDEC, SPACEBYTESTRINGHEX,
             UNICODEVALUE, UNICODEGLYPH, QUOTED, HZGB2312,
             THUNDER, FLASHGET,
             UUID, GUID,
@@ -1459,6 +1460,48 @@ namespace StringCodec.UWP.Common
         #endregion
 
         #region Encoder helper routines
+        static public async Task<string> ByteStringToStringAsync(string content, Encoding enc, bool is_hex = false, bool comma = true)
+        {
+            var result = string.Empty;
+            try
+            {
+                if (!string.IsNullOrEmpty(content))
+                {
+                    //var pattern_comma = is_hex ? @"(([0-9a-f]{2}, ?)" : @"((\d{1,3}, ?)";
+                    //var pattern_space = is_hex ? @"(([0-9a-f]{2} )" : @"((\d{1,3} )";
+                    var text = comma ? content : Regex.Replace(content, @", *?", ",");
+                    var values = comma ? text.Split(',', StringSplitOptions.RemoveEmptyEntries) : text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+                    var bytes = values.Select(v => is_hex ? (byte)Convert.ToInt16(v.Trim(), 16) : (byte)Convert.ToInt16(v.Trim())).ToArray();
+                    result = enc.GetString(bytes);
+                }
+            }
+            catch (Exception ex)
+            {
+                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
+            }
+            return (result);
+        }
+
+        static public async Task<string> StringToByteStringAsync(string content, Encoding enc, bool is_hex = false, bool comma = true)
+        {
+            var result = string.Empty;
+            try
+            {
+                if (!string.IsNullOrEmpty(content))
+                {
+                    var bytes = enc.GetBytes(content);
+                    var chars = is_hex ? bytes.Select(b => $"{b:X2}") : bytes.Select(b => $"{b}");
+                    result = comma ? string.Join(", ", chars) : string.Join(" ", chars);
+                }
+            }
+            catch (Exception ex)
+            {
+                await new MessageDialog(ex.Message.T(), "ERROR".T()).ShowAsync();
+            }
+            return (result);
+        }
+
         static public async Task<string> Encode(byte[] content, CODEC Codec, Encoding enc, bool LineBreak = false)
         {
             string result = string.Empty;
@@ -1557,6 +1600,20 @@ namespace StringCodec.UWP.Common
                     case CODEC.RAWESCAPE:
                         result = RAW.Encode(content, enc, false, true);
                         break;
+
+                    case CODEC.COMMABYTESTRINGDEC:
+                        result = await StringToByteStringAsync(content, enc, false, true);
+                        break;
+                    case CODEC.COMMABYTESTRINGHEX:
+                        result = await StringToByteStringAsync(content, enc, true, true);
+                        break;
+                    case CODEC.SPACEBYTESTRINGDEC:
+                        result = await StringToByteStringAsync(content, enc, false, false);
+                        break;
+                    case CODEC.SPACEBYTESTRINGHEX:
+                        result = await StringToByteStringAsync(content, enc, true, false);
+                        break;
+
                     case CODEC.UNICODEVALUE:
                         result = UnicodeValue.Encode(content, enc);
                         break;
@@ -1861,6 +1918,20 @@ namespace StringCodec.UWP.Common
                     case CODEC.RAWESCAPE:
                         result = RAW.Decode(content, enc, true);
                         break;
+
+                    case CODEC.COMMABYTESTRINGDEC:
+                        result = await ByteStringToStringAsync(content, enc, false, true);
+                        break;
+                    case CODEC.COMMABYTESTRINGHEX:
+                        result = await ByteStringToStringAsync(content, enc, true, true);
+                        break;
+                    case CODEC.SPACEBYTESTRINGDEC:
+                        result = await ByteStringToStringAsync(content, enc, false, false);
+                        break;
+                    case CODEC.SPACEBYTESTRINGHEX:
+                        result = await ByteStringToStringAsync(content, enc, true, false);
+                        break;
+
                     case CODEC.UNICODEVALUE:
                         result = UnicodeValue.Decode(content, enc);
                         break;
@@ -3871,6 +3942,10 @@ namespace StringCodec.UWP.Common
                 result = Encoding.UTF8;
             else if (string.Equals(ENC_NAME, "Unicode", StringComparison.CurrentCultureIgnoreCase))
                 result = Encoding.Unicode;
+            else if (string.Equals(ENC_NAME, "UnicodeLE", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.Unicode;
+            else if (string.Equals(ENC_NAME, "UnicodeBE", StringComparison.CurrentCultureIgnoreCase))
+                result = Encoding.BigEndianUnicode;
 
             else if (string.Equals(ENC_NAME, "GBK", StringComparison.CurrentCultureIgnoreCase)||
                      string.Equals(ENC_NAME, "936", StringComparison.CurrentCultureIgnoreCase))

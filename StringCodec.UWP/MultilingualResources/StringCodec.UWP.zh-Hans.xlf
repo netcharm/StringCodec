@@ -690,6 +690,22 @@
           <source>RAW (Escape)</source>
           <target state="translated">RAW (\\xHH)</target>
         </trans-unit>
+        <trans-unit id="optCommaByteStringDec.Text" translate="yes" xml:space="preserve">
+          <source>Comma Byte String (Dec)</source>
+          <target state="translated">逗号分隔字节值字符串(十进制)</target>
+        </trans-unit>
+        <trans-unit id="optCommaByteStringHex.Text" translate="yes" xml:space="preserve">
+          <source>Comma Byte String (Hex)</source>
+          <target state="translated">逗号分隔字节值字符串(十六进制)</target>
+        </trans-unit>
+        <trans-unit id="optSpaceByteStringDec.Text" translate="yes" xml:space="preserve">
+          <source>Space Byte String (Dec)</source>
+          <target state="translated">空格分隔字节值字符串(十进制)</target>
+        </trans-unit>
+        <trans-unit id="optSpaceByteStringHex.Text" translate="yes" xml:space="preserve">
+          <source>Space Byte String (Hex)</source>
+          <target state="translated">空格分隔字节值字符串(十六进制)</target>
+        </trans-unit>
         <trans-unit id="optThunder.Text" translate="yes" xml:space="preserve">
           <source>Thunder</source>
           <target state="translated">迅雷链接</target>
@@ -714,9 +730,13 @@
           <source>Shift-JIS</source>
           <target state="translated">日本语</target>
         </trans-unit>
-        <trans-unit id="optLangUnicode.Text" translate="yes" xml:space="preserve">
-          <source>Unicode</source>
-          <target state="translated">Unicode</target>
+        <trans-unit id="optLangUnicodeLE.Text" translate="yes" xml:space="preserve">
+          <source>Unicode LE</source>
+          <target state="translated">Unicode LE</target>
+        </trans-unit>
+        <trans-unit id="optLangUnicodeBE.Text" translate="yes" xml:space="preserve">
+          <source>Unicode BE</source>
+          <target state="translated">Unicode BE</target>
         </trans-unit>
         <trans-unit id="optLangAscii.Text" translate="yes" xml:space="preserve">
           <source>ASCII</source>

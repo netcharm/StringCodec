@@ -525,6 +525,18 @@
   <data name="optRawEscape.Text" xml:space="preserve">
     <value>RAW (\\xHH)</value>
   </data>
+  <data name="optCommaByteStringDec.Text" xml:space="preserve">
+    <value>逗号分隔字节值字符串(十进制)</value>
+  </data>
+  <data name="optCommaByteStringHex.Text" xml:space="preserve">
+    <value>逗号分隔字节值字符串(十六进制)</value>
+  </data>
+  <data name="optSpaceByteStringDec.Text" xml:space="preserve">
+    <value>空格分隔字节值字符串(十进制)</value>
+  </data>
+  <data name="optSpaceByteStringHex.Text" xml:space="preserve">
+    <value>空格分隔字节值字符串(十六进制)</value>
+  </data>
   <data name="optThunder.Text" xml:space="preserve">
     <value>迅雷链接</value>
   </data>
@@ -543,8 +555,11 @@
   <data name="optLangJIS.Text" xml:space="preserve">
     <value>日本语</value>
   </data>
-  <data name="optLangUnicode.Text" xml:space="preserve">
-    <value>Unicode</value>
+  <data name="optLangUnicodeLE.Text" xml:space="preserve">
+    <value>Unicode LE</value>
+  </data>
+  <data name="optLangUnicodeBE.Text" xml:space="preserve">
+    <value>Unicode BE</value>
   </data>
   <data name="optLangAscii.Text" xml:space="preserve">
     <value>ASCII</value>
