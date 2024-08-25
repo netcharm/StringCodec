@@ -399,8 +399,8 @@
           <target state="translated">选项</target>
         </trans-unit>
         <trans-unit id="optBarCodeExpress.Text" translate="yes" xml:space="preserve">
-          <source>Express No.</source>
-          <target state="translated">快递单号</target>
+          <source>Express No</source>
+          <target state="needs-review-translation">快递单号</target>
         </trans-unit>
         <trans-unit id="optBarCodeISBN.Text" translate="yes" xml:space="preserve">
           <source>Book ISBN</source>
@@ -545,6 +545,8 @@
         <trans-unit id="edInfo.Text" translate="yes" xml:space="preserve">
           <source></source>
           <target state="translated"></target>
+          <note from="resx" priority="2">@MutedRule(PunctuationTail)</note>
+          <note from="MultilingualBuild" annotates="source" priority="2">@MutedRule(PunctuationTail)</note>
         </trans-unit>
         <trans-unit id="edBarcode.Header" translate="yes" xml:space="preserve">
           <source>Text</source>
@@ -907,8 +909,8 @@
           <target state="translated">SVG 编码为BASE64</target>
         </trans-unit>
         <trans-unit id="Confirm" translate="yes" xml:space="preserve">
-          <source>Confirm</source>
-          <target state="translated">确认?</target>
+          <source>Confirm?</source>
+          <target state="needs-review-translation">确认?</target>
         </trans-unit>
         <trans-unit id="EncodingBigImageConfirm" translate="yes" xml:space="preserve">
           <source>Image is big, it's maybe too slower to encoding &amp; filling textbox. \n Continued?</source>
@@ -1107,8 +1109,8 @@
           <target state="translated">分享编解码结果到其他的应用</target>
         </trans-unit>
         <trans-unit id="ShareTitle" translate="yes" xml:space="preserve">
-          <source>Share From StringCodec To...</source>
-          <target state="translated">从文本编码解码工具分享</target>
+          <source>Share From StringCodec To</source>
+          <target state="needs-review-translation">从文本编码解码工具分享</target>
         </trans-unit>
         <trans-unit id="btnShareDstAsURL.Text" translate="yes" xml:space="preserve">
           <source>Share Output As URL</source>
@@ -1151,8 +1153,8 @@
           <target state="translated">摩尔斯电码</target>
         </trans-unit>
         <trans-unit id="optMorseAbbr.Text" translate="yes" xml:space="preserve">
-          <source>Morse Code Expand Abbr.</source>
-          <target state="translated">摩尔斯电码(展开缩写)</target>
+          <source>Morse Code Expand Abbr</source>
+          <target state="needs-review-translation">摩尔斯电码(展开缩写)</target>
         </trans-unit>
         <trans-unit id="optPassword.Text" translate="yes" xml:space="preserve">
           <source>Password</source>
@@ -1527,8 +1529,8 @@
           <target state="translated">关闭</target>
         </trans-unit>
         <trans-unit id="btnBrowseFile.Content" translate="yes" xml:space="preserve">
-          <source>Browsing</source>
-          <target state="translated">浏览...</target>
+          <source>Browsing ...</source>
+          <target state="needs-review-translation">浏览...</target>
         </trans-unit>
         <trans-unit id="Bytes" translate="yes" xml:space="preserve">
           <source>Byte(s)</source>

@@ -427,7 +427,7 @@
     <value>Options</value>
   </data>
   <data name="optBarCodeExpress.Text" xml:space="preserve">
-    <value>Express No.</value>
+    <value>Express No</value>
   </data>
   <data name="optBarCodeISBN.Text" xml:space="preserve">
     <value>Book ISBN</value>
@@ -536,6 +536,7 @@
   </data>
   <data name="edInfo.Text" xml:space="preserve">
     <value />
+    <comment>@MutedRule(PunctuationTail)</comment>
   </data>
   <data name="edBarcode.Header" xml:space="preserve">
     <value>Text</value>
@@ -787,7 +788,7 @@
     <value>SVG To BASE64</value>
   </data>
   <data name="Confirm" xml:space="preserve">
-    <value>Confirm</value>
+    <value>Confirm?</value>
   </data>
   <data name="EncodingBigImageConfirm" xml:space="preserve">
     <value>Image is big, it's maybe too slower to encoding &amp; filling textbox. \n Continued?</value>
@@ -973,7 +974,7 @@
     <value>Share the codec result to other apps</value>
   </data>
   <data name="ShareTitle" xml:space="preserve">
-    <value>Share From StringCodec To...</value>
+    <value>Share From StringCodec To</value>
   </data>
   <data name="btnShareDstAsURL.Text" xml:space="preserve">
     <value>Share Output As URL</value>
@@ -1006,7 +1007,7 @@
     <value>Morse Code</value>
   </data>
   <data name="optMorseAbbr.Text" xml:space="preserve">
-    <value>Morse Code Expand Abbr.</value>
+    <value>Morse Code Expand Abbr</value>
   </data>
   <data name="optPassword.Text" xml:space="preserve">
     <value>Password</value>
@@ -1252,7 +1253,7 @@
     <value>File Hash Calculating</value>
   </data>
   <data name="btnBrowseFile.Content" xml:space="preserve">
-    <value>Browsing</value>
+    <value>Browsing ...</value>
   </data>
   <data name="FileHashDialog.CloseButtonText" xml:space="preserve">
     <value>Close</value>

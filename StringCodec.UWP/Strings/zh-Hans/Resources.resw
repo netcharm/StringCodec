@@ -416,6 +416,7 @@
   </data>
   <data name="edInfo.Text" xml:space="preserve">
     <value></value>
+    <comment>@MutedRule(PunctuationTail)</comment>
   </data>
   <data name="edBarcode.Header" xml:space="preserve">
     <value>文本</value>

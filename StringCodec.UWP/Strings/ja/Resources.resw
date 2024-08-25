@@ -40,7 +40,7 @@
     <value>慣用的な 1 次元バーコード</value>
   </data>
   <data name="nvItemCommonOneD.ToolTipService.ToolTip" xml:space="preserve">
-    <value>慣用的な 1 次元バーコードを作る/デコードします。</value>
+    <value>慣用的な 1 次元バーコードを作る/デコードします</value>
   </data>
   <data name="nvItemCommonQR.Content" xml:space="preserve">
     <value>慣用 QR コード</value>
@@ -52,13 +52,13 @@
     <value>フォルダー&amp;ファイル文字セット</value>
   </data>
   <data name="nvItemCharset.ToolTipService.ToolTip" xml:space="preserve">
-    <value>指定された文字セットのフォルダー/ファイル名を変換します。</value>
+    <value>指定された文字セットのフォルダー/ファイル名を変換します</value>
   </data>
   <data name="nvAbout.Content" xml:space="preserve">
     <value>情報をもっと見る</value>
   </data>
   <data name="nvAbout.ToolTipService.ToolTip" xml:space="preserve">
-    <value>私は. について</value>
+    <value>私は. について...</value>
   </data>
   <data name="piLink.Header" xml:space="preserve">
     <value>Web リンク</value>
@@ -100,7 +100,7 @@
     <value>非表示の SSID</value>
   </data>
   <data name="piMail.Header" xml:space="preserve">
-    <value>メールを送信します。</value>
+    <value>メールを送信します</value>
   </data>
   <data name="edMailTo.Header" xml:space="preserve">
     <value>送信先</value>
@@ -244,16 +244,16 @@
     <value>名前の変更</value>
   </data>
   <data name="btnRename.ToolTipService.ToolTip" xml:space="preserve">
-    <value>選択したファイル名を現在のソース文字セットに変更します。</value>
+    <value>選択したファイル名を現在のソース文字セットに変更します</value>
   </data>
   <data name="ActionRename.Text" xml:space="preserve">
-    <value>選択した項目の名前を変更します。</value>
+    <value>選択した項目の名前を変更します</value>
   </data>
   <data name="ActionRenameAll.Text" xml:space="preserve">
-    <value>すべての項目の名前を変更します。</value>
+    <value>すべての項目の名前を変更します</value>
   </data>
   <data name="optActionRename.Text" xml:space="preserve">
-    <value>置換ファイルが存在します。</value>
+    <value>置換ファイルが存在します</value>
   </data>
   <data name="btnOptDst.Label" xml:space="preserve">
     <value>ターゲット</value>
@@ -262,13 +262,13 @@
     <value>変換</value>
   </data>
   <data name="btnConvert.ToolTipService.ToolTip" xml:space="preserve">
-    <value>選択したファイルの内容を選択した文字に変換します。</value>
+    <value>選択したファイルの内容を選択した文字に変換します</value>
   </data>
   <data name="ActionConvert.Text" xml:space="preserve">
-    <value>選択したファイルを変換します。</value>
+    <value>選択したファイルを変換します</value>
   </data>
   <data name="ActionConvertAll.Text" xml:space="preserve">
-    <value>すべてのテキスト ファイルに変換します。</value>
+    <value>すべてのテキスト ファイルに変換します</value>
   </data>
   <data name="optActionConvert.Text" xml:space="preserve">
     <value>元のファイルを上書き</value>
@@ -277,7 +277,7 @@
     <value>フォルダー深い</value>
   </data>
   <data name="optFolderDeepF.Text" xml:space="preserve">
-    <value>サブのすべてのツリーします。</value>
+    <value>サブのすべてのツリーします</value>
   </data>
   <data name="optFolderDeep0.Text" xml:space="preserve">
     <value>現在のフォルダー</value>
@@ -301,7 +301,7 @@
     <value>入力</value>
   </data>
   <data name="edSrc.PlaceholderText" xml:space="preserve">
-    <value>ここで入力します。</value>
+    <value>ここで入力します</value>
   </data>
   <data name="btnOpt.Label" xml:space="preserve">
     <value>オプション</value>
@@ -373,7 +373,7 @@
     <value>BASE64キャプチャ画像</value>
   </data>
   <data name="btnTextToDecode.Label" xml:space="preserve">
-    <value>テキスト文字列をデコードします。</value>
+    <value>テキスト文字列をデコードします</value>
   </data>
   <data name="btnTextToQR.Label" xml:space="preserve">
     <value>QR コードにテキスト</value>
@@ -416,6 +416,7 @@
   </data>
   <data name="edInfo.Text" xml:space="preserve">
     <value></value>
+    <comment>@MutedRule(PunctuationTail)</comment>
   </data>
   <data name="edBarcode.Header" xml:space="preserve">
     <value>テキスト</value>
@@ -439,7 +440,7 @@
     <value>ジオ クエリ</value>
   </data>
   <data name="optCommonContact.Text" xml:space="preserve">
-    <value>お問い合わせください。</value>
+    <value>お問い合わせください</value>
   </data>
   <data name="optCommonEvent.Text" xml:space="preserve">
     <value>時間イベント</value>
@@ -457,16 +458,16 @@
     <value>ECC のレベル: H</value>
   </data>
   <data name="optUsingDialog.Label" xml:space="preserve">
-    <value>ダイアログを使用してください。</value>
+    <value>ダイアログを使用してください</value>
   </data>
   <data name="edQR.Header" xml:space="preserve">
-    <value>本文 [Max = 984]。</value>
+    <value>本文 [Max = 984]:</value>
   </data>
   <data name="edQR.PlaceholderText" xml:space="preserve">
     <value>ここにテキストを入力</value>
   </data>
   <data name="optPrefix.Label" xml:space="preserve">
-    <value>BASE64 にプレフィックスを追加します。</value>
+    <value>BASE64 にプレフィックスを追加します</value>
   </data>
   <data name="optLineBreak.Label" xml:space="preserve">
     <value>改行</value>
@@ -574,7 +575,7 @@
     <value>出力</value>
   </data>
   <data name="edDst.PlaceholderText" xml:space="preserve">
-    <value>ここでは、出力です。</value>
+    <value>ここでは、出力です</value>
   </data>
   <data name="NvMainNavigationViewPaneTitle" xml:space="preserve">
     <value>&amp;デコード エンコード文字列</value>
@@ -649,7 +650,7 @@
     <value>プロンプト</value>
   </data>
   <data name="Language will be changed on next startup" xml:space="preserve">
-    <value>インタフェース言語の設定は、次の起動後に有効になります。</value>
+    <value>インタフェース言語の設定は、次の起動後に有効になります</value>
   </data>
   <data name="ColorDialog.PrimaryButtonText" xml:space="preserve">
     <value>決定する</value>
@@ -676,7 +677,7 @@
     <value>ファイル</value>
   </data>
   <data name="SaveSvgToPngConfirm" xml:space="preserve">
-    <value>現在のイメージをSVGファイルとして保存することはできず、PNGファイルとして保存されます。</value>
+    <value>現在のイメージをSVGファイルとして保存することはできず、PNGファイルとして保存されます</value>
   </data>
   <data name="optFmtSvg.Text" xml:space="preserve">
     <value>SVG 画像ファイル</value>

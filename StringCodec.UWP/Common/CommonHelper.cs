@@ -2190,7 +2190,41 @@ namespace StringCodec.UWP.Common
                     //
                     // maybe UWP WriteableBitmap/BitmapImage not support loading CF_DIB/CF_DIBv5 format so...
                     //
-                    if (dataPackageView.Contains("DeviceIndependentBitmapV5_"))
+                    if (dataPackageView.Contains("PNG"))
+                    {
+                        using (var fileStream = new InMemoryRandomAccessStream())
+                        {
+                            var data = await dataPackageView.GetDataAsync("PNG");
+                            var dataObj = data as IRandomAccessStream;
+                            var stream = dataObj.GetInputStreamAt(0);
+
+                            await RandomAccessStream.CopyAsync(stream, fileStream.GetOutputStreamAt(0));
+                            await fileStream.FlushAsync();
+
+                            WriteableBitmap bitmap = new WriteableBitmap(1, 1);
+                            await bitmap.SetSourceAsync(fileStream);
+                            byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmap.PixelBuffer, 0, (int)bitmap.PixelBuffer.Length);
+                            image.Source = bitmap;
+                        }
+                    }
+                    else if (dataPackageView.Contains("image/png"))
+                    {
+                        using (var fileStream = new InMemoryRandomAccessStream())
+                        {
+                            var data = await dataPackageView.GetDataAsync("image/png");
+                            var dataObj = data as IRandomAccessStream;
+                            var stream = dataObj.GetInputStreamAt(0);
+
+                            await RandomAccessStream.CopyAsync(stream, fileStream.GetOutputStreamAt(0));
+                            await fileStream.FlushAsync();
+
+                            WriteableBitmap bitmap = new WriteableBitmap(1, 1);
+                            await bitmap.SetSourceAsync(fileStream);
+                            byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmap.PixelBuffer, 0, (int)bitmap.PixelBuffer.Length);
+                            image.Source = bitmap;
+                        }
+                    }
+                    else if (dataPackageView.Contains("DeviceIndependentBitmapV5_"))
                     {
                         using (var fileStream = new InMemoryRandomAccessStream())
                         {
@@ -2209,7 +2243,7 @@ namespace StringCodec.UWP.Common
                                 0x00, 0x00, 0x00, 0x00,
                                 0x00, 0x00,
                                 0x00, 0x00,
-                                0x36, 0x00, 0x00, 0x28
+                                0x36, 0x00, 0x00, 0x00//0x28
                             };
                             var bs = (uint)dibBytes.Length + 14;
                             var bsb = BitConverter.GetBytes(bs);
@@ -2259,7 +2293,7 @@ namespace StringCodec.UWP.Common
                                 0x00, 0x00, 0x00, 0x00,
                                 0x00, 0x00,
                                 0x00, 0x00,
-                                0x36, 0x00, 0x00, 0x28
+                                0x36, 0x00, 0x00, 0x00//0x28
                             };
                             var bs = (uint)dibBytes.Length + 14;
                             var bsb = BitConverter.GetBytes(bs);
@@ -2278,40 +2312,6 @@ namespace StringCodec.UWP.Common
                             //await RandomAccessStream.CopyAsync(stream, fileStream.GetOutputStreamAt(bh.Length));
                             //await fileStream.FlushAsync();
                             //fileStream
-
-                            WriteableBitmap bitmap = new WriteableBitmap(1, 1);
-                            await bitmap.SetSourceAsync(fileStream);
-                            byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmap.PixelBuffer, 0, (int)bitmap.PixelBuffer.Length);
-                            image.Source = bitmap;
-                        }
-                    }
-                    else if (dataPackageView.Contains("PNG"))
-                    {
-                        using (var fileStream = new InMemoryRandomAccessStream())
-                        {
-                            var data = await dataPackageView.GetDataAsync("PNG");
-                            var dataObj = data as IRandomAccessStream;
-                            var stream = dataObj.GetInputStreamAt(0);
-
-                            await RandomAccessStream.CopyAsync(stream, fileStream.GetOutputStreamAt(0));
-                            await fileStream.FlushAsync();
-
-                            WriteableBitmap bitmap = new WriteableBitmap(1, 1);
-                            await bitmap.SetSourceAsync(fileStream);
-                            byte[] arr = WindowsRuntimeBufferExtensions.ToArray(bitmap.PixelBuffer, 0, (int)bitmap.PixelBuffer.Length);
-                            image.Source = bitmap;
-                        }
-                    }
-                    else if (dataPackageView.Contains("image/png"))
-                    {
-                        using (var fileStream = new InMemoryRandomAccessStream())
-                        {
-                            var data = await dataPackageView.GetDataAsync("image/png");
-                            var dataObj = data as IRandomAccessStream;
-                            var stream = dataObj.GetInputStreamAt(0);
-
-                            await RandomAccessStream.CopyAsync(stream, fileStream.GetOutputStreamAt(0));
-                            await fileStream.FlushAsync();
 
                             WriteableBitmap bitmap = new WriteableBitmap(1, 1);
                             await bitmap.SetSourceAsync(fileStream);

@@ -44,7 +44,7 @@
         </trans-unit>
         <trans-unit id="nvItemCommonOneD.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Make/Decode Common 1D Barcode</source>
-          <target state="translated">慣用的な 1 次元バーコードを作る/デコードします。</target>
+          <target state="needs-review-translation">慣用的な 1 次元バーコードを作る/デコードします</target>
         </trans-unit>
         <trans-unit id="nvItemCommonQR.Content" translate="yes" xml:space="preserve">
           <source>Common QR Code</source>
@@ -60,7 +60,7 @@
         </trans-unit>
         <trans-unit id="nvItemCharset.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Converting folder/file names with specified character sets</source>
-          <target state="translated">指定された文字セットのフォルダー/ファイル名を変換します。</target>
+          <target state="needs-review-translation">指定された文字セットのフォルダー/ファイル名を変換します</target>
         </trans-unit>
         <trans-unit id="nvAbout.Content" translate="yes" xml:space="preserve">
           <source>More info</source>
@@ -68,7 +68,7 @@
         </trans-unit>
         <trans-unit id="nvAbout.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>About Me...</source>
-          <target state="translated">私は. について</target>
+          <target state="needs-review-translation">私は. について...</target>
         </trans-unit>
         <trans-unit id="piLink.Header" translate="yes" xml:space="preserve">
           <source>Web Link</source>
@@ -124,7 +124,7 @@
         </trans-unit>
         <trans-unit id="piMail.Header" translate="yes" xml:space="preserve">
           <source>Send Mail</source>
-          <target state="translated">メールを送信します。</target>
+          <target state="needs-review-translation">メールを送信します</target>
         </trans-unit>
         <trans-unit id="edMailTo.Header" translate="yes" xml:space="preserve">
           <source>Sent To</source>
@@ -316,19 +316,19 @@
         </trans-unit>
         <trans-unit id="btnRename.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Rename selected filename to current source charset</source>
-          <target state="translated">選択したファイル名を現在のソース文字セットに変更します。</target>
+          <target state="needs-review-translation">選択したファイル名を現在のソース文字セットに変更します</target>
         </trans-unit>
         <trans-unit id="ActionRename.Text" translate="yes" xml:space="preserve">
           <source>Rename Selected Item</source>
-          <target state="translated">選択した項目の名前を変更します。</target>
+          <target state="needs-review-translation">選択した項目の名前を変更します</target>
         </trans-unit>
         <trans-unit id="ActionRenameAll.Text" translate="yes" xml:space="preserve">
           <source>Rename All Items</source>
-          <target state="translated">すべての項目の名前を変更します。</target>
+          <target state="needs-review-translation">すべての項目の名前を変更します</target>
         </trans-unit>
         <trans-unit id="optActionRename.Text" translate="yes" xml:space="preserve">
           <source>Replace Exists File</source>
-          <target state="translated">置換ファイルが存在します。</target>
+          <target state="needs-review-translation">置換ファイルが存在します</target>
         </trans-unit>
         <trans-unit id="btnOptDst.Label" translate="yes" xml:space="preserve">
           <source>Target</source>
@@ -340,15 +340,15 @@
         </trans-unit>
         <trans-unit id="btnConvert.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Convert selected file content to selected target charset</source>
-          <target state="translated">選択したファイルの内容を選択した文字に変換します。</target>
+          <target state="needs-review-translation">選択したファイルの内容を選択した文字に変換します</target>
         </trans-unit>
         <trans-unit id="ActionConvert.Text" translate="yes" xml:space="preserve">
           <source>Convert Selected File</source>
-          <target state="translated">選択したファイルを変換します。</target>
+          <target state="needs-review-translation">選択したファイルを変換します</target>
         </trans-unit>
         <trans-unit id="ActionConvertAll.Text" translate="yes" xml:space="preserve">
           <source>Convert All Text File</source>
-          <target state="translated">すべてのテキスト ファイルに変換します。</target>
+          <target state="needs-review-translation">すべてのテキスト ファイルに変換します</target>
         </trans-unit>
         <trans-unit id="optActionConvert.Text" translate="yes" xml:space="preserve">
           <source>Overwrite Original File</source>
@@ -360,7 +360,7 @@
         </trans-unit>
         <trans-unit id="optFolderDeepF.Text" translate="yes" xml:space="preserve">
           <source>All Sub-Tree</source>
-          <target state="translated">サブのすべてのツリーします。</target>
+          <target state="needs-review-translation">サブのすべてのツリーします</target>
         </trans-unit>
         <trans-unit id="optFolderDeep0.Text" translate="yes" xml:space="preserve">
           <source>Current Folder</source>
@@ -392,15 +392,15 @@
         </trans-unit>
         <trans-unit id="edSrc.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Input at here</source>
-          <target state="translated">ここで入力します。</target>
+          <target state="needs-review-translation">ここで入力します</target>
         </trans-unit>
         <trans-unit id="btnOpt.Label" translate="yes" xml:space="preserve">
           <source>Options</source>
           <target state="translated">オプション</target>
         </trans-unit>
         <trans-unit id="optBarCodeExpress.Text" translate="yes" xml:space="preserve">
-          <source>Express No.</source>
-          <target state="translated">エクスプレス号</target>
+          <source>Express No</source>
+          <target state="needs-review-translation">エクスプレス号</target>
         </trans-unit>
         <trans-unit id="optBarCodeISBN.Text" translate="yes" xml:space="preserve">
           <source>Book ISBN</source>
@@ -488,7 +488,7 @@
         </trans-unit>
         <trans-unit id="btnTextToDecode.Label" translate="yes" xml:space="preserve">
           <source>Text to String Decode</source>
-          <target state="translated">テキスト文字列をデコードします。</target>
+          <target state="needs-review-translation">テキスト文字列をデコードします</target>
         </trans-unit>
         <trans-unit id="btnTextToQR.Label" translate="yes" xml:space="preserve">
           <source>Text to QRCode</source>
@@ -545,6 +545,8 @@
         <trans-unit id="edInfo.Text" translate="yes" xml:space="preserve">
           <source></source>
           <target state="translated"></target>
+          <note from="resx" priority="2">@MutedRule(PunctuationTail)</note>
+          <note from="MultilingualBuild" annotates="source" priority="2">@MutedRule(PunctuationTail)</note>
         </trans-unit>
         <trans-unit id="edBarcode.Header" translate="yes" xml:space="preserve">
           <source>Text</source>
@@ -576,7 +578,7 @@
         </trans-unit>
         <trans-unit id="optCommonContact.Text" translate="yes" xml:space="preserve">
           <source>Contact Into</source>
-          <target state="translated">お問い合わせください。</target>
+          <target state="needs-review-translation">お問い合わせください</target>
         </trans-unit>
         <trans-unit id="optCommonEvent.Text" translate="yes" xml:space="preserve">
           <source>Time Event</source>
@@ -600,11 +602,11 @@
         </trans-unit>
         <trans-unit id="optUsingDialog.Label" translate="yes" xml:space="preserve">
           <source>Using Dialog</source>
-          <target state="translated">ダイアログを使用してください。</target>
+          <target state="needs-review-translation">ダイアログを使用してください</target>
         </trans-unit>
         <trans-unit id="edQR.Header" translate="yes" xml:space="preserve">
           <source>Text [Max=984]:</source>
-          <target state="translated">本文 [Max = 984]。</target>
+          <target state="needs-review-translation">本文 [Max = 984]:</target>
         </trans-unit>
         <trans-unit id="edQR.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Input text at here</source>
@@ -612,7 +614,7 @@
         </trans-unit>
         <trans-unit id="optPrefix.Label" translate="yes" xml:space="preserve">
           <source>Add Prefix to BASE64</source>
-          <target state="translated">BASE64 にプレフィックスを追加します。</target>
+          <target state="needs-review-translation">BASE64 にプレフィックスを追加します</target>
         </trans-unit>
         <trans-unit id="optLineBreak.Label" translate="yes" xml:space="preserve">
           <source>Line Break</source>
@@ -756,7 +758,7 @@
         </trans-unit>
         <trans-unit id="edDst.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Here is output</source>
-          <target state="translated">ここでは、出力です。</target>
+          <target state="needs-review-translation">ここでは、出力です</target>
         </trans-unit>
         <trans-unit id="NvMainNavigationViewPaneTitle" translate="yes" xml:space="preserve">
           <source>String Encoding &amp; Decoding</source>
@@ -856,7 +858,7 @@
         </trans-unit>
         <trans-unit id="Language will be changed on next startup" translate="yes" xml:space="preserve">
           <source>Language will be changed on next startup</source>
-          <target state="translated">インタフェース言語の設定は、次の起動後に有効になります。</target>
+          <target state="needs-review-translation">インタフェース言語の設定は、次の起動後に有効になります</target>
         </trans-unit>
         <trans-unit id="ColorDialog.PrimaryButtonText" translate="yes" xml:space="preserve">
           <source>OK</source>
@@ -892,7 +894,7 @@
         </trans-unit>
         <trans-unit id="SaveSvgToPngConfirm" translate="yes" xml:space="preserve">
           <source>Can't save to SVG file, will be saved as PNG file like</source>
-          <target state="translated">現在のイメージをSVGファイルとして保存することはできず、PNGファイルとして保存されます。</target>
+          <target state="needs-review-translation">現在のイメージをSVGファイルとして保存することはできず、PNGファイルとして保存されます</target>
         </trans-unit>
         <trans-unit id="optFmtSvg.Text" translate="yes" xml:space="preserve">
           <source>SVG Image File</source>
@@ -907,8 +909,8 @@
           <target state="translated">SVGエンコーディングはBASE64です</target>
         </trans-unit>
         <trans-unit id="Confirm" translate="yes" xml:space="preserve">
-          <source>Confirm</source>
-          <target state="translated">確認しますか？</target>
+          <source>Confirm?</source>
+          <target state="needs-review-translation">確認しますか？</target>
         </trans-unit>
         <trans-unit id="EncodingBigImageConfirm" translate="yes" xml:space="preserve">
           <source>Image is big, it's maybe too slower to encoding &amp; filling textbox. \n Continued?</source>
@@ -1107,8 +1109,8 @@
           <target state="translated">コーデック結果を他のアプリケーションに共有する</target>
         </trans-unit>
         <trans-unit id="ShareTitle" translate="yes" xml:space="preserve">
-          <source>Share From StringCodec To...</source>
-          <target state="translated">テキストのエンコードおよびデコードツールからのシェア</target>
+          <source>Share From StringCodec To</source>
+          <target state="needs-review-translation">テキストのエンコードおよびデコードツールからのシェア</target>
         </trans-unit>
         <trans-unit id="btnShareDstAsURL.Text" translate="yes" xml:space="preserve">
           <source>Share Output As URL</source>
@@ -1151,8 +1153,8 @@
           <target state="translated">モールス</target>
         </trans-unit>
         <trans-unit id="optMorseAbbr.Text" translate="yes" xml:space="preserve">
-          <source>Morse Code Expand Abbr.</source>
-          <target state="translated">モールス符号 (拡張略語)</target>
+          <source>Morse Code Expand Abbr</source>
+          <target state="needs-review-translation">モールス符号 (拡張略語)</target>
         </trans-unit>
         <trans-unit id="optPassword.Text" translate="yes" xml:space="preserve">
           <source>Password</source>
@@ -1527,8 +1529,8 @@
           <target state="translated">閉じる</target>
         </trans-unit>
         <trans-unit id="btnBrowseFile.Content" translate="yes" xml:space="preserve">
-          <source>Browsing</source>
-          <target state="translated">閲覧...</target>
+          <source>Browsing ...</source>
+          <target state="needs-review-translation">閲覧...</target>
         </trans-unit>
         <trans-unit id="Bytes" translate="yes" xml:space="preserve">
           <source>Byte(s)</source>
