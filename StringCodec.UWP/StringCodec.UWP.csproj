@@ -204,6 +204,11 @@
     <None Include="Assets\Statics\js\MathJax\fonts\HTML-CSS\Asana-Math\eot\AsanaMathJax_Size6-Regular.eot" />
     <None Include="Assets\Statics\js\MathJax\fonts\HTML-CSS\Asana-Math\eot\AsanaMathJax_Symbols-Regular.eot" />
     <None Include="Assets\Statics\js\MathJax\fonts\HTML-CSS\Asana-Math\eot\AsanaMathJax_Variants-Regular.eot" />
+    <Content Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-16.png" />
+    <Content Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-24.png" />
+    <Content Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-256.png" />
+    <Content Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-32.png" />
+    <Content Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-48.png" />
     <Content Include="Assets\Statics\html\mathviewer_asciimath.html" />
     <Content Include="Assets\Statics\js\MathJax\fonts\HTML-CSS\Asana-Math\otf\AsanaMathJax_Alphabets-Regular.otf" />
     <Content Include="Assets\Statics\js\MathJax\fonts\HTML-CSS\Asana-Math\otf\AsanaMathJax_Arrows-Regular.otf" />
